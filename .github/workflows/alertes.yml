@@ -1,0 +1,33 @@
+# Toutes les 3 h : calcule les alertes pêche des 3 prochains jours et les range dans la branche « donnees »
+# (fichier alertes.json), que Home Assistant lit pour envoyer les notifications. La branche main n'est pas touchée.
+# Attention : GitHub coupe les tâches planifiées d'un dépôt public sans activité pendant 60 jours ;
+# Home Assistant prévient si alertes.json n'est plus mis à jour (capteur « Pêche alertes en panne »).
+name: alertes
+on:
+  schedule:
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: alertes
+jobs:
+  alertes:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Ancien fichier
+        run: git fetch -q --depth=1 origin donnees && git show origin/donnees:alertes.json > /tmp/ancien.json || echo '{"alertes":[]}' > /tmp/ancien.json
+      - name: Calcul
+        run: node notif/alertes.js /tmp/ancien.json > /tmp/alertes.json && head -c 600 /tmp/alertes.json
+      - name: Enregistrer dans la branche donnees
+        run: |
+          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b donnees
+          cp /tmp/alertes.json .
+          git config user.name "alertes-bot"; git config user.email "alertes@users.noreply.github.com"
+          git add alertes.json && git commit -qm "alertes $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" donnees

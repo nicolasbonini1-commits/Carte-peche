@@ -4,10 +4,10 @@
 //   (au plus 3000 tuiles, les plus anciennes sont effacées). On ne télécharge jamais de zone en avance :
 //   les règles d'OpenStreetMap l'interdisent.
 // - La météo, la mer et les débits ne passent pas par ici : l'appli garde la dernière réponse dans le téléphone.
-const CACHE = "carte-peche-v3";
+const CACHE = "carte-peche-v4";
 const TILES = "carte-peche-tuiles";
 const MAX_TILES = 3000;
-const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/app.js", "icon.svg", "manifest.webmanifest",
+const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/data.js", "js/app.js", "icon.svg", "manifest.webmanifest",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"];
 const TILE_HOSTS = ["tile.openstreetmap.fr", "basemaps.cartocdn.com", "server.arcgisonline.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
