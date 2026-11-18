@@ -1,7 +1,7 @@
 # Reprise du projet Carte-peche
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d.
-État au 18 novembre 2026, 14 h 50 : v2 en ligne, notifications installées dans HA.
+État au 18 novembre 2026, 21 h 40 : v2 en ligne, notifications installées dans HA, nouveaux essais automatiques quand le réseau revient.
 
 ## Le projet
 Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la calée) entre les Saintes-Maries-de-la-Mer et Frontignan, selon la météo, la mer, l'heure, le temps disponible (1 h de route depuis Poulx) et l'envie du jour. Elle remplace le carnet papier.
@@ -22,7 +22,8 @@ Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la
 - Météo : `meteofrance_seamless` (AROME puis ARPEGE, ~4,5 jours) puis `ecmwf_ifs025`, comparés (« Prévision incertaine »). Houle = MFWAM Météo-France. Lecture commune appli / tâche d'alertes : `js/data.js`.
 - Carte « Les 3 prochains jours » (coup de mer, mer qui retombe, vent d'est / marin, mistral ou tramontane, vent qui forcit, fortes pluies, désaccord des modèles).
 - Postes 6, 11, 12, 13, 16 recalés (feux des ports OpenStreetMap) ; « à vérifier » : 1, 2, 4, 5, 7, 8, 9 ; le 3 est une zone de 15 km à remplacer ou supprimer. La fiche affiche d'où vient chaque position.
-- Sans réseau (testé dans Chrome, pas encore sur l'A55) : l'appli s'ouvre, affiche « Pas de réseau » et les dernières prévisions avec leur heure, garde les derniers débits, le carnet et les morceaux de carte déjà regardés (3000 au plus). Pas de nouvelles prévisions, ni temps de route, ni profondeur au toucher.
+- Sans réseau (testé dans Chrome, et sur l'A55 le 18 nov. à 21 h 11 en mode avion, dans un onglet Chrome) : l'appli s'ouvre, affiche « Pas de réseau » et les dernières prévisions avec leur heure, garde les derniers débits, le carnet et les morceaux de carte déjà regardés (3000 au plus). Pas de nouvelles prévisions, ni temps de route, ni profondeur au toucher.
+- Retour du réseau (18 nov., 21 h 40) : avant, l'appli ne retentait jamais seule (il fallait la fermer) et le bouton disait « mis à jour » même en cas d'échec. Maintenant elle réessaie à l'événement « online » (+3 s), en revenant sur l'appli, et 10 s, 30 s, 60 s après un échec ; le bandeau dit « Pas de réseau (ou réseau trop faible) » aussi quand le Wi-Fi est connecté sans internet (« Failed to fetch ») ; le bouton dit « Toujours pas de réseau » si ça rate. Testé dans Chrome sans écran (réponses Open-Meteo enregistrées de la branche `essais-api`), pas encore sur l'A55. Cache v6.
 
 ## Notifications
 - Tâche GitHub `alertes` (`.github/workflows/alertes.yml`, toutes les 3 h à h+23) : curl télécharge la météo, `notif/alertes.js` calcule avec le même code que l'appli et écrit `alertes.json` dans la branche `donnees` (champ `nouvelles` = alertes pas encore vues au passage précédent ; notifiées : niveau ≥ 2 et « mer qui retombe »). Premier passage réussi le 18 nov. à 14 h 02 (le mail « Run failed » de 13 h 59 vient de l'ancienne version f66936e, téléchargement par Node.js, corrigée depuis avec curl).
@@ -31,13 +32,16 @@ Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la
 
 ## Reste à faire
 1. Notifications : vérifier au prochain passage avec du nouveau qu'elles partent seules (`last_triggered` de `automation.peche_nouvelles_alertes_a_3_jours`). Dates des alertes rendues lisibles le 18 nov. (« jeudi 19, de 4 h à 18 h », « du mercredi 18 à 22 h au jeudi 19 à 2 h », midi / minuit, pas de « demain » car la notification peut partir le lendemain) : testé sur des prévisions fabriquées, à revoir sur la première vraie notification. Plus tard : passer `actions/checkout` et `setup-node` en v5 (avertissement Node.js 20 de GitHub).
-2. Sur l'A55 : installer l'appli sur l'écran d'accueil, tester sans réseau (mode avion), tester la profondeur au toucher.
-3. Recaler sur place les postes « à vérifier », puis reporter les positions dans `js/spots.js`.
-4. Branches `essais-api` (essais du 18 nov.) et `v2` (déjà fusionnée) : à supprimer quand Nico est d'accord.
-5. Témoignages vidéo : Nico colle la transcription YouTube ; à ranger comme preuve [V] (faible) dans la fiche du poste.
-6. Caler les seuils avec le carnet (il enregistre pluie 7 j, débit, niveau du fleuve, modèle météo) ; réordonner les leurres par poste.
-7. Idées v3 : mode rivière pour la truite (débit Hub'Eau déjà en place, température de l'eau, dates d'ouverture, postes en rivière) ; postes ajoutés n'importe où (Corse…) avec la météo calculée au poste plutôt que par 3 zones fixes.
-8. Plus tard : envoyer le carnet dans une base Notion.
+2. Sur l'A55 : installer l'appli (menu ⋮ de Chrome › « Ajouter à l'écran d'accueil » › « Installer ») ; refaire le test mode avion → réseau (l'appli doit se mettre à jour seule en quelques secondes, toast « Réseau revenu ») ; tester la profondeur au toucher.
+   - Tâche « alertes » : au 18 nov. 21 h 40, **aucun passage planifié** n'a encore tourné (16 h 23 et 19 h 23 manqués ; tâche « active »). Relancée à la main à 21 h 40. Vérifier demain (`gh run list … --workflow alertes.yml`, colonne `schedule`) ; si elle ne part toujours pas seule, chercher pourquoi avant de changer d'heure. L'alerte « en panne » de HA n'a pas de pause la nuit (à ajouter, mission Claude Code).
+3. Appli « officielle » (question de Nico, 18 nov.) : l'appli installée depuis Chrome (point 2) est déjà une vraie appli sur le téléphone (icône, plein écran, marche sans réseau avec les dernières données) ; les prévisions demandent toujours internet. Play Store possible (emballage TWA avec PWABuilder ou Bubblewrap), mais compte développeur 25 $ et, pour un compte personnel créé après le 13 nov. 2023, test fermé avec 12 testeurs pendant 14 jours d'affilée avant publication : pas utile pour un usage perso. Décision de Nico à prendre.
+4. Webcams (demande de Nico, 18 nov.) : ajouter dans la fiche des postes concernés un lien vers la webcam la plus proche, pour voir la couleur de l'eau après la pluie (de jour seulement). Pistes trouvées (à vérifier une à une, adresse exacte et orientation vers la mer) : Viewsurf « Palavas rive gauche » (pv.viewsurf.com/1510), port de Carnon, La Grande-Motte port ouest, Port Camargue (Windy webcams, Windfinder). Lien qui s'ouvre dans le navigateur, pas d'image intégrée (droits des fournisseurs, poids des vidéos).
+5. Recaler sur place les postes « à vérifier », puis reporter les positions dans `js/spots.js`.
+6. Branches `essais-api` (essais du 18 nov.) et `v2` (déjà fusionnée) : à supprimer quand Nico est d'accord.
+7. Témoignages vidéo : Nico colle la transcription YouTube ; à ranger comme preuve [V] (faible) dans la fiche du poste.
+8. Caler les seuils avec le carnet (il enregistre pluie 7 j, débit, niveau du fleuve, modèle météo) ; réordonner les leurres par poste.
+9. Idées v3 : mode rivière pour la truite (débit Hub'Eau déjà en place, température de l'eau, dates d'ouverture, postes en rivière) ; postes ajoutés n'importe où (Corse…) avec la météo calculée au poste plutôt que par 3 zones fixes.
+10. Plus tard : envoyer le carnet dans une base Notion.
 
 ## Limites connues
 - Les coefficients ne sont pas encore calés sur des captures réelles : il faut une dizaine de sorties notées.

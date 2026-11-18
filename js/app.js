@@ -128,6 +128,8 @@
   // Mer : Open-Meteo Marine « best match », qui donne ici les mêmes valeurs que le modèle de vagues MFWAM de Météo-France
   // (vérifié le 18 nov. 2026 en comparant les deux réponses).
   // 7 jours passés : pour la pluie des jours d'avant (état des fleuves et de l'eau).
+  // lastOk : le dernier essai de téléchargement a-t-il marché ? (sert aux nouveaux essais automatiques et au message du bouton)
+  let lastOk = true;
   async function fetchData(force) {
     const cached = LS.get("cp_data2", null);
     if (!force && cached && Date.now() - cached.at < 45 * 60 * 1000) return parseData(cached);
@@ -135,15 +137,21 @@
     const getJson = async url => { const r = await fetch(url); const j = await r.json(); if (!Array.isArray(j)) throw new Error(j.reason || "réponse inattendue"); return j; };
     try {
       const sP = getJson(sUrl);
+      sP.catch(() => { }); // si la météo échoue avant, l'échec de la mer n'est pas une « erreur non rattrapée »
       let f, multi = true;
       try { f = await getJson(U.forecastModels); }
       catch (e) { multi = false; f = await getJson(base); } // secours : modèle par défaut d'Open-Meteo
       const raw = { at: Date.now(), f, s: await sP, multi };
       LS.set("cp_data2", raw);
+      lastOk = true; banner("");
       return parseData(raw);
     } catch (e) {
       const when = cached ? ` J'affiche les prévisions reçues le ${dayName(new Date(cached.at))} à ${hm(new Date(cached.at))}.` : "";
-      banner((navigator.onLine === false ? "Pas de réseau." : `Météo indisponible (${e.message}).`) + when);
+      lastOk = false;
+      // « Failed to fetch » (Chrome) / « NetworkError » (Firefox) / « Load failed » (Safari) = aucune réponse : réseau absent ou trop faible.
+      // C'est aussi le cas d'un Wi-Fi connecté sans internet (le téléphone se croit alors en ligne).
+      const noNet = navigator.onLine === false || e instanceof TypeError;
+      banner((noNet ? "Pas de réseau (ou réseau trop faible). Nouvel essai automatique dès qu'il revient." : `Météo indisponible (${e.message}).`) + when);
       return cached ? parseData(cached) : null;
     }
   }
@@ -576,11 +584,7 @@
     $("#goSpot").innerHTML = SPOTS.map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("");
     $("#goDay").innerHTML = [0,1,2,3,4,5].map(d => { const x = new Date(); x.setDate(x.getDate() + d); return `<option value="${d}">${d === 0 ? "Aujourd'hui" : d === 1 ? "Demain" : x.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric" })}</option>`; }).join("");
     $("#goBtn").onclick = () => { state.dayView = +$("#goDay").value; openSpot(+$("#goSpot").value); };
-    $("#refreshBtn").onclick = async () => {
-      banner("");
-      const [d, fl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {})]);
-      if (d) state.data = d; state.flows = fl; render(); toast("Météo et débits mis à jour");
-    };
+    $("#refreshBtn").onclick = () => refresh(true);
   }
 
   // ---------- Carnet ----------
@@ -658,6 +662,29 @@
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3000); }
   function banner(msg) { const b = $("#banner"); b.textContent = msg; b.hidden = !msg; }
 
+  // ---------- Mise à jour (bouton et essais automatiques) ----------
+  // Après un échec, l'appli réessaie seule : quand le téléphone signale le retour du réseau (événement « online »),
+  // quand on revient sur l'appli, et au bout de 10 s, 30 s puis 60 s. Elle s'arrête au premier essai réussi.
+  let busy = false, retryT = null, retryN = 0;
+  const RETRY_S = [10, 30, 60];
+  async function refresh(manual) {
+    if (busy) return;
+    busy = true; clearTimeout(retryT);
+    try {
+      const [d, fl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {})]);
+      if (d) state.data = d;
+      state.flows = fl;
+      if (state.data) { applyTheme(); render(); }
+      if (manual) toast(lastOk ? "Météo et débits mis à jour" : "Toujours pas de réseau : prévisions précédentes gardées");
+      else if (lastOk) toast("Réseau revenu : météo mise à jour");
+    } finally { busy = false; }
+    if (lastOk) retryN = 0;
+    else if (retryN < RETRY_S.length) retryT = setTimeout(() => refresh(false), RETRY_S[retryN++] * 1000);
+  }
+  const retryNow = () => { if (!lastOk) { retryN = 0; setTimeout(() => refresh(false), 3000); } }; // 3 s : laisser le réseau s'établir
+  window.addEventListener("online", retryNow);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") retryNow(); });
+
   // ---------- Démarrage ----------
   async function start() {
     applyTheme();
@@ -665,9 +692,10 @@
     $("#reco").innerHTML = "<p>Chargement de la météo et de la mer…</p>";
     const [data, flows] = await Promise.all([fetchData(false), fetchFlows(false).catch(() => ({})), computeDrive()]);
     state.data = data; state.flows = flows;
-    if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. Vérifie la connexion puis touche « Mettre à jour ».</p>"; return; }
-    applyTheme(); render();
     setInterval(() => { applyTheme(); }, 5 * 60 * 1000);
+    if (!lastOk) retryT = setTimeout(() => refresh(false), RETRY_S[retryN++] * 1000);
+    if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. L'appli réessaie seule quand le réseau revient (ou touche « Mettre à jour »).</p>"; return; }
+    applyTheme(); render();
   }
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => { });
   start();
