@@ -151,7 +151,8 @@
       LS.set("cp_data2", raw);
       return parseData(raw);
     } catch (e) {
-      banner(`Météo indisponible (${e.message}).` + (cached ? " J'affiche les dernières données reçues." : ""));
+      const when = cached ? ` J'affiche les prévisions reçues le ${dayName(new Date(cached.at))} à ${hm(new Date(cached.at))}.` : "";
+      banner((navigator.onLine === false ? "Pas de réseau." : `Météo indisponible (${e.message}).`) + when);
       return cached ? parseData(cached) : null;
     }
   }
@@ -212,6 +213,8 @@
         if (pts.length >= 6) rivers[key] = { name: rv.name, pts, ref: refs[key] || null };
       } catch (e) { /* station muette : on se rabat sur la pluie */ }
     }));
+    // Sans réseau (aucune station n'a répondu) : on garde les derniers débits reçus au lieu de les effacer.
+    if (!Object.keys(rivers).length && cached) return cached.rivers;
     LS.set("cp_flow", { at: Date.now(), rivers });
     return rivers;
   }

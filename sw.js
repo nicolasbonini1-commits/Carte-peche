@@ -1,14 +1,38 @@
-// Service worker : garde l'appli disponible même avec un réseau faible sur la digue.
-const CACHE = "carte-peche-v2";
+// Service worker : garde l'appli disponible sans réseau ou avec un réseau faible sur la digue.
+// - L'appli elle-même (pages, scripts, Leaflet) : réseau d'abord pour recevoir les mises à jour, mémoire en secours.
+// - Les morceaux de carte (tuiles) et les polices : ceux déjà regardés sont gardés et resservis sans réseau
+//   (au plus 3000 tuiles, les plus anciennes sont effacées). On ne télécharge jamais de zone en avance :
+//   les règles d'OpenStreetMap l'interdisent.
+// - La météo, la mer et les débits ne passent pas par ici : l'appli garde la dernière réponse dans le téléphone.
+const CACHE = "carte-peche-v3";
+const TILES = "carte-peche-tuiles";
+const MAX_TILES = 3000;
 const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/app.js", "icon.svg", "manifest.webmanifest",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"];
+const TILE_HOSTS = ["tile.openstreetmap.fr", "basemaps.cartocdn.com", "server.arcgisonline.com", "fonts.googleapis.com", "fonts.gstatic.com"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
-self.addEventListener("activate", e => e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
+self.addEventListener("activate", e => e.waitUntil(caches.keys()
+  .then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== TILES).map(k => caches.delete(k)))).then(() => self.clients.claim())));
+
+async function trimTiles() {
+  const c = await caches.open(TILES), keys = await c.keys();
+  for (let k = 0; k < keys.length - MAX_TILES; k++) await c.delete(keys[k]);
+}
 self.addEventListener("fetch", e => {
+  if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
+  if (TILE_HOSTS.some(h => url.hostname.endsWith(h))) {
+    // Tuile déjà gardée : servie tout de suite, et rafraîchie en arrière-plan si le réseau répond.
+    e.respondWith(caches.open(TILES).then(async c => {
+      const hit = await c.match(e.request);
+      const net = fetch(e.request).then(r => { if (r.ok || r.type === "opaque") { c.put(e.request, r.clone()); trimTiles(); } return r; }).catch(() => null);
+      if (hit) { e.waitUntil(net); return hit; }
+      return (await net) || new Response("", { status: 504 });
+    }));
+    return;
+  }
   const isShell = url.origin === location.origin || url.hostname === "unpkg.com";
-  if (!isShell || e.request.method !== "GET") return; // météo, tuiles : toujours en direct
-  // Réseau d'abord (pour recevoir les mises à jour), cache en secours
+  if (!isShell) return; // météo, mer, débits, routes : toujours en direct
   e.respondWith(fetch(e.request).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r; })
-    .catch(() => caches.match(e.request)));
+    .catch(() => caches.match(e.request, { ignoreSearch: true })));
 });
