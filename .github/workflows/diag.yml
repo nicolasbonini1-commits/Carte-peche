@@ -17,7 +17,7 @@ jobs:
           while IFS='|' read -r name url; do
             [ -z "$name" ] && continue
             n=$((n+1))
-            curl -sS -m 60 --retry 2 --retry-delay 5 -D "diag/out/$name.headers" -H "Origin: https://nicolasbonini1-commits.github.io" "$url" -o "diag/out/$name.json" || echo "curl error" > "diag/out/$name.err"
+            curl -sS -m 60 -A "carte-peche-diag/1.0 (github nicolasbonini1-commits)" --retry 2 --retry-delay 5 -D "diag/out/$name.headers" -H "Origin: https://nicolasbonini1-commits.github.io" "$url" -o "diag/out/$name.json" || echo "curl error" > "diag/out/$name.err"
             # résumé : clés et 3 premières valeurs de chaque tableau
             python3 - "$name" <<'PY'
           import json,sys
@@ -41,10 +41,10 @@ jobs:
             return out
           open(f"diag/out/{n}.summary","w").write("\n".join(summ(d))[:20000])
           PY
-            case "$name" in hub_st_*) ;; *) rm -f "diag/out/$name.json";; esac
+            case "$name" in hub_st_*|app_*|nomi_*) ;; *) rm -f "diag/out/$name.json";; esac
           done < diag/urls.txt
-      - name: Postes
-        run: python3 diag/postes.py > diag/out/postes.log 2>&1 || true
+      - name: Leaflet
+        run: curl -sS -o diag/out/leaflet.js https://unpkg.com/leaflet@1.9.4/dist/leaflet.js; curl -sS -o diag/out/leaflet.css https://unpkg.com/leaflet@1.9.4/dist/leaflet.css
       - name: Enregistrer
         run: |
           git config user.name "diag-bot"; git config user.email "diag@users.noreply.github.com"

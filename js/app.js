@@ -122,23 +122,33 @@
   function localKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
   const toMin = s => { const t = s.split("T")[1]; return +t.slice(0, 2) * 60 + +t.slice(3, 5); };
 
+  // Météo : deux modèles demandés en une fois à Open-Meteo.
+  //  - meteofrance_seamless : AROME (maille ~1,5-2,5 km, 2 jours) puis ARPEGE Europe (~11 km, jusqu'à 4 jours) [S, doc Open-Meteo] ;
+  //  - ecmwf_ifs025 : modèle européen ECMWF, pris quand Météo-France s'arrête (jours 4 à 7) et pour juger la fiabilité.
+  // Mer : Open-Meteo Marine « best match », qui donne ici les mêmes valeurs que le modèle de vagues MFWAM de Météo-France
+  // (vérifié le 18 nov. 2026 en comparant les deux réponses).
+  // 7 jours passés : pour la pluie des jours d'avant (état des fleuves et de l'eau).
+  const ZL = ["W", "C", "E", "RV", "RL"], ZS = ["W", "C", "E"];
+  const MODELS = "meteofrance_seamless,ecmwf_ifs025";
   async function fetchData(force) {
-    const cached = LS.get("cp_data", null);
+    const cached = LS.get("cp_data2", null);
     if (!force && cached && Date.now() - cached.at < 45 * 60 * 1000) return parseData(cached);
     const P = window.WX_POINTS;
-    const zl = ["W", "C", "E", "R"], zs = ["W", "C", "E"];
-    const fUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + zl.map(z => P[z].land[0]).join(",") +
-      "&longitude=" + zl.map(z => P[z].land[1]).join(",") +
+    const base = "https://api.open-meteo.com/v1/forecast?latitude=" + ZL.map(z => P[z].land[0]).join(",") +
+      "&longitude=" + ZL.map(z => P[z].land[1]).join(",") +
       "&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,precipitation" +
-      "&daily=sunrise,sunset&past_days=3&forecast_days=7&timezone=Europe%2FParis&wind_speed_unit=kmh";
-    const sUrl = "https://marine-api.open-meteo.com/v1/marine?latitude=" + zs.map(z => P[z].sea[0]).join(",") +
-      "&longitude=" + zs.map(z => P[z].sea[1]).join(",") +
-      "&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature&past_days=3&forecast_days=7&timezone=Europe%2FParis";
+      "&daily=sunrise,sunset&past_days=7&forecast_days=7&timezone=Europe%2FParis&wind_speed_unit=kmh";
+    const sUrl = "https://marine-api.open-meteo.com/v1/marine?latitude=" + ZS.map(z => P[z].sea[0]).join(",") +
+      "&longitude=" + ZS.map(z => P[z].sea[1]).join(",") +
+      "&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature&past_days=7&forecast_days=7&timezone=Europe%2FParis";
+    const getJson = async url => { const r = await fetch(url); const j = await r.json(); if (!Array.isArray(j)) throw new Error(j.reason || "réponse inattendue"); return j; };
     try {
-      const [f, s] = await Promise.all([fetch(fUrl).then(r => r.json()), fetch(sUrl).then(r => r.json())]);
-      if (!Array.isArray(f) || !Array.isArray(s)) throw new Error(f.reason || s.reason || "réponse inattendue");
-      const raw = { at: Date.now(), f, s };
-      LS.set("cp_data", raw);
+      const sP = getJson(sUrl);
+      let f, multi = true;
+      try { f = await getJson(base + "&models=" + MODELS); }
+      catch (e) { multi = false; f = await getJson(base); } // secours : modèle par défaut d'Open-Meteo
+      const raw = { at: Date.now(), f, s: await sP, multi };
+      LS.set("cp_data2", raw);
       return parseData(raw);
     } catch (e) {
       banner(`Météo indisponible (${e.message}).` + (cached ? " J'affiche les dernières données reçues." : ""));
@@ -146,13 +156,31 @@
     }
   }
 
+  // Fusionne les modèles heure par heure : Météo-France tant qu'il donne une valeur, sinon ECMWF.
+  function mergeModels(h, v) {
+    const mf = h[`${v}_meteofrance_seamless`], ec = h[`${v}_ecmwf_ifs025`], plain = h[v];
+    if (!mf && !ec) return { val: plain || [], src: null };
+    const n = (mf || ec).length, val = new Array(n), src = new Array(n);
+    for (let k = 0; k < n; k++) {
+      if (mf && mf[k] != null) { val[k] = mf[k]; src[k] = "MF"; }
+      else if (ec && ec[k] != null) { val[k] = ec[k]; src[k] = "EC"; }
+      else { val[k] = null; src[k] = null; }
+    }
+    return { val, src, ec: ec || null };
+  }
+
   function parseData(raw) {
-    const zl = ["W", "C", "E", "R"], zs = ["W", "C", "E"];
+    const zl = ZL.filter((z, i) => raw.f[i]), zs = ZS;
     const times = raw.f[0].hourly.time;
-    const F = {}, S = {}, sun = {};
+    const F = {}, S = {}, sun = {}, alt = {};
+    let srcC = null, mfEnd = null;
     zl.forEach((z, i) => {
       const h = raw.f[i].hourly;
-      F[z] = { wind: h.wind_speed_10m, dir: h.wind_direction_10m, gust: h.wind_gusts_10m, cloud: h.cloud_cover, rain: h.precipitation };
+      const m = v => mergeModels(h, v);
+      const ws = m("wind_speed_10m"), wd = m("wind_direction_10m");
+      F[z] = { wind: ws.val, dir: wd.val, gust: m("wind_gusts_10m").val, cloud: m("cloud_cover").val, rain: m("precipitation").val };
+      if (ws.ec) alt[z] = { wind: ws.ec, dir: wd.ec };
+      if (z === "C") { srcC = ws.src; if (ws.src) mfEnd = ws.src.lastIndexOf("MF"); }
     });
     raw.f[1].daily.time.forEach((d, k) => { sun[d] = { rise: toMin(raw.f[1].daily.sunrise[k]), set: toMin(raw.f[1].daily.sunset[k]) }; });
     zs.forEach((z, i) => {
@@ -161,7 +189,40 @@
       const pick = arr => times.map(t => arr && idx[t] != null ? arr[idx[t]] : null);
       S[z] = { hs: pick(h.wave_height), dir: pick(h.wave_direction), per: pick(h.wave_period), sst: pick(h.sea_surface_temperature) };
     });
-    return { times: times.map(t => new Date(t)), keys: times, F, S, sun, fetchedAt: new Date(raw.at) };
+    return { times: times.map(t => new Date(t)), keys: times, F, S, sun, fetchedAt: new Date(raw.at),
+      multi: !!raw.multi, src: srcC, mfEnd, alt: Object.keys(alt).length ? alt : null };
+  }
+
+  // ---------- Débits des fleuves (Hub'Eau, données Vigicrues) ----------
+  // Une station par fleuve (window.RIVERS). Débit horaire des 7 derniers jours. Gardé 30 min sur le téléphone.
+  async function fetchFlows(force) {
+    const cached = LS.get("cp_flow", null);
+    if (!force && cached && Date.now() - cached.at < 30 * 60 * 1000) return cached.rivers;
+    const since = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 19);
+    const rivers = {};
+    await Promise.all(Object.entries(window.RIVERS).map(async ([key, rv]) => {
+      try {
+        const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=${rv.station}&grandeur_hydro=Q&timestep=60&date_debut_obs=${since}&size=400&fields=date_obs,resultat_obs`;
+        const j = await (await fetch(url)).json();
+        const pts = (j.data || []).map(o => [Date.parse(o.date_obs), o.resultat_obs / rv.div]).filter(p => isFinite(p[0]) && p[1] != null).sort((a, b) => a[0] - b[0]);
+        if (pts.length >= 6) rivers[key] = { name: rv.name, pts };
+      } catch (e) { /* station muette : on se rabat sur la pluie */ }
+    }));
+    LS.set("cp_flow", { at: Date.now(), rivers });
+    return rivers;
+  }
+  // État du fleuve à l'heure t : débit à ce moment (ou le dernier mesuré si t est dans les 36 h à venir).
+  function flowAt(key, t) {
+    const r = state.flows && state.flows[key]; if (!r) return null;
+    const pts = r.pts, last = pts[pts.length - 1], ms = t.getTime();
+    let k = -1;
+    if (ms >= last[0]) { if (ms - last[0] > 36 * 3600000) return null; k = pts.length - 1; }
+    else { if (ms < pts[0][0]) return null; k = pts.findIndex(p => p[0] >= ms); }
+    if (r.min == null) r.min = Math.min(...pts.map(p => p[1]));
+    const q = pts[k][1], min = r.min;
+    const ago = pts.findIndex(p => p[0] >= pts[k][0] - 6 * 3600000);
+    const q6 = pts[Math.max(0, ago)][1];
+    return { name: r.name, q, min, ratio: min > 0 ? q / min : null, trend: q6 > 0 ? (q - q6) / q6 : 0, at: new Date(pts[k][0]) };
   }
 
   // ---------- Temps de route (OSRM) ----------
@@ -188,6 +249,25 @@
     return 2 * R * Math.asin(Math.sqrt(x));
   }
 
+  // Séries de pluie calculées une seule fois par zone et par bassin (sommes 72 h / 7 j, indice de pluie antérieure).
+  const rainCache = {};
+  function rainSeries(spot) {
+    const D = state.data, key = `${D.fetchedAt.getTime()}|${spot.zone}|${spot.river}`;
+    if (rainCache[key]) return rainCache[key];
+    const coast = D.F[spot.zone].rain;
+    const basin = spot.river === "vidourle" ? D.F.RV : spot.river === "lez" ? D.F.RL : null;
+    const mx = basin ? coast.map((v, k) => Math.max(v || 0, basin.rain[k] || 0)) : coast;
+    const n = mx.length, s72 = new Array(n), s168 = new Array(n), api = new Array(n), apiCoast = new Array(n);
+    const kh = Math.pow(M.API_K, 1 / 24);
+    let a = 0, ac = 0;
+    for (let i = 0; i < n; i++) {
+      a = a * kh + (mx[i] || 0); ac = ac * kh + (coast[i] || 0);   // indice de pluie, décroissance continue
+      api[i] = a; apiCoast[i] = ac;
+      s72[i] = M.rainSum(mx, i, 72); s168[i] = M.rainSum(mx, i, 168);
+    }
+    return (rainCache[key] = { s72, s168, api, apiCoast });
+  }
+
   // ---------- Conditions à un poste et à une heure ----------
   function conditions(spot, i) {
     const D = state.data, z = spot.zone;
@@ -199,8 +279,10 @@
     const falling = hsLocal != null && maxPast >= 1.0 && hsLocal <= 0.65 * maxPast && hsLocal < 1.2;
     const prev = hsAt(i - 6);
     const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
-    let rain72 = 0;
-    for (let k = Math.max(0, i - 72); k <= i; k++) rain72 += Math.max(D.F.R.rain[k] || 0, F.rain[k] || 0);
+    // Pluie : sur la côte (zone du poste) et, pour les postes de fleuve, sur le bassin versant.
+    const R = rainSeries(spot);
+    const rain72 = R.s72[i], rain7 = R.s168[i], apiCoast = R.apiCoast[i], apiBasin = R.api[i];
+    const flow = spot.river ? flowAt(spot.river, D.times[i]) : null;
     let sst = S.sst[i];
     if (sst == null) for (const zz of ["C", "W", "E"]) if (D.S[zz].sst[i] != null) { sst = D.S[zz].sst[i]; break; }
     const t = D.times[i];
@@ -213,7 +295,7 @@
       darkNight: moon.illum < 0.35 || cloud >= 70,
       wind: F.wind[i] ?? 0, windDir: F.dir[i] ?? 0, gust: F.gust[i] ?? 0,
       onshore: M.onshore(spot, F.wind[i] ?? 0, F.dir[i] ?? 0),
-      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, sst
+      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst
     };
   }
 
@@ -303,12 +385,35 @@
     if (!state.data) return;
     computePlan();
     drawMarkers();
+    renderAlerts();
     renderReco();
     renderWhen();
     renderList();
     renderConditions();
     $("#legend").innerHTML = PAL[theme()].map((c, k) => `<i style="background:${c}" title="${M.CLASS_LABELS[k]}"></i>`).join("") + `<small class="sub">&nbsp;faible → forte</small>`;
-    $("#fresh").textContent = `Météo du ${dayName(state.data.fetchedAt)} à ${hm(state.data.fetchedAt)} · routes : ${state.drive ? state.drive.src : "—"} depuis ${esc(state.origin.name)}`;
+    const D = state.data;
+    const mfUntil = D.multi && D.mfEnd > 0 ? ` · Météo-France jusqu'au ${dayName(D.times[D.mfEnd])} ${D.times[D.mfEnd].getHours()} h, puis ECMWF` : D.multi ? "" : " · modèle par défaut d'Open-Meteo (Météo-France indisponible)";
+    $("#fresh").textContent = `Météo du ${dayName(D.fetchedAt)} à ${hm(D.fetchedAt)}${mfUntil} · débits : ${Object.keys(state.flows || {}).length}/${Object.keys(window.RIVERS).length} fleuves · routes : ${state.drive ? state.drive.src : "—"} depuis ${esc(state.origin.name)}`;
+  }
+
+  // ---------- Alertes des 3 prochains jours ----------
+  function renderAlerts() {
+    const list = M.alerts(state.data, new Date());
+    const now = new Date();
+    // État actuel des fleuves (débit mesuré)
+    const rivers = Object.entries(window.RIVERS).map(([k, rv]) => {
+      const f = flowAt(k, now);
+      if (!f) return `<li><b>${esc(rv.name)}</b> : débit indisponible (la pluie sert d'estimation)</li>`;
+      const lv = M.riverLevel({ spot: { river: k }, flow: f });
+      return `<li><b>${esc(rv.name)}</b> : ${lv.why.split(" : ")[1] || lv.why} · ${["normal", "eau qui se charge", "en crue", "forte crue"][lv.level]}${lv.falling ? ", décrue" : ""}</li>`;
+    }).join("");
+    const icon = { mer: "🌊", chance: "🎣", vent: "💨", pluie: "🌧️", fiabilite: "❔" };
+    const cls = ["ok", "info", "warn", "danger"];
+    $("#alerts").innerHTML = `<h3 class="nomt">Les 3 prochains jours</h3>` +
+      (list.length ? list.map(a => `<div class="alert ${cls[a.level]}"><b>${icon[a.kind] || ""} ${esc(a.title)}</b><br><small>${esc(a.text)}</small></div>`).join("")
+        : `<p class="sub">Rien de marquant : ni coup de mer, ni vent fort, ni fortes pluies prévus.</p>`) +
+      `<details><summary>Fleuves maintenant</summary><ul class="rivers">${rivers}</ul>
+       <p class="sub"><a href="https://www.vigicrues.gouv.fr/" target="_blank" rel="noopener">Vigicrues</a> · <a href="https://www.meteolanguedoc.com/" target="_blank" rel="noopener">Météo Languedoc</a> (prévisionnistes, à lire en complément)</p></details>`;
   }
   function applyThemeOnly() { document.documentElement.dataset.theme = theme(); }
 
@@ -486,7 +591,11 @@
     $("#goSpot").innerHTML = SPOTS.map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("");
     $("#goDay").innerHTML = [0,1,2,3,4,5].map(d => { const x = new Date(); x.setDate(x.getDate() + d); return `<option value="${d}">${d === 0 ? "Aujourd'hui" : d === 1 ? "Demain" : x.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric" })}</option>`; }).join("");
     $("#goBtn").onclick = () => { state.dayView = +$("#goDay").value; openSpot(+$("#goSpot").value); };
-    $("#refreshBtn").onclick = async () => { banner(""); state.data = await fetchData(true); render(); toast("Météo mise à jour"); };
+    $("#refreshBtn").onclick = async () => {
+      banner("");
+      const [d, fl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {})]);
+      if (d) state.data = d; state.flows = fl; render(); toast("Météo et débits mis à jour");
+    };
   }
 
   // ---------- Carnet ----------
@@ -530,6 +639,8 @@
     const c = conditions(spot, i);
     return { wind: Math.round(c.wind), windDir: Math.round(c.windDir), gust: Math.round(c.gust), hsLocal: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null,
       sea: M.seaState(c.hsLocal), falling: c.falling, light: c.light, moon: Math.round(c.moon.illum * 100), sst: c.sst, rain72: Math.round(c.rain72),
+      rain7: Math.round(c.rain7), api: Math.round(c.apiBasin), flowRatio: c.flow && c.flow.ratio != null ? +c.flow.ratio.toFixed(2) : null, river: M.riverLevel(c).level,
+      model: state.data.src ? state.data.src[i] : null,
       scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c) };
   }
   function renderCarnet() {
@@ -567,8 +678,8 @@
     applyTheme();
     bindPlan(); bindCarnet();
     $("#reco").innerHTML = "<p>Chargement de la météo et de la mer…</p>";
-    const [data] = await Promise.all([fetchData(false), computeDrive()]);
-    state.data = data;
+    const [data, flows] = await Promise.all([fetchData(false), fetchFlows(false).catch(() => ({})), computeDrive()]);
+    state.data = data; state.flows = flows;
     if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. Vérifie la connexion puis touche « Mettre à jour ».</p>"; return; }
     applyTheme(); render();
     setInterval(() => { applyTheme(); }, 5 * 60 * 1000);
