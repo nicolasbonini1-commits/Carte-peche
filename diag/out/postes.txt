@@ -1,0 +1,208 @@
+Overpass https://overpass-api.de/api/interpreter : <HTTPError 502: 'Bad Gateway'>
+Overpass https://overpass.kumi.systems/api/interpreter : TimeoutError('The read operation timed out')
+Overpass OK : https://maps.mail.ru/osm/tools/overpass/api/interpreter
+OSM : 161 objets ; postes lus : 16
+
+=== 1 Embouchure du Petit Rhône (43.4515, 4.3945) seaward 190
+   1143 m  lighthouse                                            43.46144,4.39087   
+   2321 m  light_minor                                           43.44676,4.4225   
+   2405 m  light_major                                           43.44594,4.42329   
+   2406 m  light_minor  Port Gardian                             43.44592,4.42329   
+  profondeur à 0 m vers la mer (43.45150,4.39450) : {'avg': -0.23843002, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 1.0473559, 'smoothedOffset': 1.2857859, 'reference': {}}
+  profondeur à 150 m vers la mer (43.45017,4.39418) : {'avg': 0.052981377, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.3640381, 'smoothedOffset': 1.4170195, 'reference': {}}
+  profondeur à 400 m vers la mer (43.44796,4.39364) : {'min': -4.11, 'max': -2.68, 'avg': -3.315, 'stdev': 0.263, 'elementarySurfaces': 5485, 'interpolationType': False, 'smoothed': -3.3975003, 'smoothedOffset': 0.08250022, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-001', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-001'}}
+
+=== 2 Épis et brise-lames du village (43.4505, 4.415) seaward 185
+    735 m  light_minor                                           43.44676,4.4225   
+    840 m  light_major                                           43.44594,4.42329   
+    841 m  light_minor  Port Gardian                             43.44592,4.42329   
+   2296 m  lighthouse                                            43.46144,4.39087   
+  profondeur à 0 m vers la mer (43.45050,4.41500) : {'avg': 1.549655, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.5765463, 'smoothedOffset': 0.97310865, 'reference': {}}
+  profondeur à 150 m vers la mer (43.44916,4.41484) : {'avg': 1.5865717, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.27065706, 'smoothedOffset': 1.3159146, 'reference': {}}
+  profondeur à 400 m vers la mer (43.44692,4.41457) : {'min': -4.36, 'max': -2.84, 'avg': -3.495, 'stdev': 0.388, 'elementarySurfaces': 4253, 'interpolationType': False, 'smoothed': -2.709928, 'smoothedOffset': 0.78507185, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-001', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-001'}}
+
+=== 3 Rivage sauvage Petit Rhône – Espiguette (43.462, 4.25) seaward 175
+  profondeur à 0 m vers la mer (43.46200,4.25000) : {'avg': -1.0, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.0212563, 'smoothedOffset': 0.021256328, 'reference': {}}
+  profondeur à 150 m vers la mer (43.46066,4.25016) : {'avg': -1.1604242, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.1492455, 'smoothedOffset': 1.3096697, 'reference': {}}
+  profondeur à 400 m vers la mer (43.45842,4.25043) : {'avg': -0.42381763, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -0.99724925, 'smoothedOffset': 0.5734316, 'reference': {}}
+
+=== 4 Pointe et plage de l'Espiguette (43.475, 4.148) seaward 165
+    577 m  beach        Helio club de l'Espiguette               43.47806,4.15377   
+    696 m  beach        Plage naturiste de l'Espiguette          43.47747,4.15592   
+   1497 m  light_major  Phare de l'Espiguette                    43.48768,4.14176 Fl white  
+  profondeur à 0 m vers la mer (43.47500,4.14800) : {'min': -4.55, 'max': -2.59, 'avg': -3.245, 'stdev': 0.513, 'elementarySurfaces': 4855, 'interpolationType': False, 'smoothed': -3.7156248, 'smoothedOffset': 0.47062492, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-001', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-001'}}
+  profondeur à 150 m vers la mer (43.47370,4.14848) : {'min': -5.1, 'max': -4.06, 'avg': -4.6, 'stdev': 0.212, 'elementarySurfaces': 5554, 'interpolationType': False, 'smoothed': -4.4762497, 'smoothedOffset': 0.12375021, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-001', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-001'}}
+  profondeur à 400 m vers la mer (43.47153,4.14928) : {'min': -5.66, 'max': -4.95, 'avg': -5.235, 'stdev': 0.104, 'elementarySurfaces': 5631, 'interpolationType': False, 'smoothed': -5.26875, 'smoothedOffset': 0.033750057, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-001', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-001'}}
+
+=== 5 Digue de l'Espiguette (extérieur Port Camargue) (43.5165, 4.121) seaward 240
+    500 m  light_minor                                           43.52082,4.12272 Fl red  
+    525 m  light_minor                                           43.5212,4.12159 Fl green  
+    736 m  light_minor                                           43.51076,4.11645   
+    763 m  light_minor                                           43.51076,4.11581   
+   1599 m  ?            L'Adresse Le Grau-du-roi                 43.51986,4.14028   
+   1700 m  ?            Club Informatique Graulen                43.52336,4.13984   
+   2141 m  ?            Poste de Secours de la Pointe de l'Espig 43.49757,4.11616   
+   2216 m  light_minor                                           43.53468,4.13225 Fl green  
+   2254 m  light_minor                                           43.53519,4.13181 Oc red  
+   2295 m  ?            Laverie Graulenne                        43.52998,4.14256   
+  profondeur à 0 m vers la mer (43.51650,4.12100) : {'min': -2.1, 'max': -0.73, 'avg': -1.445, 'stdev': 0.322, 'elementarySurfaces': 2742, 'interpolationType': False, 'smoothed': -1.252625, 'smoothedOffset': 0.19237506, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 150 m vers la mer (43.51583,4.11939) : {'min': -3.71, 'max': -2.57, 'avg': -3.086, 'stdev': 0.203, 'elementarySurfaces': 5010, 'interpolationType': False, 'smoothed': -2.9637501, 'smoothedOffset': 0.12224984, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 400 m vers la mer (43.51470,4.11671) : {'min': -4.64, 'max': -3.31, 'avg': -3.857, 'stdev': 0.216, 'elementarySurfaces': 4279, 'interpolationType': False, 'smoothed': -4.109, 'smoothedOffset': 0.2520001, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 6 Jetées du chenal du Grau-du-Roi (43.533, 4.132) seaward 220
+    188 m  light_minor                                           43.53468,4.13225 Fl green  
+    244 m  light_minor                                           43.53519,4.13181 Oc red  
+    438 m  light_major  Ancien phare du Grau d'Aigues-Mortes ou  43.53648,4.13454   
+    460 m  ?            Office de tourisme du Grau-du-Roi        43.53675,4.13442   
+    535 m  town         Le Grau-du-Roi                           43.53601,4.13718   
+    633 m  ?            La Crêperie du Grau-du-Roi               43.53704,4.13754   
+    659 m  ?            Pizza du Grau                            43.53721,4.13776   
+    684 m  ?            Optique du Grau                          43.53781,4.13729   
+    685 m  ?            Le Grau poisson                          43.53805,4.13687   
+    687 m  ?            Le Grau Vélos                            43.53807,4.13686   
+  profondeur à 0 m vers la mer (43.53300,4.13200) : {'min': -3.17, 'max': -2.54, 'avg': -2.811, 'stdev': 0.101, 'elementarySurfaces': 4632, 'interpolationType': False, 'smoothed': -2.7480001, 'smoothedOffset': 0.062999964, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 150 m vers la mer (43.53197,4.13081) : {'min': -3.56, 'max': -2.88, 'avg': -3.118, 'stdev': 0.093, 'elementarySurfaces': 4631, 'interpolationType': False, 'smoothed': -3.1292505, 'smoothedOffset': 0.011250496, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 400 m vers la mer (43.53025,4.12881) : {'min': -4.0, 'max': -3.55, 'avg': -3.77, 'stdev': 0.089, 'elementarySurfaces': 9753, 'interpolationType': False, 'smoothed': -3.8090003, 'smoothedOffset': 0.039000273, 'reference': {'organisation_id': 540, 'identifier': 'S201103500-1', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201103500-1'}}
+
+=== 7 Digue et épis du Boucanet (43.544, 4.122) seaward 210
+    432 m  ?            La Plage u Boucanet                      43.54779,4.12084   
+    666 m  ?            Boucanet Immobilier                      43.54999,4.12209   
+    694 m  ?            Marché du Boucanet                       43.5439,4.13061   
+    702 m  ?            Dae Centre Commercial (cc) le Boucanet   43.5436,4.13069   
+    732 m  ?            Tabac Presse du Boucanet                 43.54341,4.13105   
+    740 m  ?            Les Délices du Boucanet                  43.54335,4.13114   
+    744 m  ?            Infirmières Le Boucanet                  43.54349,4.13121   
+    761 m  ?            Marché du Boucanet                       43.54354,4.13142   
+    792 m  ?            Pharmacie du Boucanet                    43.54294,4.13172   
+    871 m  ?            Cabane du Boucanet                       43.55167,4.11982   
+  profondeur à 0 m vers la mer (43.54400,4.12200) : {'min': -2.33, 'max': 2.21, 'avg': -1.347, 'stdev': 0.835, 'elementarySurfaces': 4992, 'interpolationType': False, 'smoothed': -1.6185, 'smoothedOffset': 0.2715, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 150 m vers la mer (43.54283,4.12107) : {'min': -3.92, 'max': -2.12, 'avg': -3.131, 'stdev': 0.335, 'elementarySurfaces': 4742, 'interpolationType': False, 'smoothed': -2.9442499, 'smoothedOffset': 0.18675017, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 400 m vers la mer (43.54089,4.11952) : {'min': -5.18, 'max': -4.16, 'avg': -4.591, 'stdev': 0.163, 'elementarySurfaces': 3804, 'interpolationType': False, 'smoothed': -4.5422497, 'smoothedOffset': 0.0487504, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 8 Passe du Ponant (Vidourle) (43.5565, 4.106) seaward 170
+    312 m  ?            Camping du Boucanet                      43.5542,4.10821   
+    318 m  ?            Camping du Boucanet                      43.55411,4.10816   
+    543 m  ?            Le Ponant                                43.5574,4.09938   
+    543 m  ?            Le Ponant                                43.55733,4.09936   
+    564 m  ?            Le Ponant                                43.55782,4.09924   
+    565 m  ?            Le Ponant                                43.55777,4.09921   
+    808 m  ?            Presqu'île du Ponant                     43.5635,4.10332   
+    887 m  ?            LA PRESQU'ÎLE DU PONANT                  43.56362,4.10103   
+    940 m  ?            Parking Ponant                           43.56405,4.10075   
+    948 m  ?            Port du Ponant                           43.56468,4.10269   
+  profondeur à 0 m vers la mer (43.55650,4.10600) : {'avg': 5.9846153, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 1.7314773, 'smoothedOffset': 4.253138, 'reference': {}}
+  profondeur à 150 m vers la mer (43.55517,4.10632) : {'avg': 1.3506155, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 1.9428058, 'smoothedOffset': 0.59219027, 'reference': {}}
+  profondeur à 400 m vers la mer (43.55296,4.10686) : {'avg': 0.2572832, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.57874393, 'smoothedOffset': 0.32146072, 'reference': {}}
+
+=== 9 Digues extérieures et « digue cassée » (43.5555, 4.088) seaward 170
+    652 m  light_minor  La Grande Motte                          43.55204,4.08147 Fl red  
+    938 m  ?            Le Ponant                                43.55733,4.09936   
+    938 m  ?            Le Ponant                                43.55777,4.09921   
+    941 m  ?            Le Ponant                                43.5574,4.09938   
+    942 m  ?            Le Ponant                                43.55782,4.09924   
+   1193 m  ?            Jardin du Ponant                         43.56349,4.09789   
+   1195 m  ?            Jardin du Ponant                         43.56348,4.09794   
+   1374 m  neighbourhood Ponant Sud                               43.56458,4.09956   
+   1385 m  ?            LA PRESQU'ÎLE DU PONANT                  43.56362,4.10103   
+   1400 m  ?            Parking Ponant                           43.56405,4.10075   
+  profondeur à 0 m vers la mer (43.55550,4.08800) : {'avg': -0.17276096, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 1.4501278, 'smoothedOffset': 1.6228888, 'reference': {}}
+  profondeur à 150 m vers la mer (43.55417,4.08832) : {'avg': 0.0, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.1618987, 'smoothedOffset': 1.1618987, 'reference': {}}
+  profondeur à 400 m vers la mer (43.55196,4.08886) : {'min': -4.92, 'max': -3.87, 'avg': -4.321, 'stdev': 0.205, 'elementarySurfaces': 4945, 'interpolationType': False, 'smoothed': -4.294375, 'smoothedOffset': 0.026625156, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 10 Plages du Grand et du Petit Travers (43.553, 4.015) seaward 165
+    593 m  ?            Petit Travers                            43.55282,4.00764   
+    600 m  ?            Petit Travers                            43.55285,4.00756   
+    669 m  ?            Poste de secours Petit Travers           43.55224,4.00677   
+   2006 m  ?            Le Grand Travers                         43.55734,4.03916   
+   2024 m  ?            Le Grand Travers                         43.5573,4.0394   
+   2034 m  ?            Le Grand Travers                         43.55728,4.03954   
+   2752 m  neighbourhood Le Village du Grand Travers              43.55906,4.04811   
+   2970 m  ?            Poste de secours Grand Travers           43.558,4.05121   
+  profondeur à 0 m vers la mer (43.55300,4.01500) : {'avg': -0.020541191, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -0.45291817, 'smoothedOffset': 0.43237698, 'reference': {}}
+  profondeur à 150 m vers la mer (43.55170,4.01548) : {'min': -3.02, 'max': -1.4, 'avg': -2.298, 'stdev': 0.42, 'elementarySurfaces': 4837, 'interpolationType': False, 'smoothed': -1.8324529, 'smoothedOffset': 0.4655472, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 400 m vers la mer (43.54953,4.01628) : {'min': -5.46, 'max': -3.91, 'avg': -4.592, 'stdev': 0.355, 'elementarySurfaces': 4402, 'interpolationType': False, 'smoothed': -4.589374, 'smoothedOffset': 0.0026259422, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 11 Digues du port de Carnon (43.545, 3.976) seaward 160
+    500 m  light_minor                                           43.54056,3.977 Fl green  
+    577 m  light_minor  Carnon                                   43.53989,3.97724 Fl red  
+    619 m  ?            Les Roquilles                            43.54329,3.96869   
+    626 m  ?            Les Roquilles                            43.54326,3.96861   
+    627 m  ?            Les Roquilles                            43.54324,3.96861   
+    635 m  ?            Les Roquilles                            43.54318,3.96853   
+    821 m  locality     Plage des Roquilles                      43.54053,3.96789   
+   2607 m  ?            Poste de secours Petit Travers           43.55224,4.00677   
+   2689 m  ?            Petit Travers                            43.55285,4.00756   
+   2694 m  ?            Petit Travers                            43.55282,4.00764   
+  profondeur à 0 m vers la mer (43.54500,3.97600) : {'avg': 0.0, 'elementarySurfaces': 1, 'interpolationType': True, 'smoothed': 4.5560045, 'smoothedOffset': 4.5560045, 'reference': {'organisation_id': 1528, 'identifier': 'Coastal_heights_2024', 'type': 'DTM', 'metadata_url': 'https://sextant.ifremer.fr/record/SDN_CPRD_1528_Coastal_heights_2024'}}
+  profondeur à 150 m vers la mer (43.54373,3.97664) : {'avg': 5.455225, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 3.4693422, 'smoothedOffset': 1.9858828, 'reference': {}}
+  profondeur à 400 m vers la mer (43.54162,3.97770) : {'avg': 0.0, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -0.17720282, 'smoothedOffset': 0.17720282, 'reference': {}}
+
+=== 12 Embouchure du Lez et digues (43.528, 3.93) seaward 155
+    119 m  ?            Boucherie Maguelone                      43.52801,3.92852   
+    231 m  ?            Maguelone                                43.52699,3.9275   
+    237 m  ?            Maguelone                                43.52697,3.92742   
+    269 m  ?            Maguelone                                43.52708,3.92692   
+    273 m  ?            Maguelone                                43.52703,3.92689   
+    426 m  light_minor  Palavas les Flots                        43.52598,3.93449 Fl green  
+    506 m  light_minor  Le Lez                                   43.52567,3.93539   
+    636 m  light_minor                                           43.52373,3.93525 Fl green  
+    718 m  light_minor                                           43.52367,3.9366 Fl red  
+    768 m  ?            Marines du Prévost                       43.5272,3.92054   
+  profondeur à 0 m vers la mer (43.52800,3.93000) : {'avg': 3.3479404, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 3.533401, 'smoothedOffset': 0.18546057, 'reference': {}}
+  profondeur à 150 m vers la mer (43.52678,3.93079) : {'avg': 5.7199583, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.70438147, 'smoothedOffset': 5.015577, 'reference': {}}
+  profondeur à 400 m vers la mer (43.52474,3.93209) : {'min': -3.2, 'max': -2.3, 'avg': -2.8733332, 'stdev': 0.45, 'elementarySurfaces': 1, 'interpolationType': True, 'smoothed': 0.16289008, 'smoothedOffset': 3.0362234, 'reference': {'organisation_id': 540, 'identifier': 'S198400900-040', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S198400900-040'}}
+
+=== 13 Digue de l'étang du Prévost (43.5195, 3.9127) seaward 155
+     57 m  ?            Pars Courir Palavas - L'Abbaye de Maguel 43.51958,3.9134   
+    238 m  ?            Poste de secours Grau du Prévost         43.51852,3.91008   
+    728 m  ?            Poste de secours Parking du Prévost      43.51637,3.90477   
+   1051 m  ?            Villeuneuve les Maguelone                43.52718,3.9203   
+   1063 m  ?            Marines du Prévost                       43.52725,3.92041   
+   1063 m  ?            Marines du Prévost                       43.52722,3.92048   
+   1064 m  ?            Marines du Prévost                       43.5272,3.92054   
+   1418 m  ?            Maguelone                                43.52703,3.92689   
+   1423 m  ?            Maguelone                                43.52708,3.92692   
+   1449 m  ?            Maguelone                                43.52697,3.92742   
+  profondeur à 0 m vers la mer (43.51950,3.91270) : {'avg': 1.6144066, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.32644415, 'smoothedOffset': 1.2879624, 'reference': {}}
+  profondeur à 150 m vers la mer (43.51828,3.91349) : {'avg': -0.21119308, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -0.016727448, 'smoothedOffset': 0.19446564, 'reference': {}}
+  profondeur à 400 m vers la mer (43.51624,3.91479) : {'min': -5.57, 'max': -4.3, 'avg': -4.886, 'stdev': 0.279, 'elementarySurfaces': 5359, 'interpolationType': False, 'smoothed': -3.4748714, 'smoothedOffset': 1.4111288, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 14 Plage de Maguelone (43.505, 3.878) seaward 150
+    424 m  ?            Poste de secours Pilou                   43.50554,3.88321   
+    916 m  ?            ESAT Les compagnons de Maguelone         43.51192,3.88417   
+    931 m  ?            Restaurant des Compagnons de Maguelones  43.51186,3.88461   
+    958 m  ?            Bureau d'information estival de Villeneu 43.51214,3.88464   
+   1091 m  locality     Maguelone                                43.514,3.88339   
+   2201 m  locality     Le Pilou                                 43.52373,3.86916   
+   2207 m  ?            Croix du Pilou                           43.52423,3.8712   
+   2502 m  ?            Poste de secours Parking du Prévost      43.51637,3.90477   
+   2929 m  ?            Pilou                                    43.52982,3.86584   
+   2929 m  ?            Pilou                                    43.52984,3.86591   
+  profondeur à 0 m vers la mer (43.50500,3.87800) : {'avg': -1.0028753, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.129118, 'smoothedOffset': 0.12624264, 'reference': {}}
+  profondeur à 150 m vers la mer (43.50383,3.87893) : {'avg': 0.70877934, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -0.55618155, 'smoothedOffset': 1.2649609, 'reference': {}}
+  profondeur à 400 m vers la mer (43.50189,3.88048) : {'min': -3.56, 'max': -1.52, 'avg': -2.806, 'stdev': 0.436, 'elementarySurfaces': 5340, 'interpolationType': False, 'smoothed': -1.2522286, 'smoothedOffset': 1.5537714, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 15 Les Aresquiers (fonds rocheux) (43.466, 3.826) seaward 140
+    813 m  hamlet       Les Aresquiers                           43.46418,3.81624   
+   1314 m  ?            Camping à la ferme les Aresquiers        43.46932,3.81037   
+   1743 m  ?            Poste de secours Les Aresquiers          43.45392,3.81223   
+   1888 m  locality     Bois des Aresquiers                      43.46385,3.8028   
+   2341 m  ?            Ferme marine des Aresquiers              43.48144,3.80627   
+   2515 m  spring       Fontaine des Aresquiers                  43.46092,3.79563   
+  profondeur à 0 m vers la mer (43.46600,3.82600) : {'avg': 0.55655575, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': 0.67596877, 'smoothedOffset': 0.11941302, 'reference': {}}
+  profondeur à 150 m vers la mer (43.46497,3.82719) : {'min': -3.06, 'max': -2.39, 'avg': -2.542, 'stdev': 0.117, 'elementarySurfaces': 5157, 'interpolationType': False, 'smoothed': -1.10335, 'smoothedOffset': 1.43865, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+  profondeur à 400 m vers la mer (43.46325,3.82918) : {'min': -5.67, 'max': -4.08, 'avg': -4.614, 'stdev': 0.373, 'elementarySurfaces': 5129, 'interpolationType': False, 'smoothed': -4.824375, 'smoothedOffset': 0.21037531, 'reference': {'organisation_id': 540, 'identifier': 'S201500400-002', 'type': 'CDI', 'metadata_url': 'https://cdi-bathymetry.seadatanet.org/report/edmo/540/S201500400-002'}}
+
+=== 16 Digues et grau de Frontignan (43.443, 3.772) seaward 140
+   1204 m  ?            Poste de secours Le Grau                 43.43344,3.779   
+   1204 m  ?            Plage du Grau                            43.43342,3.77896   
+   1219 m  locality     Quartier du Grau                         43.43566,3.78321   
+   1268 m  ?            Ancien Grau                              43.43386,3.7814   
+   1478 m  light_minor                                           43.43031,3.77745 Fl red  
+   1566 m  light_minor                                           43.4295,3.77753 Fl green  
+   2758 m  spring       Fontaine des Aresquiers                  43.46092,3.79563   
+  profondeur à 0 m vers la mer (43.44300,3.77200) : {'avg': -3.9458122, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.1057162, 'smoothedOffset': 2.840096, 'reference': {}}
+  profondeur à 150 m vers la mer (43.44197,3.77319) : {'avg': -2.0070095, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -1.9341097, 'smoothedOffset': 0.07289982, 'reference': {}}
+  profondeur à 400 m vers la mer (43.44025,3.77518) : {'avg': -2.0, 'elementarySurfaces': 1, 'interpolationType': False, 'smoothed': -2.0, 'smoothedOffset': 0.0, 'reference': {}}
+
+=== Rivières (point le plus au sud dans la zone)
