@@ -30,7 +30,7 @@ Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la
 - Limite : GitHub coupe les tâches planifiées d'un dépôt public après 60 jours sans activité ; le capteur de panne le signalera.
 
 ## Reste à faire
-1. Notifications : vérifier au prochain passage avec du nouveau qu'elles partent seules (`last_triggered` de `automation.peche_nouvelles_alertes_a_3_jours`). Dates plus lisibles dans les alertes (« jeudi 19, de 4 h à 18 h » au lieu de « de jeu. 19 4 h à jeu. 19 18 h »), à corriger dans le calcul du message de l'appli. Plus tard : passer `actions/checkout` et `setup-node` en v5 (avertissement Node.js 20 de GitHub).
+1. Notifications : vérifier au prochain passage avec du nouveau qu'elles partent seules (`last_triggered` de `automation.peche_nouvelles_alertes_a_3_jours`). Dates des alertes rendues lisibles le 18 nov. (« jeudi 19, de 4 h à 18 h », « du mercredi 18 à 22 h au jeudi 19 à 2 h », midi / minuit, pas de « demain » car la notification peut partir le lendemain) : testé sur des prévisions fabriquées, à revoir sur la première vraie notification. Plus tard : passer `actions/checkout` et `setup-node` en v5 (avertissement Node.js 20 de GitHub).
 2. Sur l'A55 : installer l'appli sur l'écran d'accueil, tester sans réseau (mode avion), tester la profondeur au toucher.
 3. Recaler sur place les postes « à vérifier », puis reporter les positions dans `js/spots.js`.
 4. Branches `essais-api` (essais du 18 nov.) et `v2` (déjà fusionnée) : à supprimer quand Nico est d'accord.

@@ -287,7 +287,12 @@
     const out = [];
     const i0 = D.times.findIndex(t => t >= now), i1 = Math.min(D.times.length - 1, i0 + 72);
     if (i0 < 0) return out;
-    const fmt = i => { const t = D.times[i]; return `${t.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" })} ${t.getHours()} h`; };
+    // Dates lisibles dans les alertes et les notifications : « jeudi 19 à 4 h », « jeudi 19, de 4 h à 18 h »,
+    // « du jeudi 19 à 22 h au vendredi 20 à 3 h ». Pas de « demain » : la notification peut partir le lendemain (attente de 7 h).
+    const day = i => D.times[i].toLocaleDateString("fr-FR", { weekday: "long", day: "numeric" });
+    const hour = i => { const h = D.times[i].getHours(); return h === 0 ? "minuit" : h === 12 ? "midi" : `${h} h`; };
+    const fmt = i => `${day(i)} à ${hour(i)}`;
+    const span = (a, b) => day(a) === day(b) ? `${day(a)}, de ${hour(a)} à ${hour(b)}` : `du ${fmt(a)} au ${fmt(b)}`;
     const runs = (test, minLen) => { const r = []; let s = -1; for (let i = i0; i <= i1 + 1; i++) { const ok = i <= i1 && test(i); if (ok && s < 0) s = i; if (!ok && s >= 0) { if (i - s >= minLen) r.push([s, i - 1]); s = -1; } } return r; };
     const zones = { W: "Frontignan – Palavas", C: "golfe d'Aigues-Mortes", E: "Petite Camargue" };
     // Houle : par zone, on garde la pire
@@ -303,24 +308,24 @@
       const hs = D.S[wave.z].hs; let r = -1;
       for (let i = wave.p; i <= Math.min(D.times.length - 1, wave.p + 48); i++) if (hs[i] != null && hs[i] <= 0.65 * wave.peak && hs[i] < 1.2) { r = i; break; }
       out.push({ level: wave.peak >= 2.5 ? 3 : 2, kind: "mer", title: wave.peak >= 2.5 ? "Forte mer" : "Coup de mer",
-        text: `Houle jusqu'à ${wave.peak.toFixed(1).replace(".", ",")} m (${zones[wave.z]}) de ${fmt(wave.a)} à ${fmt(wave.b)}, pic ${fmt(wave.p)}. Digues et roches exposées dangereuses.`, i: wave.a });
+        text: `Houle jusqu'à ${wave.peak.toFixed(1).replace(".", ",")} m (${zones[wave.z]}) ${span(wave.a, wave.b)}, pic ${day(wave.p) === day(wave.a) ? "à " + hour(wave.p) : fmt(wave.p)}. Digues et roches exposées dangereuses.`, i: wave.a });
       if (r > 0) out.push({ level: 0, kind: "chance", title: "Mer qui retombe : créneau à viser",
-        text: `La houle redescend vers ${fmt(r)}. Après un coup de mer, eau teintée qui s'éclaircit : souvent le meilleur moment pour le loup (scénario H).`, i: r });
+        text: `La houle redescend ${day(r)} vers ${hour(r)}. Après un coup de mer, eau teintée qui s'éclaircit : souvent le meilleur moment pour le loup (scénario H).`, i: r });
     }
     const W = D.F.C;
     for (const [a, b] of runs(i => inSector(W.dir[i] ?? 0, 60, 160) && (W.wind[i] ?? 0) >= 30, 3)) {
       let p = a; for (let i = a; i <= b; i++) if (W.wind[i] > W.wind[p]) p = i;
-      out.push({ level: W.wind[p] >= 50 ? 3 : 2, kind: "vent", title: "Vent d'est / marin", text: `${Math.round(W.wind[p])} km/h (rafales ${Math.round(W.gust[p])}) de ${fmt(a)} à ${fmt(b)} : la mer monte et l'eau se charge.`, i: a });
+      out.push({ level: W.wind[p] >= 50 ? 3 : 2, kind: "vent", title: "Vent d'est / marin", text: `${Math.round(W.wind[p])} km/h (rafales ${Math.round(W.gust[p])}) ${span(a, b)} : la mer monte et l'eau se charge.`, i: a });
       break;
     }
     for (const [a, b] of runs(i => inSector(W.dir[i] ?? 0, 290, 20) && ((W.wind[i] ?? 0) >= 45 || (W.gust[i] ?? 0) >= 75), 3)) {
       let p = a; for (let i = a; i <= b; i++) if (W.gust[i] > W.gust[p]) p = i;
-      out.push({ level: 2, kind: "vent", title: M.windName(W.dir[p]).startsWith("mistral") ? "Mistral fort" : "Tramontane forte", text: `${Math.round(W.wind[p])} km/h, rafales ${Math.round(W.gust[p])} km/h, de ${fmt(a)} à ${fmt(b)}. Mer plate et eau claire au bord, mais lancer difficile et rafales dangereuses sur les digues.`, i: a });
+      out.push({ level: 2, kind: "vent", title: M.windName(W.dir[p]).startsWith("mistral") ? "Mistral fort" : "Tramontane forte", text: `${Math.round(W.wind[p])} km/h, rafales ${Math.round(W.gust[p])} km/h, ${span(a, b)}. Mer plate et eau claire au bord, mais lancer difficile et rafales dangereuses sur les digues.`, i: a });
       break;
     }
     for (let i = i0 + 6; i <= i1; i++) {
       if ((W.wind[i] ?? 0) - (W.wind[i - 6] ?? 0) >= 20 && (W.wind[i] ?? 0) >= 30) {
-        if (!out.some(x => x.kind === "vent" && Math.abs(x.i - i) <= 6)) out.push({ level: 1, kind: "vent", title: "Vent qui forcit", text: `${M.windName(W.dir[i])} : de ${Math.round(W.wind[i - 6])} à ${Math.round(W.wind[i])} km/h entre ${fmt(i - 6)} et ${fmt(i)}.`, i: i - 6 });
+        if (!out.some(x => x.kind === "vent" && Math.abs(x.i - i) <= 6)) out.push({ level: 1, kind: "vent", title: "Vent qui forcit", text: `${M.windName(W.dir[i])} : de ${Math.round(W.wind[i - 6])} à ${Math.round(W.wind[i])} km/h, ${span(i - 6, i)}.`, i: i - 6 });
         break;
       }
     }
