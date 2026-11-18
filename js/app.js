@@ -504,6 +504,7 @@
       <h3>48 prochaines heures</h3>${strip(s)}
       <h3>Le poste</h3><p>${esc(s.structure)}</p><p class="warn-soft">${esc(s.attention)}</p>
       <p class="sub">Position : ${s.moved ? "corrigée par toi sur ce téléphone" : esc(s.pos || "")}</p>
+      <p class="sub">${s.webcams && s.webcams.length ? `Webcam (de jour, vue à vérifier) : ${s.webcams.map(w => `<a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.label)}</a>`).join(" · ")}` : "Pas de webcam trouvée près de ce poste."}</p>
       <p class="sub">Ton carnet ici : ${mine.length} sortie(s).</p>
       <div class="row">${goButtons(s)}</div>
       <div class="row"><button class="btn" id="logHere">Noter une sortie ici</button><button class="btn" id="moveBtn">Corriger la position</button></div>`;
