@@ -39,10 +39,10 @@ jobs:
             return out
           open(f"diag/out/{n}.summary","w").write("\n".join(summ(d))[:20000])
           PY
-            rm -f "diag/out/$name.json"
+            case "$name" in hub_st_*) ;; *) rm -f "diag/out/$name.json";; esac
           done < diag/urls.txt
       - name: Postes
-        run: python3 diag/postes.py || echo "postes en erreur" > diag/out/postes.err
+        run: python3 diag/postes.py > diag/out/postes.log 2>&1 || true
       - name: Enregistrer
         run: |
           git config user.name "diag-bot"; git config user.email "diag@users.noreply.github.com"

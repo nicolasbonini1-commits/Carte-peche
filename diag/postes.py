@@ -16,7 +16,12 @@ way["man_made"~"breakwater|groyne|pier"](43.38,3.70,43.62,4.48);
 nwr["name"~"Grau|Aresquiers|Travers|Boucanet|Ponant|Prévost|Maguelone|Espiguette|Orgon|Couchant|Roquille|Pilou",i](43.38,3.70,43.62,4.48);
 way["waterway"="river"]["name"~"Lez|Vidourle|Petit Rhône|Rhône",i](43.38,3.70,43.62,4.48);
 );out center tags geom;"""
-els = get("https://overpass-api.de/api/interpreter", urllib.parse.urlencode({"data": q}).encode())["elements"]
+els = []
+for ep in ("https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter"):
+    try:
+        els = get(ep, urllib.parse.urlencode({"data": q}).encode())["elements"]; out.append("Overpass OK : " + ep); break
+    except Exception as ex:
+        out.append(f"Overpass {ep} : {ex!r}")
 def hav(a,b,c,d):
     r=math.radians; x=math.sin(r(c-a)/2)**2+math.cos(r(a))*math.cos(r(c))*math.sin(r(d-b)/2)**2; return 2*6371000*math.asin(math.sqrt(x))
 feats=[]
@@ -35,7 +40,7 @@ for e in els:
     if kind in ("breakwater","groyne","pier") and "geometry" in e:
         g=e["geometry"]; item["ends"]=[[round(g[0]["lat"],5),round(g[0]["lon"],5)],[round(g[-1]["lat"],5),round(g[-1]["lon"],5)]]; item["len_m"]=round(sum(hav(g[i]["lat"],g[i]["lon"],g[i+1]["lat"],g[i+1]["lon"]) for i in range(len(g)-1)))
     feats.append(item)
-out.append(f"OSM : {len(feats)} objets")
+out.append(f"OSM : {len(feats)} objets ; postes lus : {len(spots)}")
 for s in spots:
     out.append(f"\n=== {s['id']} {s['name']} ({s['lat']}, {s['lon']}) seaward {s['seaward']}")
     near=sorted(feats,key=lambda f:hav(s['lat'],s['lon'],f['lat'],f['lon']))
