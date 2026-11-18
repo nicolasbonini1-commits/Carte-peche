@@ -1,0 +1,7 @@
+code: "InvalidRequest"
+message: "Invalid sites request"
+field_errors:
+  list[1]
+    code: "ValidateTimestep"
+    message: "You must request only 1 code_entite"
+    field: "code_entite"

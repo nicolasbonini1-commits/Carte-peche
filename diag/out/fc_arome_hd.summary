@@ -1,0 +1,29 @@
+latitude: 43.5
+longitude: 3.88
+generationtime_ms: 0.7941722869873047
+utc_offset_seconds: 3600
+timezone: "Europe/Paris"
+timezone_abbreviation: "GMT+1"
+elevation: 0.0
+hourly_units:
+  time: "iso8601"
+  wind_speed_10m: "km/h"
+  wind_gusts_10m: "km/h"
+  cloud_cover: "%"
+  precipitation: "mm"
+hourly:
+  time:
+    list[72]
+      ["2026-11-18T00:00", "2026-11-18T01:00", "2026-11-18T02:00"] ... last=["2026-11-20T21:00", "2026-11-20T22:00", "2026-11-20T23:00"]
+  wind_speed_10m:
+    list[72]
+      [12.4, 7.2, 12.2] ... last=[null, null, null]
+  wind_gusts_10m:
+    list[72]
+      [16.6, 15.5, 17.6] ... last=[null, null, null]
+  cloud_cover:
+    list[72]
+      [null, null, null] ... last=[null, null, null]
+  precipitation:
+    list[72]
+      [0.0, 0.0, 0.0] ... last=[null, null, null]

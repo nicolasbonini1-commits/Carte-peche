@@ -1,0 +1,26 @@
+list[3]
+  latitude: 43.475006
+  longitude: 4.3750153
+  generationtime_ms: 6.882667541503906
+  utc_offset_seconds: 0
+  timezone: "GMT"
+  timezone_abbreviation: "GMT"
+  elevation: 0.0
+  daily_units:
+    time: "iso8601"
+    river_discharge: "m\u00b3/s"
+    river_discharge_median: "m\u00b3/s"
+    river_discharge_max: "m\u00b3/s"
+  daily:
+    time:
+      list[14]
+        ["2026-11-11", "2026-11-12", "2026-11-13"] ... last=["2026-11-22", "2026-11-23", "2026-11-24"]
+    river_discharge:
+      list[14]
+        [16.82, 14.14, 22.12] ... last=[11.94, 10.51, 9.26]
+    river_discharge_median:
+      list[14]
+        [16.86, 14.24, 20.33] ... last=[9.4, 8.42, 7.51]
+    river_discharge_max:
+      list[14]
+        [17.37, 14.49, 36.33] ... last=[11.94, 10.56, 10.75]

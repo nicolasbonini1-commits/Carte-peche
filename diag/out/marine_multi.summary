@@ -1,0 +1,45 @@
+latitude: 43.458336
+longitude: 3.8750153
+generationtime_ms: 0.2193450927734375
+utc_offset_seconds: 3600
+timezone: "Europe/Paris"
+timezone_abbreviation: "GMT+1"
+elevation: 0.0
+hourly_units:
+  time: "iso8601"
+  wave_height_marine_best_match: "m"
+  wave_direction_marine_best_match: "\u00b0"
+  wave_period_marine_best_match: "s"
+  sea_surface_temperature_marine_best_match: "\u00b0C"
+  wave_height_meteofrance_wave: "m"
+  wave_direction_meteofrance_wave: "\u00b0"
+  wave_period_meteofrance_wave: "s"
+  sea_surface_temperature_meteofrance_wave: "undefined"
+hourly:
+  time:
+    list[216]
+      ["2026-11-16T00:00", "2026-11-16T01:00", "2026-11-16T02:00"] ... last=["2026-11-24T21:00", "2026-11-24T22:00", "2026-11-24T23:00"]
+  wave_height_marine_best_match:
+    list[216]
+      [0.96, 0.94, 0.92] ... last=[0.66, 0.66, 0.64]
+  wave_direction_marine_best_match:
+    list[216]
+      [145, 150, 157] ... last=[150, 154, 154]
+  wave_period_marine_best_match:
+    list[216]
+      [5.25, 5.25, 5.2] ... last=[3.8, 3.85, 3.85]
+  sea_surface_temperature_marine_best_match:
+    list[216]
+      [16.7, 16.7, 16.7] ... last=[16.1, 16.1, 16.0]
+  wave_height_meteofrance_wave:
+    list[216]
+      [0.96, 0.94, 0.92] ... last=[0.66, 0.66, 0.64]
+  wave_direction_meteofrance_wave:
+    list[216]
+      [145, 150, 157] ... last=[150, 154, 154]
+  wave_period_meteofrance_wave:
+    list[216]
+      [5.25, 5.25, 5.2] ... last=[3.8, 3.85, 3.85]
+  sea_surface_temperature_meteofrance_wave:
+    list[216]
+      [null, null, null] ... last=[null, null, null]
