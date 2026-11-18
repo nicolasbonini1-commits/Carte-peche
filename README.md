@@ -2,7 +2,7 @@
 
 Application web (téléphone) pour choisir son poste de pêche du bord entre **Saintes-Maries-de-la-Mer et Frontignan**, selon la météo et la mer réelles, l'heure, le temps disponible et l'espèce visée.
 
-Adresse : https://nicolasbonini1-commits.github.io/carte-peche/
+Adresse : https://nicolasbonini1-commits.github.io/Carte-peche/
 
 ## Ce que fait l'appli
 
