@@ -2,7 +2,7 @@ name: diag-api
 on:
   push:
     branches: [essais-api]
-    paths: [".github/workflows/diag.yml", "diag/urls.txt"]
+    paths: [".github/workflows/diag.yml", "diag/urls.txt", "diag/postes.py"]
 permissions:
   contents: write
 jobs:
@@ -41,7 +41,9 @@ jobs:
           PY
             rm -f "diag/out/$name.json"
           done < diag/urls.txt
+      - name: Postes
+        run: python3 diag/postes.py || echo "postes en erreur" > diag/out/postes.err
       - name: Enregistrer
         run: |
           git config user.name "diag-bot"; git config user.email "diag@users.noreply.github.com"
-          git add diag/out; git commit -m "diag: résultats" || true; git push
+          git add diag/out; git commit -m "diag: résultats" || true; git pull --rebase -q || true; git push
