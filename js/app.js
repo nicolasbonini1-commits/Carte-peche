@@ -64,16 +64,28 @@
     layers: "emodnet:mean_multicolour", format: "image/png", transparent: true, opacity: 0.55,
     attribution: "Profondeurs © EMODnet Bathymetry (MNT 2024)"
   });
-  let base = null, useSat = false, useBathy = LS.get("cp_bathy", true);
+  // Densité des navires de pêche (EMODnet Human Activities, moyenne annuelle d'après l'AIS ; ajout du 18 nov. 2026).
+  // Année fixée à 2024 : la plus récente au 18 nov. 2026 (GetCapabilities, essai GitHub) ; à avancer quand 2025 sortira.
+  // Sert à repérer les zones habituelles des chalutiers, pas leur position du jour. Les bateaux sans AIS (petits métiers) n'y sont pas.
+  const pechePro = L.tileLayer.wms("https://ows.emodnet-humanactivities.eu/wms", {
+    layers: "vesseldensity_01avg", time: "2024-01-01T00:00:00.000Z", format: "image/png", transparent: true, opacity: 0.6,
+    attribution: "Navires de pêche © EMODnet Human Activities"
+  });
+  let base = null, useSat = false, useBathy = LS.get("cp_bathy", true), usePechePro = LS.get("cp_peche_pro", false);
   function setBaseLayer() {
     const want = useSat ? layers.sat : layers[theme()];
     if (base !== want) { if (base) map.removeLayer(base); base = want.addTo(map); base.bringToBack(); }
     if (useBathy && !map.hasLayer(bathy)) bathy.addTo(map);
     if (!useBathy && map.hasLayer(bathy)) map.removeLayer(bathy);
+    if (usePechePro && !map.hasLayer(pechePro)) pechePro.addTo(map);
+    if (!usePechePro && map.hasLayer(pechePro)) map.removeLayer(pechePro);
+    $("#pecheProNote").hidden = !usePechePro;
   }
   $("#satBtn").addEventListener("click", e => { useSat = !useSat; e.target.classList.toggle("on", useSat); setBaseLayer(); });
   $("#bathyBtn").addEventListener("click", e => { useBathy = !useBathy; LS.set("cp_bathy", useBathy); e.target.classList.toggle("on", useBathy); setBaseLayer(); });
   $("#bathyBtn").classList.toggle("on", useBathy);
+  $("#peche-proBtn").addEventListener("click", e => { usePechePro = !usePechePro; LS.set("cp_peche_pro", usePechePro); e.target.classList.toggle("on", usePechePro); setBaseLayer(); });
+  $("#peche-proBtn").classList.toggle("on", usePechePro);
 
   // Profondeur au toucher (service EMODnet ; peut être indisponible)
   map.on("click", async e => {
@@ -601,7 +613,11 @@
         id: Date.now(), spotId: +$("#fSpot").value, date: $("#fDate").value, start: $("#fStart").value,
         dur: +$("#fDur").value, species: $("#fSpecies").value,
         nLoup: +$("#fLoup").value || 0, nDorade: +$("#fDorade").value || 0, maxSize: +$("#fSize").value || null,
-        lure: $("#fLure").value.trim(), notes: $("#fNotes").value.trim()
+        lure: $("#fLure").value.trim(), notes: $("#fNotes").value.trim(),
+        // Ajout du 18 nov. 2026 : pour vérifier si filets et chalutiers font baisser les touches.
+        // Vide = pas regardé / pas compté (différent de « aucun »), pour ne pas fausser les comparaisons.
+        bites: $("#fBites").value === "" ? null : +$("#fBites").value,
+        nets: $("#fNets").value || null, trawlers: $("#fTrawl").value || null
       };
       entry.snapshot = snapshot(entry);
       state.carnet.unshift(entry); LS.set("cp_carnet", state.carnet);
@@ -644,7 +660,8 @@
       const res = e.nLoup || e.nDorade ? `${e.nLoup ? e.nLoup + " loup(s) " : ""}${e.nDorade ? e.nDorade + " dorade(s)" : ""}${e.maxSize ? " · max " + e.maxSize + " cm" : ""}` : "bredouille";
       const sn = e.snapshot;
       return `<div class="entry"><b>${esc(e.date)} ${esc(e.start)} · ${esc(s.name)}</b>
-        <small>${res} · ${esc(e.lure || "")}</small>
+        <small>${res}${e.bites != null ? ` · ${e.bites} touche(s)` : ""} · ${esc(e.lure || "")}</small>
+        ${e.nets || e.trawlers ? `<small>Filets : ${{ aucun: "aucun", loin: "au large", pres: "près du bord" }[e.nets] || "pas regardé"} · chalutiers : ${e.trawlers == null ? "pas regardé" : e.trawlers === "0" ? "aucun" : esc(e.trawlers)}</small>` : ""}
         ${sn ? `<small>Vent ${sn.wind} km/h ${M.compass(sn.windDir)}, mer ${sn.sea}${sn.falling ? " qui retombe" : ""}, ${sn.light} · note prévue : loup ${sn.scoreLoup}, dorade ${sn.scoreDorade}</small>` : ""}
         ${e.notes ? `<small>${esc(e.notes)}</small>` : ""}
         <button class="link" data-del="${e.id}">Supprimer</button></div>`;

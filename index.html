@@ -64,9 +64,11 @@
       <div class="row maptools">
         <button class="btn small" id="satBtn">Satellite</button>
         <button class="btn small" id="bathyBtn">Profondeurs</button>
+        <button class="btn small" id="peche-proBtn">Bateaux de pêche</button>
         <span class="legend" id="legend"></span>
       </div>
       <p class="sub">Touche la mer pour connaître la profondeur. Touche un point pour la fiche du poste.</p>
+      <p class="sub" id="pecheProNote" hidden>« Bateaux de pêche » : où les navires de pêche passent du temps, en moyenne sur l'année (EMODnet, d'après l'AIS). Ne montre que les bateaux équipés de l'AIS, surtout les chalutiers de plus de 15 m : les petits bateaux à filets n'y sont presque jamais. Ce n'est pas la position du jour, et le trajet depuis le port compte aussi. Année 2024. Couleurs : heures passées par km² et par mois.<br><img src="https://ows.emodnet-humanactivities.eu/wms?service=WMS&amp;version=1.3.0&amp;request=GetLegendGraphic&amp;format=image/png&amp;layer=vesseldensity_01avg" alt="Légende EMODnet : de 0,5 à plus de 100 heures par km² et par mois" height="140" loading="lazy"></p>
     </div>
 
     <h2 class="h">Classement pour ta sortie</h2>
@@ -90,6 +92,9 @@
         <label>Dorades prises <input type="number" id="fDorade" min="0" value="0"></label>
         <label>Plus grand (cm) <input type="number" id="fSize" min="0"></label>
         <label>Leurre / appât <input type="text" id="fLure" placeholder="ex. Black Minnow Kaki"></label>
+        <label>Touches (même ratées) <input type="number" id="fBites" min="0" placeholder="non compté"></label>
+        <label>Filets vus <select id="fNets"><option value="">pas regardé</option><option value="aucun">aucun</option><option value="loin">oui, au large</option><option value="pres">oui, près du bord (moins de 300 m)</option></select></label>
+        <label>Chalutiers vus <select id="fTrawl"><option value="">pas regardé</option><option value="0">aucun</option><option value="1">1</option><option value="2+">2 ou plus</option></select></label>
       </div>
       <label>Notes <textarea id="fNotes" rows="2" placeholder="couleur de l'eau, touches, chasses…"></textarea></label>
       <button class="btn primary" type="submit">Enregistrer</button>
