@@ -1,0 +1,9 @@
+count: 383
+first: "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&fields=date_obs_elab,resultat_obs_elab&cursor=&size=1000"
+prev: null
+next: null
+api_version: "2.0.1"
+data:
+  list[383]
+    date_obs_elab: "1994-12-01"
+    resultat_obs_elab: 1743505.0
