@@ -1,7 +1,7 @@
 # Reprise du projet Carte-peche
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d.
-État au 18 novembre 2026, 14 h 10 : v2 en ligne.
+État au 18 novembre 2026, 14 h 50 : v2 en ligne, notifications installées dans HA.
 
 ## Le projet
 Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la calée) entre les Saintes-Maries-de-la-Mer et Frontignan, selon la météo, la mer, l'heure, le temps disponible (1 h de route depuis Poulx) et l'envie du jour. Elle remplace le carnet papier.
@@ -25,12 +25,12 @@ Appli web pour choisir son poste de pêche du bord (loup au leurre, dorade à la
 - Sans réseau (testé dans Chrome, pas encore sur l'A55) : l'appli s'ouvre, affiche « Pas de réseau » et les dernières prévisions avec leur heure, garde les derniers débits, le carnet et les morceaux de carte déjà regardés (3000 au plus). Pas de nouvelles prévisions, ni temps de route, ni profondeur au toucher.
 
 ## Notifications
-- Tâche GitHub `alertes` (`.github/workflows/alertes.yml`, toutes les 3 h à h+23) : curl télécharge la météo, `notif/alertes.js` calcule avec le même code que l'appli et écrit `alertes.json` dans la branche `donnees` (champ `nouvelles` = alertes pas encore vues au passage précédent ; notifiées : niveau ≥ 2 et « mer qui retombe »). Premier passage réussi le 18 nov. à 14 h 02.
-- Home Assistant : package `ha/packages/peche_alertes.yaml` et mission `ha/MISSION_PECHE_ALERTES.md` dans le dépôt maison3d, **pas encore installés** (dire à Claude Code « récupère le dépôt », puis lui donner la mission ; redémarrage de HA nécessaire). Notifie `notify.mobile_app_sm_a556b`, pas entre 22 h et 7 h ; capteur « Pêche alertes en panne » si le fichier a plus de 12 h.
+- Tâche GitHub `alertes` (`.github/workflows/alertes.yml`, toutes les 3 h à h+23) : curl télécharge la météo, `notif/alertes.js` calcule avec le même code que l'appli et écrit `alertes.json` dans la branche `donnees` (champ `nouvelles` = alertes pas encore vues au passage précédent ; notifiées : niveau ≥ 2 et « mer qui retombe »). Premier passage réussi le 18 nov. à 14 h 02 (le mail « Run failed » de 13 h 59 vient de l'ancienne version f66936e, téléchargement par Node.js, corrigée depuis avec curl).
+- Home Assistant : package `ha/packages/peche_alertes.yaml` et mission `ha/MISSION_PECHE_ALERTES.md` dans le dépôt maison3d, **installés le 18 nov.** (14 h 24, correction 6ab2869 à 14 h 44 : message gardé avant l'attente de la nuit, une étiquette par passage ; rechargements, sans redémarrage). Preuves contrôlées : `ha/audit/peche_alertes_preuves_2026-11-18.md`. Essai reçu sur l'A55, le toucher ouvre l'appli. Pas encore vu : une vraie nouvelle alerte envoyée seule, l'attente de 7 h, l'alerte « en panne ». Notifie `notify.mobile_app_sm_a556b`, pas entre 22 h et 7 h ; capteur « Pêche alertes en panne » si le fichier a plus de 12 h.
 - Limite : GitHub coupe les tâches planifiées d'un dépôt public après 60 jours sans activité ; le capteur de panne le signalera.
 
 ## Reste à faire
-1. Installer les notifications dans HA (mission ci-dessus), vérifier le fichier de preuves.
+1. Notifications : vérifier au prochain passage avec du nouveau qu'elles partent seules (`last_triggered` de `automation.peche_nouvelles_alertes_a_3_jours`). Dates plus lisibles dans les alertes (« jeudi 19, de 4 h à 18 h » au lieu de « de jeu. 19 4 h à jeu. 19 18 h »), à corriger dans le calcul du message de l'appli. Plus tard : passer `actions/checkout` et `setup-node` en v5 (avertissement Node.js 20 de GitHub).
 2. Sur l'A55 : installer l'appli sur l'écran d'accueil, tester sans réseau (mode avion), tester la profondeur au toucher.
 3. Recaler sur place les postes « à vérifier », puis reporter les positions dans `js/spots.js`.
 4. Branches `essais-api` (essais du 18 nov.) et `v2` (déjà fusionnée) : à supprimer quand Nico est d'accord.
