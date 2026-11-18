@@ -22,8 +22,15 @@ jobs:
           node-version: 22
       - name: Ancien fichier
         run: git fetch -q --depth=1 origin donnees && git show origin/donnees:alertes.json > /tmp/ancien.json || echo '{"alertes":[]}' > /tmp/ancien.json
+      - name: Télécharger la météo et la mer
+        run: |
+          mkdir -p /tmp/m
+          node notif/alertes.js urls | while read -r n u; do
+            curl -sS -m 90 --retry 3 --retry-delay 15 --retry-all-errors "$u" -o "/tmp/m/$n.json" || echo "échec $n"
+          done
+          ls -la /tmp/m
       - name: Calcul
-        run: node notif/alertes.js /tmp/ancien.json > /tmp/alertes.json && head -c 600 /tmp/alertes.json
+        run: node notif/alertes.js /tmp/ancien.json /tmp/m > /tmp/alertes.json && head -c 600 /tmp/alertes.json
       - name: Enregistrer dans la branche donnees
         run: |
           mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b donnees

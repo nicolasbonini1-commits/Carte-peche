@@ -1,6 +1,8 @@
 // Calcule les alertes des 3 prochains jours avec le même code que l'appli (js/model.js, js/data.js)
 // et écrit alertes.json, lu par Home Assistant pour envoyer les notifications.
-// Lancé par la tâche GitHub « alertes » toutes les 3 h. Usage : node notif/alertes.js [ancien alertes.json] > alertes.json
+// Lancé par la tâche GitHub « alertes » toutes les 3 h.
+//   node notif/alertes.js urls            → affiche les adresses à télécharger (la tâche les télécharge avec curl)
+//   node notif/alertes.js ancien.json dossier > alertes.json   → calcule à partir des fichiers fc_mf.json (ou fc.json) et marine.json du dossier
 // Fuseau : la tâche fixe TZ=Europe/Paris, sinon les heures d'Open-Meteo seraient lues en heure UTC.
 const fs = require("fs");
 global.window = {};
@@ -8,21 +10,19 @@ require("../js/spots.js");
 const M = require("../js/model.js");
 const DATA = require("../js/data.js");
 
-const getJson = async url => {
-  for (let k = 0; k < 3; k++) {
-    try { const r = await fetch(url); const j = await r.json(); if (Array.isArray(j)) return j; throw new Error(j.reason || "réponse inattendue"); }
-    catch (e) { if (k === 2) throw e; await new Promise(r => setTimeout(r, 10000)); }
-  }
-};
 // Notifier : coups de mer, vents forts, fortes pluies (niveau 2 ou 3) et la mer qui retombe (bon créneau).
 const notifiable = a => a.level >= 2 || a.kind === "chance";
 
 (async () => {
-  const prev = process.argv[2] && fs.existsSync(process.argv[2]) ? JSON.parse(fs.readFileSync(process.argv[2], "utf8")) : { alertes: [] };
   const U = DATA.urls(window.WX_POINTS);
-  let f, multi = true;
-  try { f = await getJson(U.forecastModels); } catch (e) { multi = false; f = await getJson(U.forecast); }
-  const s = await getJson(U.marine);
+  if (process.argv[2] === "urls") { console.log(`fc_mf ${U.forecastModels}\nfc ${U.forecast}\nmarine ${U.marine}`); return; }
+  const prev = fs.existsSync(process.argv[2] || "") ? JSON.parse(fs.readFileSync(process.argv[2], "utf8")) : { alertes: [] };
+  const dir = process.argv[3] || ".";
+  const read = n => { try { const j = JSON.parse(fs.readFileSync(`${dir}/${n}.json`, "utf8")); return Array.isArray(j) ? j : null; } catch (e) { return null; } };
+  let f = read("fc_mf"), multi = true;
+  if (!f) { multi = false; f = read("fc"); }
+  const s = read("marine");
+  if (!f || !s) throw new Error("données météo ou mer manquantes");
   const D = DATA.parse({ at: Date.now(), f, s, multi });
   const now = new Date();
   const list = M.alerts(D, now).map(a => ({ level: a.level, kind: a.kind, title: a.title, text: a.text, debut: D.keys[a.i] }));
