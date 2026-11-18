@@ -54,7 +54,10 @@
   const map = L.map("map", { zoomControl: true, attributionControl: true }).setView([43.50, 4.10], 10);
   const layers = {
     jour: L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, subdomains: "abc", attribution: "© OpenStreetMap France" }),
-    nuit: L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19, subdomains: "abcd", attribution: "© OpenStreetMap, © CARTO" }),
+    // Nuit : le même fond OpenStreetMap France que le jour, assombri par un filtre (css/style.css, .tuiles-nuit).
+    // Avant (jusqu'au 18 nov. 2026) : CARTO « dark_all », qui depuis fin août 2026 exige une clé et renvoie sinon
+    // des images marquées « API KEY REQUIRED », sans routes ni villes.
+    nuit: L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, subdomains: "abc", attribution: "© OpenStreetMap France", className: "tuiles-nuit" }),
     sat: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Imagerie © Esri" })
   };
   const bathy = L.tileLayer.wms("https://ows.emodnet-bathymetry.eu/wms", {

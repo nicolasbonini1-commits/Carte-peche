@@ -1,0 +1,15 @@
+# Essai temporaire (branche carte-nuit) : captures de la carte de jour et de nuit avec les vraies tuiles.
+name: essai-carte
+on:
+  push:
+    branches: [carte-nuit]
+  workflow_dispatch:
+jobs:
+  captures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install playwright && python -m playwright install --with-deps chromium
+      - run: python diag/captures.py
+      - uses: actions/upload-artifact@v4
+        with: { name: captures, path: diag/out }

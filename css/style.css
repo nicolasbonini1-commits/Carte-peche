@@ -45,6 +45,8 @@ output { color: var(--text); font-weight: 600; }
 .mapcard .row, .mapcard .sub { padding: 0 12px; }
 .mapcard .sub { padding-bottom: 10px; }
 #map { height: 52vh; min-height: 320px; width: 100%; }
+/* Fond de nuit : carte du jour inversée (clair -> sombre), teintes remises à l'endroit (mer bleue, végétation verte), un peu adoucie. */
+.tuiles-nuit { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9); }
 [data-theme="nuit"] .leaflet-container { background: #0d1520; }
 .dot span { display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid #14161a;
   color: #14161a; font-weight: 700; font-size: 13px; box-shadow: 0 1px 3px rgba(0,0,0,.4); }

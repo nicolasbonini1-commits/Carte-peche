@@ -39,7 +39,7 @@ Niveaux de preuve dans le code : **[S]** sourcé, **[P]** pratique courante ou e
 - Hub'Eau Hydrométrie (données Vigicrues) : débits horaires et débits moyens mensuels depuis 1990 (Rhône à Tarascon, Vidourle à Gallargues, Lez à Lattes)
 - OpenStreetMap (feux des ports) pour les positions des postes, vérifiées le 18 nov. 2026
 - EMODnet Bathymetry, MNT 2024 (maille ~115 m)
-- OSRM (temps de route), OpenStreetMap France, CARTO, Esri (fonds de carte)
+- OSRM (temps de route), OpenStreetMap France, Esri (fonds de carte)
 - Ifremer / MARBEC, projet CONNECT-MED ; Parc national des Calanques, migrations de la daurade (2026)
 - INPN, ZNIEFF « Plateau rocheux de Palavas-Carnon » ; Natura 2000 « Posidonies de la côte palavasienne »
 - Département de l'Hérault, suivi topo-bathymétrique du golfe d'Aigues-Mortes (2023)
