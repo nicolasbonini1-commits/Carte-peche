@@ -3,13 +3,13 @@
 // seaward = direction (en degrés, 0 = nord) vers laquelle le poste regarde la mer.
 //   Sert à savoir si le vent et la houle arrivent de face (de la mer) ou de dos (de la terre).
 // type : embouchure | grau | digue | roche | plage_barres | plage_lisse
-// river : poste influencé par un fleuve ou une rivière (crues après fortes pluies)
+// river : fleuve ou rivière qui influence le poste ("rhone", "vidourle", "lez") ou false
 // lit : zone éclairée la nuit
 // Niveaux de preuve : [S] sourcé, [P] pratique courante / estimation, [C] lecture de carte.
 window.SPOTS = [
   {
     id: 1, name: "Embouchure du Petit Rhône", commune: "Saintes-Maries-de-la-Mer",
-    lat: 43.4515, lon: 4.3945, type: "embouchure", seaward: 190, river: true, lit: false,
+    lat: 43.4515, lon: 4.3945, type: "embouchure", seaward: 190, river: "rhone", lit: false,
     structure: "Grau d'Orgon, à 2 km à l'ouest du village [S] : mélange eau douce / eau salée, courant. [S] Le bar est euryhalin et fréquente estuaires et embouchures.",
     attention: "Accès par le sable, longue marche selon la rive. Par crue du Rhône, eau très chargée.",
     zone: "E"
@@ -44,7 +44,7 @@ window.SPOTS = [
   },
   {
     id: 6, name: "Jetées du chenal du Grau-du-Roi", commune: "Le Grau-du-Roi",
-    lat: 43.5330, lon: 4.1320, type: "grau", seaward: 220, river: true, lit: true,
+    lat: 43.5330, lon: 4.1320, type: "grau", seaward: 220, river: "vidourle", lit: true,
     structure: "Débouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]",
     attention: "Pêche de loisir de nouveau autorisée dans le port depuis juillet 2025, sous conditions : lire le règlement du port. [S]",
     zone: "C"
@@ -58,7 +58,7 @@ window.SPOTS = [
   },
   {
     id: 8, name: "Passe du Ponant (Vidourle)", commune: "La Grande-Motte",
-    lat: 43.5565, lon: 4.1060, type: "grau", seaward: 170, river: true, lit: false,
+    lat: 43.5565, lon: 4.1060, type: "grau", seaward: 170, river: "vidourle", lit: false,
     structure: "Le Vidourle rejoint la mer en alimentant l'étang du Ponant : sortie d'étang. [S]",
     attention: "Courant fort par crue.",
     zone: "C"
@@ -86,7 +86,7 @@ window.SPOTS = [
   },
   {
     id: 12, name: "Embouchure du Lez et digues", commune: "Palavas-les-Flots",
-    lat: 43.5280, lon: 3.9300, type: "grau", seaward: 155, river: true, lit: true,
+    lat: 43.5280, lon: 3.9300, type: "grau", seaward: 155, river: "lez", lit: true,
     structure: "Embouchure du Lez, blocs posés sur le sable. [S] Plateau rocheux de Palavas-Carnon au large : un banc à 4-6 m, un second à 10-15 m (ZNIEFF). [S]",
     attention: "Plage des Épis : restriction horaire en saison seulement. [S]",
     zone: "W"
@@ -127,8 +127,11 @@ window.WX_POINTS = {
   W: { name: "Frontignan – Palavas", land: [43.50, 3.88], sea: [43.44, 3.90] },
   C: { name: "Golfe d'Aigues-Mortes", land: [43.54, 4.08], sea: [43.48, 4.06] },
   E: { name: "Petite Camargue", land: [43.46, 4.30], sea: [43.40, 4.30] },
-  R: { name: "Bassins versants (pluie)", land: [43.80, 4.05] }
+  RV: { name: "Bassin du Vidourle (pluie)", land: [43.90, 3.92] },
+  RL: { name: "Bassin du Lez (pluie)", land: [43.70, 3.86] }
 };
+// Points pluie : RV = haut Vidourle, entre Saint-Hippolyte-du-Fort et Sommières (les crues du Vidourle viennent surtout des pluies sur les Cévennes) [P] ;
+// RL = nord de Montpellier, sur le bassin du Lez [C]. Le Rhône est suivi par son débit (bassin trop grand pour un point de pluie).
 
 // Point de départ par défaut (coordonnées approximatives de Poulx)
 window.HOME = { name: "Poulx", lat: 43.909, lon: 4.418 };
