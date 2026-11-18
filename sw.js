@@ -1,5 +1,5 @@
 // Service worker : garde l'appli disponible même avec un réseau faible sur la digue.
-const CACHE = "carte-peche-v1";
+const CACHE = "carte-peche-v2";
 const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/app.js", "icon.svg", "manifest.webmanifest",
   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"];
 self.addEventListener("install", e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));

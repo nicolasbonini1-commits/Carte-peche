@@ -90,3 +90,10 @@ nav.bottom button.on { color: var(--text); font-weight: 700; }
 .seq li { margin: 6px 0; font-size: 14px; line-height: 1.4; }
 .seq small { color: var(--sub); }
 .daypick .btn { min-height: 38px; }
+.alerts h3 { margin-bottom: 8px; }
+.alert { border-left: 4px solid var(--line); padding: 6px 10px; margin: 6px 0; font-size: 14px; line-height: 1.35; }
+.alert small { color: var(--sub); font-size: 13px; }
+.alert.a-ok { border-color: #35b7a0; } .alert.a-info { border-color: #8a9bb0; }
+.alert.a-warn { border-color: #eea13f; } .alert.a-danger { border-color: var(--warn); }
+.alerts details { margin-top: 8px; font-size: 14px; } .alerts summary { cursor: pointer; color: var(--sub); min-height: 32px; }
+.rivers { padding-left: 18px; margin: 6px 0; } .rivers li { margin: 4px 0; font-size: 13px; }

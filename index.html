@@ -55,6 +55,7 @@
       </div>
       <div class="row"><button type="button" class="btn primary" id="goBtn">Voir mes créneaux et mes leurres</button></div>
     </form>
+    <div id="alerts" class="card alerts"></div>
     <article id="reco" class="card reco"></article>
     <div id="when" class="card when"></div>
 
@@ -114,7 +115,7 @@
         <li><b>Mer</b> : la houle du large (Open-Meteo Marine) est ramenée au poste selon son orientation. Une mer qui retombe après un coup de mer est favorisée.</li>
         <li><b>Lumière</b> : aube et crépuscule au maximum ; la nuit dépend de la lune, des nuages et de l'éclairage ; le plein jour par mer calme est pénalisé pour le loup.</li>
         <li><b>Vent</b> : vent de mer ou de terre calculé pour chaque poste ; rafales fortes pénalisées.</li>
-        <li><b>Pluie</b> : plus de 30 mm en 72 h trouble l'eau près des fleuves et des rivières.</li>
+        <li><b>Pluie et fleuves</b> : la pluie des 7 derniers jours compte, celle d'hier plus que celle d'il y a une semaine (indice de pluie antérieure). Pour le Rhône, le Vidourle et le Lez, le débit mesuré (Vigicrues, via Hub'Eau) passe avant la pluie : débit comparé au débit le plus bas de la semaine. Un panache modéré favorise le loup, une crue le chasse ; une décrue qui s'éclaircit est un bon créneau.</li>
         <li><b>Eau</b> : température de surface.</li>
         <li><b>Carnet</b> : tes sorties corrigent la note du poste. Il faut environ 4 sorties pour que ton expérience pèse autant que le modèle.</li>
       </ol>
@@ -123,20 +124,22 @@
       <ul>
         <li>Les coefficients sont une traduction en chiffres de sources scientifiques et de pratiques de pêcheurs : ils ne sont pas encore calés sur des captures réelles. Ton carnet sert à ça.</li>
         <li>La houle est prévue au large ; près du bord elle est estimée.</li>
+        <li>Les seuils de crue et d'alerte sont des estimations de départ : le carnet enregistre la pluie, le débit et le modèle météo de chaque sortie pour les caler.</li>
         <li>Les positions des postes sont approximatives : corrige-les avec le bouton de la fiche.</li>
         <li>Réglementation : vérifie toujours les arrêtés locaux et portuaires. Tailles minimales en Méditerranée : loup 30 cm, dorade 23 cm.</li>
       </ul>
       <h2>Sources des données</h2>
       <ul>
-        <li>Vent, rafales, nuages, pluie : <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> (modèles Météo-France inclus).</li>
-        <li>Houle et température de l'eau : <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener">Open-Meteo Marine</a>.</li>
+        <li>Vent, rafales, nuages, pluie : <a href="https://open-meteo.com/en/docs/meteofrance-api" target="_blank" rel="noopener">Open-Meteo</a>, modèles Météo-France AROME (2 premiers jours) puis ARPEGE (jusqu'à 4 jours), puis ECMWF (jours 5 à 7). Les deux modèles sont comparés pour signaler les prévisions incertaines.</li>
+        <li>Débits des fleuves : <a href="https://hubeau.eaufrance.fr/page/api-hydrometrie" target="_blank" rel="noopener">Hub'Eau Hydrométrie</a> (données Vigicrues), mises à jour toutes les 5 à 60 min.</li>
+        <li>Houle et température de l'eau : <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener">Open-Meteo Marine</a> ; sur cette côte, les vagues viennent du modèle MFWAM de Météo-France.</li>
         <li>Profondeurs : <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank" rel="noopener">EMODnet Bathymetry</a>, MNT 2024, maille ~115 m.</li>
         <li>Temps de route : <a href="https://project-osrm.org" target="_blank" rel="noopener">OSRM</a> + 10 min pour se garer et marcher.</li>
         <li>Fonds de carte : OpenStreetMap France, CARTO (nuit), Esri (satellite).</li>
         <li>Biologie : Ifremer / MARBEC (projet CONNECT-MED, thèse A. Mignucci), Parc national des Calanques (migrations de la daurade, 2026), fiches espèces zones-humides.org, INPN (plateau rocheux de Palavas-Carnon).</li>
         <li>Matrice conditions → leurres : ton guide Notion « Loup au leurre du bord ».</li>
       </ul>
-      <p class="sub">Version 1 — 18 novembre 2026.</p>
+      <p class="sub">Version 2 — 18 novembre 2026 : pluie sur 7 jours, débits des fleuves, modèles Météo-France, alertes à 3 jours.</p>
     </div>
   </section>
 </main>

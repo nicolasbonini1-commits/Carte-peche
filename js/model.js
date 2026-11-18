@@ -79,10 +79,46 @@
     return "nuit";
   };
 
+  // ---------- Pluie des jours d'avant et état des fleuves ----------
+  // Indice de pluie antérieure (API, Kohler & Linsley 1951) [S] : chaque millimètre compte de moins en moins
+  // avec le temps. Ici la pluie d'hier compte à 85 %, celle d'il y a 7 jours à 32 % (0,85^7) [P].
+  // rain = pluie horaire (mm), i = heure étudiée. Renvoie l'indice en « mm équivalents ».
+  M.API_K = 0.85;
+  M.rainIndex = (rain, i, hours = 168) => {
+    let s = 0;
+    for (let k = Math.max(0, i - hours); k <= i; k++) s += (rain[k] || 0) * Math.pow(M.API_K, (i - k) / 24);
+    return s;
+  };
+  M.rainSum = (rain, i, hours) => { let s = 0; for (let k = Math.max(0, i - hours); k <= i; k++) s += rain[k] || 0; return s; };
+
+  // Niveau du fleuve au poste : 0 normal, 1 eau qui se charge, 2 crue, 3 forte crue.
+  // 1) Débit mesuré (Hub'Eau / Vigicrues) quand il existe, comparé au débit habituel du mois
+  //    (médiane des débits moyens mensuels mesurés depuis 1990 à la même station) [S pour les données, P pour les seuils] :
+  //    moins de 2 fois = normal, 2 à 4 fois = l'eau se charge, 4 à 10 fois = crue, plus de 10 fois = forte crue.
+  // 2) Sinon, indice de pluie sur le bassin versant [P].
+  // Les seuils sont des estimations de départ, à caler avec ton carnet (le débit et la pluie y sont enregistrés).
+  M.riverLevel = c => {
+    if (!c.spot.river) return { level: 0, why: "" };
+    const f = c.flow;
+    const a = c.apiBasin;
+    const rainLv = a >= 100 ? 3 : a >= 50 ? 2 : a >= 20 ? 1 : 0;
+    if (f && f.ratio != null) {
+      const lv = f.ratio >= 10 ? 3 : f.ratio >= 4 ? 2 : f.ratio >= 2 ? 1 : 0;
+      const trend = f.trend > 0.08 ? "en hausse" : f.trend < -0.08 ? "en baisse" : "stable";
+      const mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"][f.month - 1];
+      const why = `${f.name} : ${fmtQ(f.q)} m³/s, ${fmtQ(f.ratio)} × son débit habituel de ${mois} (${fmtQ(f.ref)} m³/s), ${trend}`;
+      // Heure à venir : si la pluie prévue annonce pire que le débit d'aujourd'hui, on la suit.
+      if (c.future && rainLv > lv) return { level: rainLv, falling: false, src: "pluie", why: `${why} ; pluie prévue : indice ${Math.round(a)} mm` };
+      return { level: lv, falling: f.trend < -0.08 && f.ratio >= 2, src: "débit", why };
+    }
+    return { level: rainLv, falling: false, src: "pluie", why: `pas de débit mesuré, pluie sur le bassin : indice ${Math.round(a)} mm (7 j)` };
+  };
+  const fmtQ = q => q >= 10 ? String(Math.round(q)) : q.toFixed(1).replace(".", ",");
+
   // ---------- 3. Scénario (matrice A-J de ton guide Notion) ----------
   M.scenario = c => {
     if (c.hsLocal != null && c.hsLocal >= 1.8) return "G";
-    if (c.rain72 >= 30 && c.spot.river) return "J";
+    if (c.spot.river && M.riverLevel(c).level >= 1) return "J";
     if (c.falling) return "H";
     if (c.hsLocal != null && c.hsLocal >= 0.8) return "F";
     if (c.onshore >= 35) return "I";
@@ -157,9 +193,18 @@
     else if (species === "dorade" && c.gust >= 50) { wind *= 0.75; wWhy += ", rafales gênantes pour la calée"; }
     f.push({ k: "Vent", v: wind, why: wWhy });
 
-    let rain = 1, rWhy = `${Math.round(c.rain72)} mm de pluie en 72 h`;
-    if (spot.river && c.rain72 >= 80) { rain = 0.8; rWhy += " : eau trop chargée"; }
-    else if (spot.river && c.rain72 >= 30) { rain = species === "loup" ? 1.05 : 0.9; rWhy += " : panache d'eau sale"; }
+    // Pluie des 7 derniers jours et état du fleuve [P] :
+    // loup : un panache modéré le favorise (bordure d'eau sale, poissons désorientés), une vraie crue le chasse ;
+    // dorade : n'aime pas l'eau douce et chargée ; une décrue qui s'éclaircit est un bon moment pour le loup.
+    let rain = 1, rWhy = `${Math.round(c.rain7)} mm en 7 j, dont ${Math.round(c.rain72)} mm en 72 h`;
+    if (spot.river) {
+      const rv = M.riverLevel(c);
+      rWhy += ` · ${rv.why}`;
+      const T = species === "loup" ? [1, 1.05, 0.8, 0.55] : [1, 0.85, 0.65, 0.45];
+      rain = T[rv.level];
+      if (rv.falling && species === "loup" && rv.level <= 2) { rain = Math.min(1.1, rain * 1.15); rWhy += " : décrue, l'eau s'éclaircit"; }
+      else rWhy += [" : normal", " : panache d'eau sale", " : crue, eau très chargée", " : forte crue, poste à éviter"][rv.level];
+    } else if (c.apiCoast >= 40) { rain = species === "loup" ? 1 : 0.9; rWhy += " : eau un peu piquée près du bord"; }
     f.push({ k: "Pluie", v: rain, why: rWhy });
 
     let temp = 1, tWhy = c.sst != null ? `eau à ${c.sst.toFixed(1)} °C` : "température de l'eau inconnue";
@@ -192,8 +237,9 @@
   // Principe : prospecter de haut en bas (surface → sous la surface → fond), du bord vers le large,
   // ~15-20 min par leurre avant de changer. Coloris selon l'eau et la lumière (guide, § 4). [S]/[P]
   M.water = c => {
-    if ((c.hsLocal != null && c.hsLocal >= 0.8) || (c.spot.river && c.rain72 >= 30)) return "teintée";
-    if (c.falling || (c.hsLocal != null && c.hsLocal >= 0.5) || c.rain72 >= 15) return "piquée";
+    const rl = M.riverLevel(c).level;
+    if ((c.hsLocal != null && c.hsLocal >= 0.8) || rl >= 2) return "teintée";
+    if (c.falling || (c.hsLocal != null && c.hsLocal >= 0.5) || rl === 1 || c.apiCoast >= 15) return "piquée";
     return "claire";
   };
   M.colorFor = c => {
@@ -228,6 +274,72 @@
     const bmCol = col.fam === "blanc ou chartreuse" ? "Lime Juice" : col.fam === "sombre" ? "Kaki" : col.fam === "clair" ? "Ghost Minnow" : col.fam === "pailleté, kaki ou nacré" ? "Kaki pailleté" : "Kaki ou Ghost Minnow";
     steps.push({ zone: "Près du fond", lure: bm, color: bmCol, anim: spot.type === "grau" || spot.type === "embouchure" ? "dérive dans la veine de courant, puis linéaire lent" : "linéaire lent près du fond, tirées-relâchées si rien" });
     return { steps: steps.slice(0, 3), color: col, water: M.water(c) };
+  };
+
+  // ---------- 8. Alertes des 3 prochains jours ----------
+  // Par zone, sur les 72 h à venir. Seuils [P] (pratique de la côte, à ajuster) :
+  //  coup de mer : houle au large ≥ 1,5 m (≥ 2,5 m : forte mer) ; retombée = houle redescendue sous 65 % du pic (scénario H) ;
+  //  vent d'est / marin (de 60° à 160°) ≥ 30 km/h pendant 3 h ; mistral / tramontane (de 290° à 20°) ≥ 45 km/h ou rafales ≥ 75 km/h ;
+  //  vent qui forcit : +20 km/h en 6 h ; fortes pluies : ≥ 40 mm en 24 h sur un bassin versant ;
+  //  modèles en désaccord : Météo-France et ECMWF diffèrent de plus de 15 km/h ou de 60° sur le vent.
+  const inSector = (d, a, b) => a <= b ? d >= a && d <= b : d >= a || d <= b;
+  M.alerts = (D, now) => {
+    const out = [];
+    const i0 = D.times.findIndex(t => t >= now), i1 = Math.min(D.times.length - 1, i0 + 72);
+    if (i0 < 0) return out;
+    const fmt = i => { const t = D.times[i]; return `${t.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" })} ${t.getHours()} h`; };
+    const runs = (test, minLen) => { const r = []; let s = -1; for (let i = i0; i <= i1 + 1; i++) { const ok = i <= i1 && test(i); if (ok && s < 0) s = i; if (!ok && s >= 0) { if (i - s >= minLen) r.push([s, i - 1]); s = -1; } } return r; };
+    const zones = { W: "Frontignan – Palavas", C: "golfe d'Aigues-Mortes", E: "Petite Camargue" };
+    // Houle : par zone, on garde la pire
+    let wave = null;
+    for (const z of ["W", "C", "E"]) {
+      const hs = D.S[z].hs;
+      for (const [a, b] of runs(i => (hs[i] ?? 0) >= 1.5, 2)) {
+        let p = a; for (let i = a; i <= b; i++) if (hs[i] > hs[p]) p = i;
+        if (!wave || hs[p] > wave.peak) wave = { z, a, b, p, peak: hs[p] };
+      }
+    }
+    if (wave) {
+      const hs = D.S[wave.z].hs; let r = -1;
+      for (let i = wave.p; i <= Math.min(D.times.length - 1, wave.p + 48); i++) if (hs[i] != null && hs[i] <= 0.65 * wave.peak && hs[i] < 1.2) { r = i; break; }
+      out.push({ level: wave.peak >= 2.5 ? 3 : 2, kind: "mer", title: wave.peak >= 2.5 ? "Forte mer" : "Coup de mer",
+        text: `Houle jusqu'à ${wave.peak.toFixed(1).replace(".", ",")} m (${zones[wave.z]}) de ${fmt(wave.a)} à ${fmt(wave.b)}, pic ${fmt(wave.p)}. Digues et roches exposées dangereuses.`, i: wave.a });
+      if (r > 0) out.push({ level: 0, kind: "chance", title: "Mer qui retombe : créneau à viser",
+        text: `La houle redescend vers ${fmt(r)}. Après un coup de mer, eau teintée qui s'éclaircit : souvent le meilleur moment pour le loup (scénario H).`, i: r });
+    }
+    const W = D.F.C;
+    for (const [a, b] of runs(i => inSector(W.dir[i] ?? 0, 60, 160) && (W.wind[i] ?? 0) >= 30, 3)) {
+      let p = a; for (let i = a; i <= b; i++) if (W.wind[i] > W.wind[p]) p = i;
+      out.push({ level: W.wind[p] >= 50 ? 3 : 2, kind: "vent", title: "Vent d'est / marin", text: `${Math.round(W.wind[p])} km/h (rafales ${Math.round(W.gust[p])}) de ${fmt(a)} à ${fmt(b)} : la mer monte et l'eau se charge.`, i: a });
+      break;
+    }
+    for (const [a, b] of runs(i => inSector(W.dir[i] ?? 0, 290, 20) && ((W.wind[i] ?? 0) >= 45 || (W.gust[i] ?? 0) >= 75), 3)) {
+      let p = a; for (let i = a; i <= b; i++) if (W.gust[i] > W.gust[p]) p = i;
+      out.push({ level: 2, kind: "vent", title: M.windName(W.dir[p]).startsWith("mistral") ? "Mistral fort" : "Tramontane forte", text: `${Math.round(W.wind[p])} km/h, rafales ${Math.round(W.gust[p])} km/h, de ${fmt(a)} à ${fmt(b)}. Mer plate et eau claire au bord, mais lancer difficile et rafales dangereuses sur les digues.`, i: a });
+      break;
+    }
+    for (let i = i0 + 6; i <= i1; i++) {
+      if ((W.wind[i] ?? 0) - (W.wind[i - 6] ?? 0) >= 20 && (W.wind[i] ?? 0) >= 30) {
+        if (!out.some(x => x.kind === "vent" && Math.abs(x.i - i) <= 6)) out.push({ level: 1, kind: "vent", title: "Vent qui forcit", text: `${M.windName(W.dir[i])} : de ${Math.round(W.wind[i - 6])} à ${Math.round(W.wind[i])} km/h entre ${fmt(i - 6)} et ${fmt(i)}.`, i: i - 6 });
+        break;
+      }
+    }
+    for (const [key, label] of [["RV", "Vidourle"], ["RL", "Lez"]]) {
+      const r = D.F[key] && D.F[key].rain; if (!r) continue;
+      let best = 0, bi = -1;
+      for (let i = i0; i <= i1; i++) { const s = M.rainSum(r, i, 24); if (s > best) { best = s; bi = i; } }
+      if (best >= 40) out.push({ level: best >= 80 ? 3 : 2, kind: "pluie", title: `Fortes pluies sur le bassin du ${label}`, text: `${Math.round(best)} mm en 24 h jusqu'à ${fmt(bi)} : crue possible, postes du ${label} à éviter puis à surveiller à la décrue. Voir Vigicrues.`, i: bi });
+    }
+    // Fiabilité : désaccord entre modèles sur les 72 h
+    if (D.alt) {
+      let n = 0, first = -1;
+      for (let i = i0; i <= Math.min(i1, D.mfEnd ?? i1); i++) {
+        const a = D.alt.C, dv = Math.abs((a.wind[i] ?? 0) - (W.wind[i] ?? 0)), dd = M.angleDiff(a.dir[i] ?? 0, W.dir[i] ?? 0);
+        if (dv >= 15 || (dd >= 60 && W.wind[i] >= 15)) { n++; if (first < 0) first = i; }
+      }
+      if (n >= 6) out.push({ level: 1, kind: "fiabilite", title: "Prévision incertaine", text: `Météo-France et le modèle européen ECMWF ne sont pas d'accord sur le vent pendant ${n} h (dès ${fmt(first)}). À revérifier la veille.`, i: first });
+    }
+    return out.sort((a, b) => a.i - b.i);
   };
 
   M.classOf = s => s < 35 ? 0 : s < 55 ? 1 : s < 70 ? 2 : s < 82 ? 3 : 4;
