@@ -4,6 +4,8 @@ on:
   push:
     branches: [carte-nuit]
   workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   captures:
     runs-on: ubuntu-latest
@@ -11,5 +13,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: pip install playwright && python -m playwright install --with-deps chromium
       - run: python diag/captures.py
-      - uses: actions/upload-artifact@v4
-        with: { name: captures, path: diag/out }
+      - name: Ranger les captures dans la branche essais-carte
+        run: |
+          cd diag/out && git init -q -b essais-carte && git add -A
+          git -c user.name=essai -c user.email=essai@example.invalid commit -q -m "captures carte"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" essais-carte
