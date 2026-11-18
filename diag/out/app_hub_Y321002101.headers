@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Date: Wed, 18 Nov 2026 12:35:25 GMT
+Server: Apache
+Access-Control-Allow-Origin: *
+Vary: Origin,Access-Control-Request-Method,Access-Control-Request-Headers,Accept-Encoding
+Content-Type: application/json
+Link: <https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002101&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-11T12:35:14&fields=date_obs,resultat_obs&page=1&size=164>; rel="first"
+Content-Security-Policy: upgrade-insecure-requests
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+Referrer-Policy: no-referrer-when-downgrade
+Permissions-Policy: accelerometer=(), geolocation=('self'), fullscreen=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=('self')
+Transfer-Encoding: chunked
+
