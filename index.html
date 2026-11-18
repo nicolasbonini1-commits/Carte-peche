@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d2b36">
+<title>Carte de pêche – loup & dorade</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Où pêcher ?</h1>
+  <div class="row">
+    <button class="btn small" id="themeBtn" aria-label="Changer le thème jour ou nuit">Auto</button>
+    <button class="btn small" id="refreshBtn">Mettre à jour</button>
+  </div>
+</header>
+<div id="banner" class="banner" hidden></div>
+
+<main>
+  <section id="sortie" class="view">
+    <form class="card plan" onsubmit="return false">
+      <div class="grid">
+        <label>Jour
+          <select id="pDay"><option value="0">Aujourd'hui</option><option value="1">Demain</option><option value="2">Après-demain</option><option value="3">Dans 3 jours</option><option value="4">Dans 4 jours</option><option value="5">Dans 5 jours</option></select>
+        </label>
+        <label>Départ
+          <input type="time" id="pDepart" value="06:00">
+        </label>
+        <label>Espèce
+          <select id="pSpecies"><option value="loup">Loup (leurre)</option><option value="dorade">Dorade (calée)</option><option value="les deux">Les deux</option></select>
+        </label>
+        <label>Temps total (route comprise) <output id="pHoursOut">4 h</output>
+          <input type="range" id="pHours" min="2" max="10" step="0.5" value="4">
+        </label>
+      </div>
+      <div class="row">
+        <button type="button" class="btn small" id="nowBtn">Je pars maintenant</button>
+        <button type="button" class="btn small" id="homeBtn">Depuis Poulx</button>
+        <button type="button" class="btn small" id="gpsBtn">Depuis ma position</button>
+      </div>
+    </form>
+
+    <form class="card" onsubmit="return false">
+      <h3 class="nomt">Je sais où je vais</h3>
+      <div class="grid">
+        <label>Poste <select id="goSpot"></select></label>
+        <label>Jour <select id="goDay"></select></label>
+      </div>
+      <div class="row"><button type="button" class="btn primary" id="goBtn">Voir mes créneaux et mes leurres</button></div>
+    </form>
+    <article id="reco" class="card reco"></article>
+    <div id="when" class="card when"></div>
+
+    <div class="card mapcard">
+      <div id="map" role="application" aria-label="Carte des postes"></div>
+      <div class="row maptools">
+        <button class="btn small" id="satBtn">Satellite</button>
+        <button class="btn small" id="bathyBtn">Profondeurs</button>
+        <span class="legend" id="legend"></span>
+      </div>
+      <p class="sub">Touche la mer pour connaître la profondeur. Touche un point pour la fiche du poste.</p>
+    </div>
+
+    <h2 class="h">Classement pour ta sortie</h2>
+    <div id="list" class="list"></div>
+
+    <h2 class="h">Conditions</h2>
+    <div id="cond" class="card"></div>
+    <p id="fresh" class="sub center"></p>
+  </section>
+
+  <section id="carnet" class="view" hidden>
+    <form id="carnetForm" class="card">
+      <h2>Noter une sortie</h2>
+      <label>Poste <select id="fSpot"></select></label>
+      <div class="grid">
+        <label>Date <input type="date" id="fDate" required></label>
+        <label>Début <input type="time" id="fStart" required></label>
+        <label>Durée (h) <input type="number" id="fDur" min="0.5" max="12" step="0.5" value="2"></label>
+        <label>Espèce visée <select id="fSpecies"><option value="loup">Loup</option><option value="dorade">Dorade</option><option value="les deux">Les deux</option></select></label>
+        <label>Loups pris <input type="number" id="fLoup" min="0" value="0"></label>
+        <label>Dorades prises <input type="number" id="fDorade" min="0" value="0"></label>
+        <label>Plus grand (cm) <input type="number" id="fSize" min="0"></label>
+        <label>Leurre / appât <input type="text" id="fLure" placeholder="ex. Black Minnow Kaki"></label>
+      </div>
+      <label>Notes <textarea id="fNotes" rows="2" placeholder="couleur de l'eau, touches, chasses…"></textarea></label>
+      <button class="btn primary" type="submit">Enregistrer</button>
+      <p class="sub">Vent, mer, lumière et lune du moment sont ajoutés automatiquement. Les bredouilles comptent aussi.</p>
+    </form>
+    <div id="carnetList" class="list"></div>
+    <div class="card">
+      <h3>Sauvegarde</h3>
+      <p class="sub">Le carnet est gardé sur ce téléphone. Copie-le de temps en temps pour le sauvegarder ou me l'envoyer.</p>
+      <div class="row"><button class="btn" id="exportBtn" type="button">Copier le carnet</button><button class="btn" id="importBtn" type="button">Importer</button></div>
+      <label class="sr" for="importBox">Texte du carnet à importer</label>
+      <textarea id="importBox" rows="3" placeholder="Colle ici un carnet copié pour l'importer"></textarea>
+    </div>
+  </section>
+
+  <section id="infos" class="view" hidden>
+    <div class="card prose">
+      <h2>Comment la note est calculée</h2>
+      <p>Pour chaque poste et chaque heure, la note sur 100 est le produit de plusieurs facteurs (chacun entre 0 et 100 %) :</p>
+      <ol>
+        <li><b>Poste</b> : embouchures, graus, roches et digues d'abord ; plages ensuite.</li>
+        <li><b>Saison</b> : loup près du bord de septembre à février ; dorade d'avril à novembre, avec un bonus aux graus à l'automne, quand elles quittent les étangs.</li>
+        <li><b>Mer</b> : la houle du large (Open-Meteo Marine) est ramenée au poste selon son orientation. Une mer qui retombe après un coup de mer est favorisée.</li>
+        <li><b>Lumière</b> : aube et crépuscule au maximum ; la nuit dépend de la lune, des nuages et de l'éclairage ; le plein jour par mer calme est pénalisé pour le loup.</li>
+        <li><b>Vent</b> : vent de mer ou de terre calculé pour chaque poste ; rafales fortes pénalisées.</li>
+        <li><b>Pluie</b> : plus de 30 mm en 72 h trouble l'eau près des fleuves et des rivières.</li>
+        <li><b>Eau</b> : température de surface.</li>
+        <li><b>Carnet</b> : tes sorties corrigent la note du poste. Il faut environ 4 sorties pour que ton expérience pèse autant que le modèle.</li>
+      </ol>
+      <p>La note de sortie combine 60 % de la meilleure heure de ta fenêtre de pêche et 40 % de la moyenne. La fenêtre = départ + route, jusqu'à l'heure où il faut repartir.</p>
+      <h2>Limites</h2>
+      <ul>
+        <li>Les coefficients sont une traduction en chiffres de sources scientifiques et de pratiques de pêcheurs : ils ne sont pas encore calés sur des captures réelles. Ton carnet sert à ça.</li>
+        <li>La houle est prévue au large ; près du bord elle est estimée.</li>
+        <li>Les positions des postes sont approximatives : corrige-les avec le bouton de la fiche.</li>
+        <li>Réglementation : vérifie toujours les arrêtés locaux et portuaires. Tailles minimales en Méditerranée : loup 30 cm, dorade 23 cm.</li>
+      </ul>
+      <h2>Sources des données</h2>
+      <ul>
+        <li>Vent, rafales, nuages, pluie : <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a> (modèles Météo-France inclus).</li>
+        <li>Houle et température de l'eau : <a href="https://open-meteo.com/en/docs/marine-weather-api" target="_blank" rel="noopener">Open-Meteo Marine</a>.</li>
+        <li>Profondeurs : <a href="https://emodnet.ec.europa.eu/en/bathymetry" target="_blank" rel="noopener">EMODnet Bathymetry</a>, MNT 2024, maille ~115 m.</li>
+        <li>Temps de route : <a href="https://project-osrm.org" target="_blank" rel="noopener">OSRM</a> + 10 min pour se garer et marcher.</li>
+        <li>Fonds de carte : OpenStreetMap France, CARTO (nuit), Esri (satellite).</li>
+        <li>Biologie : Ifremer / MARBEC (projet CONNECT-MED, thèse A. Mignucci), Parc national des Calanques (migrations de la daurade, 2026), fiches espèces zones-humides.org, INPN (plateau rocheux de Palavas-Carnon).</li>
+        <li>Matrice conditions → leurres : ton guide Notion « Loup au leurre du bord ».</li>
+      </ul>
+      <p class="sub">Version 1 — 18 novembre 2026.</p>
+    </div>
+  </section>
+</main>
+
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-inner card">
+    <button class="btn small close" id="sheetClose" aria-label="Fermer la fiche">Fermer</button>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+<div id="toast" class="toast" hidden role="status"></div>
+
+<nav class="bottom">
+  <button data-view="sortie" class="on">Sortie</button>
+  <button data-view="carnet">Carnet</button>
+  <button data-view="infos">Infos</button>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="js/spots.js"></script>
+<script src="js/model.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

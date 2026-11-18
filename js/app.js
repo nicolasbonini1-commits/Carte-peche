@@ -1,0 +1,578 @@
+// Carte de pêche loup & dorade — application
+(function () {
+  const M = window.MODEL;
+  const $ = s => document.querySelector(s);
+  const LS = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } }
+  };
+  const PAL = {
+    jour: ["#d6e2ea", "#f3d27e", "#eea13f", "#d9602a", "#9c2a1c"],
+    nuit: ["#3a4c66", "#1f7a8c", "#35b7a0", "#f2d24b", "#ff7b3a"]
+  };
+  const pad = n => String(n).padStart(2, "0");
+  const hm = d => `${pad(d.getHours())} h ${pad(d.getMinutes())}`;
+  const dayName = d => d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" });
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  // ---------- État ----------
+  const overrides = LS.get("cp_pos", {});
+  const SPOTS = window.SPOTS.map(s => overrides[s.id] ? { ...s, lat: overrides[s.id][0], lon: overrides[s.id][1], moved: true } : s);
+  const state = {
+    data: null, // {times:[Date], F:{W,C,E,R}, S:{W,C,E}, sun:{'YYYY-MM-DD':{rise,set}}, fetchedAt}
+    drive: LS.get("cp_drive", null),
+    plan: Object.assign({ day: 0, depart: "06:00", hours: 4, species: "loup", origin: "home" }, LS.get("cp_plan", {})),
+    themeMode: LS.get("cp_theme", "auto"),
+    origin: LS.get("cp_origin", window.HOME),
+    carnet: LS.get("cp_carnet", []),
+    results: [],
+    selected: null
+  };
+
+  // ---------- Thème jour / nuit ----------
+  function isNightNow() {
+    const now = new Date();
+    const key = now.toISOString().slice(0, 10);
+    const sun = state.data && state.data.sun[localKey(now)];
+    const min = now.getHours() * 60 + now.getMinutes();
+    const rise = sun ? sun.rise : 450, set = sun ? sun.set : 1035;
+    return min < rise - 20 || min > set + 20;
+  }
+  function theme() { return state.themeMode === "auto" ? (isNightNow() ? "nuit" : "jour") : state.themeMode; }
+  function applyTheme() {
+    const t = theme();
+    document.documentElement.dataset.theme = t;
+    $("#themeBtn").textContent = state.themeMode === "auto" ? `Auto (${t})` : t === "jour" ? "Jour" : "Nuit";
+    setBaseLayer();
+  }
+  $("#themeBtn").addEventListener("click", () => {
+    state.themeMode = state.themeMode === "auto" ? "jour" : state.themeMode === "jour" ? "nuit" : "auto";
+    LS.set("cp_theme", state.themeMode); applyTheme(); render();
+  });
+
+  // ---------- Carte ----------
+  const map = L.map("map", { zoomControl: true, attributionControl: true }).setView([43.50, 4.10], 10);
+  const layers = {
+    jour: L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, subdomains: "abc", attribution: "© OpenStreetMap France" }),
+    nuit: L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19, subdomains: "abcd", attribution: "© OpenStreetMap, © CARTO" }),
+    sat: L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Imagerie © Esri" })
+  };
+  const bathy = L.tileLayer.wms("https://ows.emodnet-bathymetry.eu/wms", {
+    layers: "emodnet:mean_multicolour", format: "image/png", transparent: true, opacity: 0.55,
+    attribution: "Profondeurs © EMODnet Bathymetry (MNT 2024)"
+  });
+  let base = null, useSat = false, useBathy = LS.get("cp_bathy", true);
+  function setBaseLayer() {
+    const want = useSat ? layers.sat : layers[theme()];
+    if (base !== want) { if (base) map.removeLayer(base); base = want.addTo(map); base.bringToBack(); }
+    if (useBathy && !map.hasLayer(bathy)) bathy.addTo(map);
+    if (!useBathy && map.hasLayer(bathy)) map.removeLayer(bathy);
+  }
+  $("#satBtn").addEventListener("click", e => { useSat = !useSat; e.target.classList.toggle("on", useSat); setBaseLayer(); });
+  $("#bathyBtn").addEventListener("click", e => { useBathy = !useBathy; LS.set("cp_bathy", useBathy); e.target.classList.toggle("on", useBathy); setBaseLayer(); });
+  $("#bathyBtn").classList.toggle("on", useBathy);
+
+  // Profondeur au toucher (service EMODnet ; peut être indisponible)
+  map.on("click", async e => {
+    if (dragging) return;
+    const { lat, lng } = e.latlng;
+    const pop = L.popup().setLatLng(e.latlng).setContent("Profondeur…").openOn(map);
+    try {
+      const r = await fetch(`https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(${lng.toFixed(5)}%20${lat.toFixed(5)})`);
+      const j = await r.json();
+      const v = j.avg ?? j.depth ?? j.mean;
+      pop.setContent(v != null ? `Profondeur moyenne ≈ ${Math.abs(v).toFixed(1)} m<br><small>EMODnet, maille ~115 m</small>` : "Pas de donnée ici");
+    } catch (err) { pop.setContent("Profondeur indisponible (service EMODnet)"); }
+  });
+
+  const markers = {};
+  let dragging = false;
+  function drawMarkers() {
+    const pal = PAL[theme()];
+    state.results.forEach(r => {
+      const s = r.spot;
+      const c = r.feasible ? pal[M.classOf(r.score)] : "#8a8f96";
+      if (!markers[s.id]) {
+        const halo = L.circle([s.lat, s.lon], { radius: 600, stroke: false, fillOpacity: 0.28 }).addTo(map);
+        const dot = L.marker([s.lat, s.lon], { icon: dotIcon(c, ""), draggable: false }).addTo(map);
+        dot.on("click", () => openSpot(s.id));
+        dot.on("dragend", ev => {
+          const p = ev.target.getLatLng();
+          overrides[s.id] = [+p.lat.toFixed(5), +p.lng.toFixed(5)]; LS.set("cp_pos", overrides);
+          s.lat = p.lat; s.lon = p.lng; halo.setLatLng(p); dot.dragging.disable(); dragging = false;
+          toast("Position enregistrée sur ce téléphone");
+          state.drive = null; computeDrive().then(render);
+        });
+        markers[s.id] = { halo, dot };
+      }
+      markers[s.id].halo.setStyle({ fillColor: c });
+      markers[s.id].dot.setIcon(dotIcon(c, r.rank <= 3 && r.feasible ? r.rank : ""));
+    });
+  }
+  function dotIcon(c, label) {
+    const big = label !== "";
+    const sz = big ? 28 : 18;
+    return L.divIcon({
+      className: "dot", iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2],
+      html: `<span style="background:${c};width:${sz}px;height:${sz}px">${label}</span>`
+    });
+  }
+
+  // ---------- Données : météo, mer ----------
+  function localKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+  const toMin = s => { const t = s.split("T")[1]; return +t.slice(0, 2) * 60 + +t.slice(3, 5); };
+
+  async function fetchData(force) {
+    const cached = LS.get("cp_data", null);
+    if (!force && cached && Date.now() - cached.at < 45 * 60 * 1000) return parseData(cached);
+    const P = window.WX_POINTS;
+    const zl = ["W", "C", "E", "R"], zs = ["W", "C", "E"];
+    const fUrl = "https://api.open-meteo.com/v1/forecast?latitude=" + zl.map(z => P[z].land[0]).join(",") +
+      "&longitude=" + zl.map(z => P[z].land[1]).join(",") +
+      "&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,precipitation" +
+      "&daily=sunrise,sunset&past_days=3&forecast_days=7&timezone=Europe%2FParis&wind_speed_unit=kmh";
+    const sUrl = "https://marine-api.open-meteo.com/v1/marine?latitude=" + zs.map(z => P[z].sea[0]).join(",") +
+      "&longitude=" + zs.map(z => P[z].sea[1]).join(",") +
+      "&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature&past_days=3&forecast_days=7&timezone=Europe%2FParis";
+    try {
+      const [f, s] = await Promise.all([fetch(fUrl).then(r => r.json()), fetch(sUrl).then(r => r.json())]);
+      if (!Array.isArray(f) || !Array.isArray(s)) throw new Error(f.reason || s.reason || "réponse inattendue");
+      const raw = { at: Date.now(), f, s };
+      LS.set("cp_data", raw);
+      return parseData(raw);
+    } catch (e) {
+      banner(`Météo indisponible (${e.message}).` + (cached ? " J'affiche les dernières données reçues." : ""));
+      return cached ? parseData(cached) : null;
+    }
+  }
+
+  function parseData(raw) {
+    const zl = ["W", "C", "E", "R"], zs = ["W", "C", "E"];
+    const times = raw.f[0].hourly.time;
+    const F = {}, S = {}, sun = {};
+    zl.forEach((z, i) => {
+      const h = raw.f[i].hourly;
+      F[z] = { wind: h.wind_speed_10m, dir: h.wind_direction_10m, gust: h.wind_gusts_10m, cloud: h.cloud_cover, rain: h.precipitation };
+    });
+    raw.f[1].daily.time.forEach((d, k) => { sun[d] = { rise: toMin(raw.f[1].daily.sunrise[k]), set: toMin(raw.f[1].daily.sunset[k]) }; });
+    zs.forEach((z, i) => {
+      const h = raw.s[i].hourly;
+      const idx = {}; h.time.forEach((t, k) => idx[t] = k);
+      const pick = arr => times.map(t => arr && idx[t] != null ? arr[idx[t]] : null);
+      S[z] = { hs: pick(h.wave_height), dir: pick(h.wave_direction), per: pick(h.wave_period), sst: pick(h.sea_surface_temperature) };
+    });
+    return { times: times.map(t => new Date(t)), keys: times, F, S, sun, fetchedAt: new Date(raw.at) };
+  }
+
+  // ---------- Temps de route (OSRM) ----------
+  async function computeDrive() {
+    const o = state.origin;
+    const sig = `${o.lat.toFixed(3)},${o.lon.toFixed(3)}|` + SPOTS.map(s => `${s.lat.toFixed(3)},${s.lon.toFixed(3)}`).join(";");
+    if (state.drive && state.drive.sig === sig) return;
+    const coords = [`${o.lon},${o.lat}`].concat(SPOTS.map(s => `${s.lon},${s.lat}`)).join(";");
+    let mins = {}, src = "OSRM";
+    try {
+      const r = await fetch(`https://router.project-osrm.org/table/v1/driving/${coords}?sources=0&annotations=duration`);
+      const j = await r.json();
+      SPOTS.forEach((s, k) => { mins[s.id] = Math.round(j.durations[0][k + 1] / 60) + 10; }); // +10 min : se garer et marcher
+    } catch (e) {
+      src = "estimation";
+      SPOTS.forEach(s => { const km = haversine(o.lat, o.lon, s.lat, s.lon) * 1.35; mins[s.id] = Math.round(km / 65 * 60) + 10; });
+    }
+    state.drive = { sig, mins, src };
+    LS.set("cp_drive", state.drive);
+  }
+  function haversine(a, b, c, d) {
+    const R = 6371, r = x => x * Math.PI / 180;
+    const x = Math.sin(r(c - a) / 2) ** 2 + Math.cos(r(a)) * Math.cos(r(c)) * Math.sin(r(d - b) / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(x));
+  }
+
+  // ---------- Conditions à un poste et à une heure ----------
+  function conditions(spot, i) {
+    const D = state.data, z = spot.zone;
+    const F = D.F[z], S = D.S[z];
+    const hsAt = k => k >= 0 && S.hs[k] != null ? M.localWave(spot, S.hs[k], S.dir[k]) : null;
+    const hsLocal = hsAt(i);
+    let maxPast = 0;
+    for (let k = Math.max(0, i - 36); k < i; k++) { const v = hsAt(k); if (v != null && v > maxPast) maxPast = v; }
+    const falling = hsLocal != null && maxPast >= 1.0 && hsLocal <= 0.65 * maxPast && hsLocal < 1.2;
+    const prev = hsAt(i - 6);
+    const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
+    let rain72 = 0;
+    for (let k = Math.max(0, i - 72); k <= i; k++) rain72 += Math.max(D.F.R.rain[k] || 0, F.rain[k] || 0);
+    let sst = S.sst[i];
+    if (sst == null) for (const zz of ["C", "W", "E"]) if (D.S[zz].sst[i] != null) { sst = D.S[zz].sst[i]; break; }
+    const t = D.times[i];
+    const sun = D.sun[localKey(t)] || { rise: 450, set: 1035 };
+    const light = M.lightPeriod(t.getHours() * 60 + t.getMinutes(), sun.rise, sun.set);
+    const moon = M.moon(t);
+    const cloud = F.cloud[i] ?? 0;
+    return {
+      spot, month: t.getMonth() + 1, light, cloud, moon,
+      darkNight: moon.illum < 0.35 || cloud >= 70,
+      wind: F.wind[i] ?? 0, windDir: F.dir[i] ?? 0, gust: F.gust[i] ?? 0,
+      onshore: M.onshore(spot, F.wind[i] ?? 0, F.dir[i] ?? 0),
+      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, sst
+    };
+  }
+
+  function learnFor(spot, species, p) {
+    const mine = state.carnet.filter(e => e.spotId === spot.id && (e.species === species || e.species === "les deux"));
+    const k = mine.filter(e => (species === "loup" ? e.nLoup : e.nDorade) > 0).length;
+    return M.learnFactor(k, mine.length, p);
+  }
+
+  function scoreAt(spot, i, species) {
+    const c = conditions(spot, i);
+    const base = M.score(spot, species, c, null);
+    const learn = learnFor(spot, species, base.score / 100);
+    return learn.n ? M.score(spot, species, c, learn) : base;
+  }
+  function bestSpecies(spot, i) {
+    const sp = state.plan.species;
+    if (sp !== "les deux") return { ...scoreAt(spot, i, sp), species: sp };
+    const a = scoreAt(spot, i, "loup"), b = scoreAt(spot, i, "dorade");
+    return a.score >= b.score ? { ...a, species: "loup" } : { ...b, species: "dorade" };
+  }
+
+  // ---------- Plan de sortie ----------
+  function departDate() {
+    const d = new Date(); d.setDate(d.getDate() + +state.plan.day);
+    const [h, m] = state.plan.depart.split(":").map(Number);
+    d.setHours(h, m, 0, 0); return d;
+  }
+  function computePlan() {
+    state.results = planFor(departDate());
+  }
+  function planFor(dep) {
+    const D = state.data;
+    const total = state.plan.hours * 60;
+    const res = SPOTS.map(spot => {
+      const drive = state.drive ? state.drive.mins[spot.id] : 60;
+      const start = new Date(dep.getTime() + drive * 60000);
+      const end = new Date(dep.getTime() + (total - drive) * 60000);
+      const fishMin = (end - start) / 60000;
+      const idx = [];
+      D.times.forEach((t, i) => { const mid = t.getTime() + 30 * 60000; if (mid >= start.getTime() && t.getTime() < end.getTime()) idx.push(i); });
+      if (!idx.length) { const k = D.times.findIndex(t => t >= start); if (k >= 0) idx.push(k); }
+      const hours = idx.map(i => ({ i, t: D.times[i], ...bestSpecies(spot, i) }));
+      const scores = hours.map(h => h.score);
+      const max = scores.length ? Math.max(...scores) : 0;
+      const mean = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+      const best = hours.reduce((a, b) => (b.score > (a ? a.score : -1) ? b : a), null);
+      return { spot, drive, start, end, fishMin, feasible: fishMin >= 45 && hours.length > 0, hours, best, score: Math.round(0.6 * max + 0.4 * mean) };
+    });
+    res.sort((a, b) => (b.feasible - a.feasible) || (b.score - a.score));
+    res.forEach((r, k) => r.rank = k + 1);
+    return res;
+  }
+
+  // Quand partir ? Compare les sessions aube et soir des 3 prochains jours avec ton temps disponible.
+  function renderWhen() {
+    const D = state.data, now = new Date();
+    const drives = state.drive ? Object.values(state.drive.mins).sort((a, b) => a - b) : [60];
+    const typical = drives[Math.floor(drives.length / 2)];
+    const cands = [];
+    for (let d = 0; d < 3; d++) {
+      const day = new Date(); day.setDate(day.getDate() + d);
+      const sun = D.sun[localKey(day)]; if (!sun) continue;
+      const mk = (min, label) => { const x = new Date(day); x.setHours(0, Math.round(min), 0, 0); return { dep: x, label, d }; };
+      cands.push(mk(sun.rise - 60 - typical, "aube"));
+      cands.push(mk(sun.set - state.plan.hours * 60 + typical + 90, "soir"));
+    }
+    const rows = cands.filter(c => c.dep > now && c.dep < D.times[D.times.length - 1])
+      .map(c => ({ ...c, top: planFor(c.dep)[0] })).filter(c => c.top && c.top.feasible)
+      .sort((a, b) => b.top.score - a.top.score).slice(0, 4);
+    if (!rows.length) { $("#when").innerHTML = ""; return; }
+    $("#when").innerHTML = `<h3>Quand partir ? (${state.plan.hours} h dispo)</h3>` + rows.map((c, k) => `
+      <div class="when-row">${pill(c.top.score, true)}<span class="spot-main"><b>${dayName(c.dep)} · ${c.label} · départ ${hm(c.dep)}</b>
+      <small>${esc(c.top.spot.name)} · meilleure heure ${hm(c.top.best.t)}</small></span>
+      <button class="btn small" data-when="${k}">Choisir</button></div>`).join("");
+    document.querySelectorAll("[data-when]").forEach(b => b.onclick = () => {
+      const c = rows[+b.dataset.when];
+      state.plan.day = String(c.d); state.plan.depart = `${pad(c.dep.getHours())}:${pad(c.dep.getMinutes())}`;
+      $("#pDay").value = state.plan.day; $("#pDepart").value = state.plan.depart; LS.set("cp_plan", state.plan); render();
+      window.scrollTo({ top: $("#reco").offsetTop - 70, behavior: "smooth" });
+    });
+  }
+
+  // ---------- Rendu ----------
+  function render() {
+    applyThemeOnly();
+    if (!state.data) return;
+    computePlan();
+    drawMarkers();
+    renderReco();
+    renderWhen();
+    renderList();
+    renderConditions();
+    $("#legend").innerHTML = PAL[theme()].map((c, k) => `<i style="background:${c}" title="${M.CLASS_LABELS[k]}"></i>`).join("") + `<small class="sub">&nbsp;faible → forte</small>`;
+    $("#fresh").textContent = `Météo du ${dayName(state.data.fetchedAt)} à ${hm(state.data.fetchedAt)} · routes : ${state.drive ? state.drive.src : "—"} depuis ${esc(state.origin.name)}`;
+  }
+  function applyThemeOnly() { document.documentElement.dataset.theme = theme(); }
+
+  function pill(score, feasible) {
+    const pal = PAL[theme()];
+    const c = feasible ? pal[M.classOf(score)] : "#8a8f96";
+    return `<span class="pill" style="background:${c}">${feasible ? score : "—"}</span>`;
+  }
+
+  function renderReco() {
+    const r = state.results[0];
+    if (!r || !r.feasible) { $("#reco").innerHTML = `<p>Aucun poste faisable avec ce temps disponible : la route prend trop de temps. Allonge la durée.</p>`; return; }
+    const b = r.best, sc = M.SCENARIOS[b.scenario];
+    const second = state.results.slice(1, 3).filter(x => x.feasible).map(x => `${esc(x.spot.name)} (${x.score})`).join(" · ");
+    $("#reco").innerHTML = `
+      <div class="reco-top"><span class="tag">Meilleur choix</span>${pill(r.score, true)}</div>
+      <h2>${esc(r.spot.name)}</h2>
+      <p class="sub">${esc(r.spot.commune)} · ${r.drive} min de route · en pêche de ${hm(r.start)} à ${hm(r.end)}</p>
+      <p><b>Meilleure heure :</b> ${hm(b.t)} (${b.score}/100, ${b.species}) · <b>${sc.name}</b></p>
+      ${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : `<p><b>Dorade :</b> calée 40-60 g près des enrochements ou en sortie de grau ; appâts durs (crabe, couteau, moule) [P].</p>`}
+      ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements à ce moment.</p>` : ""}
+      <p class="sub">Ensuite : ${second || "—"}</p>
+      <div class="row">${goButtons(r.spot)}<button class="btn" data-open="${r.spot.id}">Détails</button></div>`;
+    $("#reco").querySelector("[data-open]").onclick = () => openSpot(r.spot.id);
+  }
+
+  function goButtons(s) {
+    return `<a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=driving" target="_blank" rel="noopener">Y aller (Maps)</a>
+      <a class="btn" href="https://waze.com/ul?ll=${s.lat},${s.lon}&navigate=yes" target="_blank" rel="noopener">Waze</a>`;
+  }
+
+  function renderList() {
+    $("#list").innerHTML = state.results.map(r => `
+      <button class="spot" data-id="${r.spot.id}">
+        ${pill(r.score, r.feasible)}
+        <span class="spot-main"><b>${esc(r.spot.name)}</b>
+        <small>${esc(r.spot.commune)} · ${r.drive} min · ${r.feasible ? `${Math.round(r.fishMin / 60 * 10) / 10} h de pêche · meilleure heure ${hm(r.best.t)}` : "pas assez de temps sur place"}</small>
+        ${strip(r.spot)}</span>
+      </button>`).join("");
+    document.querySelectorAll("#list .spot").forEach(b => b.onclick = () => openSpot(+b.dataset.id));
+  }
+
+  // Bandeau des 48 prochaines heures pour un poste
+  function strip(spot) {
+    const D = state.data, now = Date.now(), pal = PAL[theme()];
+    let cells = "";
+    D.times.forEach((t, i) => {
+      if (t.getTime() < now - 3600000 || t.getTime() > now + 48 * 3600000) return;
+      const s = bestSpecies(spot, i).score;
+      cells += `<i style="background:${pal[M.classOf(s)]}" title="${dayName(t)} ${t.getHours()} h : ${s}"></i>`;
+    });
+    return `<span class="strip" aria-label="Note heure par heure sur 48 h">${cells}</span>`;
+  }
+
+  function renderConditions() {
+    const D = state.data, r = state.results[0];
+    const i = r && r.best ? r.best.i : D.times.findIndex(t => t >= new Date());
+    const t = D.times[i];
+    const rows = ["W", "C", "E"].map(z => {
+      const F = D.F[z], S = D.S[z];
+      return `<tr><th>${window.WX_POINTS[z].name}</th>
+        <td>${M.compass(F.dir[i])} ${Math.round(F.wind[i])} km/h<br><small>rafales ${Math.round(F.gust[i])}</small></td>
+        <td>${S.hs[i] != null ? S.hs[i].toFixed(1) + " m" : "—"}<br><small>${S.dir[i] != null ? "de " + M.compass(S.dir[i]) : ""}${S.per[i] ? " · " + Math.round(S.per[i]) + " s" : ""}</small></td>
+        <td>${S.sst[i] != null ? S.sst[i].toFixed(1) + " °C" : "—"}</td></tr>`;
+    }).join("");
+    const moon = M.moon(t);
+    const sun = D.sun[localKey(t)];
+    $("#cond").innerHTML = `<p class="sub">Au moment conseillé : ${dayName(t)} ${t.getHours()} h · ${M.windName(D.F.C.dir[i])}</p>
+      <table><thead><tr><th>Zone</th><th>Vent</th><th>Houle (large)</th><th>Eau</th></tr></thead><tbody>${rows}</tbody></table>
+      <p class="sub">Soleil ${sun ? `${pad(Math.floor(sun.rise / 60))} h ${pad(sun.rise % 60)} – ${pad(Math.floor(sun.set / 60))} h ${pad(sun.set % 60)}` : ""} · Lune : ${moon.name}, ${Math.round(moon.illum * 100)} % éclairée</p>`;
+  }
+
+  // ---------- Fiche poste ----------
+  function openSpot(id) {
+    const r = state.results.find(x => x.spot.id === id); if (!r) return;
+    const s = r.spot, b = r.best;
+    state.selected = id;
+    const facts = b ? b.factors.map(f => `<tr><th>${f.k}</th><td>${Math.round(f.v * 100)} %</td><td>${esc(f.why)}</td></tr>`).join("") : "";
+    const sc = b ? M.SCENARIOS[b.scenario] : null;
+    const mine = state.carnet.filter(e => e.spotId === id);
+    $("#sheetBody").innerHTML = `
+      <h2>${esc(s.name)} ${pill(r.score, r.feasible)}</h2>
+      <p class="sub">${esc(s.commune)} · ${r.drive} min de route · ${M.HABITAT[s.type].label}${s.moved ? " · position corrigée" : ""}</p>
+      ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour le ${b.species}</p>
+      <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : ""}
+      ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}
+      <h3>Pourquoi cette note</h3>
+      <table class="facts"><tbody>${facts}</tbody></table>
+      <p class="sub">La note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.</p>` : ""}
+      <h3>Ta journée ici</h3>
+      <div class="row daypick">${[0,1,2,3,4,5].map(d => { const x = new Date(); x.setDate(x.getDate() + d); return `<button class="btn small${d === (state.dayView ?? 0) ? " on" : ""}" data-day="${d}">${d === 0 ? "Auj." : d === 1 ? "Demain" : x.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" })}</button>`; }).join("")}</div>
+      <div id="dayBox"></div>
+      <h3>48 prochaines heures</h3>${strip(s)}
+      <h3>Le poste</h3><p>${esc(s.structure)}</p><p class="warn-soft">${esc(s.attention)}</p>
+      <p class="sub">Ton carnet ici : ${mine.length} sortie(s).</p>
+      <div class="row">${goButtons(s)}</div>
+      <div class="row"><button class="btn" id="logHere">Noter une sortie ici</button><button class="btn" id="moveBtn">Corriger la position</button></div>`;
+    $("#sheet").hidden = false;
+    renderDay(s, state.dayView ?? 0);
+    document.querySelectorAll("[data-day]").forEach(btn => btn.onclick = () => {
+      state.dayView = +btn.dataset.day;
+      document.querySelectorAll("[data-day]").forEach(x => x.classList.toggle("on", x === btn));
+      renderDay(s, state.dayView);
+    });
+    $("#logHere").onclick = () => { closeSheet(); showView("carnet"); $("#fSpot").value = id; };
+    $("#moveBtn").onclick = () => {
+      closeSheet(); showView("sortie");
+      const m = markers[id].dot; m.dragging.enable(); dragging = true;
+      map.setView([s.lat, s.lon], 15);
+      toast("Fais glisser le point à sa vraie place");
+    };
+    map.panTo([s.lat, s.lon]);
+  }
+  // Créneaux d'une journée pour un poste, avec l'ordre des leurres
+  function renderDay(spot, dayOff) {
+    const D = state.data, day = new Date(); day.setDate(day.getDate() + dayOff);
+    const key = localKey(day), now = Date.now();
+    const drive = state.drive ? state.drive.mins[spot.id] : 60;
+    const hrs = [];
+    D.times.forEach((t, i) => {
+      if (localKey(t) !== key || t.getHours() < 4 || t.getHours() > 22 || t.getTime() < now - 3600000) return;
+      hrs.push({ i, t, ...bestSpecies(spot, i) });
+    });
+    if (!hrs.length) { $("#dayBox").innerHTML = `<p class="sub">Pas de prévision pour ce jour.</p>`; return; }
+    const max = Math.max(...hrs.map(h => h.score));
+    const thr = Math.max(max - 8, 35);
+    const wins = []; let cur = null;
+    hrs.forEach((h, k) => {
+      const contiguous = cur && k > 0 && h.t - hrs[k - 1].t <= 3600000;
+      if (h.score >= thr) { if (!contiguous) { cur = { hours: [] }; wins.push(cur); } cur.hours.push(h); } else cur = null;
+    });
+    wins.forEach(w => { w.peak = w.hours.reduce((a, b) => b.score > a.score ? b : a); });
+    wins.sort((a, b) => b.peak.score - a.peak.score);
+    const far = dayOff >= 3 ? `<p class="warn-soft">Prévision à ${dayOff} jours : fiabilité moyenne, à revérifier la veille.</p>` : "";
+    $("#dayBox").innerHTML = far + wins.slice(0, 3).map((w, k) => {
+      const a = w.hours[0].t, b = new Date(w.hours[w.hours.length - 1].t.getTime() + 3600000), p = w.peak;
+      const c = conditions(spot, p.i), sc = M.SCENARIOS[p.scenario];
+      const dep = new Date(a.getTime() - drive * 60000);
+      let body;
+      if (p.species === "loup") {
+        const seq = M.lureSequence(c);
+        body = `<p class="sub">Eau ${seq.water} · coloris ${seq.color.fam} (${seq.color.why})</p><ol class="seq">` +
+          seq.steps.map(st => `<li><b>${st.zone} :</b> ${st.lure}<br><small>Coloris : ${st.color} · ${st.anim}</small></li>`).join("") +
+          `</ol><p class="sub">Environ 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.</p>`;
+      } else {
+        body = `<p class="sub">Dorade : calée 40-60 g, près des enrochements ou dans la veine de courant du grau ; appâts durs (crabe, couteau, moule) [P].</p>`;
+      }
+      return `<div class="win"><div class="win-top">${pill(p.score, true)}<b>${k + 1}. ${hm(a)} – ${hm(b)}</b></div>
+        <p class="sub">${c.light} · ${sc.name} · ${M.windName(c.windDir)} ${Math.round(c.wind)} km/h · mer ${M.seaState(c.hsLocal)}${c.falling ? " qui retombe" : ""} · départ de ${esc(state.origin.name)} vers ${hm(dep)}</p>
+        ${p.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}${body}</div>`;
+    }).join("");
+  }
+  function closeSheet() { $("#sheet").hidden = true; }
+  $("#sheetClose").onclick = closeSheet;
+
+  // ---------- Formulaire « Ma sortie » ----------
+  function bindPlan() {
+    const p = state.plan;
+    $("#pDay").value = p.day; $("#pDepart").value = p.depart; $("#pHours").value = p.hours; $("#pSpecies").value = p.species;
+    $("#pHoursOut").textContent = `${p.hours} h`;
+    ["#pDay", "#pDepart", "#pHours", "#pSpecies"].forEach(sel => $(sel).addEventListener("input", () => {
+      p.day = $("#pDay").value; p.depart = $("#pDepart").value; p.hours = +$("#pHours").value; p.species = $("#pSpecies").value;
+      $("#pHoursOut").textContent = `${p.hours} h`;
+      LS.set("cp_plan", p); render();
+    }));
+    $("#nowBtn").onclick = () => { const d = new Date(); $("#pDay").value = 0; $("#pDepart").value = `${pad(d.getHours())}:${pad(d.getMinutes())}`; $("#pDepart").dispatchEvent(new Event("input")); };
+    $("#gpsBtn").onclick = () => {
+      if (!navigator.geolocation) return toast("Localisation indisponible");
+      navigator.geolocation.getCurrentPosition(pos => {
+        state.origin = { name: "ma position", lat: pos.coords.latitude, lon: pos.coords.longitude };
+        LS.set("cp_origin", state.origin); state.drive = null; computeDrive().then(render);
+      }, () => toast("Localisation refusée"), { timeout: 10000 });
+    };
+    $("#homeBtn").onclick = () => { state.origin = window.HOME; LS.set("cp_origin", state.origin); state.drive = null; computeDrive().then(render); };
+    $("#goSpot").innerHTML = SPOTS.map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("");
+    $("#goDay").innerHTML = [0,1,2,3,4,5].map(d => { const x = new Date(); x.setDate(x.getDate() + d); return `<option value="${d}">${d === 0 ? "Aujourd'hui" : d === 1 ? "Demain" : x.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric" })}</option>`; }).join("");
+    $("#goBtn").onclick = () => { state.dayView = +$("#goDay").value; openSpot(+$("#goSpot").value); };
+    $("#refreshBtn").onclick = async () => { banner(""); state.data = await fetchData(true); render(); toast("Météo mise à jour"); };
+  }
+
+  // ---------- Carnet ----------
+  function bindCarnet() {
+    $("#fSpot").innerHTML = SPOTS.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("");
+    const d = new Date(); $("#fDate").value = localKey(d); $("#fStart").value = `${pad(d.getHours())}:00`;
+    $("#carnetForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const entry = {
+        id: Date.now(), spotId: +$("#fSpot").value, date: $("#fDate").value, start: $("#fStart").value,
+        dur: +$("#fDur").value, species: $("#fSpecies").value,
+        nLoup: +$("#fLoup").value || 0, nDorade: +$("#fDorade").value || 0, maxSize: +$("#fSize").value || null,
+        lure: $("#fLure").value.trim(), notes: $("#fNotes").value.trim()
+      };
+      entry.snapshot = snapshot(entry);
+      state.carnet.unshift(entry); LS.set("cp_carnet", state.carnet);
+      e.target.reset(); bindCarnetDefaults(); renderCarnet(); render(); toast("Sortie enregistrée");
+    });
+    $("#exportBtn").onclick = async () => {
+      const txt = JSON.stringify(state.carnet);
+      try { await navigator.clipboard.writeText(txt); toast("Carnet copié : colle-le à Claude ou dans Notion"); }
+      catch (e) { $("#importBox").value = txt; toast("Copie impossible : le texte est dans la zone ci-dessous"); }
+    };
+    $("#importBtn").onclick = () => {
+      try {
+        const arr = JSON.parse($("#importBox").value);
+        const ids = new Set(state.carnet.map(e => e.id));
+        arr.forEach(e => { if (!ids.has(e.id)) state.carnet.push(e); });
+        state.carnet.sort((a, b) => b.id - a.id); LS.set("cp_carnet", state.carnet); renderCarnet(); render(); toast("Carnet importé");
+      } catch (e) { toast("Texte illisible"); }
+    };
+    renderCarnet();
+  }
+  function bindCarnetDefaults() { const d = new Date(); $("#fDate").value = localKey(d); $("#fStart").value = `${pad(d.getHours())}:00`; }
+  function snapshot(e) {
+    if (!state.data) return null;
+    const t = new Date(`${e.date}T${e.start}`);
+    const i = state.data.times.findIndex(x => Math.abs(x - t) < 1800001);
+    if (i < 0) return null;
+    const spot = SPOTS.find(s => s.id === e.spotId);
+    const c = conditions(spot, i);
+    return { wind: Math.round(c.wind), windDir: Math.round(c.windDir), gust: Math.round(c.gust), hsLocal: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null,
+      sea: M.seaState(c.hsLocal), falling: c.falling, light: c.light, moon: Math.round(c.moon.illum * 100), sst: c.sst, rain72: Math.round(c.rain72),
+      scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c) };
+  }
+  function renderCarnet() {
+    const list = state.carnet;
+    if (!list.length) { $("#carnetList").innerHTML = `<p class="sub">Aucune sortie notée. Chaque sortie, même bredouille, affine les notes du poste.</p>`; return; }
+    $("#carnetList").innerHTML = list.map(e => {
+      const s = SPOTS.find(x => x.id === e.spotId) || { name: "?" };
+      const res = e.nLoup || e.nDorade ? `${e.nLoup ? e.nLoup + " loup(s) " : ""}${e.nDorade ? e.nDorade + " dorade(s)" : ""}${e.maxSize ? " · max " + e.maxSize + " cm" : ""}` : "bredouille";
+      const sn = e.snapshot;
+      return `<div class="entry"><b>${esc(e.date)} ${esc(e.start)} · ${esc(s.name)}</b>
+        <small>${res} · ${esc(e.lure || "")}</small>
+        ${sn ? `<small>Vent ${sn.wind} km/h ${M.compass(sn.windDir)}, mer ${sn.sea}${sn.falling ? " qui retombe" : ""}, ${sn.light} · note prévue : loup ${sn.scoreLoup}, dorade ${sn.scoreDorade}</small>` : ""}
+        ${e.notes ? `<small>${esc(e.notes)}</small>` : ""}
+        <button class="link" data-del="${e.id}">Supprimer</button></div>`;
+    }).join("");
+    document.querySelectorAll("[data-del]").forEach(b => b.onclick = () => {
+      state.carnet = state.carnet.filter(e => e.id !== +b.dataset.del); LS.set("cp_carnet", state.carnet); renderCarnet(); render();
+    });
+  }
+
+  // ---------- Navigation, messages ----------
+  function showView(v) {
+    document.querySelectorAll(".view").forEach(el => el.hidden = el.id !== v);
+    document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.view === v));
+    if (v === "sortie") setTimeout(() => map.invalidateSize(), 50);
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("nav button").forEach(b => b.onclick = () => showView(b.dataset.view));
+  let toastT;
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3000); }
+  function banner(msg) { const b = $("#banner"); b.textContent = msg; b.hidden = !msg; }
+
+  // ---------- Démarrage ----------
+  async function start() {
+    applyTheme();
+    bindPlan(); bindCarnet();
+    $("#reco").innerHTML = "<p>Chargement de la météo et de la mer…</p>";
+    const [data] = await Promise.all([fetchData(false), computeDrive()]);
+    state.data = data;
+    if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. Vérifie la connexion puis touche « Mettre à jour ».</p>"; return; }
+    applyTheme(); render();
+    setInterval(() => { applyTheme(); }, 5 * 60 * 1000);
+  }
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => { });
+  start();
+})();
