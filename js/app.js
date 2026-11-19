@@ -194,6 +194,48 @@
     LS.set("cp_flow", { at: Date.now(), rivers });
     return rivers;
   }
+  // ---------- Houle mesurée (bouées Candhis d'Espiguette et de Sète) ----------
+  // Rangée toutes les 3 h environ par la tâche GitHub « alertes » dans la branche « donnees » (la clé Candhis ne peut pas être
+  // dans l'appli, qui est publique). Gardée sur le téléphone : sans réseau, on affiche la dernière reçue avec son heure.
+  const HOULE_URL = "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json";
+  async function fetchHoule(force) {
+    const cached = LS.get("cp_houle", null);
+    if (!force && cached && Date.now() - cached.at < 20 * 60 * 1000) return cached.d;
+    try {
+      const r = await fetch(HOULE_URL, { cache: "no-store" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const d = await r.json();
+      if (!d || !Array.isArray(d.bouees)) throw new Error("réponse inattendue");
+      LS.set("cp_houle", { at: Date.now(), d });
+      return d;
+    } catch (e) { return cached ? cached.d : null; }
+  }
+  function renderHoule() {
+    const H = state.houle;
+    if (!H || !H.bouees.length) return `<h3>Houle mesurée maintenant</h3><p class="sub">Pas encore de mesure reçue des bouées.</p>`;
+    const f1 = v => v == null ? "—" : v.toFixed(1).replace(".", ",");
+    const rows = H.bouees.map(b => {
+      const ms = (b.mesures || []).filter(m => m.h != null);
+      if (!ms.length) return `<li><b>${esc(b.nom)}</b> : pas de mesure sur les 48 dernières heures.</li>`;
+      const m = ms[ms.length - 1], t = new Date(m.t), age = Math.round((Date.now() - t) / 60000);
+      // Prévision Open-Meteo Marine (MFWAM) au même endroit, à l'heure la plus proche de la mesure
+      const pv = (b.prevu || []).reduce((a, x) => !a || Math.abs(Date.parse(x.t) - t) < Math.abs(Date.parse(a.t) - t) ? x : a, null);
+      const pvOk = pv && Math.abs(Date.parse(pv.t) - t) <= 90 * 60000;
+      // Tendance : mesure d'il y a environ 6 h (entre 5 et 7 h) ; seuil ±0,2 m [P]
+      const old = ms.filter(x => { const d = (t - Date.parse(x.t)) / 3600000; return d >= 5 && d <= 7; })[0];
+      const dh = old ? m.h - old.h : null;
+      const tend = dh == null ? "" : ` · sur 6 h : ${dh >= 0.2 ? "en hausse" : dh <= -0.2 ? "en baisse" : "stable"} (${dh >= 0 ? "+" : "−"}${f1(Math.abs(dh))} m)`;
+      const ageTxt = age < 90 ? `il y a ${age} min` : `il y a ${Math.round(age / 60)} h`;
+      return `<li><b>${esc(b.nom)}</b> <small>(bouée au large, ${b.fond} m de fond)</small> : <b>${f1(m.h)} m</b> mesurés ${dayName(t)} à ${hm(t)} (${ageTxt}${age > 180 ? ", mesure ancienne" : ""})
+        · vagues max ${f1(m.hmax)} m${m.dir != null ? " · de " + M.compass(m.dir) : ""}${m.per != null ? " · " + Math.round(m.per) + " s" : ""}${m.sst != null ? " · eau " + f1(m.sst) + " °C" : ""}
+        <br><small>Prévu à cette heure au même endroit : ${pvOk ? f1(pv.h) + " m" : "—"}${tend}</small></li>`;
+    }).join("");
+    const g = new Date(H.genere);
+    return `<h3>Houle mesurée maintenant</h3><ul class="rivers">${rows}</ul>
+      <p class="sub">Mesure : bouées CANDHIS – Cerema (Licence Ouverte), une mesure toutes les 30 min, relevées par la tâche « alertes » (dernier relevé ${dayName(g)} à ${hm(g)}).
+      Hauteur H1/3, comparable à la houle prévue. Heure des mesures lue en heure UTC, à vérifier.</p>`;
+  }
+
   // Débit habituel de chaque mois : médiane des débits moyens mensuels mesurés depuis 1990 (Hub'Eau, obs_elab QmM).
   // Gardé 30 jours sur le téléphone (ça ne change presque pas).
   async function fetchFlowRefs() {
@@ -490,7 +532,7 @@
     const sun = D.sun[localKey(t)];
     $("#cond").innerHTML = `<p class="sub">Au moment conseillé : ${dayName(t)} ${t.getHours()} h · ${M.windName(D.F.C.dir[i])}</p>
       <table><thead><tr><th>Zone</th><th>Vent</th><th>Houle (large)</th><th>Eau</th></tr></thead><tbody>${rows}</tbody></table>
-      <p class="sub">Soleil ${sun ? `${pad(Math.floor(sun.rise / 60))} h ${pad(sun.rise % 60)} – ${pad(Math.floor(sun.set / 60))} h ${pad(sun.set % 60)}` : ""} · Lune : ${moon.name}, ${Math.round(moon.illum * 100)} % éclairée</p>`;
+      <p class="sub">Soleil ${sun ? `${pad(Math.floor(sun.rise / 60))} h ${pad(sun.rise % 60)} – ${pad(Math.floor(sun.set / 60))} h ${pad(sun.set % 60)}` : ""} · Lune : ${moon.name}, ${Math.round(moon.illum * 100)} % éclairée</p>` + renderHoule();
   }
 
   // ---------- Fiche poste ----------
@@ -692,9 +734,9 @@
     if (busy) return;
     busy = true; clearTimeout(retryT);
     try {
-      const [d, fl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {})]);
+      const [d, fl, hl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {}), fetchHoule(true).catch(() => state.houle)]);
       if (d) state.data = d;
-      state.flows = fl;
+      state.flows = fl; if (hl) state.houle = hl;
       if (state.data) { applyTheme(); render(); }
       if (manual) toast(lastOk ? "Météo et débits mis à jour" : "Toujours pas de réseau : prévisions précédentes gardées");
       else if (lastOk) toast("Réseau revenu : météo mise à jour");
@@ -711,8 +753,8 @@
     applyTheme();
     bindPlan(); bindCarnet();
     $("#reco").innerHTML = "<p>Chargement de la météo et de la mer…</p>";
-    const [data, flows] = await Promise.all([fetchData(false), fetchFlows(false).catch(() => ({})), computeDrive()]);
-    state.data = data; state.flows = flows;
+    const [data, flows, houle] = await Promise.all([fetchData(false), fetchFlows(false).catch(() => ({})), fetchHoule(false).catch(() => null), computeDrive()]);
+    state.data = data; state.flows = flows; state.houle = houle;
     setInterval(() => { applyTheme(); }, 5 * 60 * 1000);
     if (!lastOk) retryT = setTimeout(() => refresh(false), RETRY_S[retryN++] * 1000);
     if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. L'appli réessaie seule quand le réseau revient (ou touche « Mettre à jour »).</p>"; return; }

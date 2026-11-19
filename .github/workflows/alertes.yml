@@ -1,5 +1,7 @@
 # Toutes les 3 h : calcule les alertes pêche des 3 prochains jours et les range dans la branche « donnees »
 # (fichier alertes.json), que Home Assistant lit pour envoyer les notifications. La branche main n'est pas touchée.
+# Range aussi houle.json : houle mesurée par les bouées Candhis (Espiguette, Sète), lue par l'appli.
+# Lancée depuis une autre branche que main (essai), elle écrit dans la branche « essais-houle », jamais dans « donnees ».
 # Attention : GitHub coupe les tâches planifiées d'un dépôt public sans activité pendant 60 jours ;
 # Home Assistant prévient si alertes.json n'est plus mis à jour (capteur « Pêche alertes en panne »).
 name: alertes
@@ -15,13 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Europe/Paris
+      DEST: ${{ github.ref_name == 'main' && 'donnees' || 'essais-houle' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Ancien fichier
-        run: git fetch -q --depth=1 origin donnees && git show origin/donnees:alertes.json > /tmp/ancien.json || echo '{"alertes":[]}' > /tmp/ancien.json
+        run: |
+          git fetch -q --depth=1 origin donnees && git show origin/donnees:alertes.json > /tmp/ancien.json || echo '{"alertes":[]}' > /tmp/ancien.json
+          git show origin/donnees:houle.json > /tmp/ancienne_houle.json 2>/dev/null || echo '{"bouees":[]}' > /tmp/ancienne_houle.json
       - name: Télécharger la météo et la mer
         run: |
           mkdir -p /tmp/m
@@ -29,12 +34,26 @@ jobs:
             curl -sS -m 90 --retry 3 --retry-delay 15 --retry-all-errors "$u" -o "/tmp/m/$n.json" || echo "échec $n"
           done
           ls -la /tmp/m
+      - name: Houle mesurée (Candhis) et prévue au même endroit
+        # Une panne de Candhis ne doit pas bloquer les alertes : les mesures précédentes sont alors gardées.
+        env:
+          K: ${{ secrets.CANDHIS_TOKEN }}
+        run: |
+          mkdir -p /tmp/h
+          node notif/houle.js urls | while read -r n u; do
+            case "$n" in
+              candhis_*) [ -n "$K" ] && curl -sS -m 60 --retry 2 --retry-delay 20 -H "Authorization: $K" "$u" -o "/tmp/h/$n.json" || echo "échec $n" ;;
+              *) curl -sS -m 90 --retry 3 --retry-delay 15 --retry-all-errors "$u" -o "/tmp/h/$n.json" || echo "échec $n" ;;
+            esac
+          done
+          node notif/houle.js /tmp/h /tmp/ancienne_houle.json > /tmp/houle.json || cp /tmp/ancienne_houle.json /tmp/houle.json
+          head -c 300 /tmp/houle.json; echo
       - name: Calcul
         run: node notif/alertes.js /tmp/ancien.json /tmp/m > /tmp/alertes.json && head -c 600 /tmp/alertes.json
-      - name: Enregistrer dans la branche donnees
+      - name: Enregistrer dans la branche donnees (ou essais-houle pour un essai)
         run: |
-          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b donnees
-          cp /tmp/alertes.json .
+          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b "$DEST"
+          cp /tmp/alertes.json /tmp/houle.json .
           git config user.name "alertes-bot"; git config user.email "alertes@users.noreply.github.com"
-          git add alertes.json && git commit -qm "alertes $(date '+%d/%m %H:%M')"
-          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" donnees
+          git add alertes.json houle.json && git commit -qm "alertes $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$DEST"
