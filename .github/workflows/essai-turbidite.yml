@@ -1,0 +1,41 @@
+# Essai temporaire (branche essai-turbidite) : télécharger les relevés depuis 2020 (débits Hub'Eau, météo et houle ERA5)
+# et la turbidité satellite (Copernicus Marine, Sentinel-2, 100 m) aux postes, pour simuler l'indice « eau teintée ».
+# Aucune clé. Les résultats vont dans les branches essais-turbidite-releves et essais-turbidite-satellite,
+# jamais dans « donnees » (lue par Home Assistant) ni dans main.
+name: essai-turbidite
+on:
+  push:
+    branches: [essai-turbidite]
+    paths: [".github/workflows/essai-turbidite.yml", "outils/turbidite/telecharger.py"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  releves:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Télécharger débits, météo, houle
+        run: python3 outils/turbidite/telecharger.py /tmp/r debits,meteo,houle
+      - name: Enregistrer (branche essais-turbidite-releves)
+        if: always()
+        run: |
+          cd /tmp/r && ls -la && git init -q && git checkout -q -b essais-turbidite-releves
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add -A && git commit -qm "relevés $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-turbidite-releves
+  satellite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - name: Turbidité Copernicus Marine aux postes
+        run: python3 outils/turbidite/telecharger.py /tmp/s turbidite
+      - name: Enregistrer (branche essais-turbidite-satellite)
+        if: always()
+        run: |
+          mkdir -p /tmp/s && cd /tmp/s && ls -la && git init -q && git checkout -q -b essais-turbidite-satellite
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add -A && git commit -qm "satellite $(date '+%d/%m %H:%M')" || exit 0
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-turbidite-satellite

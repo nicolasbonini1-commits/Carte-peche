@@ -1,0 +1,166 @@
+{
+ "spots": [
+  {
+   "id": 1,
+   "name": "Embouchure du Petit Rhône",
+   "lat": 43.4515,
+   "lon": 4.3945,
+   "type": "embouchure",
+   "seaward": 190,
+   "river": "rhone"
+  },
+  {
+   "id": 2,
+   "name": "Épis et brise-lames du village",
+   "lat": 43.4505,
+   "lon": 4.415,
+   "type": "digue",
+   "seaward": 185,
+   "river": false
+  },
+  {
+   "id": 3,
+   "name": "Rivage sauvage Petit Rhône – Espiguette",
+   "lat": 43.462,
+   "lon": 4.25,
+   "type": "plage_barres",
+   "seaward": 175,
+   "river": false
+  },
+  {
+   "id": 4,
+   "name": "Pointe et plage de l'Espiguette",
+   "lat": 43.475,
+   "lon": 4.148,
+   "type": "plage_barres",
+   "seaward": 165,
+   "river": false
+  },
+  {
+   "id": 5,
+   "name": "Digue de l'Espiguette (extérieur Port Camargue)",
+   "lat": 43.5165,
+   "lon": 4.121,
+   "type": "digue",
+   "seaward": 240,
+   "river": false
+  },
+  {
+   "id": 6,
+   "name": "Jetées du chenal du Grau-du-Roi",
+   "lat": 43.5347,
+   "lon": 4.1323,
+   "type": "grau",
+   "seaward": 220,
+   "river": "vidourle"
+  },
+  {
+   "id": 7,
+   "name": "Digue et épis du Boucanet",
+   "lat": 43.544,
+   "lon": 4.122,
+   "type": "digue",
+   "seaward": 210,
+   "river": false
+  },
+  {
+   "id": 8,
+   "name": "Passe du Ponant (Vidourle)",
+   "lat": 43.5565,
+   "lon": 4.106,
+   "type": "grau",
+   "seaward": 170,
+   "river": "vidourle"
+  },
+  {
+   "id": 9,
+   "name": "Digues extérieures et « digue cassée »",
+   "lat": 43.5555,
+   "lon": 4.088,
+   "type": "digue",
+   "seaward": 170,
+   "river": false
+  },
+  {
+   "id": 10,
+   "name": "Plages du Grand et du Petit Travers",
+   "lat": 43.553,
+   "lon": 4.015,
+   "type": "plage_lisse",
+   "seaward": 165,
+   "river": false
+  },
+  {
+   "id": 11,
+   "name": "Digues du port de Carnon",
+   "lat": 43.5399,
+   "lon": 3.9772,
+   "type": "grau",
+   "seaward": 160,
+   "river": false
+  },
+  {
+   "id": 12,
+   "name": "Embouchure du Lez et digues",
+   "lat": 43.5237,
+   "lon": 3.9353,
+   "type": "grau",
+   "seaward": 155,
+   "river": "lez"
+  },
+  {
+   "id": 13,
+   "name": "Digue de l'étang du Prévost",
+   "lat": 43.5185,
+   "lon": 3.9101,
+   "type": "grau",
+   "seaward": 155,
+   "river": false
+  },
+  {
+   "id": 14,
+   "name": "Plage de Maguelone",
+   "lat": 43.505,
+   "lon": 3.878,
+   "type": "plage_barres",
+   "seaward": 150,
+   "river": false
+  },
+  {
+   "id": 15,
+   "name": "Les Aresquiers (fonds rocheux)",
+   "lat": 43.466,
+   "lon": 3.826,
+   "type": "roche",
+   "seaward": 140,
+   "river": false
+  },
+  {
+   "id": 16,
+   "name": "Digues et grau de Frontignan",
+   "lat": 43.4303,
+   "lon": 3.7775,
+   "type": "grau",
+   "seaward": 140,
+   "river": false
+  }
+ ],
+ "zones": null,
+ "rivers": {
+  "rhone": {
+   "name": "Rhône à Tarascon",
+   "station": "V720001002",
+   "div": 1000
+  },
+  "vidourle": {
+   "name": "Vidourle à Gallargues",
+   "station": "Y346400501",
+   "div": 1000
+  },
+  "lez": {
+   "name": "Lez à Lattes",
+   "station": "Y321002001",
+   "div": 1000
+  }
+ }
+}
