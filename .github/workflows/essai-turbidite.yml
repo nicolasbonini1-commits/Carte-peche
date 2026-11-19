@@ -12,6 +12,7 @@ permissions:
   contents: write
 jobs:
   releves:
+    if: ${{ vars.TURB_RELEVES != 'non' && !contains(github.event.head_commit.message, '[satellite seul]') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

@@ -186,9 +186,7 @@ def turbidite():
     for c in couches:
         log("couche", c["id"], c["dims"], c["tms"], c["infoformats"])
     save("wmts_couches.json", [{k: v for k, v in c.items() if k != "_time"} for c in couches])
-    tur = [c for c in couches if re.search(r"(^|[/_-])TUR($|[/_-])", c["id"] or "", re.I) and "l3" in (c["id"] or "").lower()]
-    if not tur:
-        tur = [c for c in couches if re.search(r"TUR", c["id"] or "", re.I)]
+    tur = [c for c in couches if (c["id"] or "").endswith("/TUR")]
     if not tur:
         log("aucune couche TUR"); return
     couche = tur[0]
@@ -236,9 +234,16 @@ def turbidite():
         vals = [v for v in vals if v is not None and not (isinstance(v, float) and math.isnan(v)) and -1 < v < 1e4]
         return vals[0] if vals else None
 
-    if all(valeur(gfi(lez[0], lez[1], t)) is None for t in list(essais)[:2]) and not any(valeur(bytes(v, "utf8")) is not None for v in essais.values()):
-        log("aucune valeur lisible dans les essais : extraction complète pas lancée (voir wmts_essais_gfi.json)")
+    if not any('"value"' in v for v in essais.values()):
+        log("réponse sans champ value : extraction complète pas lancée (voir wmts_essais_gfi.json)")
         return
+    # Essai d'une série de dates en une requête (si le serveur l'accepte, ce serait bien plus rapide)
+    r, c, i, j = tuile(lez[0], lez[1], Z)
+    q = {"service": "WMTS", "version": "1.0.0", "request": "GetFeatureInfo", "layer": couche["id"], "tilematrixset": tms,
+         "tilematrix": str(Z), "tilerow": r, "tilecol": c, "i": i, "j": j, "infoformat": fmt,
+         "time": "2026-10-01T00:00:00Z/2026-11-17T00:00:00Z"}
+    b = get(f"{WMTS}?" + urllib.parse.urlencode(q), tries=1, raw=True)
+    log("essai série :", (b.decode("utf8", "replace") if isinstance(b, bytes) else str(b))[:400])
 
     # Points : 300 m et 1 km au large de chaque poste, plus 4 points témoins au large (5 km)
     points = []
