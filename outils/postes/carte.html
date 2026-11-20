@@ -37,7 +37,7 @@
   });
   L.marker([d.poste.lat, d.poste.lon]).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
   cands.forEach((c, i) => L.circleMarker([c.lat, c.lon], { radius: 10, color: "#000", weight: 2, fillColor: "#ff0", fillOpacity: 1 })
-    .bindTooltip(String(i + 1), { permanent: true, className: "lab" }).addTo(map));
+    .bindTooltip(c.label || String(i + 1), { permanent: true, className: "lab" }).addTo(map));
   document.getElementById("leg").innerHTML = `<b>Poste ${id} — ${d.poste.name}</b><br>Repère « actuel » = position de l'appli ; jaunes = candidats.
     Ronds bleus = profondeur EMODnet (m ; négatif = sous le niveau de la mer, positif = au-dessus), gris = pas de donnée (terre ou étang). Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;
     pointillé = trait de côte OSM ; points rouges / verts / orange = balisage. Grille 250 m.`;
