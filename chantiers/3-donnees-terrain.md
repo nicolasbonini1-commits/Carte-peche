@@ -14,3 +14,4 @@ Nico a plus d'expérience à la dorade à la calée qu'au loup (spots, périodes
 
 ## État
 - 20 nov. 18 h 45 : fiche créée, rien commencé.
+- 20 nov. 19 h : étape 1 faite. Décision de Nico : brut dans une page Notion **privée** « Pêche – terrain (privé) » (sous Pêche, Deuxième cerveau), règles **anonymes** seulement dans `terrain/` (format : `terrain/README.md`). La page contient le questionnaire pour l'ami (11 questions, étape 3) et les 6 questions de l'expérience dorade de Nico (étape 2). Prochaine action : Nico envoie le questionnaire, puis répond aux 6 questions.
