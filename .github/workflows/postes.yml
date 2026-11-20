@@ -1,5 +1,7 @@
 # Chantier 1 (positions des postes). Ne tourne que sur la branche chantier-1-postes ; écrit dans « essais-postes-donnees » (jamais « donnees »).
 # - outils/postes/a_relever.txt  : postes à relever (OSM + grille de profondeur EMODnet autour du point actuel) → poste_N.json + carte_poste_N.png
+# - outils/postes/a_zone.txt     : poste « zone » (poste 3) : accès à la mer, parkings, espaces protégés → zone_N.json
+# - outils/postes/vues.txt      : vues rapprochées sur photo aérienne (« nom poste lat lon zoom ») → vue_nom.png
 # - outils/postes/a_verifier.txt : postes dont les points (candidats.json, sinon js/spots.js) sont contrôlés : trajet à pied,
 #   profondeur au pied, parkings, trait de côte → verif_N.json + carte_poste_N_zoom.png (plan OSM) + carte_poste_N_sat.png (photo aérienne)
 # Les postes sont traités en parallèle (2 relevés à la fois pour ne pas charger Overpass), puis tout est enregistré en une fois.
@@ -22,6 +24,8 @@ jobs:
     outputs:
       releve: ${{ steps.p.outputs.releve }}
       verifier: ${{ steps.p.outputs.verifier }}
+      zone: ${{ steps.p.outputs.zone }}
+      vues: ${{ steps.p.outputs.vues }}
     steps:
       - uses: actions/checkout@v5
       - id: p
@@ -29,6 +33,8 @@ jobs:
           j() { f=outils/postes/$1; if [ -f $f ]; then tr -s ' \n' '\n' < $f | grep -E '^[0-9]+$' | jq -R 'tonumber' | jq -cs .; else echo '[]'; fi; }
           echo "releve=$(j a_relever.txt)" >> $GITHUB_OUTPUT
           echo "verifier=$(j a_verifier.txt)" >> $GITHUB_OUTPUT
+          echo "zone=$(j a_zone.txt)" >> $GITHUB_OUTPUT
+          if [ -s outils/postes/vues.txt ]; then echo "vues=oui" >> $GITHUB_OUTPUT; else echo "vues=non" >> $GITHUB_OUTPUT; fi
           cat $GITHUB_OUTPUT
 
   releve:
@@ -93,8 +99,53 @@ jobs:
           path: /tmp/sortie/
           retention-days: 3
 
+  zone:
+    needs: plan
+    if: needs.plan.outputs.zone != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.zone) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node outils/postes/zone.js ${{ matrix.id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zone-${{ matrix.id }}
+          path: /tmp/sortie/
+          retention-days: 3
+
+  # Vues rapprochées sur photo aérienne : une ligne par vue dans outils/postes/vues.txt → « nom poste lat lon zoom »
+  vues:
+    needs: plan
+    if: needs.plan.outputs.vues == 'oui'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p /tmp/web/sortie /tmp/sortie && cp outils/postes/carte.html outils/postes/candidats.json /tmp/web/
+          git fetch -q --depth=1 origin essais-postes-donnees && for f in $(git ls-tree --name-only FETCH_HEAD | grep -E '^(poste|verif)_[0-9]+\.json$'); do git show FETCH_HEAD:$f > /tmp/web/sortie/$f; done
+          cd /tmp/web && (python3 -m http.server 8777 >/dev/null 2>&1 &) && sleep 1
+          grep -v '^#' $GITHUB_WORKSPACE/outils/postes/vues.txt | while read nom poste la lo z; do
+            [ -z "$nom" ] && continue
+            google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1000,1000 \
+              --virtual-time-budget=25000 --screenshot=/tmp/sortie/vue_$nom.png "http://localhost:8777/carte.html?poste=$poste&fond=sat&c=$la,$lo&z=$z" || true
+          done
+          ls -la /tmp/sortie
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vues
+          path: /tmp/sortie/
+          retention-days: 3
+
   enregistrer:
-    needs: [plan, releve, verifier]
+    needs: [plan, releve, verifier, zone, vues]
     if: always() && needs.plan.result == 'success'
     runs-on: ubuntu-latest
     steps:
@@ -110,5 +161,5 @@ jobs:
           git checkout -q -B essais-postes-donnees
           cp /tmp/art/* .
           git config user.name "postes-bot"; git config user.email "postes@users.noreply.github.com"
-          git add -A && git commit -qm "postes $(TZ=Europe/Paris date '+%d/%m %H:%M') (relevé ${{ needs.plan.outputs.releve }}, contrôle ${{ needs.plan.outputs.verifier }}, commit ${GITHUB_SHA::7})"
+          git add -A && git commit -qm "postes $(TZ=Europe/Paris date '+%d/%m %H:%M') (relevé ${{ needs.plan.outputs.releve }}, contrôle ${{ needs.plan.outputs.verifier }}, zone ${{ needs.plan.outputs.zone }}, commit ${GITHUB_SHA::7})"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-postes-donnees

@@ -1,17 +1,226 @@
 {
  "8": [
-  {"label": "P", "name": "Bout de la jetée est du grau des Abîmes (côté Boucanet)", "lat": 43.55333, "lon": 4.10137, "src": "OSM way 66035894 (man_made=groyne, rock, source BDOrtho IGN 2023), bout le plus loin du trait de côte ; grau des Abîmes = communication de l'étang du Ponant avec la mer (Ifremer 2009) [S]"},
-  {"label": "a", "name": "Bout de l'épi est de La Grande-Motte (côté ouest du grau)", "lat": 43.55286, "lon": 4.09911, "src": "OSM way 231620423 (groyne, 230 m) ; épi est de 230 m construit en 1984 au bout de la plage, près de la passe des Abîmes (Bonnefille 1989, La Houille Blanche) [S]"},
-  {"label": "b", "name": "1er épi du Boucanet", "lat": 43.55295, "lon": 4.10341, "src": "OSM way 66098050 (groyne, rock) [C]"},
-  {"label": "c", "name": "2e épi du Boucanet", "lat": 43.55221, "lon": 4.10597, "src": "OSM way 66035462 (groyne) [C]"},
-  {"label": "d", "name": "3e épi du Boucanet", "lat": 43.55170, "lon": 4.10792, "src": "OSM way 291336577 (groyne) [C]"}
+  {
+   "label": "P",
+   "name": "Bout de la jetée est du grau des Abîmes (côté Boucanet)",
+   "lat": 43.55333,
+   "lon": 4.10137,
+   "src": "OSM way 66035894 (man_made=groyne, rock, source BDOrtho IGN 2023), bout le plus loin du trait de côte ; grau des Abîmes = communication de l'étang du Ponant avec la mer (Ifremer 2009) [S]"
+  },
+  {
+   "label": "a",
+   "name": "Bout de l'épi est de La Grande-Motte (côté ouest du grau)",
+   "lat": 43.55286,
+   "lon": 4.09911,
+   "src": "OSM way 231620423 (groyne, 230 m) ; épi est de 230 m construit en 1984 au bout de la plage, près de la passe des Abîmes (Bonnefille 1989, La Houille Blanche) [S]"
+  },
+  {
+   "label": "b",
+   "name": "1er épi du Boucanet",
+   "lat": 43.55295,
+   "lon": 4.10341,
+   "src": "OSM way 66098050 (groyne, rock) [C]"
+  },
+  {
+   "label": "c",
+   "name": "2e épi du Boucanet",
+   "lat": 43.55221,
+   "lon": 4.10597,
+   "src": "OSM way 66035462 (groyne) [C]"
+  },
+  {
+   "label": "d",
+   "name": "3e épi du Boucanet",
+   "lat": 43.5517,
+   "lon": 4.10792,
+   "src": "OSM way 291336577 (groyne) [C]"
+  }
  ],
  "9": [
-  {"label": "P", "name": "Plage face au brise-lames paysager (provisoire)", "lat": 43.55528, "lon": 4.08816, "src": "trait de côte OSM au droit du brise-lames OSM way 9590832 (détaché) ; brise-lames paysager 120 m, à 140 m du rivage d'origine, 1987-88 (Bonnefille 1989) [S]"},
-  {"label": "a", "name": "Feu rouge, bout de la digue ouest du port", "lat": 43.55204, "lon": 4.08147, "src": "OSM node 1420666376 (feu « La Grande Motte », rouge) ; jetée W Fl(2)R.6s, 43°33,1' N 4°04,9' E (Figaro Nautisme) [S]"},
-  {"label": "b", "name": "Feu vert, bout de la jetée est du port", "lat": 43.55327, "lon": 4.08122, "src": "OSM node 13391321713 (« La Grande Motte tribord », vert) ; jetée E Fl.G.4s (Figaro Nautisme) [S]"},
-  {"label": "c", "name": "Plage face au 2e brise-lames", "lat": 43.55551, "lon": 4.09147, "src": "trait de côte OSM au droit du brise-lames OSM way 9590837 (détaché) [C]"},
-  {"label": "d", "name": "Bout de l'ouvrage OSM way 375073050", "lat": 43.55364, "lon": 4.09503, "src": "OSM way 375073050 (groyne, rock, source Bing) [C]"},
-  {"label": "e", "name": "Bout de l'épi est de La Grande-Motte", "lat": 43.55286, "lon": 4.09911, "src": "OSM way 231620423 ; épi est 230 m (1984, Bonnefille 1989) [S]"}
+  {
+   "label": "P",
+   "name": "Plage face au brise-lames paysager (provisoire)",
+   "lat": 43.55528,
+   "lon": 4.08816,
+   "src": "trait de côte OSM au droit du brise-lames OSM way 9590832 (détaché) ; brise-lames paysager 120 m, à 140 m du rivage d'origine, 1987-88 (Bonnefille 1989) [S]"
+  },
+  {
+   "label": "a",
+   "name": "Feu rouge, bout de la digue ouest du port",
+   "lat": 43.55204,
+   "lon": 4.08147,
+   "src": "OSM node 1420666376 (feu « La Grande Motte », rouge) ; jetée W Fl(2)R.6s, 43°33,1' N 4°04,9' E (Figaro Nautisme) [S]"
+  },
+  {
+   "label": "b",
+   "name": "Feu vert, bout de la jetée est du port",
+   "lat": 43.55327,
+   "lon": 4.08122,
+   "src": "OSM node 13391321713 (« La Grande Motte tribord », vert) ; jetée E Fl.G.4s (Figaro Nautisme) [S]"
+  },
+  {
+   "label": "c",
+   "name": "Plage face au 2e brise-lames",
+   "lat": 43.55551,
+   "lon": 4.09147,
+   "src": "trait de côte OSM au droit du brise-lames OSM way 9590837 (détaché) [C]"
+  },
+  {
+   "label": "d",
+   "name": "Bout de l'ouvrage OSM way 375073050",
+   "lat": 43.55364,
+   "lon": 4.09503,
+   "src": "OSM way 375073050 (groyne, rock, source Bing) [C]"
+  },
+  {
+   "label": "e",
+   "name": "Bout de l'épi est de La Grande-Motte",
+   "lat": 43.55286,
+   "lon": 4.09911,
+   "src": "OSM way 231620423 ; épi est 230 m (1984, Bonnefille 1989) [S]"
+  }
+ ],
+ "6": [
+  {
+   "label": "P",
+   "name": "Feu vert, tête de la jetée rive gauche du chenal",
+   "lat": 43.53468,
+   "lon": 4.13225,
+   "src": "OSM node 417972894 (light_minor vert) [C]"
+  },
+  {
+   "label": "a",
+   "name": "1er épi de la plage rive gauche",
+   "lat": 43.53441,
+   "lon": 4.13393,
+   "src": "OSM way 66035073 (groyne) [C]"
+  },
+  {
+   "label": "b",
+   "name": "2e épi de la plage rive gauche",
+   "lat": 43.53197,
+   "lon": 4.13633,
+   "src": "OSM way 66035060 (groyne) [C]"
+  },
+  {
+   "label": "c",
+   "name": "3e épi de la plage rive gauche",
+   "lat": 43.53051,
+   "lon": 4.13777,
+   "src": "OSM way 66035063 (groyne) [C]"
+  },
+  {
+   "label": "x1",
+   "name": "Témoin : feu rouge, jetée rive droite (de l'autre côté du chenal)",
+   "lat": 43.53519,
+   "lon": 4.13181,
+   "src": "OSM node 417972902 [C]"
+  }
+ ],
+ "10": [
+  {
+   "label": "P",
+   "name": "Plage entre Petit et Grand Travers (bord de l'eau)",
+   "lat": 43.55337,
+   "lon": 4.0149,
+   "src": "trait de côte OSM au droit de l'ancien point [C]"
+  },
+  {
+   "label": "a",
+   "name": "Brise-lames le plus proche vers Carnon",
+   "lat": 43.55176,
+   "lon": 4.0062,
+   "src": "OSM way 366086857 (breakwater) [C]"
+  },
+  {
+   "label": "b",
+   "name": "Plage, 700 m vers La Grande-Motte",
+   "lat": 43.55464,
+   "lon": 4.02339,
+   "src": "trait de côte OSM [C]"
+  }
+ ],
+ "12": [
+  {
+   "label": "P",
+   "name": "Feu vert, tête de la jetée ouest du Lez",
+   "lat": 43.52373,
+   "lon": 3.93525,
+   "src": "OSM node 1420666379 ; jetée OSM way 388845267 ; contrôlé le 20 nov. (osm_lez.json) [C]"
+  },
+  {
+   "label": "a",
+   "name": "Feu rouge, bout de la digue du large",
+   "lat": 43.52367,
+   "lon": 3.9366,
+   "src": "OSM node 1420666381 ; digue OSM way 389802450 [C]"
+  },
+  {
+   "label": "b",
+   "name": "Plage face au brise-lames détaché ouest",
+   "lat": 43.52232,
+   "lon": 3.92496,
+   "src": "OSM way 389802465 (breakwater détaché) [C]"
+  },
+  {
+   "label": "x1",
+   "name": "Témoin : 1er épi de la rive gauche (de l'autre côté du Lez)",
+   "lat": 43.5283,
+   "lon": 3.93563,
+   "src": "OSM way 372219038 [C]"
+  }
+ ],
+ "13": [
+  {
+   "label": "P",
+   "name": "Bout de la jetée ouest du grau du Prévost",
+   "lat": 43.51802,
+   "lon": 3.91524,
+   "src": "OSM way 389802447 (breakwater) ; grau = canal OSM way 9219451 de l'étang à la mer [C]"
+  },
+  {
+   "label": "a",
+   "name": "Bout de la jetée est du grau du Prévost",
+   "lat": 43.51846,
+   "lon": 3.91525,
+   "src": "OSM way 389802444 (breakwater) [C]"
+  },
+  {
+   "label": "b",
+   "name": "Plage, 600 m vers Maguelone",
+   "lat": 43.51541,
+   "lon": 3.90396,
+   "src": "trait de côte OSM [C]"
+  },
+  {
+   "label": "c",
+   "name": "Brise-lames est (vers Palavas)",
+   "lat": 43.51977,
+   "lon": 3.91607,
+   "src": "OSM way 389802463 (breakwater) [C]"
+  }
+ ],
+ "15": [
+  {
+   "label": "P",
+   "name": "Plage des Aresquiers (bord de l'eau)",
+   "lat": 43.46623,
+   "lon": 3.82565,
+   "src": "trait de côte OSM au droit de l'ancien point [C]"
+  },
+  {
+   "label": "a",
+   "name": "1er épi vers Frontignan",
+   "lat": 43.46053,
+   "lon": 3.81985,
+   "src": "OSM way 965374972 (groyne) [C]"
+  },
+  {
+   "label": "b",
+   "name": "Plage, 700 m vers Maguelone",
+   "lat": 43.47123,
+   "lon": 3.83082,
+   "src": "trait de côte OSM [C]"
+  }
  ]
 }

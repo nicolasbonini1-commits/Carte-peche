@@ -1,7 +1,8 @@
 <!doctype html>
 <!-- Chantier 1 : carte de contrôle d'un poste (point actuel, candidats, éléments OSM, grille de profondeur EMODnet,
      trajets à pied et parkings du contrôle verifier.js). Ouverte par la tâche « postes » dans Chrome sans écran, puis capturée en PNG.
-     Usage : carte.html?poste=1[&fond=sat][&zoom=1]  (fond=sat : photo aérienne Esri World Imagery ; zoom=1 : cadrée sur les candidats) -->
+     Usage : carte.html?poste=1[&fond=sat][&zoom=1][&c=lat,lon&z=17]  (fond=sat : photo aérienne Esri World Imagery ;
+     zoom=1 : cadrée sur les candidats ; c + z : vue rapprochée centrée sur un point, pour regarder un ouvrage de près) -->
 <html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -16,19 +17,22 @@
   const id = qs.get("poste"), sat = qs.get("fond") === "sat", zoomCands = qs.get("zoom") === "1";
   const getj = async u => { try { const r = await fetch(u); return r.ok ? await r.json() : null; } catch (e) { return null; } };
   const d = await getj(`sortie/poste_${id}.json`);
+  if (!d && !(await getj(`sortie/verif_${id}.json`)) && !qs.get("c")) { document.title = "pret"; return; }
   const v = await getj(`sortie/verif_${id}.json`);
   let cands = ((await getj("candidats.json")) || {})[id] || [];
   if (!cands.length && v) cands = v.points;
   const map = L.map("m", { zoomControl: false });
   if (sat) L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Esri World Imagery" }).addTo(map);
   else L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
-  const actuel = d ? [d.poste.lat, d.poste.lon] : v ? [v.poste.actuel.lat, v.poste.actuel.lon] : null;
+  const actuel = d ? [d.poste.lat, d.poste.lon] : v ? [v.poste.actuel.lat, v.poste.actuel.lon] : cands.length ? [cands[0].lat, cands[0].lon] : null;
   const pts = d ? d.grille.map(g => [g.lat, g.lon]) : [];
   let bounds;
   if (zoomCands && cands.length) bounds = L.latLngBounds(cands.map(c => [c.lat, c.lon])).extend(actuel).pad(0.35);
   else if (cands.length) bounds = L.latLngBounds([actuel, ...cands.map(c => [c.lat, c.lon])]).pad(1.2);
-  else bounds = L.latLngBounds(pts.length ? pts : [actuel]).pad(0.08);
+  else if (actuel) bounds = L.latLngBounds(pts.length ? pts : [actuel]).pad(0.08);
+  else bounds = L.latLngBounds([[43.4, 3.7], [43.6, 4.4]]);
   map.fitBounds(bounds);
+  if (qs.get("c")) { const [la, lo] = qs.get("c").split(",").map(Number); map.setView([la, lo], +(qs.get("z") || 17)); }
   if (d && !sat) d.grille.forEach(g => {
     if (g.avg == null) L.circleMarker([g.lat, g.lon], { radius: 3, color: "#777", weight: 1, fillOpacity: 0.6 }).addTo(map);
     else L.circleMarker([g.lat, g.lon], { radius: 9, color: "#036", weight: 1, fillColor: "#09f", fillOpacity: Math.min(0.9, 0.15 + Math.abs(g.avg) / 10) })
@@ -55,7 +59,7 @@
     });
     (v.acces.elements || []).filter(e => e.tags && e.tags.amenity === "casino" && e.lat).forEach(e => L.circleMarker([e.lat, e.lon], { radius: 7, color: "#000", fillColor: "#c0c", fillOpacity: 1 }).bindTooltip("casino", { permanent: true, className: "lab" }).addTo(map));
   }
-  if (actuel) L.marker(actuel).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
+  if (actuel && (d || v)) L.marker(actuel).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
   cands.forEach((c, i) => L.circleMarker([c.lat, c.lon], { radius: 10, color: "#000", weight: 2, fillColor: "#ff0", fillOpacity: 1 })
     .bindTooltip(c.label || String(i + 1), { permanent: true, className: "lab" }).addTo(map));
   const nom = d ? d.poste.name : v ? v.poste.name : "";
