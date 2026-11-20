@@ -12,11 +12,22 @@ const R = 2500;          // rayon de recherche OSM (m)
 const PAS = 250, N = 9;  // grille de profondeur : 9 × 9 points tous les 250 m (2 km de côté)
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+// 20 nov. 20 h 40 : poste 2, « repères » et « côte » en 502/504/délai sur les 3 serveurs (surcharge passagère :
+// « fleuves » a répondu juste après) → 2e passe sur les 3 serveurs après 45 s de pause.
 async function overpass(q) {
   const erreurs = [];
+  for (let passe = 0; passe < 2; passe++) {
+    if (passe) await sleep(45000);
+    const r = await overpass1(q, erreurs);
+    if (r) return r;
+  }
+  return { serveur: null, erreurs, elements: [] };
+}
+
+async function overpass1(q, erreurs) {
   for (const url of OVERPASS) {
     try {
-      const r = await fetch(url, { method: "POST", signal: AbortSignal.timeout(100000), headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" },
+      const r = await fetch(url, { method: "POST", signal: AbortSignal.timeout(70000), headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" },
         body: "data=" + encodeURIComponent(q) });
       if (!r.ok) { erreurs.push(`${url} → ${r.status}`); continue; }
       const j = await r.json();
@@ -25,7 +36,7 @@ async function overpass(q) {
       return { serveur: url, erreurs, ...j };
     } catch (e) { erreurs.push(`${url} → ${e.message}`); }
   }
-  return { serveur: null, erreurs, elements: [] };
+  return null;
 }
 
 async function profondeur(lat, lon) {
