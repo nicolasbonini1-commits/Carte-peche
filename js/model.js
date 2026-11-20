@@ -493,11 +493,11 @@
       const t = c.sst.toFixed(1).replace(".", ",");
       const kept = steps.slice(0, 3);
       const fond = kept.pop();
-      fond.zone = `Près du fond en premier (eau à ${t} °C, sous ${M.COLD_WATER} °C : à vérifier)`;
-      fond.anim = "très lent, au contact du fond, pauses longues";
+      fond.zone = `Près du fond en premier (eau à ${t} °C, sous ${M.COLD_WATER} °C) [P] à vérifier`;
+      fond.anim = (spot.type === "grau" || spot.type === "embouchure" ? "dérive lente dans la veine de courant, près du fond" : "très lent, au contact du fond, pauses longues") + " [S] eau froide : loup moins actif";
       kept.forEach(s => {
-        if (s.zone === "Surface") s.zone = "Surface : court essai (5 min)";
-        s.anim = s.lure.startsWith("J1") ? "tirées-relâchées lentes, laisser retomber au fond" : `${s.anim.replace(/rapide ou /, "")}, en plus lent (eau froide)`;
+        if (s.zone === "Surface") s.zone = "Surface : court essai (5 min) [P] à vérifier";
+        s.anim = s.lure.startsWith("J1") ? "tirées-relâchées lentes, laisser retomber au fond [S] eau froide" : /très lent/.test(s.anim) ? `${s.anim} [S] eau froide` : `${s.anim.replace(/rapide ou /, "")}, en plus lent [S] eau froide`;
       });
       const surf = kept.filter(s => s.zone.startsWith("Surface")), mid = kept.filter(s => !s.zone.startsWith("Surface"));
       return { steps: [fond, ...mid, ...surf], color: col, water: M.water(c), cold: true };
