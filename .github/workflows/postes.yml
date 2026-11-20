@@ -1,6 +1,9 @@
-# Chantier 1 (positions des postes) : relevé OpenStreetMap (Overpass) + profondeur EMODnet autour des postes listés
-# dans outils/postes/a_relever.txt, puis capture de la carte de contrôle dans Chrome sans écran.
-# Ne tourne que sur la branche chantier-1-postes ; écrit dans la branche « essais-postes-donnees » (jamais « donnees »).
+# Chantier 1 (positions des postes). Ne tourne que sur la branche chantier-1-postes ; écrit dans « essais-postes-donnees » (jamais « donnees »).
+# - outils/postes/a_relever.txt  : postes à relever (OSM + grille de profondeur EMODnet autour du point actuel) → poste_N.json + carte_poste_N.png
+# - outils/postes/a_verifier.txt : postes dont les points (candidats.json, sinon js/spots.js) sont contrôlés : trajet à pied,
+#   profondeur au pied, parkings, trait de côte → verif_N.json + carte_poste_N_zoom.png (plan OSM) + carte_poste_N_sat.png (photo aérienne)
+# Les postes sont traités en parallèle (2 relevés à la fois pour ne pas charger Overpass), puis tout est enregistré en une fois.
+# 21 nov. 2026 : remplace le fonctionnement « un seul job + fichier redessiner » (un relevé de 2 postes prenait 18 min).
 name: postes
 on:
   push:
@@ -11,41 +14,101 @@ permissions:
   contents: write
 concurrency:
   group: postes
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
-  releve:
+  plan:
     if: github.ref_name == 'chantier-1-postes'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    outputs:
+      releve: ${{ steps.p.outputs.releve }}
+      verifier: ${{ steps.p.outputs.verifier }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: p
+        run: |
+          j() { f=outils/postes/$1; if [ -f $f ]; then tr -s ' \n' '\n' < $f | grep -E '^[0-9]+$' | jq -R 'tonumber' | jq -cs .; else echo '[]'; fi; }
+          echo "releve=$(j a_relever.txt)" >> $GITHUB_OUTPUT
+          echo "verifier=$(j a_verifier.txt)" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
+
+  releve:
+    needs: plan
+    if: needs.plan.outputs.releve != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.releve) }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Relevé OSM + EMODnet (ou reprise du dernier relevé si outils/postes/redessiner existe)
-        run: |
-          if [ -f outils/postes/redessiner ]; then
-            mkdir -p /tmp/sortie && git fetch -q --depth=1 origin essais-postes-donnees
-            for id in $(cat outils/postes/a_relever.txt); do git show FETCH_HEAD:poste_$id.json > /tmp/sortie/poste_$id.json; done
-          else
-            node outils/postes/releve.js $(cat outils/postes/a_relever.txt)
-          fi
-      - name: Cartes de contrôle (Chrome sans écran)
+      - run: node outils/postes/releve.js ${{ matrix.id }}
+      - name: Carte de contrôle (Chrome sans écran)
         run: |
           mkdir -p /tmp/web && cp outils/postes/carte.html /tmp/web/ && cp -r /tmp/sortie /tmp/web/
-          cp outils/postes/candidats.json /tmp/web/ 2>/dev/null || true
           cd /tmp/web && (python3 -m http.server 8777 >/dev/null 2>&1 &) && sleep 1
-          for id in $(cat $GITHUB_WORKSPACE/outils/postes/a_relever.txt); do
+          google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1000,1000 \
+            --virtual-time-budget=20000 --screenshot=/tmp/sortie/carte_poste_${{ matrix.id }}.png "http://localhost:8777/carte.html?poste=${{ matrix.id }}" || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: releve-${{ matrix.id }}
+          path: /tmp/sortie/
+          retention-days: 3
+
+  verifier:
+    needs: plan
+    if: needs.plan.outputs.verifier != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        id: ${{ fromJSON(needs.plan.outputs.verifier) }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node outils/postes/verifier.js ${{ matrix.id }}
+      - name: Cartes de contrôle, plan et photo aérienne (Chrome sans écran)
+        run: |
+          mkdir -p /tmp/web/sortie && cp outils/postes/carte.html outils/postes/candidats.json /tmp/web/ 2>/dev/null || true
+          cp /tmp/sortie/verif_${{ matrix.id }}.json /tmp/web/sortie/
+          git fetch -q --depth=1 origin essais-postes-donnees && git show FETCH_HEAD:poste_${{ matrix.id }}.json > /tmp/web/sortie/poste_${{ matrix.id }}.json 2>/dev/null || rm -f /tmp/web/sortie/poste_${{ matrix.id }}.json
+          cd /tmp/web && (python3 -m http.server 8777 >/dev/null 2>&1 &) && sleep 1
+          for f in osm sat; do
+            fond=""; nom=zoom; [ $f = sat ] && fond="&fond=sat" && nom=sat
             google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1000,1000 \
-              --virtual-time-budget=20000 --screenshot=/tmp/sortie/carte_poste_${id}$(test -f $GITHUB_WORKSPACE/outils/postes/redessiner && echo _zoom).png "http://localhost:8777/carte.html?poste=$id" || true
+              --virtual-time-budget=25000 --screenshot=/tmp/sortie/carte_poste_${{ matrix.id }}_$nom.png "http://localhost:8777/carte.html?poste=${{ matrix.id }}&zoom=1$fond" || true
           done
           ls -la /tmp/sortie
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verif-${{ matrix.id }}
+          path: /tmp/sortie/
+          retention-days: 3
+
+  enregistrer:
+    needs: [plan, releve, verifier]
+    if: always() && needs.plan.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/art
+          merge-multiple: true
       - name: Enregistrer dans la branche essais-postes-donnees
         run: |
+          ls -la /tmp/art || exit 0
           mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b essais-postes-donnees
           git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-postes-donnees && git checkout -q FETCH_HEAD -- . 2>/dev/null || true
           git checkout -q -B essais-postes-donnees
-          cp /tmp/sortie/* .
+          cp /tmp/art/* .
           git config user.name "postes-bot"; git config user.email "postes@users.noreply.github.com"
-          git add -A && git commit -qm "relevé postes $(TZ=Europe/Paris date '+%d/%m %H:%M') (commit ${GITHUB_SHA::7})"
+          git add -A && git commit -qm "postes $(TZ=Europe/Paris date '+%d/%m %H:%M') (relevé ${{ needs.plan.outputs.releve }}, contrôle ${{ needs.plan.outputs.verifier }}, commit ${GITHUB_SHA::7})"
           git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-postes-donnees

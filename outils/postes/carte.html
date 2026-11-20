@@ -1,32 +1,42 @@
 <!doctype html>
-<!-- Chantier 1 : carte de contrôle d'un poste (point actuel, candidats, éléments OSM, grille de profondeur EMODnet).
-     Ouverte par la tâche « postes » dans Chrome sans écran, puis capturée en PNG. Usage : carte.html?poste=1 -->
+<!-- Chantier 1 : carte de contrôle d'un poste (point actuel, candidats, éléments OSM, grille de profondeur EMODnet,
+     trajets à pied et parkings du contrôle verifier.js). Ouverte par la tâche « postes » dans Chrome sans écran, puis capturée en PNG.
+     Usage : carte.html?poste=1[&fond=sat][&zoom=1]  (fond=sat : photo aérienne Esri World Imagery ; zoom=1 : cadrée sur les candidats) -->
 <html><head><meta charset="utf-8">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>html,body,#m{margin:0;height:100%;font:14px sans-serif}
-.leg{position:absolute;z-index:999;top:8px;left:50px;background:#fff;padding:6px 8px;border:1px solid #888;max-width:430px}
-.lab{background:#fff;border:1px solid #333;padding:1px 4px;font-weight:bold}</style></head>
+.leg{position:absolute;z-index:999;top:8px;left:50px;background:#fff;padding:6px 8px;border:1px solid #888;max-width:470px}
+.lab{background:#fff;border:1px solid #333;padding:1px 4px;font-weight:bold}
+.prof{background:transparent;border:0;box-shadow:none;color:#fff;font-weight:bold;text-shadow:0 0 3px #000}</style></head>
 <body><div id="m"></div><div class="leg" id="leg"></div>
 <script>
 (async () => {
-  const id = new URLSearchParams(location.search).get("poste");
-  const d = await (await fetch(`sortie/poste_${id}.json`)).json();
-  let cands = [];
-  try { cands = ((await (await fetch("candidats.json")).json())[id]) || []; } catch (e) {}
+  const qs = new URLSearchParams(location.search);
+  const id = qs.get("poste"), sat = qs.get("fond") === "sat", zoomCands = qs.get("zoom") === "1";
+  const getj = async u => { try { const r = await fetch(u); return r.ok ? await r.json() : null; } catch (e) { return null; } };
+  const d = await getj(`sortie/poste_${id}.json`);
+  const v = await getj(`sortie/verif_${id}.json`);
+  let cands = ((await getj("candidats.json")) || {})[id] || [];
+  if (!cands.length && v) cands = v.points;
   const map = L.map("m", { zoomControl: false });
-  L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
-  const pts = d.grille.map(g => [g.lat, g.lon]);
-  const zoom = cands.length ? L.latLngBounds([[d.poste.lat, d.poste.lon], ...cands.map(c => [c.lat, c.lon])]).pad(1.2) : null;
-  map.fitBounds(zoom || L.latLngBounds(pts).pad(0.08));
-  d.grille.forEach(g => {
+  if (sat) L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Esri World Imagery" }).addTo(map);
+  else L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+  const actuel = d ? [d.poste.lat, d.poste.lon] : v ? [v.poste.actuel.lat, v.poste.actuel.lon] : null;
+  const pts = d ? d.grille.map(g => [g.lat, g.lon]) : [];
+  let bounds;
+  if (zoomCands && cands.length) bounds = L.latLngBounds(cands.map(c => [c.lat, c.lon])).extend(actuel).pad(0.35);
+  else if (cands.length) bounds = L.latLngBounds([actuel, ...cands.map(c => [c.lat, c.lon])]).pad(1.2);
+  else bounds = L.latLngBounds(pts.length ? pts : [actuel]).pad(0.08);
+  map.fitBounds(bounds);
+  if (d && !sat) d.grille.forEach(g => {
     if (g.avg == null) L.circleMarker([g.lat, g.lon], { radius: 3, color: "#777", weight: 1, fillOpacity: 0.6 }).addTo(map);
     else L.circleMarker([g.lat, g.lon], { radius: 9, color: "#036", weight: 1, fillColor: "#09f", fillOpacity: Math.min(0.9, 0.15 + Math.abs(g.avg) / 10) })
       .bindTooltip(g.avg.toFixed(1), { permanent: true, direction: "center", className: "" }).addTo(map);
   });
-  const style = t => t.man_made ? { color: "#d00", weight: 5 } : t.natural === "coastline" ? { color: "#004", weight: 2, dashArray: "4 3" }
+  const style = t => t.man_made ? { color: "#d00", weight: sat ? 2 : 5 } : t.natural === "coastline" ? { color: sat ? "#ff0" : "#004", weight: 2, dashArray: "4 3" }
     : t.waterway ? { color: "#0aa", weight: 4 } : t.natural === "water" ? { color: "#08c", weight: 1 } : { color: "#c60", weight: 2 };
-  d.elements.forEach(e => {
+  const draw = els => (els || []).forEach(e => {
     const t = e.tags || {};
     if (e.type === "node") {
       if (t["seamark:type"]) L.circleMarker([e.lat, e.lon], { radius: 6, color: "#000", weight: 1, fillColor: t["seamark:light:colour"] === "red" ? "#e00" : t["seamark:light:colour"] === "green" ? "#0a0" : "#fa0", fillOpacity: 1 }).addTo(map);
@@ -35,12 +45,23 @@
     if (e.geometry) L.polyline(e.geometry.filter(Boolean).map(p => [p.lat, p.lon]), style(t)).addTo(map);
     else if (e.members) e.members.forEach(m => m.geometry && L.polyline(m.geometry.filter(Boolean).map(p => [p.lat, p.lon]), style(t)).addTo(map));
   });
-  L.marker([d.poste.lat, d.poste.lon]).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
+  if (!sat && d) draw(d.elements);
+  if (v && v.cote) draw(v.cote.elements);
+  if (v) {
+    v.points.forEach(p => p.trajet && p.trajet.trace && L.polyline(p.trajet.trace, { color: p.verdict && p.verdict.avis === "à écarter" ? "#f0f" : "#7b2", weight: 3, dashArray: "6 4" }).addTo(map));
+    (v.approche || []).slice(0, 1).forEach(a => {
+      L.circleMarker([a.parking.lat, a.parking.lon], { radius: 8, color: "#fff", weight: 2, fillColor: "#06c", fillOpacity: 1 }).bindTooltip("Parking", { permanent: true, className: "lab" }).addTo(map);
+      if (a.trajet && a.trajet.trace) L.polyline(a.trajet.trace, { color: "#06c", weight: 3, dashArray: "2 4" }).addTo(map);
+    });
+    (v.acces.elements || []).filter(e => e.tags && e.tags.amenity === "casino" && e.lat).forEach(e => L.circleMarker([e.lat, e.lon], { radius: 7, color: "#000", fillColor: "#c0c", fillOpacity: 1 }).bindTooltip("casino", { permanent: true, className: "lab" }).addTo(map));
+  }
+  if (actuel) L.marker(actuel).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
   cands.forEach((c, i) => L.circleMarker([c.lat, c.lon], { radius: 10, color: "#000", weight: 2, fillColor: "#ff0", fillOpacity: 1 })
     .bindTooltip(c.label || String(i + 1), { permanent: true, className: "lab" }).addTo(map));
-  document.getElementById("leg").innerHTML = `<b>Poste ${id} — ${d.poste.name}</b><br>Repère « actuel » = position de l'appli ; jaunes = candidats.
-    Ronds bleus = profondeur EMODnet (m ; négatif = sous le niveau de la mer, positif = au-dessus), gris = pas de donnée (terre ou étang). Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;
-    pointillé = trait de côte OSM ; points rouges / verts / orange = balisage. Grille 250 m.`;
-  document.title = "pret";
+  const nom = d ? d.poste.name : v ? v.poste.name : "";
+  document.getElementById("leg").innerHTML = `<b>Poste ${id} — ${nom}</b> ${sat ? "(photo aérienne Esri)" : ""}<br>Repère « actuel » = position de l'appli ; jaunes = candidats (P = principal).
+    ${sat ? "" : "Ronds bleus = profondeur EMODnet (m ; négatif = sous le niveau de la mer), gris = pas de donnée. Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;"}
+    pointillé ${sat ? "jaune" : "sombre"} = trait de côte OSM. Tirets verts = trajet à pied P → point (violet = à écarter) ; bleu = parking le plus proche → P.`;
+  setTimeout(() => document.title = "pret", 300);
 })();
 </script></body></html>
