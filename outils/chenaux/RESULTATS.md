@@ -1,4 +1,4 @@
-# Chenaux, graus et étangs : eau marron ou pêchable ? (essai du 20 nov. 2026, 8 h 25 – 10 h 30)
+# Chenaux, graus et étangs : eau marron ou pêchable ? (essai du 20 nov. 2026, 8 h 25 – 9 h 20)
 
 Branche d'essai `essai-chenaux`. Rien n'est sur `main` ; l'appli n'est pas modifiée.
 
@@ -14,7 +14,7 @@ Branche d'essai `essai-chenaux`. Rien n'est sur `main` ; l'appli n'est pas modif
 ## Résultats [M]
 - **Grau-du-Roi, chenal (Vidourle)**, 413 jours sans nuages (`analyse/crues_resultat.txt`) :
   - débit normal : indice 5 (90 % < 8) ;
-  - **eau marron (indice > 30) seulement quand le Vidourle était ≥ 5,6 fois la normale la veille** (8 jours, tous le lendemain d’N jour ≥ 4×) ; jamais en dessous de 4× (max 25) ;
+  - **eau marron (indice > 30) seulement quand le Vidourle était ≥ 5,6 fois la normale la veille** (8 jours, tous le lendemain d'un jour ≥ 4×) ; jamais en dessous de 4× (max 25) ;
   - après le dernier jour ≥ 4× : 1-2 j indice médian 14 (30 % > 30) ; 3-4 j : 11, max 18 ; **dès le 5e jour : normal** (max 12-18).
   - Exemple : 21 mai 2024, Vidourle 4,3× la veille, chenal presque clair (indice 11).
 - **Étang du Ponant** : même comportement, un peu plus chargé (normal 9, marron à ≥ 5× la veille ; 4 cas sur 5 à 8-15×).
