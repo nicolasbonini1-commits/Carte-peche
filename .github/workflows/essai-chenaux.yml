@@ -1,0 +1,49 @@
+# Essai temporaire (branche essai-chenaux) : état des chenaux, graus et étangs (eau marron ou pêchable)
+# d'après les images Sentinel-2 à 10-20 m depuis 2017 (AWS Open Data, Earth Search, sans compte) et le tracé OpenStreetMap.
+# Résultats dans la branche essais-chenaux-donnees, jamais dans « donnees » (lue par Home Assistant) ni dans main.
+# Le message du commit choisit l'étape : [osm] tracés OSM ; [s2-test] un mois ; [s2] 2017 → aujourd'hui (une tâche par année).
+name: essai-chenaux
+on:
+  push:
+    branches: [essai-chenaux]
+    paths: [".github/workflows/essai-chenaux.yml", "outils/chenaux/**"]
+permissions:
+  contents: write
+concurrency: { group: essai-chenaux-${{ github.sha }}, cancel-in-progress: false }
+jobs:
+  osm:
+    if: ${{ contains(github.event.head_commit.message, '[osm]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p /tmp/o && python3 outils/chenaux/osm.py /tmp/o
+      - name: Enregistrer (branche essais-chenaux-donnees, dossier osm)
+        if: always()
+        run: bash outils/chenaux/enregistrer.sh /tmp/o osm "${{ github.token }}" "${{ github.repository }}"
+  annees:
+    runs-on: ubuntu-latest
+    outputs:
+      liste: ${{ steps.l.outputs.liste }}
+    steps:
+      - id: l
+        run: |
+          if ${{ contains(github.event.head_commit.message, '[s2-test]') }}; then echo 'liste=["test"]' >> $GITHUB_OUTPUT;
+          elif ${{ contains(github.event.head_commit.message, '[s2]') }}; then echo 'liste=["2017","2018","2019","2020","2021","2022","2023","2024","2025","2026"]' >> $GITHUB_OUTPUT;
+          else echo 'liste=[]' >> $GITHUB_OUTPUT; fi
+  s2:
+    needs: annees
+    if: ${{ needs.annees.outputs.liste != '[]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      matrix:
+        annee: ${{ fromJson(needs.annees.outputs.liste) }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q rasterio pystac-client numpy pillow
+      - run: mkdir -p /tmp/s && python3 outils/chenaux/s2.py ${{ matrix.annee }} /tmp/s
+      - name: Enregistrer (branche essais-chenaux-donnees, dossier s2)
+        if: always()
+        run: bash outils/chenaux/enregistrer.sh /tmp/s s2 "${{ github.token }}" "${{ github.repository }}"
