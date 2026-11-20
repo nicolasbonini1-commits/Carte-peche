@@ -6,6 +6,8 @@
 // type : embouchure | grau | digue | roche | plage_barres | plage_lisse
 // river : fleuve ou rivière qui influence le poste ("rhone", "vidourle", "lez") ou false
 // lit : zone éclairée la nuit
+// autour : 2-3 points voisins (≤ ≈ 1 km) pour une pêche de zone : si rien ne mord, on change d'épi sans changer de secteur.
+//   Mêmes conditions que le poste, donc pas de note à part. Chaque point a sa source (src).
 // Niveaux de preuve : [S] sourcé, [P] pratique courante / estimation, [C] lecture de carte.
 window.SPOTS = [
   {
@@ -18,8 +20,16 @@ window.SPOTS = [
     zone: "E"
   },
   {
-    id: 2, name: "Épis et brise-lames du village", commune: "Saintes-Maries-de-la-Mer", pos: "à vérifier : point ~200 m dans les terres d'après la profondeur EMODnet",
-    lat: 43.4505, lon: 4.4150, type: "digue", seaward: 185, river: false, lit: true,
+    id: 2, name: "Épis et brise-lames du village", commune: "Saintes-Maries-de-la-Mer", pos: "vérifiée le 20 nov. 2026 : pointe de l'épi Launes Est (OpenStreetMap) ; profondeur EMODnet ≈ 0 m au bout, 4,9 m à 240 m au large",
+    // Ancien point (43,4505 / 4,415) : sur la route D38 (EMODnet +1,5 m). Accord de Nico le 20 nov. 21 h 25.
+    // Source : OSM way 711960175 (man_made=groyne, 174 m) ; nom d'après la longueur dans le tableau SYMADREM (délibération 2023-20, DREAL PACA : Launes Est 170 m) [C].
+    lat: 43.44815, lon: 4.41560, type: "digue", seaward: 185, river: false, lit: true,
+    // autour = pêche de zone (idée de Nico, 20 nov.) : 3 points au plus à ≈ 1 km, mêmes conditions que le poste (pas de note à part).
+    autour: [
+      { name: "Épi Launes Ouest", lat: 43.44788, lon: 4.41018, src: "OSM way 433543018 ; SYMADREM Launes Ouest 170 m [C]", note: "même type d'épi, 440 m à l'ouest" },
+      { name: "Brise-lames du Clos du Rhône", lat: 43.44766, lon: 4.40610, src: "OSM way 433543074 ; SYMADREM Clos du Rhône BL 125-235 m [C]", note: "770 m à l'ouest ; s'il est détaché de la plage, lancer vers lui depuis le sable" },
+      { name: "Digue ouest de Port Gardian", lat: 43.44592, lon: 4.42329, src: "feu rouge OSM 1420666365 = feu Digue W (Fl.R.4s) ; SYMADREM 385 m", note: "670 m à l'est, la plus profonde (4,6 à 5,6 m) ; pêche dans le port : à demander à la capitainerie (04 90 97 85 87)" }
+    ],
     structure: "Série d'épis en enrochements et de brise-lames à l'ouest du village. [S] (SYMADREM, DREAL PACA)",
     attention: "Blocs glissants, ne pas s'engager par mer forte.",
     zone: "E"

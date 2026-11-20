@@ -800,11 +800,13 @@
       <h3>48 prochaines heures</h3>${strip(s)}
       <h3>Le poste</h3><p>${esc(s.structure)}</p><p class="warn-soft">${esc(s.attention)}</p>
       <p class="sub">Position : ${s.moved ? "corrigée par toi sur ce téléphone" : esc(s.pos || "")}</p>
+      ${s.autour && s.autour.length ? `<p><b>Autour (pêche de zone, points gris) :</b> ${s.autour.map(a => `${esc(a.name)} <span class="sub">(${esc(a.note)})</span>`).join(" · ")}</p>` : ""}
       <p class="sub">${s.webcams && s.webcams.length ? `Webcam (de jour, vue à vérifier) : ${s.webcams.map(w => `<a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.label)}</a>`).join(" · ")}` : "Pas de webcam trouvée près de ce poste."}</p>
       <p class="sub">Ton carnet ici : ${mine.length} sortie(s).</p>
       <div class="row">${goButtons(s)}</div>
       <div class="row"><button class="btn" id="logHere">Noter une sortie ici</button><button class="btn" id="moveBtn">Corriger la position</button></div>`;
     $("#sheet").hidden = false;
+    showAutour(s);
     renderDay(s, state.dayView ?? 0);
     document.querySelectorAll("[data-day]").forEach(btn => btn.onclick = () => {
       state.dayView = +btn.dataset.day;
@@ -861,7 +863,15 @@
         ${p.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}${body}</div>`;
     }).join("");
   }
-  function closeSheet() { $("#sheet").hidden = true; }
+  // Pêche de zone : petits points gris des postes voisins, visibles seulement quand la fiche du poste est ouverte.
+  let autourLayer = null;
+  function showAutour(s) {
+    if (autourLayer) { autourLayer.remove(); autourLayer = null; }
+    if (!s.autour || !s.autour.length) return;
+    autourLayer = L.layerGroup(s.autour.map(a => L.circleMarker([a.lat, a.lon], { radius: 6, color: "#555", weight: 1, fillColor: "#9aa0a6", fillOpacity: 0.9 })
+      .bindTooltip(`${esc(a.name)}<br><small>${esc(a.note)}</small>`))).addTo(map);
+  }
+  function closeSheet() { $("#sheet").hidden = true; if (autourLayer) { autourLayer.remove(); autourLayer = null; } }
   $("#sheetClose").onclick = closeSheet;
 
   // ---------- Formulaire « Ma sortie » ----------
