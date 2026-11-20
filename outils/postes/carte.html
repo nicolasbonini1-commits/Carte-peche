@@ -17,11 +17,12 @@
   const map = L.map("m", { zoomControl: false });
   L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
   const pts = d.grille.map(g => [g.lat, g.lon]);
-  map.fitBounds(L.latLngBounds(pts).pad(0.08));
+  const zoom = cands.length ? L.latLngBounds([[d.poste.lat, d.poste.lon], ...cands.map(c => [c.lat, c.lon])]).pad(1.2) : null;
+  map.fitBounds(zoom || L.latLngBounds(pts).pad(0.08));
   d.grille.forEach(g => {
     if (g.avg == null) L.circleMarker([g.lat, g.lon], { radius: 3, color: "#777", weight: 1, fillOpacity: 0.6 }).addTo(map);
     else L.circleMarker([g.lat, g.lon], { radius: 9, color: "#036", weight: 1, fillColor: "#09f", fillOpacity: Math.min(0.9, 0.15 + Math.abs(g.avg) / 10) })
-      .bindTooltip(Math.abs(g.avg).toFixed(1), { permanent: true, direction: "center", className: "" }).addTo(map);
+      .bindTooltip(g.avg.toFixed(1), { permanent: true, direction: "center", className: "" }).addTo(map);
   });
   const style = t => t.man_made ? { color: "#d00", weight: 5 } : t.natural === "coastline" ? { color: "#004", weight: 2, dashArray: "4 3" }
     : t.waterway ? { color: "#0aa", weight: 4 } : t.natural === "water" ? { color: "#08c", weight: 1 } : { color: "#c60", weight: 2 };
@@ -38,7 +39,7 @@
   cands.forEach((c, i) => L.circleMarker([c.lat, c.lon], { radius: 10, color: "#000", weight: 2, fillColor: "#ff0", fillOpacity: 1 })
     .bindTooltip(String(i + 1), { permanent: true, className: "lab" }).addTo(map));
   document.getElementById("leg").innerHTML = `<b>Poste ${id} — ${d.poste.name}</b><br>Repère « actuel » = position de l'appli ; jaunes = candidats.
-    Ronds bleus = profondeur EMODnet (m), gris = pas de donnée (terre ou étang). Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;
+    Ronds bleus = profondeur EMODnet (m ; négatif = sous le niveau de la mer, positif = au-dessus), gris = pas de donnée (terre ou étang). Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;
     pointillé = trait de côte OSM ; points rouges / verts / orange = balisage. Grille 250 m.`;
   document.title = "pret";
 })();
