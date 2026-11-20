@@ -12,15 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Chercher les bouées dans ERDDAP
+      - name: Pages du site Candhis (mention de l'heure)
         run: |
-          E=https://erddap.emodnet-physics.eu/erddap
-          for q in Espiguette Sete 03001 03404 6100190 6100196; do
-            echo "== recherche $q"; curl -sS -m 60 "$E/search/index.csv?page=1&itemsPerPage=20&searchFor=$q" | cut -c1-300 | head -8
+          for u in "https://candhis.cerema.fr/" "https://candhis.cerema.fr/_public_/campagne.php?Y2FtcD0wMzAwMQ==" "https://candhis.cerema.fr/_public_/campagne.php?Y2FtcD0wMzQwNA==" "https://candhis.cerema.fr/_public_/aide.php" "https://candhis.cerema.fr/_public_/faq.php"; do
+            echo "== $u"; curl -sS -m 60 -L "$u" -o /tmp/p.html -w "%{http_code} %{size_download}\n" || continue
+            iconv -f latin1 -t utf8 /tmp/p.html 2>/dev/null | sed 's/<[^>]*>/ /g' | tr -s ' \n' ' ' | grep -o -i -E '.{0,80}(\bTU\b|UTC|GMT|heure l[ée]gale|heure locale|temps universel).{0,80}' | head -10
           done
-          echo "== stations proches (VHM0, lat 43.2-43.6, lon 3.6-4.4)"
-          curl -sS -m 90 "$E/tabledap/EP_ERD_INT_VHM0_AL_TS_NRT.csv?PLATFORMCODE,latitude,longitude,time&latitude>=43.2&latitude<=43.6&longitude>=3.6&longitude<=4.4&time>=now-2days&distinct()" | head -20 || true
-          curl -sS -m 90 "$E/tabledap/allDatasets.csv?datasetID,title" | grep -i -E 'wave|vhm0|houle' | head -20
       - name: Mesures Candhis gardées (houle.json)
         run: |
           git init -q /tmp/d && cd /tmp/d && git fetch -q --depth=1 "https://github.com/${{ github.repository }}" donnees && git show FETCH_HEAD:houle.json > /tmp/houle.json
