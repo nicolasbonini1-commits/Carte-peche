@@ -35,3 +35,26 @@ Limite : sous-estime les grosses crues (7 nov. 2026 : 10 à 18 FNU mesurés, 5 �
 - À 300 m du bord, le fond peut éclaircir le pixel en eau peu profonde (plages) ; position de plusieurs postes « à vérifier ».
 - Houle ERA5 grossière (~50 km) ; débit journalier de la veille.
 - Les seuils des classes en FNU ne sont pas calés sur ce que voit Nico : champ « couleur de l'eau » à ajouter au carnet.
+
+## Embouchures et chenaux : essai du 20 nov. 2026 (7 h 50 – 8 h 05)
+Question : le panache des fleuves dépend-il du vent et de la houle ? Mêmes données (4081 paires mesure / conditions, 13 postes).
+Deux validations : calé 2020-2024 et testé 2025-2026, et « une année laissée de côté » (7 essais, 2020 → 2026).
+« Jours fleuve » = postes 1, 2, 4, 5, 6, 7, 9, 11, 12, 13 avec mémoire du débit ≥ 1,5 fois la normale (575 jours, 243 en test).
+Scripts : `interactions.py`, `plafond.py`, `regional.py`, `final.py` (à lancer comme `indice.py`).
+
+| Modèle | R² test | rang test | R² 1 an de côté | jours fleuve, erreur (1 an de côté) |
+|---|---|---|---|---|
+| indice en ligne | 0,622 | 0,767 | 0,641 | ×1,75 |
+| + vent le long de la côte (panache poussé vers le poste) | 0,615 | 0,761 | 0,640 | ×1,75 |
+| + vent de mer / de terre × fleuve | 0,624 | 0,768 | 0,640 | ×1,76 |
+| + houle des 48 h × fleuve | 0,627 | 0,770 | 0,641 | ×1,76 |
+| plafond du Rhône à 2 fois la normale | 0,629 | 0,770 | 0,648 | ×1,71 |
+| + pluie des jours d'avant (côte) | 0,652 | 0,788 | 0,661 | — |
+| plafond Rhône + pluie | **0,657** | **0,790** | **0,667** | — |
+
+- **Vent et houle × fleuve : aucun gain** dans les deux validations ; les coefficients changent de signe d'un poste à l'autre
+  (ex. vent le long de la côte : +0,17 au poste 2, −0,14 au poste 5) → bruit. Trop peu de jours de crue sans nuages (20 à 50 par poste) pour voir l'effet du vent sur le panache.
+- **Rhône au poste 1** : l'indice sous-estime de 1,2 à 2 fois la normale (×1,3 à 1,4) et surestime au-delà de 3 fois (×2,3, seulement 4 jours) → le panache sature (ou le capteur). Plafonner le rapport à 2 : petit gain, à confirmer.
+- **Pluie des jours d'avant sur la côte** (indice de pluie antérieure, déjà calculé dans l'appli) : gain le plus net (20 mm → ×1,35 ; 60 mm → ×1,5). Le 7 nov. 2026, Rhône normal mais postes 1, 2, 4, 5, 16 à 10-18 FNU : toute la côte chargée après les pluies (ruissellement, étangs, petits fleuves) ; un terme « crue régionale » Vidourle/Lez n'apporte presque rien de plus (×1,09).
+- Embouchures 1, 6, 12 (test) : bonne classe 57 % → 60 %. L'intérieur des chenaux et les étangs restent invisibles (pixels de 100 m, points à 300 m) : seul le carnet (« couleur de l'eau ») pourra les caler.
+- Rien de modifié dans l'appli.
