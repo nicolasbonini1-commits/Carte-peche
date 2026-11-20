@@ -14,10 +14,10 @@ Branche d'essai `essai-chenaux`. Rien n'est sur `main` ; l'appli n'est pas modif
 ## Résultats [M]
 - **Grau-du-Roi, chenal (Vidourle)**, 413 jours sans nuages (`analyse/crues_resultat.txt`) :
   - débit normal : indice 5 (90 % < 8) ;
-  - **eau marron (indice > 30) seulement quand le Vidourle était ≥ 5,6 fois la normale la veille** (9 jours, tous le lendemain d'un jour ≥ 4×) ; jamais en dessous de 4× (max 25) ;
+  - **eau marron (indice > 30) seulement quand le Vidourle était ≥ 5,6 fois la normale la veille** (8 jours, tous le lendemain d’N jour ≥ 4×) ; jamais en dessous de 4× (max 25) ;
   - après le dernier jour ≥ 4× : 1-2 j indice médian 14 (30 % > 30) ; 3-4 j : 11, max 18 ; **dès le 5e jour : normal** (max 12-18).
   - Exemple : 21 mai 2024, Vidourle 4,3× la veille, chenal presque clair (indice 11).
-- **Étang du Ponant** : même comportement, un peu plus chargé (normal 9, marron à ≥ 5× la veille ; 8 cas sur 10 à 8-15×).
+- **Étang du Ponant** : même comportement, un peu plus chargé (normal 9, marron à ≥ 5× la veille ; 4 cas sur 5 à 8-15×).
 - **Mer à 300 m du Grau-du-Roi** : panache marron 1-2 j après (médiane 11, 7 % > 30), normal dès le 3e jour.
 - **Petit Rhône** : toujours chargé (indice 19-25) ; l'indice sature (le rouge monte, le proche infrarouge aussi) → pas de seuil fiable avec ce calcul.
 - **Lez à Palavas, graus de Carnon et de Frontignan, entrée de La Grande-Motte** : **pas de signal exploitable** (Lez : corrélation 0,02-0,17 avec le débit). Chenaux de 30-40 m bordés de quais et de bateaux : 3-4 pixels, mélangés. Il faudra les webcams et le carnet.
@@ -30,6 +30,6 @@ Branche d'essai `essai-chenaux`. Rien n'est sur `main` ; l'appli n'est pas modif
 À caler avec l'avis de Nico sur la planche `galerie_grau_du_roi.jpg` (A et B marron, C presque clair à 4,3×, D normal) et avec le carnet.
 
 ## Limites
-- Seulement les jours sans nuages : après les gros orages le ciel reste souvent couvert (9 jours marron seulement).
+- Seulement les jours sans nuages : après les gros orages le ciel reste souvent couvert (8 jours marron seulement).
 - Débit journalier de la veille : une montée dans la journée n'est pas vue.
 - Points à 15-30 m des quais : pixels parfois mélangés.
