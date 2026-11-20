@@ -82,6 +82,7 @@
   <section id="carnet" class="view" hidden>
     <form id="carnetForm" class="card">
       <h2>Noter une sortie</h2>
+      <p class="sub" id="prefillNote" hidden></p>
       <label>Poste <select id="fSpot"></select></label>
       <div class="grid">
         <label>Date <input type="date" id="fDate" required></label>
@@ -93,7 +94,7 @@
         <label>Plus grand (cm) <input type="number" id="fSize" min="0"></label>
         <label>Leurre / appât <input type="text" id="fLure" placeholder="ex. Black Minnow Kaki"></label>
         <label>Touches (même ratées) <input type="number" id="fBites" min="0" placeholder="non compté"></label>
-        <label>Couleur de l'eau <select id="fWater"><option value="">pas regardé</option><option value="claire">claire</option><option value="piquée">piquée (un peu trouble)</option><option value="teintée">teintée (nettement colorée)</option><option value="très chargée">très chargée (boueuse)</option></select></label>
+        <label>Couleur de l'eau <select id="fWater"><option value="">pas regardé</option><option value="claire">claire</option><option value="piquée">piquée (un peu trouble)</option><option value="teintée">teintée (nettement colorée)</option><option value="très chargée">marron (très chargée, boueuse)</option></select></label>
         <label>Filets vus <select id="fNets"><option value="">pas regardé</option><option value="aucun">aucun</option><option value="loin">oui, au large</option><option value="pres">oui, près du bord (moins de 300 m)</option></select></label>
         <label>Chalutiers vus <select id="fTrawl"><option value="">pas regardé</option><option value="0">aucun</option><option value="1">1</option><option value="2+">2 ou plus</option></select></label>
       </div>
@@ -101,6 +102,7 @@
       <button class="btn primary" type="submit">Enregistrer</button>
       <p class="sub">Vent, mer, lumière et lune du moment sont ajoutés automatiquement. Les bredouilles comptent aussi.</p>
     </form>
+    <div id="relevesBox" class="card"></div>
     <div id="carnetList" class="list"></div>
     <div class="card">
       <h3>Sauvegarde</h3>
@@ -121,10 +123,13 @@
         <li><b>Mer</b> : la houle du large (Open-Meteo Marine) est ramenée au poste selon son orientation. Une mer qui retombe après un coup de mer est favorisée.</li>
         <li><b>Lumière</b> : aube et crépuscule au maximum ; la nuit dépend de la lune, des nuages et de l'éclairage ; le plein jour par mer calme est pénalisé pour le loup.</li>
         <li><b>Vent</b> : vent de mer ou de terre calculé pour chaque poste ; rafales fortes pénalisées.</li>
-        <li><b>Pluie et fleuves</b> : la pluie des 7 derniers jours compte, celle d'hier plus que celle d'il y a une semaine (indice de pluie antérieure). Pour le Rhône, le Vidourle et le Lez, le débit mesuré (Vigicrues, via Hub'Eau) passe avant la pluie : débit comparé au débit le plus bas de la semaine. Un panache modéré favorise le loup, une crue le chasse ; une décrue qui s'éclaircit est un bon créneau.</li>
+        <li><b>Pluie et fleuves</b> : la pluie des 7 derniers jours compte, celle d'hier plus que celle d'il y a une semaine (indice de pluie antérieure). Pour le Rhône, le Vidourle et le Lez, le débit mesuré (Vigicrues, via Hub'Eau) passe avant la pluie : débit comparé au débit habituel du mois (médiane des débits moyens mensuels depuis 1990). Un panache modéré favorise le loup, une crue le chasse ; une décrue qui s'éclaircit est un bon créneau.</li>
         <li><b>Eau</b> : température de surface.</li>
         <li><b>Carnet</b> : tes sorties corrigent la note du poste. Il faut environ 4 sorties pour que ton expérience pèse autant que le modèle.</li>
       </ol>
+      <h2>« Pêchable ? » et « Je suis sur place »</h2>
+      <p><b>Pêchable ?</b> (chenal du Grau-du-Roi et passe du Ponant seulement) : <b>non</b> si le Vidourle a dépassé 5 fois son débit habituel du mois hier ou aujourd'hui (chenal marron probable) ; <b>douteux</b> entre 4 et 5 fois, ou dans les 2 jours qui suivent un jour à 4 fois ou plus ; <b>oui</b> sinon. Règle tirée de 804 images satellite sans nuages (2017-2026) et validée sur une planche d'images ; seuils à confirmer par tes relevés. Ailleurs (Palavas, Carnon, Frontignan, La Grande-Motte), les chenaux sont trop étroits pour le satellite : regarde la webcam.</p>
+      <p><b>Je suis sur place</b> (dans la fiche du poste) : 3 réponses (eau, mer, pêchable), gardées sur le téléphone même sans réseau, avec ce que l'appli estimait au même moment. « Envoyer mes relevés » (onglet Carnet) ouvre un ticket GitHub déjà rempli : il suffit de toucher « Submit new issue ».</p>
       <p>La note de sortie combine 60 % de la meilleure heure de ta fenêtre de pêche et 40 % de la moyenne. La fenêtre = départ + route, jusqu'à l'heure où il faut repartir.</p>
       <h2>Limites</h2>
       <ul>
@@ -145,6 +150,7 @@
         <li>Biologie : Ifremer / MARBEC (projet CONNECT-MED, thèse A. Mignucci), Parc national des Calanques (migrations de la daurade, 2026), fiches espèces zones-humides.org, INPN (plateau rocheux de Palavas-Carnon).</li>
         <li>Matrice conditions → leurres : ton guide Notion « Loup au leurre du bord ».</li>
       </ul>
+      <p class="sub">Essai du 20 novembre 2026 : « Pêchable ? », relevé « Je suis sur place », envoi des relevés.</p>
       <p class="sub">Version 2 — 18 novembre 2026 : pluie sur 7 jours, débits des fleuves, modèles Météo-France, alertes à 3 jours.</p>
     </div>
   </section>

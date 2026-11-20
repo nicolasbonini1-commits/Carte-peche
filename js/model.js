@@ -164,6 +164,81 @@
   M.WATER_LOUP = { "claire": { note: 4, v: 1.0 }, "piquée": { note: 5, v: 1.05 }, "teintée": { note: 4, v: 1.0 }, "très chargée": { note: 1, v: 0.6 } };
   M.WATER_DORADE = { "claire": 1.0, "piquée": 0.9, "teintée": 0.7, "très chargée": 0.45 };
 
+  // ---------- 2 ter. « Pêchable ? » dans les chenaux (ajout du 20 nov. 2026) ----------
+  // Question de Nico : l'eau du chenal sera-t-elle marron (pas pêchable, inutile de faire 1 h de route) ?
+  // Seulement là où le satellite voit le chenal (essai du 20 nov., branche essai-chenaux, outils/chenaux/RESULTATS.md) :
+  // chenal du Grau-du-Roi (poste 6) et étang du Ponant (poste 8), tous deux alimentés par le Vidourle.
+  // Lez à Palavas, Carnon, Frontignan, entrée de La Grande-Motte : chenaux trop étroits pour le satellite, pas de règle.
+  // Mesure [M] : sur 804 dates sans nuages (2017-2026), chenal marron seulement quand le Vidourle était ≥ 5,6 fois la normale
+  // la veille (8 jours) ; jamais en dessous de 4 fois ; normal dès le 5e jour après le dernier jour ≥ 4 fois.
+  // Règle validée par Nico sur la planche d'images le 20 nov. à 9 h 47 (C à 4,3× et D pêchables, A et B non) [C] ;
+  // seuils [P], à revoir avec ses relevés sur place.
+  // « Normale » = débit moyen du jour ÷ débit habituel du mois (médiane des débits moyens mensuels), comme dans l'appli.
+  M.PECHABLE = { spots: { 6: "chenal du Grau-du-Roi", 8: "étang du Ponant" }, river: "vidourle", non: 5, doute: 4 };
+  // Débit du fleuve rapporté à la normale pour le jour visé (k = 0), la veille (k = 1) et l'avant-veille (k = 2).
+  // pts = [[ms, m³/s]…] (mesures horaires), ref = { mois: { q } }, target = jour visé, now = maintenant.
+  // Jours passés : moyenne du jour (heure de Paris), au moins 6 mesures. Aujourd'hui : moyenne des 24 dernières heures
+  // mesurées (le matin, la moyenne du jour n'aurait que quelques mesures). Jours à venir : inconnu (null).
+  M.dayKey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  M.riverDays = (pts, ref, target, now) => {
+    if (!pts || !pts.length || !ref) return [null, null, null];
+    const byDay = {};
+    for (const [ms, q] of pts) { const k = M.dayKey(new Date(ms)); (byDay[k] = byDay[k] || []).push(q); }
+    const today = M.dayKey(now), last = pts[pts.length - 1][0];
+    const out = [];
+    for (let k = 0; k < 3; k++) {
+      const d = new Date(target); d.setDate(d.getDate() - k);
+      const key = M.dayKey(d), r = ref[d.getMonth() + 1];
+      let q = null, how = "jour";
+      if (key > today) q = null;
+      else if (key === today) {
+        // Dernière mesure de plus de 36 h (téléphone resté sans réseau) : pas de valeur pour aujourd'hui.
+        // On garde la plus forte des deux moyennes : 24 dernières heures, ou depuis minuit (au moins 3 mesures),
+        // pour qu'une crue qui monte depuis la nuit ne soit pas diluée par la journée calme d'hier.
+        if (now.getTime() - last <= 36 * 3600000) {
+          const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+          const q24 = pts.filter(p => p[0] > last - 24 * 3600000).map(p => p[1]);
+          const qDay = byDay[key] || [];
+          if (q24.length >= 6) { q = mean(q24); how = "24h"; }
+          if (qDay.length >= 3 && (q == null || mean(qDay) > q)) { q = mean(qDay); how = "minuit"; }
+        }
+      } else {
+        const qs = byDay[key];
+        if (qs && qs.length >= 6) q = qs.reduce((a, b) => a + b, 0) / qs.length;
+      }
+      const rel = Math.round((new Date(key + "T12:00") - new Date(today + "T12:00")) / 86400000); // 0 = aujourd'hui, -1 = hier…
+      out.push(q != null && r && r.q > 0 ? { day: key, rel, q, ratio: q / r.q, how } : null);
+    }
+    return out;
+  };
+  // days = M.riverDays(...) → { v: "oui" | "douteux" | "non" | null, why, partial }
+  M.pechable = (spot, days) => {
+    const P = M.PECHABLE;
+    if (!P.spots[spot.id]) return null;
+    const [d0, d1, d2] = days || [];
+    if (!d0 && !d1 && !d2) return { v: null, why: "débit du Vidourle indisponible (pas de réseau depuis plus d'un jour ?)", partial: true };
+    const f = x => x.ratio.toFixed(1).replace(".", ",") + "×";
+    const lbl = x => x.rel === 0 ? `${f(x)} ${x.how === "minuit" ? "depuis minuit" : "sur les 24 dernières heures"}` : `${f(x)} ${x.rel === -1 ? "hier" : x.rel === -2 ? "avant-hier" : `il y a ${-x.rel} jours`}`;
+    const known = [d0, d1, d2].filter(Boolean).map(lbl).join(", ");
+    const r = [d0, d1, d2].map(x => x ? x.ratio : null);
+    let v;
+    if ((r[0] ?? 0) >= P.non || (r[1] ?? 0) >= P.non) v = "non";
+    else if (r.some(x => x != null && x >= P.doute)) v = "douteux";
+    else v = "oui";
+    const why = v === "non" ? `Vidourle en crue (${known}) : chenal probablement marron.`
+      : v === "douteux" ? `Vidourle haut ou crue récente (${known}) : eau teintée possible, peut-être marron.`
+      : `Vidourle sous 4 fois la normale (${known}).`;
+    return { v, why: `${why} Normale = débit habituel du mois.`, partial: !d0 };
+  };
+  // Courte explication de chaque couleur d'eau (vocabulaire du relevé « Je suis sur place » et du carnet).
+  // D'après le guide Notion « Loup au leurre du bord » (scénarios A, E, F, H, J) [G] et l'avis de Nico sur la planche [C].
+  M.WATER_TXT = [
+    ["Claire", "on voit le fond à plus d'un mètre. Pêchable ; loup méfiant en plein jour : coloris naturels, aube et soir."],
+    ["Piquée", "légèrement trouble. Souvent le meilleur moment pour le loup."],
+    ["Teintée", "nettement colorée, on ne voit plus le fond. Pêchable avec des coloris visibles (blanc, chartreuse), lentement."],
+    ["Marron", "eau de crue, boueuse. Pas pêchable dans le chenal : inutile de se déplacer."]
+  ];
+
   // ---------- 3. Scénario (matrice A-J de ton guide Notion) ----------
   M.scenario = c => {
     if (c.hsLocal != null && c.hsLocal >= 1.8) return "G";

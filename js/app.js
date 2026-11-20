@@ -293,6 +293,155 @@
     return (memCache[ck] = mem);
   }
 
+  // « Pêchable ? » (model.js, section 2 ter) pour un poste et une heure : débit du Vidourle le jour visé, la veille et l'avant-veille.
+  // Jour à venir : en plus, si la pluie prévue sur le bassin annonce une crue (même règle que la note), on le signale.
+  function pechableAt(spot, t) {
+    if (!M.PECHABLE.spots[spot.id]) return null;
+    const r = state.flows && state.flows[M.PECHABLE.river];
+    const days = r ? M.riverDays(r.pts, r.ref, t, new Date()) : null;
+    const p = M.pechable(spot, days);
+    if (p && days) p.days = days.map(x => x ? +x.ratio.toFixed(2) : null); // Vidourle ÷ normale : jour visé, veille, avant-veille
+    if (p && localKey(t) > localKey(new Date()) && state.data) {
+      const i = state.data.times.findIndex(x => Math.abs(x - t) < 1800001);
+      if (i >= 0) { const lv = M.riverLevel(conditions(spot, i)); if (lv.src === "pluie" && lv.level >= 2) p.rain = true; }
+    }
+    return p;
+  }
+  function pechableHtml(spot, t) {
+    const p = pechableAt(spot, t); if (!p) return "";
+    const when = localKey(t) === localKey(new Date()) ? "aujourd'hui" : dayName(t);
+    const tag = p.v ? `<span class="pe pe-${p.v}">${p.v}</span>` : `<span class="pe">?</span>`;
+    return `<p class="pe-line"><b>Pêchable ?</b> ${tag} <small>(${esc(M.PECHABLE.spots[spot.id])}, ${when})</small></p>
+      <p class="sub">${esc(p.why)}${p.partial && p.v ? " Débit de ce jour pas encore mesuré : à revérifier le jour même." : ""}${p.rain ? " Fortes pluies prévues sur le bassin : le Vidourle peut monter d'ici là." : ""}</p>`;
+  }
+  const waterHelp = () => `<details class="help"><summary>Que veut dire chaque couleur d'eau ?</summary><ul>${M.WATER_TXT.map(([k, v]) => `<li><b>${k}</b> : ${v}</li>`).join("")}</ul></details>`;
+
+  // ---------- Relevé « Je suis sur place » (ajout du 20 nov. 2026) ----------
+  // 3 réponses en gros boutons. Gardé sur le téléphone (marche sans réseau), avec les estimations de l'appli au même moment,
+  // pour comparer plus tard (par Claude, depuis les tickets GitHub ; pas de tableau dans l'appli, à la demande de Nico).
+  const REL = {
+    eau: { label: "Eau", opts: ["claire", "piquée", "teintée", "marron"] },
+    mer: { label: "Mer", opts: ["calme", "agitée", "forte"] },
+    pechable: { label: "Pêchable", opts: ["oui", "non"] }
+  };
+  state.releves = LS.get("cp_releves", []);
+  const saveReleves = () => LS.set("cp_releves", state.releves);
+  // Bouée la plus proche : Espiguette pour les postes à l'est de 3,95° E (1 à 11), Sète pour les autres (même règle que la note houle d'essai).
+  function lastWave(spot) {
+    const H = state.houle; if (!H || !H.bouees) return null;
+    const b = H.bouees.find(x => x.camp === (spot.lon >= 3.95 ? "03001" : "03404")); if (!b) return null;
+    const ms = (b.mesures || []).filter(m => m.h != null); if (!ms.length) return null;
+    const m = ms[ms.length - 1];
+    return { bouee: b.nom, h: m.h, per: m.per ?? null, dir: m.dir ?? null, age_min: Math.round((Date.now() - Date.parse(m.t)) / 60000) };
+  }
+  // Estimations de l'appli pour ce poste à cette heure (données gardées sur le téléphone : marche sans réseau).
+  function estimates(spot, t) {
+    const out = { meteo_du: state.data ? state.data.fetchedAt.toISOString() : null };
+    const p = pechableAt(spot, t);
+    if (p) { out.pechable = p.v; out.vidourle_3j = p.days || null; } // explication non recopiée : recalculable depuis les 3 rapports
+    const ratio = k => { const f = flowAt(k, t); return f && f.ratio != null ? +f.ratio.toFixed(2) : null; };
+    out.debits = { rhone: ratio("rhone"), vidourle: ratio("vidourle"), lez: ratio("lez") };
+    out.houle_mesuree = lastWave(spot);
+    const i = state.data ? state.data.times.findIndex(x => Math.abs(x - t) < 1800001) : -1;
+    if (i < 0) return out;
+    const c = conditions(spot, i);
+    Object.assign(out, {
+      eau: c.turb ? c.turb.cls : null, fnu: c.turb ? +c.turb.fnu.toFixed(1) : null,
+      mer: M.seaState(c.hsLocal), houle_poste: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null, houle_large: c.hsOff ?? null,
+      periode: c.period ?? null, retombe: c.falling, vent: Math.round(c.wind), rafales: Math.round(c.gust), vent_dir: Math.round(c.windDir),
+      note_loup: M.score(spot, "loup", c).score, note_dorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c)
+    });
+    return out;
+  }
+  function renderReleveBox(spot) {
+    const box = $("#releveBox"), pick = state.relPick;
+    box.innerHTML = `<p class="sub">Touche ce que tu vois. Une rangée laissée vide = pas regardé.</p>` +
+      Object.entries(REL).map(([k, R]) => `<div class="rel-row"><b>${R.label}</b><div class="choices c${R.opts.length}">` +
+        R.opts.map(o => `<button type="button" class="choice${pick[k] === o ? " on" : ""}" data-rel="${k}" data-val="${o}">${o}</button>`).join("") + `</div></div>`).join("") +
+      `<div class="row"><button type="button" class="btn primary" id="relSave">Enregistrer</button><button type="button" class="btn" id="relCancel">Fermer</button></div>`;
+    box.querySelectorAll("[data-rel]").forEach(b => b.onclick = () => {
+      pick[b.dataset.rel] = pick[b.dataset.rel] === b.dataset.val ? null : b.dataset.val; // re-toucher = effacer
+      renderReleveBox(spot);
+    });
+    $("#relCancel").onclick = () => { box.hidden = true; };
+    $("#relSave").onclick = () => {
+      if (!pick.eau && !pick.mer && !pick.pechable) return toast("Touche au moins une réponse");
+      const now = new Date();
+      const rel = { v: 1, id: now.getTime(), t: now.toISOString(), poste: spot.id, nom: spot.name,
+        vu: { eau: pick.eau || null, mer: pick.mer || null, pechable: pick.pechable || null }, appli: estimates(spot, now), envoye: null };
+      state.releves.unshift(rel); saveReleves();
+      box.innerHTML = `<p><b>Relevé enregistré à ${hm(now)}</b> sur ce téléphone.</p>
+        <div class="row"><button type="button" class="btn primary" id="relLog">Noter ma sortie ici</button><button type="button" class="link" id="relUndo">Annuler ce relevé</button></div>`;
+      $("#relLog").onclick = () => { closeSheet(); prefillCarnet(rel); };
+      $("#relUndo").onclick = () => { state.releves = state.releves.filter(x => x.id !== rel.id); saveReleves(); box.hidden = true; renderReleves(); toast("Relevé annulé"); };
+      renderReleves();
+    };
+  }
+  // Pré-remplit « Noter une sortie » avec le relevé : poste, date, heure, couleur de l'eau, et une ligne de notes.
+  const WATER_CARNET = { claire: "claire", "piquée": "piquée", "teintée": "teintée", marron: "très chargée" };
+  function prefillCarnet(rel) {
+    showView("carnet");
+    const t = new Date(rel.t);
+    $("#fSpot").value = rel.poste; $("#fDate").value = localKey(t); $("#fStart").value = `${pad(t.getHours())}:${pad(t.getMinutes())}`;
+    if (rel.vu.eau) $("#fWater").value = WATER_CARNET[rel.vu.eau];
+    const line = `Sur place à ${hm(t)} : ${[rel.vu.mer ? "mer " + rel.vu.mer : "", rel.vu.pechable ? "pêchable : " + rel.vu.pechable : ""].filter(Boolean).join(", ")}.`;
+    if (!$("#fNotes").value.trim() && (rel.vu.mer || rel.vu.pechable)) $("#fNotes").value = line;
+    state.relLink = rel.id;
+    $("#prefillNote").textContent = `Pré-rempli avec ton relevé de ${hm(t)}. Complète durée, prises et leurre.`;
+    $("#prefillNote").hidden = false;
+  }
+  // Relevé de moins de 12 h sur ce poste (pour « Noter une sortie ici »).
+  const recentReleve = id => state.releves.find(r => r.poste === id && Date.now() - r.id < 12 * 3600000);
+
+  // ---------- « Envoyer mes relevés » : ticket GitHub pré-rempli (aucune clé dans la page) ----------
+  // L'appli ouvre la page « nouveau ticket » du dépôt avec le titre et le texte déjà écrits ; Nico touche « Submit new issue »
+  // (il est connecté à GitHub dans Chrome). Le dépôt est public : le ticket aussi (poste, heure, ce qui a été vu ; ni position ni prises).
+  const ISSUE_URL = "https://github.com/nicolasbonini1-commits/Carte-peche/issues/new";
+  // Au-delà, GitHub refuse l'adresse. Essai du 20 nov. 2026 (tâche essai-releves, sans compte, donc avec le passage par la page
+  // de connexion) : 2500 à 4000 caractères acceptés (2 fois chacun), 5000, 6000 et 8000 refusés (erreur 500).
+  // Plus long = plusieurs tickets : environ 2 relevés par ticket.
+  const MAX_URL = 4000;
+  function releveLine(r) {
+    const t = new Date(r.t), a = r.appli || {}, f = v => v == null ? "?" : String(v).replace(".", ",");
+    const vu = ["eau " + (r.vu.eau || "?"), "mer " + (r.vu.mer || "?"), "pêchable " + (r.vu.pechable || "?")].join(", ");
+    const ap = [a.eau ? `eau ${a.eau} (${f(a.fnu)} FNU)` : "", a.pechable !== undefined ? `pêchable ${a.pechable || "?"}` : "",
+      a.mer ? `mer ${a.mer} (${f(a.houle_poste)} m au poste)` : "", a.houle_mesuree ? `bouée ${a.houle_mesuree.bouee} ${f(a.houle_mesuree.h)} m` : "",
+      a.vent != null ? `vent ${a.vent} km/h ${M.compass(a.vent_dir)}` : ""].filter(Boolean).join(", ");
+    return `- ${dayName(t)} ${hm(t)} · ${r.nom} (${r.poste}) — vu : ${vu} — appli : ${ap || "pas de données"}`;
+  }
+  function issueFor(list) {
+    const d = new Date(list[0].t); // list : du plus ancien au plus récent
+    const title = `Relevés sur place : ${dayName(d)}${list.length > 1 ? ` (${list.length})` : ""}`;
+    const body = `Relevés « Je suis sur place » envoyés depuis l'appli (${list.length}).\n\n${list.map(releveLine).join("\n")}\n\n` +
+      "<details><summary>Données (pour Claude)</summary>\n\n```json\n" + JSON.stringify(list.map(({ envoye, nom, ...r }) => r)) + "\n```\n</details>\n";
+    return `${ISSUE_URL}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
+  }
+  function renderReleves() {
+    const box = $("#relevesBox"); if (!box) return;
+    const todo = state.releves.filter(r => !r.envoye);
+    box.innerHTML = `<h3 class="nomt">Mes relevés sur place</h3>
+      <p class="sub">${state.releves.length} relevé(s) sur ce téléphone${todo.length ? `, <b>${todo.length} à envoyer</b>` : ", tous envoyés"}.
+      Ils partent dans un ticket du dépôt GitHub (public) : poste, heure, ce que tu as vu et les estimations de l'appli ; ni ta position, ni tes prises.</p>
+      <div class="row"><button type="button" class="btn${todo.length ? " primary" : ""}" id="sendBtn"${todo.length ? "" : " disabled"}>Envoyer mes relevés</button></div>
+      <div id="sendConfirm" hidden></div>`;
+    $("#sendBtn").onclick = sendReleves;
+  }
+  function sendReleves() {
+    const todo = state.releves.filter(r => !r.envoye).reverse(); // du plus ancien au plus récent
+    if (!todo.length) return;
+    if (navigator.onLine === false) return toast("Pas de réseau : tes relevés restent sur le téléphone. Réessaie quand il revient.");
+    const batch = [];
+    for (const r of todo) { if (batch.length && issueFor(batch.concat(r)).length > MAX_URL) break; batch.push(r); }
+    const url = issueFor(batch);
+    window.open(url, "_blank", "noopener");
+    const rest = todo.length - batch.length;
+    const c = $("#sendConfirm"); c.hidden = false;
+    c.innerHTML = `<p>GitHub s'ouvre avec ${batch.length} relevé(s) déjà écrits : touche <b>« Submit new issue »</b>, puis reviens ici.${rest ? ` Il en restera ${rest} pour un 2e ticket.` : ""}</p>
+      <div class="row"><button type="button" class="btn primary" id="sentYes">C'est envoyé</button><button type="button" class="btn" id="sentNo">Pas encore</button></div>`;
+    $("#sentYes").onclick = () => { const at = new Date().toISOString(), ids = new Set(batch.map(r => r.id)); state.releves.forEach(r => { if (ids.has(r.id)) r.envoye = at; }); saveReleves(); renderReleves(); toast("Relevés marqués comme envoyés"); };
+    $("#sentNo").onclick = () => { c.hidden = true; };
+  }
+
   // ---------- Temps de route (OSRM) ----------
   async function computeDrive() {
     const o = state.origin;
@@ -574,6 +723,9 @@
     $("#sheetBody").innerHTML = `
       <h2>${esc(s.name)} ${pill(r.score, r.feasible)}</h2>
       <p class="sub">${esc(s.commune)} · ${r.drive} min de route · ${M.HABITAT[s.type].label}${s.moved ? " · position corrigée" : ""}</p>
+      <button type="button" class="btn here" id="hereBtn">📍 Je suis sur place</button>
+      <div id="releveBox" class="releve" hidden></div>
+      ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
       ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour le ${b.species}</p>
       <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : ""}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}
@@ -597,7 +749,9 @@
       document.querySelectorAll("[data-day]").forEach(x => x.classList.toggle("on", x === btn));
       renderDay(s, state.dayView);
     });
-    $("#logHere").onclick = () => { closeSheet(); showView("carnet"); $("#fSpot").value = id; };
+    $("#hereBtn").onclick = () => { state.relPick = {}; $("#releveBox").hidden = false; renderReleveBox(s); };
+    // Relevé de moins de 12 h sur ce poste : la fiche de sortie est pré-remplie avec.
+    $("#logHere").onclick = () => { closeSheet(); const rel = recentReleve(id); if (rel) prefillCarnet(rel); else { showView("carnet"); $("#fSpot").value = id; } };
     $("#moveBtn").onclick = () => {
       closeSheet(); showView("sortie");
       const m = markers[id].dot; m.dragging.enable(); dragging = true;
@@ -689,8 +843,11 @@
         bites: $("#fBites").value === "" ? null : +$("#fBites").value,
         nets: $("#fNets").value || null, trawlers: $("#fTrawl").value || null,
         // Ajout du 20 nov. 2026 : couleur de l'eau vue sur place, pour caler les seuils de l'estimation (vide = pas regardé).
-        water: $("#fWater").value || null
+        water: $("#fWater").value || null,
+        // Ajout du 20 nov. 2026 : relevé « Je suis sur place » qui a pré-rempli cette sortie (son numéro).
+        releveId: state.relLink || null
       };
+      state.relLink = null; $("#prefillNote").hidden = true;
       entry.snapshot = snapshot(entry);
       state.carnet.unshift(entry); LS.set("cp_carnet", state.carnet);
       e.target.reset(); bindCarnetDefaults(); renderCarnet(); render(); toast("Sortie enregistrée");
@@ -708,7 +865,7 @@
         state.carnet.sort((a, b) => b.id - a.id); LS.set("cp_carnet", state.carnet); renderCarnet(); render(); toast("Carnet importé");
       } catch (e) { toast("Texte illisible"); }
     };
-    renderCarnet();
+    renderCarnet(); renderReleves();
   }
   function bindCarnetDefaults() { const d = new Date(); $("#fDate").value = localKey(d); $("#fStart").value = `${pad(d.getHours())}:00`; }
   function snapshot(e) {
