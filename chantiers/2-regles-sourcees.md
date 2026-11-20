@@ -51,4 +51,7 @@ Sources ouvertes et relues :
 
 ## État
 - 20 nov. 18 h 45 : fiche créée, rien commencé.
-- 20 nov. 19 h : étape 1 (inventaire) faite ; étape 3 commencée (température, lune, lumière, saison du loup). Rien codé. En attente de Nico : règle de l'ordre des leurres en eau froide.
+- 20 nov. 19 h : étape 1 (inventaire) faite ; étape 3 commencée (température, lune, lumière, saison du loup).
+- 20 nov. 19 h 05 (accord de Nico à 18 h 56) : **règle « eau froide » codée** dans `M.lureSequence` (`M.COLD_WATER = 14`) : sous 14 °C, fond en premier, puis sous la surface, surface en court essai (5 min), toutes les animations ralenties ; température inconnue → ordre habituel. Testée dans Node seulement (6 cas, dont le seuil 14,0 °C). `app.js` non touché : l'explication est dans le texte de l'étape.
+- Reste avant `main` : essai Chrome sans écran avec les vraies réponses (`outils/essai_sortie.js`), cache suivant libre dans `sw.js` (v15 réservé), accord de Nico.
+- Suite : la grille de mer (`SEA_LOUP`, `SEA_DORADE`), la dorade (saison, `GRAU_AUTUMN`, température), revérifier `WATER_LOUP` et `colorFor` (viennent du guide Notion), pénalité > 24 °C (sans appui), lune (rien trouvé : chercher encore ou garder [P]), lissage de la couleur de l'eau (étape 4). Limite : la température utilisée est celle prévue par Open-Meteo Marine pour la zone, pas mesurée au poste.
