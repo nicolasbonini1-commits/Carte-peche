@@ -1,5 +1,5 @@
 {
- "note": "Points de mesure Sentinel-2 choisis le 20 nov. 2026 dans les polygones d'eau OpenStreetMap (Overpass, branche essais-chenaux-donnees). bord_m = distance au bord du polygone (m). Pertuis de la Fourcade écarté : chenal trop étroit (aucun point à 15 m du bord).",
+ "note": "Points de mesure Sentinel-2 choisis le 20 nov. 2026 dans les polygones d'eau OpenStreetMap (Overpass, branche essais-chenaux-donnees). bord_m = distance au bord du polygone (m). Pertuis de la Fourcade écarté : chenal trop étroit (aucun point à 15 m du bord). Points au milieu des marinas (Port Camargue, La Grande-Motte, Port Gardian) retirés après l'essai : bateaux dans le pixel (rouge 0,04-0,13 par mer claire). On garde les entrées.",
  "points": [
   {
    "id": "petit-rhone_rhone1",
@@ -45,15 +45,6 @@
    "lat": 43.44109,
    "bord_m": null,
    "source": "embouchure (fin du polygone OSM w791608949), 1000 m au cap 190°"
-  },
-  {
-   "id": "saintes-maries_gardian",
-   "groupe": "saintes-maries",
-   "type": "port",
-   "lon": 4.4226,
-   "lat": 43.44868,
-   "bord_m": 57,
-   "source": "OSM w35156829 Port Gardian"
   },
   {
    "id": "saintes-maries_mer300",
@@ -108,15 +99,6 @@
    "lat": 43.54259,
    "bord_m": 16,
    "source": "OSM w11112344 (chenal du Grau-du-Roi / Vidourle)"
-  },
-  {
-   "id": "grau-du-roi_portcamargue1",
-   "groupe": "grau-du-roi",
-   "type": "port",
-   "lon": 4.12815,
-   "lat": 43.51913,
-   "bord_m": 123,
-   "source": "OSM r2716148 Port Camargue"
   },
   {
    "id": "grau-du-roi_portcamargue2",
@@ -198,15 +180,6 @@
    "lat": 43.54759,
    "bord_m": null,
    "source": "poste 8, 1000 m au cap 170°"
-  },
-  {
-   "id": "grande-motte_port1",
-   "groupe": "grande-motte",
-   "type": "port",
-   "lon": 4.08109,
-   "lat": 43.55853,
-   "bord_m": 140,
-   "source": "OSM r7183392 Port de la Grande-Motte"
   },
   {
    "id": "grande-motte_port2",
