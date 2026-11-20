@@ -20,7 +20,7 @@ Niveau actuel = ce que dit le code ; « [S] cité » = source nommée dans un co
 | Règle | Valeur | Niveau actuel | Source trouvée le 20 nov. |
 |---|---|---|---|
 | `M.SEASON` loup | 0,30 (juil.) → 1,00 (nov.), déc. 0,90, janv. 0,80 | [S] cité | Ponte en mer de déc. à mars, pic en janvier ; 50-59 % des loups suivis sont restés tout l'hiver dans l'étang du Prévost (Mignucci et al. 2023) [S] |
-| `M.SEASON` dorade, `M.GRAU_AUTUMN` | ×1,10 à 1,25 sept.-déc. | [S] cité / [P] | pas encore cherché |
+| `M.SEASON` dorade, `M.GRAU_AUTUMN` | ×1,10 à 1,25 sept.-déc. | [S] cité / [P] | 222 dorades suivies 2019-2022 : départ des lagunes vers la mer surtout en oct.-nov., pic mi-octobre (Berre dès sept.) ; lagunes de mi-avril à fin sept. ; reproduction surtout au large de Marseille (Thambithurai et al. 2026, Movement Ecology 14:10, doi 10.1186/s40462-025-00619-5) ; concentration près de Marseille d'oct. à début déc. (Parc national des Calanques) [S] → oct.-nov. appuyés, sept. et déc. non ; valeurs ×1,10-1,25 restent [P] |
 | Houle au poste `localWave` | 0,35 + 0,65 cos(angle), grau ×0,8 | [P] | — |
 | Classes de mer | 0,3 / 0,8 / 1,8 m | [P] | — |
 | Houle longue | ≥ 8 s → classe au-dessus | physique [S], effet [P] | — |
@@ -36,7 +36,7 @@ Niveau actuel = ce que dit le code ; « [S] cité » = source nommée dans un co
 | `WATER_LOUP` / `WATER_DORADE` | piquée ×1,05, très chargée ×0,6… | guide Notion | à revérifier |
 | `M.PECHABLE` | 5× / 4× | [M] + planche validée par Nico | — |
 | Température loup | < 11 °C ×0,8 ; < 13 ×0,9 ; > 24 ×0,7 | [P] | Arrêt de l'alimentation vers 7 °C (Kara & Quignard 2018, cité par Mignucci 2023) ; métabolisme de base 36 / 65 / 89 / 91 mg O₂/kg/h à 10 / 15 / 20 / 25 °C (Claireaux & Lagardère 1999) ; 24 °C = température optimale d'élevage (Rodde et al. 2020) → la pénalité > 24 °C n'a pas d'appui |
-| Température dorade | < 12 °C ×0,6 ; < 14 ×0,85 | [P] | pas encore cherché |
+| Température dorade | < 12 °C ×0,6 ; < 14 ×0,85 | [P] | Élevage : forte baisse de l'activité et de l'alimentation en eau froide, arrêt de croissance (Sánchez-Nuño et al., essai 22 → 14 °C) ; prise de nourriture réduite sous 15 °C (Čolak et al. 2024, Naše more 71) ; en milieu naturel 11 °C l'hiver, départ vers plus profond quand la surface refroidit (cité par Sánchez-Nuño) [S, élevage] → sens de la règle appuyé, seuils [P] |
 | `M.lureSequence` | toujours surface → sous la surface → fond ; ignore température et saison | guide / [P] | aucune étude ne dit « loup près du fond en eau froide » (seulement magazines) ; le métabolisme plus lent en eau froide est [S] |
 | `M.colorFor` | coloris selon eau et lumière | guide Notion | à revérifier |
 | Carnet `learnFactor` | a = 4 | choix statistique [P] | — |
@@ -54,4 +54,5 @@ Sources ouvertes et relues :
 - 20 nov. 19 h : étape 1 (inventaire) faite ; étape 3 commencée (température, lune, lumière, saison du loup).
 - 20 nov. 19 h 05 (accord de Nico à 18 h 56) : **règle « eau froide » codée** dans `M.lureSequence` (`M.COLD_WATER = 14`) : sous 14 °C, fond en premier, puis sous la surface, surface en court essai (5 min), toutes les animations ralenties ; température inconnue → ordre habituel. Testée dans Node seulement (6 cas, dont le seuil 14,0 °C). `app.js` non touché : l'explication est dans le texte de l'étape.
 - Reste avant `main` : essai Chrome sans écran avec les vraies réponses (`outils/essai_sortie.js`), cache suivant libre dans `sw.js` (v15 réservé), accord de Nico.
+- 20 nov. 19 h 15 : **essai Chrome sans écran réussi** (tâche `essai-eau-froide`, résultats dans la branche `essais-eau-froide`) : 0 erreur JS, cache v16 actif ; eau réelle 16,4-17,2 °C → ordre habituel sur les postes 2, 7, 9, 6, 8 ; seuil forcé → fond en premier sur les 5 fiches, textes [S] / [P] affichés ; hors ligne puis retour du réseau : 16 postes, bandeau « Pas de réseau » puis mise à jour. Texte aligné le 20 nov. sur la leçon « [P] à vérifier affiché » (19 h 06). **Trou trouvé sur la capture** : la ligne « Leurre : » (carte « Meilleur choix » et haut de fiche, `sc.lure` dans `app.js` l. 718 et 790) ignore l'eau froide → correction proposée à Nico (hors périmètre : `app.js`).
 - Suite : la grille de mer (`SEA_LOUP`, `SEA_DORADE`), la dorade (saison, `GRAU_AUTUMN`, température), revérifier `WATER_LOUP` et `colorFor` (viennent du guide Notion), pénalité > 24 °C (sans appui), lune (rien trouvé : chercher encore ou garder [P]), lissage de la couleur de l'eau (étape 4). Limite : la température utilisée est celle prévue par Open-Meteo Marine pour la zone, pas mesurée au poste.
