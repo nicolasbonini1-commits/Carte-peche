@@ -1,0 +1,28 @@
+# Essai ponctuel (20 nov. 2026, chantier 2) : GRAU_AUTUMN sans sept./déc., cache v17. Écrit dans essais-dorade-saison, jamais dans donnees.
+name: essai-dorade-saison
+on:
+  push:
+    branches: [essai-dorade-saison]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  essai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - run: git clone -q --depth 1 -b main "https://github.com/${{ github.repository }}.git" /tmp/main
+      - run: |
+          mkdir -p /tmp/out
+          (python3 -m http.server 8080 >/dev/null 2>&1 &)
+          (cd /tmp/main && python3 -m http.server 8081 >/dev/null 2>&1 &)
+          cd /tmp && npm i -s puppeteer@23 >/dev/null 2>&1
+          cp $GITHUB_WORKSPACE/outils/essai_dorade_saison.js /tmp/ && cd /tmp && timeout 900 node essai_dorade_saison.js
+      - if: always()
+        run: |
+          cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
+          git checkout -q --orphan essais-dorade-saison && git rm -rqf . 
+          cp /tmp/out/* . 2>/dev/null; echo "$(date '+%d/%m %H:%M')" > HEURE.txt
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "essai dorade saison $(date '+%d/%m %H:%M')" && git push -qf origin essais-dorade-saison
