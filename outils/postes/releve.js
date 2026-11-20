@@ -16,7 +16,7 @@ async function overpass(q) {
   const erreurs = [];
   for (const url of OVERPASS) {
     try {
-      const r = await fetch(url, { method: "POST", headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" },
+      const r = await fetch(url, { method: "POST", signal: AbortSignal.timeout(100000), headers: { "User-Agent": UA, "Content-Type": "application/x-www-form-urlencoded" },
         body: "data=" + encodeURIComponent(q) });
       if (!r.ok) { erreurs.push(`${url} → ${r.status}`); continue; }
       const j = await r.json();
@@ -32,7 +32,7 @@ async function profondeur(lat, lon) {
   const url = `https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(${lon.toFixed(5)}%20${lat.toFixed(5)})`;
   for (let k = 0; k < 2; k++) {
     try {
-      const r = await fetch(url, { headers: { "User-Agent": UA } });
+      const r = await fetch(url, { signal: AbortSignal.timeout(20000), headers: { "User-Agent": UA } });
       if (!r.ok) { await sleep(1000); continue; }
       const j = await r.json();
       return { avg: j.avg ?? j.depth ?? j.mean ?? null, brut: j };

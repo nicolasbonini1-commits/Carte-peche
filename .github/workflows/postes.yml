@@ -9,11 +9,14 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-concurrency: postes
+concurrency:
+  group: postes
+  cancel-in-progress: true
 jobs:
   releve:
     if: github.ref_name == 'chantier-1-postes'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
