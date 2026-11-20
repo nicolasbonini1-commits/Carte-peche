@@ -715,7 +715,7 @@
       <h2>${esc(r.spot.name)}</h2>
       <p class="sub">${esc(r.spot.commune)} · ${r.drive} min de route · en pêche de ${hm(r.start)} à ${hm(r.end)}</p>
       <p><b>Meilleure heure :</b> ${hm(b.t)} (${b.score}/100, ${b.species}) · <b>${sc.name}</b></p>
-      ${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : `<p><b>Dorade :</b> calée 40-60 g près des enrochements ou en sortie de grau ; appâts durs (crabe, couteau, moule) [P].</p>`}
+      ${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(r.spot, b.i))}</p>` : `<p><b>Dorade :</b> calée 40-60 g près des enrochements ou en sortie de grau ; appâts durs (crabe, couteau, moule) [P].</p>`}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements à ce moment.</p>` : ""}
       <p class="sub">Ensuite : ${second || "—"}</p>
       <div class="row">${goButtons(r.spot)}<button class="btn" data-open="${r.spot.id}">Détails</button></div>`;
@@ -787,7 +787,7 @@
       <div id="releveBox" class="releve" hidden></div>
       ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
       ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour le ${b.species}</p>
-      <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : ""}
+      <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(s, b.i))}</p>` : ""}
       ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour le ${b.species})</p>` : ""}
       ${now ? `<p class="sub">Mer maintenant : ${now.txt}</p>` : ""}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}

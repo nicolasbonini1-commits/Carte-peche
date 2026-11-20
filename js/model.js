@@ -461,6 +461,10 @@
     return { fam: "naturel à ventre blanc", ex: "Mat White, Neo Pearl, Ghost Lançon", why: "eau claire, lumière faible ou ciel couvert" };
   };
   M.COLD_WATER = 14; // °C, seuil [P] de l'ordre « eau froide » (voir fin de M.lureSequence)
+  // Phrase ajoutée à la ligne « Leurre : » des scénarios en eau froide, pour ne pas contredire l'ordre des leurres (accord de Nico, 20 nov. 2026, 21 h 27)
+  M.coldNote = c => (c && c.sst != null && c.sst < M.COLD_WATER)
+    ? ` <b>Eau à ${c.sst.toFixed(1).replace(".", ",")} °C :</b> commence près du fond, surface en court essai [P] à vérifier ; tout en plus lent [S].`
+    : "";
   M.lureSequence = c => {
     const col = M.colorFor(c), st = M.seaState(c.hsLocal), spot = c.spot;
     const shallow = spot.type === "plage_lisse" || spot.type === "plage_barres";
