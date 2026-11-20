@@ -13,7 +13,9 @@ jobs:
       - run: |
           mkdir -p /tmp/out
           Q='[out:json][timeout:60];(node["seamark:type"](43.515,3.915,43.535,3.950);way["man_made"~"breakwater|pier|groyne"](43.515,3.915,43.535,3.950);way["waterway"="river"]["name"~"Lez"](43.515,3.915,43.540,3.950););out body geom;'
-          curl -sS -m 90 --retry 3 --retry-delay 10 --data-urlencode "data=$Q" https://overpass-api.de/api/interpreter -o /tmp/out/osm_lez.json
+          for U in https://overpass-api.de/api/interpreter https://overpass.private.coffee/api/interpreter https://overpass.kumi.systems/api/interpreter; do
+            curl -sS -m 90 -A "Carte-peche/1.0 (github.com/nicolasbonini1-commits/Carte-peche)" -H "Accept: application/json" --data-urlencode "data=$Q" "$U" -o /tmp/out/osm_lez.json && head -c 1 /tmp/out/osm_lez.json | grep -q "{" && echo "OK $U" && break
+          done
           head -c 400 /tmp/out/osm_lez.json
       - run: |
           cd /tmp && git clone -q --depth 1 -b essais-sortie "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
