@@ -786,9 +786,9 @@
       <button type="button" class="btn here" id="hereBtn">📍 Je suis sur place</button>
       <div id="releveBox" class="releve" hidden></div>
       ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
-      ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour le ${b.species}</p>
+      ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour ${b.species === "dorade" ? "la" : "le"} ${b.species}</p>
       <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(s, b.i))}</p>` : ""}
-      ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour le ${b.species})</p>` : ""}
+      ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour ${b.species === "dorade" ? "la" : "le"} ${b.species})</p>` : ""}
       ${now ? `<p class="sub">Mer maintenant : ${now.txt}</p>` : ""}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}
       <h3>Pourquoi cette note</h3>
