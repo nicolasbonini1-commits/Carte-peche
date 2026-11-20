@@ -1,0 +1,31 @@
+# Essai ponctuel (20 nov. 2026) : plan de sortie de demain calculé par la vraie appli. Écrit dans essais-sortie, jamais dans donnees.
+name: essai-sortie
+on:
+  push:
+    branches: [essai-sortie-21nov]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sortie:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm i --no-save puppeteer@23 >/dev/null 2>&1 && echo ok
+      - run: |
+          mkdir -p /tmp/out
+          python3 -m http.server 8080 >/dev/null 2>&1 &
+          sleep 2
+          node outils/essai_sortie.js
+      - name: Enregistrer dans essais-sortie
+        run: |
+          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b essais-sortie
+          cp /tmp/out/* .
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "sortie $(date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-sortie
