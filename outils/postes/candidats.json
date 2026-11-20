@@ -108,27 +108,34 @@
  "12": [
   {
    "label": "P",
-   "name": "Feu vert, tête de la jetée ouest du Lez",
-   "lat": 43.52373,
-   "lon": 3.93525,
-   "src": "OSM node 1420666379 ; jetée OSM way 388845267 ; contrôlé le 20 nov. (osm_lez.json) [C]"
+   "name": "Feu vert « Palavas les Flots », tête de jetée à la sortie du Lez (rive droite)",
+   "lat": 43.52598,
+   "lon": 3.93449,
+   "src": "OSM node 1420666382 (light_minor vert « Palavas les Flots ») ; jetée OSM way 372219033 ; photo aérienne : tête de jetée au débouché du Lez, hors du port de plaisance [C]"
   },
   {
    "label": "a",
-   "name": "Feu rouge, bout de la digue du large",
-   "lat": 43.52367,
-   "lon": 3.9366,
-   "src": "OSM node 1420666381 ; digue OSM way 389802450 [C]"
+   "name": "Feu « Le Lez », angle du môle est du port (face à la sortie du Lez)",
+   "lat": 43.52567,
+   "lon": 3.93539,
+   "src": "OSM node 1420666380 (light_minor « Le Lez ») ; môle OSM way 388845267 [C]"
   },
   {
    "label": "b",
-   "name": "Plage face au brise-lames détaché ouest",
-   "lat": 43.52232,
-   "lon": 3.92496,
-   "src": "OSM way 389802465 (breakwater détaché) [C]"
+   "name": "Plage rive droite, racine de la digue du large",
+   "lat": 43.52489,
+   "lon": 3.9299,
+   "src": "OSM way 389802450 (breakwater, extrémité côté plage) [C]"
   },
   {
    "label": "x1",
+   "name": "Témoin : feu rouge, bout de la digue du large (entrée du port)",
+   "lat": 43.52367,
+   "lon": 3.9366,
+   "src": "OSM node 1420666381 [C]"
+  },
+  {
+   "label": "x2",
    "name": "Témoin : 1er épi de la rive gauche (de l'autre côté du Lez)",
    "lat": 43.5283,
    "lon": 3.93563,
