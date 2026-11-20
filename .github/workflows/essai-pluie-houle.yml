@@ -1,0 +1,34 @@
+# Essai temporaire (branche essai-pluie-houle) : note houle, pluie des jours d'avant, touches et prises dans le ticket, et « Pêchable ? », relevé « Je suis sur place », carnet pré-rempli, ticket GitHub,
+# dans Chrome sans écran avec les vraies réponses des services, sans réseau et au retour du réseau.
+# Résultats et captures dans la branche essais-pluie-houle-resultats. Ne se lance que sur sa branche.
+name: essai-pluie-houle
+on:
+  push:
+    branches: [essai-pluie-houle]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  navigateur:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer Playwright
+        run: pip install playwright && python -m playwright install --with-deps chromium
+      - name: Tickets activés sur le dépôt ?
+        run: |
+          mkdir -p /tmp/r
+          curl -s -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }} | jq '{has_issues, visibility}' | tee /tmp/r/depot.json
+      - name: Essai dans Chrome
+        run: |
+          python3 -m http.server 8080 >/dev/null 2>&1 &
+          sleep 2
+          python3 outils/essai_releves.py /tmp/r
+      - name: Enregistrer
+        if: always()
+        run: |
+          cd /tmp/r && git init -q && git checkout -q -b essais-pluie-houle-resultats
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add -A && git commit -qm "essai $(date '+%d/%m %H:%M')" || exit 0
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-pluie-houle-resultats

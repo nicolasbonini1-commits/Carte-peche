@@ -113,3 +113,4 @@ nav.bottom button.on { color: var(--text); font-weight: 700; }
 .help { margin: 8px 0; font-size: 14px; } .help summary { cursor: pointer; color: var(--sub); min-height: 32px; }
 .help ul { padding-left: 18px; margin: 6px 0; } .help li { margin: 4px 0; line-height: 1.4; }
 .btn[disabled] { opacity: .5; }
+.houle-effet { margin: 8px 0; font-size: 13px; } .houle-effet summary { cursor: pointer; min-height: 32px; } .houle-effet table { width: 100%; font-size: 12px; }

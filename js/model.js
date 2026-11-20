@@ -58,6 +58,62 @@
   };
 
   M.seaState = h => h == null ? "inconnue" : h < 0.3 ? "calme" : h < 0.8 ? "peu agitée" : h < 1.8 ? "formée" : "forte";
+  M.SEA_CLASSES = ["calme", "peu agitée", "formée", "forte"];
+  // Houle longue [P] : période ≥ 8 s → une classe de mer au-dessus sur digues et roches.
+  // Pourquoi : la longueur d'une vague au large vaut 1,56 × T² (en m, T en s) ; à 8 s, 100 m, elle « sent » le fond dès 50 m
+  // de profondeur environ (moitié de la longueur) et déferle plus fort sur les enrochements. À hauteur égale, une houle de 8 s
+  // apporte 1,6 fois plus d'énergie par seconde qu'une mer de vent de 5 s (flux d'énergie des vagues ∝ H² × T, eau profonde).
+  M.LONG_SWELL_S = 8;
+  M.seaClass = (h, per, type) => {
+    const st = M.seaState(h);
+    if (st === "inconnue" || per == null || per < M.LONG_SWELL_S || (type !== "digue" && type !== "roche")) return { st, long: false };
+    const k = Math.min(3, M.SEA_CLASSES.indexOf(st) + 1);
+    return { st: M.SEA_CLASSES[k], long: k !== M.SEA_CLASSES.indexOf(st) };
+  };
+
+  // ---------- Houle mesurée par les bouées Candhis (Cerema) ----------
+  // Bouée la plus proche : Espiguette pour les postes à l'est de 3,95° E (jusqu'à Carnon), Sète à l'ouest (du Lez à Frontignan).
+  M.BUOYS = { "03001": "Espiguette", "03404": "Sète" };
+  M.buoyFor = spot => spot.lon >= 3.95 ? "03001" : "03404";
+  // Règles de lecture [P] :
+  //  - heure couverte par les mesures : mesure la plus proche à 45 min près ;
+  //  - jusqu'à 3 h après la dernière mesure : on garde la dernière mesure (la houle change lentement, la tâche passe toutes les 3 h) ;
+  //  - au-delà : prévision corrigée de l'écart vu à la bouée (mesuré ÷ prévu à la même heure), correction pleine à 3 h,
+  //    qui s'efface jusqu'à 24 h après la mesure (la prévision reprend la main) ; écart borné de 0,5 à 1,5.
+  M.MEAS = { near: 45, hold: 3, fade: 24 };
+  const MIN = 60000, HOUR = 3600000;
+  M.buoyRatio = b => {
+    const ms = (b && b.mesures || []).filter(m => m.h != null);
+    if (!ms.length || !b.prevu || !b.prevu.length) return null;
+    const last = ms[ms.length - 1], t = Date.parse(last.t);
+    let pv = null;
+    for (const x of b.prevu) { const d = Math.abs(Date.parse(x.t) - t); if (x.h != null && d <= 90 * MIN && (!pv || d < pv.d)) pv = { h: x.h, d }; }
+    if (!pv || pv.h <= 0.05) return null;
+    return { r: M.clamp(last.h / pv.h, 0.5, 1.5), meas: last.h, prevu: pv.h, at: t };
+  };
+  // Houle au large à l'instant t (ms), d'après la bouée b et la prévision fc = { hs, dir, per } à cette heure.
+  M.offshoreWave = (b, t, fc) => {
+    const base = { hs: fc.hs, dir: fc.dir, per: fc.per, src: "prévision" };
+    const ms = (b && b.mesures || []).filter(m => m.h != null);
+    if (!ms.length) return base;
+    const T = m => Date.parse(m.t), last = ms[ms.length - 1], tl = T(last);
+    const from = m => ({ hs: m.h, dir: m.dir ?? fc.dir, per: m.per ?? fc.per, src: "mesure", at: T(m), buoy: b.nom });
+    if (t <= tl + M.MEAS.near * MIN) {
+      let best = null;
+      for (const m of ms) { const d = Math.abs(T(m) - t); if (d <= M.MEAS.near * MIN && (!best || d < best.d)) best = { m, d }; }
+      return best ? from(best.m) : base;
+    }
+    if (t <= tl + M.MEAS.hold * HOUR) return from(last);
+    const q = M.buoyRatio(b);
+    if (fc.hs == null || !q) return base;
+    const w = 1 - (t - tl - M.MEAS.hold * HOUR) / ((M.MEAS.fade - M.MEAS.hold) * HOUR);
+    if (w <= 0) return base;
+    return { hs: fc.hs * (1 + (q.r - 1) * w), dir: fc.dir, per: fc.per, src: "prévision corrigée", ratio: q.r, w, at: tl, buoy: b.nom };
+  };
+
+  // Facteur « Mer » → note sur 5, avec la phrase affichée à côté.
+  M.seaNote = v => v >= 0.95 ? 5 : v >= 0.80 ? 4 : v >= 0.60 ? 3 : v >= 0.40 ? 2 : v >= 0.20 ? 1 : 0;
+  M.SEA_NOTE_TXT = ["mer à éviter ici", "très défavorable", "défavorable", "moyenne", "bonne", "idéale"];
 
   // Lune : fraction éclairée (0-1) et nom de phase (calcul astronomique simplifié, précision ~1 jour)
   M.moon = date => {
@@ -120,21 +176,25 @@
   const fmtQ = q => q >= 10 ? String(Math.round(q)) : q.toFixed(1).replace(".", ",");
 
   // ---------- 2 bis. Couleur de l'eau estimée (turbidité en FNU) ----------
-  // Calée le 20 nov. 2026 sur 559 jours de turbidité mesurée par Sentinel-2 (Copernicus Marine, pixels de 100 m, à 300 m du bord)
-  // de 2020 à 2024, et testée sur 2025-2026 : corrélation de rang 0,77 (règle précédente : 0,47). Détail et limites :
-  // outils/turbidite/RESULTATS.md (branche essai-turbidite). [M] pour les coefficients, [P] pour les seuils des classes.
-  // log10(FNU) = base du poste + 0,41 × houle max des 48 h au poste (m) + 0,19 × houle au poste (m) + 0,098 × vent moyen 24 h (par 10 km/h)
-  //            + Σ fleuves k(poste) × log10(mémoire du débit).
+  // Calée sur 559 jours de turbidité mesurée par Sentinel-2 (Copernicus Marine, pixels de 100 m, à 300 m du bord) de 2020 à 2024,
+  // testée sur 2025-2026. Détail et limites : outils/turbidite/RESULTATS.md (branche essai-turbidite). [M] coefficients, [P] seuils des classes.
+  // Version du 20 nov. 2026 (12 h 40, accord de Nico) : + pluie des jours d'avant sur la côte. Recalée sur les mêmes données
+  // (essai reproduit à l'identique avant : R² test 0,622) : R² test 0,654 (avant 0,622), rang 0,789 (0,767), bonne classe 69 % (66 %),
+  // embouchures 1, 6, 12 : 59 % (57 %). Effet seul : indice de pluie 20 mm → ×1,35 ; 60 mm → ×1,5.
+  // Avec la pluie, le Lez à Palavas et au Prévost (12, 13) et le Rhône au poste 5 sortaient légèrement négatifs (impossible : plus de débit
+  // ne rend pas l'eau plus claire) → mis à 0 (R² test inchangé, 0,654). Le terme « mer qui retombe » (−0,017) n'est pas repris, comme avant.
+  // log10(FNU) = base du poste + 0,365 × houle max des 48 h au poste (m) + 0,173 × houle au poste (m) + 0,105 × vent moyen 24 h (par 10 km/h)
+  //            + 0,0431 × ln(1 + indice de pluie côte en mm) + Σ fleuves k(poste) × log10(mémoire du débit).
   // Mémoire du débit = max sur 15 jours de (débit moyen du jour / débit habituel du mois) × e^(−jours/τ), au moins 1.
-  // Postes 3, 8 et 14 : pas assez de mesures, valeurs reprises des postes voisins [P].
+  // Postes 3, 8 et 14 : pas assez de mesures, valeurs reprises des postes voisins (3 = moyenne de 2 et 4, 8 = 6, 14 = moyenne de 13 et 15) [P].
   M.TURB = {
-    base: { 1: 0.42, 2: 0.396, 3: 0.325, 4: 0.255, 5: 0.419, 6: 0.472, 7: 0.299, 8: 0.472, 9: 0.283, 10: 0.188,
-            11: 0.148, 12: 0.115, 13: 0.265, 14: 0.247, 15: 0.228, 16: 0.17 },
-    hsmax48: 0.4097, hs: 0.1856, ws24: 0.0984,
+    base: { 1: 0.3588, 2: 0.3324, 3: 0.2607, 4: 0.1889, 5: 0.356, 6: 0.4044, 7: 0.2353, 8: 0.4044, 9: 0.2145, 10: 0.1212,
+            11: 0.0812, 12: 0.0499, 13: 0.2002, 14: 0.1787, 15: 0.1571, 16: 0.095 },
+    hsmax48: 0.3653, hs: 0.1732, ws24: 0.1049, api: 0.0431,
     rivers: {
-      rhone: { tau: 8, k: { 1: 2.017, 2: 0.910, 3: 0.742, 4: 0.574, 5: 0.030 } },
-      vidourle: { tau: 1, k: { 5: 0.152, 6: 0.428, 7: 0.276, 8: 0.428, 9: 0.225 } },
-      lez: { tau: 5, k: { 11: 0.098, 12: 0.036, 13: 0.058 } }
+      rhone: { tau: 8, k: { 1: 1.9528, 2: 0.8459, 3: 0.6727, 4: 0.4994 } },
+      vidourle: { tau: 1, k: { 5: 0.0827, 6: 0.3506, 7: 0.2038, 8: 0.3506, 9: 0.1642 } },
+      lez: { tau: 5, k: { 11: 0.0073 } }
     },
     classes: [4, 10, 30],
     names: ["claire", "piquée", "teintée", "très chargée"]
@@ -144,6 +204,7 @@
     const T = M.TURB, b = T.base[spot.id];
     if (b == null || x.hs == null) return null;
     const lSea = T.hsmax48 * (x.hsmax48 ?? x.hs) + T.hs * x.hs + T.ws24 * (x.ws24 || 0) / 10;
+    const lRain = T.api * Math.log(1 + Math.max(0, x.api || 0)); // log népérien, comme dans le calage (np.log1p)
     let lRiv = 0; const rParts = [];
     for (const [r, R] of Object.entries(T.rivers)) {
       const k = R.k[spot.id], m = x.mem && x.mem[r];
@@ -151,12 +212,13 @@
       const l = k * Math.log10(m); lRiv += l;
       if (l >= 0.05) rParts.push(`${window.RIVERS ? window.RIVERS[r].name.split(" ")[0] : r} ×${(10 ** l).toFixed(1).replace(".", ",")}`);
     }
-    const fnu = 10 ** (b + lSea + lRiv);
+    if (lRain >= 0.05) rParts.push(`pluie des jours d'avant ×${(10 ** lRain).toFixed(1).replace(".", ",")}`);
+    const fnu = 10 ** (b + lSea + lRiv + lRain);
     const c = T.classes, i = fnu < c[0] ? 0 : fnu < c[1] ? 1 : fnu < c[2] ? 2 : 3;
     const fmt = v => v >= 10 ? String(Math.round(v)) : v.toFixed(1).replace(".", ",");
     const why = `≈ ${fmt(fnu)} FNU estimés (sans houle ni vent ${fmt(10 ** b)}, houle des 48 h et vent ×${(10 ** lSea).toFixed(1).replace(".", ",")}`
       + (rParts.length ? `, ${rParts.join(", ")}` : "") + ")";
-    return { fnu, cls: T.names[i], idx: i, sea: 10 ** lSea, river: 10 ** lRiv, why };
+    return { fnu, cls: T.names[i], idx: i, sea: 10 ** lSea, river: 10 ** lRiv, rain: 10 ** lRain, land: 10 ** (lRiv + lRain), why }; // land = fleuves + pluie (eau venue de la terre)
   };
   // Couleur de l'eau → note pour le loup sur 5 et facteur de la note du poste (guide Notion, § 2 et 4) [S]/[P] :
   // piquée : souvent le meilleur créneau (scénarios E et H) ; teintée : la journée devient possible avec des coloris visibles (F, J) ;
@@ -242,7 +304,7 @@
   // ---------- 3. Scénario (matrice A-J de ton guide Notion) ----------
   M.scenario = c => {
     if (c.hsLocal != null && c.hsLocal >= 1.8) return "G";
-    if (c.turb ? (c.turb.river >= 1.5 && c.turb.river >= c.turb.sea && c.turb.idx >= 1) : (c.spot.river && M.riverLevel(c).level >= 1)) return "J";
+    if (c.turb ? (c.turb.land >= 1.5 && c.turb.land >= c.turb.sea && c.turb.idx >= 1) : (c.spot.river && M.riverLevel(c).level >= 1)) return "J";
     if (c.falling) return "H";
     if (c.hsLocal != null && c.hsLocal >= 0.8) return "F";
     if (c.onshore >= 35) return "I";
@@ -290,10 +352,17 @@
     f.push({ k: "Saison", v: season, why: sWhy });
 
     const st = M.seaState(c.hsLocal);
-    let sea = 1, seaWhy = `mer ${st}` + (c.hsLocal != null ? ` (~${c.hsLocal.toFixed(1)} m au poste)` : "");
-    if (st !== "inconnue") sea = species === "loup" ? SEA_LOUP[st][spot.type] : SEA_DORADE[st];
+    const sc = M.seaClass(c.hsLocal, c.period, spot.type);
+    const f1 = v => v.toFixed(1).replace(".", ",");
+    let sea = 1, seaWhy = `mer ${st}` + (c.hsLocal != null ? ` (~${f1(c.hsLocal)} m au poste)` : "");
+    if (c.waveSrc === "mesure") seaWhy += `, d'après la bouée ${c.waveBuoy} (${f1(c.hsOff)} m mesurés au large)`;
+    else if (c.waveSrc === "prévision corrigée") seaWhy += `, prévision corrigée par la bouée ${c.waveBuoy} (×${c.waveRatio.toFixed(2).replace(".", ",")})`;
+    if (sc.long) seaWhy += `, houle longue (${Math.round(c.period)} s) : comptée comme mer ${sc.st} sur ce poste`;
+    if (sc.st !== "inconnue") sea = species === "loup" ? SEA_LOUP[sc.st][spot.type] : SEA_DORADE[sc.st];
     if (c.falling) { sea = Math.min(1, sea * (species === "loup" ? 1.15 : 1.1)); seaWhy += ", mer qui retombe : souvent le meilleur créneau"; }
-    f.push({ k: "Mer", v: sea, why: seaWhy });
+    const note = sc.st === "inconnue" ? null : M.seaNote(sea);
+    if (note != null) seaWhy += ` → ${note}/5, ${M.SEA_NOTE_TXT[note]} pour le ${species}`;
+    f.push({ k: "Mer", v: sea, why: seaWhy, note });
 
     let light;
     let lWhy = c.light;
@@ -326,7 +395,7 @@
       // la compte déjà : on ne pénalise pas deux fois (0,85 au lieu de 0,6 pour le loup).
       const w = c.turb;
       if (species === "loup") {
-        const L = M.WATER_LOUP[w.cls], dueToSea = w.idx === 3 && w.sea > w.river;
+        const L = M.WATER_LOUP[w.cls], dueToSea = w.idx === 3 && w.sea > w.land;
         rain = dueToSea ? 0.85 : L.v;
         rWhy = `eau ${w.cls} ${w.why} · pour le loup ${dueToSea ? "3/5 (surtout la houle, déjà comptée dans « Mer »)" : L.note + "/5"} · pluie : ${rWhy}`;
       } else {
