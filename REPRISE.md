@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` de ce dépôt (leçons pêche), `LECONS.md` du dépôt maison3d, le skill coach-peche et `git log -5`.
 **Résumé.** Tout le détail (calculs, essais, chiffres, commits) est dans `HISTORIQUE.md`, copie intégrale de l'ancien REPRISE.md au 20 nov. 16 h 30 : y chercher par le titre de section indiqué « (H : … ») avant de refaire un travail ou de répondre sur un point précis.
-État au 20 nov. 2026, 21 h 35 : `main` = cache `carte-peche-v16` (règle « eau froide » du chantier 2, accord de Nico 21 h 27) ; v15 = webcams + actions v5 (chantier 1, 18 h 52).
+État au 20 nov. 2026, 21 h 30 : `main` = cache `carte-peche-v16` (règle « eau froide » du chantier 2, accord de Nico 21 h 27) ; v15 = webcams + actions v5 (chantier 1, 18 h 52).
 
 ## Le projet
 - Appli web (PWA) pour choisir son poste du bord, loup au leurre et dorade à la calée, des Saintes-Maries à Frontignan ; 1 h de route depuis Poulx ; remplace le carnet papier. Usage perso uniquement (API non commerciales OK, Play Store mis de côté).
@@ -34,7 +34,7 @@ Fiches : `chantiers/1-postes.md`, `chantiers/2-regles-sourcees.md`, `chantiers/3
 1. **Localisation poste par poste** : recaler les postes « à vérifier » (1, 2, 4, 5, 7, 8, 9 ; le 3 = zone de 15 km), positions prises dans OSM (feux, jetées, épis) + EMODnet. Méthode qui marche : requête Overpass lancée par une tâche GitHub, **avec un en-tête User-Agent** (sans lui : 406), serveurs de secours. Poste 12 contrôlé le 20 nov. : feu vert OSM 43,52373 / 3,93525 = tête de la jetée ouest de l'entrée commune Lez + port de Palavas ; le Lez finit 250 m plus au nord entre les feux « Le Lez » (rouge) et « Palavas les Flots » (vert) (`osm_lez.json`, branche `essais-sortie`).
 2. **Prévision plus fine par poste** (aujourd'hui : 3 zones de météo et de mer pour 16 postes).
 3. **Postes dans les terres, le long des canaux** (Nico donne les lieux) : nouveau type de poste (pas de houle ; courant, vent, couleur de l'eau ; règles de pêche des canaux et étangs à vérifier).
-- **Eau froide (fait, chantier 2, `main` v16 le 20 nov. 21 h 35)** : sous 14 °C [P], fond en premier et surface en court essai [P] à vérifier, animations plus lentes [S] (Claireaux & Lagardère 1999) ; même phrase ajoutée à la ligne « Leurre : » (`M.coldNote`). Essai Chrome (tâche `essai-eau-froide`, branche `essais-eau-froide`, 21 h 29) : 0 erreur, eau réelle 16,4-17,2 °C donc ordre habituel, seuil forcé → fond en premier sur 5 fiches, hors ligne et retour OK. Reste du chantier 2 : `chantiers/2-regles-sourcees.md`. Oubli du plan du 21 nov. : lune presque pleine (87 %), le guide Notion dit l'aube moins productive [S].
+- **Eau froide (fait, chantier 2, `main` v16 le 20 nov. 21 h 30, publié par Pages 21 h 30)** : sous 14 °C [P], fond en premier et surface en court essai [P] à vérifier, animations plus lentes [S] (Claireaux & Lagardère 1999) ; même phrase ajoutée à la ligne « Leurre : » (`M.coldNote`). Essai Chrome (tâche `essai-eau-froide`, branche `essais-eau-froide`, 21 h 29) : 0 erreur, eau réelle 16,4-17,2 °C donc ordre habituel, seuil forcé → fond en premier sur 5 fiches, hors ligne et retour OK. Reste du chantier 2 : `chantiers/2-regles-sourcees.md`. Oubli du plan du 21 nov. : lune presque pleine (87 %), le guide Notion dit l'aube moins productive [S].
 
 ## À faire par Nico
 - Écrire à Candhis (fuseau) ; envoyer un premier vrai relevé depuis l'A55.
