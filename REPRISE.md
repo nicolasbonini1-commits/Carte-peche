@@ -29,6 +29,9 @@
 - Embouchures : l'indice ne calcule pas l'étendue du panache, ne voit pas l'intérieur des chenaux ni les étangs ; Lez à Palavas, Carnon, Frontignan, La Grande-Motte illisibles au satellite → webcams + carnet.
 - Jamais vu en vrai : une notification partie seule, la pause de nuit, l'alerte « en panne », le relevé et « Pêchable ? » sur l'A55, la profondeur au toucher, la carte de nuit sur l'A55. Journal HA pas regardé.
 
+## 3 chantiers en parallèle (20 nov., 18 h 45) — une conversation chacun
+Fiches : `chantiers/1-postes.md`, `chantiers/2-regles-sourcees.md`, `chantiers/3-donnees-terrain.md` ; règles communes (preuves, travail en parallèle) : `chantiers/REGLES-COMMUNES.md`. Le détail ci-dessous est repris dans ces fiches.
+
 ## Prochain chantier (choisi par Nico le 20 nov., 18 h 23)
 1. **Localisation poste par poste** : recaler les postes « à vérifier » (1, 2, 4, 5, 7, 8, 9 ; le 3 = zone de 15 km), positions prises dans OSM (feux, jetées, épis) + EMODnet. Méthode qui marche : requête Overpass lancée par une tâche GitHub, **avec un en-tête User-Agent** (sans lui : 406), serveurs de secours. Poste 12 contrôlé le 20 nov. : feu vert OSM 43,52373 / 3,93525 = tête de la jetée ouest de l'entrée commune Lez + port de Palavas ; le Lez finit 250 m plus au nord entre les feux « Le Lez » (rouge) et « Palavas les Flots » (vert) (`osm_lez.json`, branche `essais-sortie`).
 2. **Prévision plus fine par poste** (aujourd'hui : 3 zones de météo et de mer pour 16 postes).
