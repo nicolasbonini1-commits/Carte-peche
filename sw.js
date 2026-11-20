@@ -4,7 +4,7 @@
 //   (au plus 3000 tuiles, les plus anciennes sont effacées). On ne télécharge jamais de zone en avance :
 //   les règles d'OpenStreetMap l'interdisent.
 // - La météo, la mer, la houle mesurée et les débits ne passent pas par ici : l'appli garde la dernière réponse dans le téléphone.
-const CACHE = "carte-peche-v12";
+const CACHE = "carte-peche-v13";
 const TILES = "carte-peche-tuiles";
 const MAX_TILES = 3000;
 const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/data.js", "js/app.js", "icon.svg", "manifest.webmanifest",

@@ -210,6 +210,17 @@
       return d;
     } catch (e) { return cached ? cached.d : null; }
   }
+  // Note houle sur 5 d'un poste à l'heure i, pour le loup et la dorade (facteur « Mer » de la note).
+  function seaNow(spot, i) {
+    const c = conditions(spot, i);
+    if (c.hsLocal == null) return null;
+    const fl = sp => M.score(spot, sp, c).factors.find(f => f.k === "Mer");
+    const a = fl("loup"), d = fl("dorade");
+    const f1 = v => v.toFixed(1).replace(".", ",");
+    const src = c.waveSrc === "mesure" ? `mesurée à la bouée ${c.waveBuoy}` : c.waveSrc === "prévision corrigée" ? `prévue, corrigée par la bouée ${c.waveBuoy}` : "prévue";
+    return { loup: a.note, dorade: d.note, hs: c.hsLocal, src: c.waveSrc, falling: c.falling, long: M.seaClass(c.hsLocal, c.period, spot.type).long,
+      txt: `houle ~${f1(c.hsLocal)} m au poste (${src}) → loup ${a.note}/5, dorade ${d.note}/5` };
+  }
   function renderHoule() {
     const H = state.houle;
     if (!H || !H.bouees.length) return `<h3>Houle mesurée maintenant</h3><p class="sub">Pas encore de mesure reçue des bouées.</p>`;
@@ -231,7 +242,20 @@
         <br><small>Prévu à cette heure au même endroit : ${pvOk ? f1(pv.h) + " m" : "—"}${tend}</small></li>`;
     }).join("");
     const g = new Date(H.genere);
-    return `<h3>Houle mesurée maintenant</h3><ul class="rivers">${rows}</ul>
+    // Effet sur la pêche, poste par poste, avec la houle de maintenant (même facteur « Mer » que la note du poste)
+    const iNow = state.data ? state.data.times.findIndex(t => t.getTime() > Date.now() - 1800000) : -1;
+    const effet = iNow < 0 ? "" : H.bouees.map(b => {
+      const list = SPOTS.filter(s => M.buoyFor(s) === b.camp).map(s => ({ s, n: seaNow(s, iNow) })).filter(x => x.n);
+      if (!list.length) return "";
+      const lo = Math.min(...list.map(x => Math.min(x.n.loup, x.n.dorade))), hi = Math.max(...list.map(x => Math.max(x.n.loup, x.n.dorade)));
+      const src = list[0].n.src === "mesure" ? "mesurée" : list[0].n.src === "prévision corrigée" ? "prévue, corrigée par la bouée" : "prévue (pas de mesure récente)";
+      return `<details class="houle-effet"><summary><b>Effet sur la pêche, postes de la bouée ${esc(b.nom)}</b> : de ${lo} à ${hi}/5 (houle ${src})</summary>
+        <table><thead><tr><th>Poste</th><th>Houle au poste</th><th>Loup</th><th>Dorade</th></tr></thead><tbody>${list.map(x =>
+          `<tr><td>${x.s.id}. ${esc(x.s.name)}</td><td>${f1(x.n.hs)} m${x.n.long ? " · houle longue" : ""}${x.n.falling ? " · retombe" : ""}</td><td><b>${x.n.loup}/5</b></td><td><b>${x.n.dorade}/5</b></td></tr>`).join("")}</tbody></table></details>`;
+    }).join("");
+    return `<h3>Houle mesurée maintenant</h3><ul class="rivers">${rows}</ul>${effet}
+      <p class="sub">Note sur 5 = effet de la seule houle sur la pêche à ce poste (5 idéale, 3 moyenne, 1 très défavorable, 0 à éviter), selon le type de poste
+      et la direction de la houle ; c'est le facteur « Mer » de la note du poste, pas une note en plus. Grille de départ [P], à caler avec ton carnet.</p>
       <p class="sub">Mesure : bouées CANDHIS – Cerema (Licence Ouverte), une mesure toutes les 30 min, relevées par la tâche « alertes » (dernier relevé ${dayName(g)} à ${hm(g)}).
       Hauteur H1/3, comparable à la houle prévue. Heure des mesures lue en heure UTC, à vérifier.</p>`;
   }
@@ -401,19 +425,26 @@
   // de connexion) : 2500 à 4000 caractères acceptés (2 fois chacun), 5000, 6000 et 8000 refusés (erreur 500).
   // Plus long = plusieurs tickets : environ 2 relevés par ticket.
   const MAX_URL = 4000;
+  // Sortie du carnet liée au relevé (touches et prises, accord de Nico le 20 nov. à 12 h 33) : pour confronter la règle à la pêche.
+  function pecheOf(r) {
+    const e = state.carnet.find(x => x.releveId === r.id); if (!e) return null;
+    return { duree_h: e.dur, loups: e.nLoup, dorades: e.nDorade, touches: e.bites, taille_max: e.maxSize || null };
+  }
   function releveLine(r) {
     const t = new Date(r.t), a = r.appli || {}, f = v => v == null ? "?" : String(v).replace(".", ",");
+    const pe = pecheOf(r);
     const vu = ["eau " + (r.vu.eau || "?"), "mer " + (r.vu.mer || "?"), "pêchable " + (r.vu.pechable || "?")].join(", ");
     const ap = [a.eau ? `eau ${a.eau} (${f(a.fnu)} FNU)` : "", a.pechable !== undefined ? `pêchable ${a.pechable || "?"}` : "",
       a.mer ? `mer ${a.mer} (${f(a.houle_poste)} m au poste)` : "", a.houle_mesuree ? `bouée ${a.houle_mesuree.bouee} ${f(a.houle_mesuree.h)} m` : "",
       a.vent != null ? `vent ${a.vent} km/h ${M.compass(a.vent_dir)}` : ""].filter(Boolean).join(", ");
-    return `- ${dayName(t)} ${hm(t)} · ${r.nom} (${r.poste}) — vu : ${vu} — appli : ${ap || "pas de données"}`;
+    const pc = pe ? ` — pêche : ${pe.loups} loup(s), ${pe.dorades} dorade(s), ${pe.touches == null ? "touches pas comptées" : pe.touches + " touche(s)"} en ${f(pe.duree_h)} h` : " — pêche : pas encore notée";
+    return `- ${dayName(t)} ${hm(t)} · ${r.nom} (${r.poste}) — vu : ${vu} — appli : ${ap || "pas de données"}${pc}`;
   }
   function issueFor(list) {
     const d = new Date(list[0].t); // list : du plus ancien au plus récent
     const title = `Relevés sur place : ${dayName(d)}${list.length > 1 ? ` (${list.length})` : ""}`;
     const body = `Relevés « Je suis sur place » envoyés depuis l'appli (${list.length}).\n\n${list.map(releveLine).join("\n")}\n\n` +
-      "<details><summary>Données (pour Claude)</summary>\n\n```json\n" + JSON.stringify(list.map(({ envoye, nom, ...r }) => r)) + "\n```\n</details>\n";
+      "<details><summary>Données (pour Claude)</summary>\n\n```json\n" + JSON.stringify(list.map(({ envoye, nom, ...r }) => ({ ...r, peche: pecheOf(r) }))) + "\n```\n</details>\n";
     return `${ISSUE_URL}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   }
   function renderReleves() {
@@ -421,7 +452,7 @@
     const todo = state.releves.filter(r => !r.envoye);
     box.innerHTML = `<h3 class="nomt">Mes relevés sur place</h3>
       <p class="sub">${state.releves.length} relevé(s) sur ce téléphone${todo.length ? `, <b>${todo.length} à envoyer</b>` : ", tous envoyés"}.
-      Ils partent dans un ticket du dépôt GitHub (public) : poste, heure, ce que tu as vu et les estimations de l'appli ; ni ta position, ni tes prises.</p>
+      Ils partent dans un ticket du dépôt GitHub (public) : poste, heure, ce que tu as vu, les estimations de l'appli et, si tu as noté la sortie, touches et prises ; jamais ta position.</p>
       <div class="row"><button type="button" class="btn${todo.length ? " primary" : ""}" id="sendBtn"${todo.length ? "" : " disabled"}>Envoyer mes relevés</button></div>
       <div id="sendConfirm" hidden></div>`;
     $("#sendBtn").onclick = sendReleves;
@@ -485,12 +516,24 @@
     return (rainCache[key] = { s72, s168, api, apiCoast });
   }
 
+  // ---------- Houle au large heure par heure : mesure de la bouée la plus proche, sinon prévision (corrigée si possible) ----------
+  // Calculée une fois par bouée et par zone de prévision, à chaque nouvelle prévision ou nouveau relevé des bouées.
+  const waveCache = {};
+  function offshoreSeries(spot) {
+    const D = state.data, H = state.houle, camp = M.buoyFor(spot);
+    const key = `${D.fetchedAt.getTime()}|${H ? H.genere : "-"}|${camp}|${spot.zone}`;
+    if (waveCache[key]) return waveCache[key];
+    const S = D.S[spot.zone], b = H && H.bouees ? H.bouees.find(x => x.camp === camp) : null;
+    return (waveCache[key] = D.times.map((t, k) => M.offshoreWave(b, t.getTime(), { hs: S.hs[k], dir: S.dir[k], per: S.per[k] })));
+  }
+
   // ---------- Conditions à un poste et à une heure ----------
   function conditions(spot, i) {
     const D = state.data, z = spot.zone;
     const F = D.F[z], S = D.S[z];
-    const hsAt = k => k >= 0 && S.hs[k] != null ? M.localWave(spot, S.hs[k], S.dir[k]) : null;
-    const hsLocal = hsAt(i);
+    const W = offshoreSeries(spot);
+    const hsAt = k => k >= 0 && W[k].hs != null ? M.localWave(spot, W[k].hs, W[k].dir) : null;
+    const hsLocal = hsAt(i), w = W[i];
     let maxPast = 0;
     for (let k = Math.max(0, i - 36); k < i; k++) { const v = hsAt(k); if (v != null && v > maxPast) maxPast = v; }
     const falling = hsLocal != null && maxPast >= 1.0 && hsLocal <= 0.65 * maxPast && hsLocal < 1.2;
@@ -498,13 +541,14 @@
     let hsmax48 = hsLocal ?? 0, ws = 0, nw = 0;
     for (let k = Math.max(0, i - 48); k < i; k++) { const v = hsAt(k); if (v != null && v > hsmax48) hsmax48 = v; }
     for (let k = Math.max(0, i - 24); k <= i; k++) if (F.wind[k] != null) { ws += F.wind[k]; nw++; }
-    const mem = {}; for (const r of Object.keys(M.TURB.rivers)) mem[r] = riverMem(r, D.times[i]);
-    const turb = M.turbidity(spot, { hs: hsLocal, hsmax48, ws24: nw ? ws / nw : 0, mem });
-    const prev = hsAt(i - 6);
-    const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
     // Pluie : sur la côte (zone du poste) et, pour les postes de fleuve, sur le bassin versant.
     const R = rainSeries(spot);
     const rain72 = R.s72[i], rain7 = R.s168[i], apiCoast = R.apiCoast[i], apiBasin = R.api[i];
+    const mem = {}; for (const r of Object.keys(M.TURB.rivers)) mem[r] = riverMem(r, D.times[i]);
+    // + pluie des jours d'avant sur la côte (indice de pluie antérieure, ajout du 20 nov. 2026, accord de Nico à 12 h 33)
+    const turb = M.turbidity(spot, { hs: hsLocal, hsmax48, ws24: nw ? ws / nw : 0, mem, api: apiCoast });
+    const prev = hsAt(i - 6);
+    const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
     const flow = spot.river ? flowAt(spot.river, D.times[i]) : null;
     let sst = S.sst[i];
     if (sst == null) for (const zz of ["C", "W", "E"]) if (D.S[zz].sst[i] != null) { sst = D.S[zz].sst[i]; break; }
@@ -518,7 +562,7 @@
       darkNight: moon.illum < 0.35 || cloud >= 70,
       wind: F.wind[i] ?? 0, windDir: F.dir[i] ?? 0, gust: F.gust[i] ?? 0,
       onshore: M.onshore(spot, F.wind[i] ?? 0, F.dir[i] ?? 0),
-      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst, turb,
+      hsLocal, hsOff: w.hs, waveDir: w.dir, period: w.per, waveSrc: w.src, waveBuoy: w.buoy, waveRatio: w.ratio, waveAt: w.at, falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst, turb,
       future: D.times[i].getTime() > Date.now() + 3 * 3600000
     };
   }
@@ -717,8 +761,12 @@
     const r = state.results.find(x => x.spot.id === id); if (!r) return;
     const s = r.spot, b = r.best;
     state.selected = id;
-    const facts = b ? b.factors.map(f => `<tr><th>${f.k}</th><td>${Math.round(f.v * 100)} %</td><td>${esc(f.why)}</td></tr>`).join("") : "";
+    const facts = b ? b.factors.map(f => `<tr><th>${f.k}</th><td>${Math.round(f.v * 100)} %${f.note != null ? `<br><b>${f.note}/5</b>` : ""}</td><td>${esc(f.why)}</td></tr>`).join("") : "";
     const sc = b ? M.SCENARIOS[b.scenario] : null;
+    const seaF = b ? b.factors.find(f => f.k === "Mer") : null;
+    // Note houle de maintenant (mesurée à la bouée), en plus de celle de la meilleure heure
+    const iNow = state.data.times.findIndex(t => t.getTime() > Date.now() - 1800000);
+    const now = iNow >= 0 ? seaNow(s, iNow) : null;
     const mine = state.carnet.filter(e => e.spotId === id);
     $("#sheetBody").innerHTML = `
       <h2>${esc(s.name)} ${pill(r.score, r.feasible)}</h2>
@@ -728,6 +776,8 @@
       ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
       ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour le ${b.species}</p>
       <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}</p>` : ""}
+      ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour le ${b.species})</p>` : ""}
+      ${now ? `<p class="sub">Mer maintenant : ${now.txt}</p>` : ""}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}
       <h3>Pourquoi cette note</h3>
       <table class="facts"><tbody>${facts}</tbody></table>
@@ -847,10 +897,13 @@
         // Ajout du 20 nov. 2026 : relevé « Je suis sur place » qui a pré-rempli cette sortie (son numéro).
         releveId: state.relLink || null
       };
+      // Relevé déjà envoyé sans la pêche : il repartira au prochain envoi, avec les touches et prises (même heure = même relevé).
+      const relLinked = state.relLink && state.releves.find(r => r.id === state.relLink);
+      if (relLinked && relLinked.envoye) { relLinked.envoye = null; relLinked.complement = true; saveReleves(); }
       state.relLink = null; $("#prefillNote").hidden = true;
       entry.snapshot = snapshot(entry);
       state.carnet.unshift(entry); LS.set("cp_carnet", state.carnet);
-      e.target.reset(); bindCarnetDefaults(); renderCarnet(); render(); toast("Sortie enregistrée");
+      e.target.reset(); bindCarnetDefaults(); renderCarnet(); renderReleves(); render(); toast("Sortie enregistrée");
     });
     $("#exportBtn").onclick = async () => {
       const txt = JSON.stringify(state.carnet);
@@ -879,6 +932,9 @@
       sea: M.seaState(c.hsLocal), falling: c.falling, light: c.light, moon: Math.round(c.moon.illum * 100), sst: c.sst, rain72: Math.round(c.rain72),
       rain7: Math.round(c.rain7), api: Math.round(c.apiBasin), flowRatio: c.flow && c.flow.ratio != null ? +c.flow.ratio.toFixed(2) : null, river: M.riverLevel(c).level,
       model: state.data.src ? state.data.src[i] : null,
+      // Houle au large utilisée (mesure de bouée ou prévision), période, et note houle sur 5 : pour caler la grille avec les prises.
+      waveSrc: c.waveSrc, waveBuoy: c.waveBuoy || null, hsOff: c.hsOff != null ? +c.hsOff.toFixed(2) : null, period: c.period != null ? +(+c.period).toFixed(1) : null,
+      seaNoteLoup: M.score(spot, "loup", c).factors.find(f => f.k === "Mer").note, seaNoteDorade: M.score(spot, "dorade", c).factors.find(f => f.k === "Mer").note,
       scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c),
       turb: c.turb ? +c.turb.fnu.toFixed(1) : null, waterPred: c.turb ? c.turb.cls : null };
   }
