@@ -17,8 +17,9 @@ const fs = require("fs");
     await page.waitForFunction(() => document.querySelectorAll("#list .spot").length >= 10, { timeout: 120000 });
     await new Promise(r => setTimeout(r, 15000)); // débits, bouées et temps de route arrivent après la météo
     const txt = sel => page.$eval(sel, e => e.innerText).catch(() => "");
-    const run = { species, banner: await txt("#banner"), reco: await txt("#reco"), when: await txt("#when"), list: await txt("#list"), cond: (await txt("#cond")).slice(0, 6000), fiches: [] };
-    const ids = await page.$$eval("#list .spot", els => els.slice(0, 4).map(e => +e.dataset.id));
+    const run = { species, fresh: await txt("#fresh"), alerts: await txt("#alerts"), banner: await txt("#banner"), reco: await txt("#reco"), when: await txt("#when"), list: await txt("#list"), cond: (await txt("#cond")).slice(0, 6000), fiches: [] };
+    const top = await page.$$eval("#list .spot", els => els.slice(0, 4).map(e => +e.dataset.id));
+    const ids = [...new Set([...top, 6, 8, 12])];
     for (const id of ids) {
       await page.evaluate(id => { document.querySelector("#goDay").value = "1"; document.querySelector("#goSpot").value = String(id); document.querySelector("#goBtn").click(); }, id);
       await new Promise(r => setTimeout(r, 1500));
