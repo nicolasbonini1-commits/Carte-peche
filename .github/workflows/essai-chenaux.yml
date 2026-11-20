@@ -1,7 +1,7 @@
 # Essai temporaire (branche essai-chenaux) : état des chenaux, graus et étangs (eau marron ou pêchable)
 # d'après les images Sentinel-2 à 10-20 m depuis 2017 (AWS Open Data, Earth Search, sans compte) et le tracé OpenStreetMap.
 # Résultats dans la branche essais-chenaux-donnees, jamais dans « donnees » (lue par Home Assistant) ni dans main.
-# Le message du commit choisit l'étape : [osm] tracés OSM ; [s2-test] un mois ; [s2] 2017 → aujourd'hui (une tâche par année).
+# Le message du commit choisit l'étape : [osm] tracés OSM ; [s2-test] un mois ; [s2] 2017 → aujourd'hui (une tâche par année) ; [s2:2017,2022] années choisies.
 name: essai-chenaux
 on:
   push:
@@ -26,8 +26,12 @@ jobs:
       liste: ${{ steps.l.outputs.liste }}
     steps:
       - id: l
+        env:
+          MSG: ${{ github.event.head_commit.message }}
         run: |
-          if ${{ contains(github.event.head_commit.message, '[s2-test]') }}; then echo 'liste=["test"]' >> $GITHUB_OUTPUT;
+          SEL=$(printf '%s' "$MSG" | grep -o '\[s2:[0-9,]*\]' | head -1 | tr -d '[]' | cut -d: -f2)
+          if [ -n "$SEL" ]; then echo "liste=[\"$(echo $SEL | sed 's/,/\",\"/g')\"]" >> $GITHUB_OUTPUT;
+          elif ${{ contains(github.event.head_commit.message, '[s2-test]') }}; then echo 'liste=["test"]' >> $GITHUB_OUTPUT;
           elif ${{ contains(github.event.head_commit.message, '[s2]') }}; then echo 'liste=["2017","2018","2019","2020","2021","2022","2023","2024","2025","2026"]' >> $GITHUB_OUTPUT;
           else echo 'liste=[]' >> $GITHUB_OUTPUT; fi
   s2:

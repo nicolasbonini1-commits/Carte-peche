@@ -18,21 +18,28 @@ os.environ.update(GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR", AWS_NO_SIGN_REQUEST=
 lons = [p["lon"] for p in PTS]; lats = [p["lat"] for p in PTS]
 bbox = [min(lons) - 0.01, min(lats) - 0.01, max(lons) + 0.01, max(lats) + 0.01]
 cl = Client.open("https://earth-search.aws.element84.com/v1")
+# Collection 1 (retraitée, harmonisée) en priorité ; l'ancienne collection sentinel-2-l2a comble les dates absentes (2017, 2022…)
 items = list(cl.search(collections=["sentinel-2-c1-l2a"], bbox=bbox, datetime=DATES, query={"eo:cloud_cover": {"lt": 70}}).items())
-print(len(items), "images", DATES, flush=True)
+deja = {(i.datetime.date(), i.properties.get("grid:code") or i.properties.get("s2:mgrs_tile")) for i in items}
+old = [i for i in cl.search(collections=["sentinel-2-l2a"], bbox=bbox, datetime=DATES, query={"eo:cloud_cover": {"lt": 70}}).items()
+       if (i.datetime.date(), i.properties.get("grid:code") or i.properties.get("s2:mgrs_tile")) not in deja]
+print(len(items), "images C1 +", len(old), "de l'ancienne collection", DATES, flush=True)
+items += old
 os.makedirs(os.path.join(OUT, "apercus"), exist_ok=True)
 fout = open(os.path.join(OUT, f"s2_{AN}.csv"), "w", newline=""); w = csv.writer(fout)
 B10 = [b for b in BANDES if b != "scl"]
-w.writerow(["date", "heure_utc", "image", "tuile", "nuages_image", "point", "groupe", "type"] + B10 + [b + "_m3" for b in B10] + ["scl", "nuages_groupe"])
+w.writerow(["date", "heure_utc", "image", "tuile", "nuages_image", "point", "groupe", "type"] + B10 + [b + "_m3" for b in B10] + ["scl", "nuages_groupe", "collection", "baseline", "offset_rouge"])
 napercus = 0; t0 = time.time()
 for k, it in enumerate(sorted(items, key=lambda i: i.datetime)):
     try:
         epsg = it.properties.get("proj:epsg") or int(str(it.properties.get("proj:code", "")).split(":")[-1])
         xs, ys = rtransform("EPSG:4326", f"EPSG:{epsg}", [p["lon"] for p in PTS], [p["lat"] for p in PTS])
-        vals = {b: {} for b in BANDES}; med = {b: {} for b in BANDES}; qcl = {}; rgbq = {}
+        vals = {b: {} for b in BANDES}; med = {b: {} for b in BANDES}; qcl = {}; rgbq = {}; offs = {}
         for b in BANDES:
             a = it.assets[b]; rb = (a.extra_fields.get("raster:bands") or [{}])[0]
             sc, of = rb.get("scale", 1.0), rb.get("offset", 0.0)
+            if b != "scl" and sc == 1.0: sc = 0.0001   # ancienne collection sans métadonnées : DN / 10 000
+            offs[b] = of
             with rasterio.open(a.href) as ds:
                 for g in GROUPES:
                     idx = [i for i, p in enumerate(PTS) if p["groupe"] == g]
@@ -60,7 +67,7 @@ for k, it in enumerate(sorted(items, key=lambda i: i.datetime)):
             g = p["groupe"]
             if g not in qcl or qcl[g] is None or vals["red"].get(i) is None: continue
             w.writerow([it.datetime.date(), it.datetime.strftime("%H:%M"), it.id, it.properties.get("s2:mgrs_tile") or it.properties.get("grid:code"),
-                        it.properties.get("eo:cloud_cover"), p["id"], g, p["type"]] + [vals[b].get(i) for b in B10] + [med[b].get(i) for b in B10] + [vals["scl"].get(i), round(qcl[g], 3)])
+                        it.properties.get("eo:cloud_cover"), p["id"], g, p["type"]] + [vals[b].get(i) for b in B10] + [med[b].get(i) for b in B10] + [vals["scl"].get(i), round(qcl[g], 3), it.collection_id, it.properties.get("s2:processing_baseline"), offs.get("red")])
         # aperçu des groupes sans nuages où un point de chenal est chargé (rouge > 0,05) : 80 par an au plus
         for g, d in rgbq.items():
             if napercus >= 80 or qcl.get(g) is None or qcl[g] > 0.3 or len(d) < 3: continue
