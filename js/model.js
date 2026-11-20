@@ -94,7 +94,8 @@
   // Niveau du fleuve au poste : 0 normal, 1 eau qui se charge, 2 crue, 3 forte crue.
   // 1) Débit mesuré (Hub'Eau / Vigicrues) quand il existe, comparé au débit habituel du mois
   //    (médiane des débits moyens mensuels mesurés depuis 1990 à la même station) [S pour les données, P pour les seuils] :
-  //    moins de 2 fois = normal, 2 à 4 fois = l'eau se charge, 4 à 10 fois = crue, plus de 10 fois = forte crue.
+  //    moins de 2 fois = normal, 2 à 4 fois = l'eau se charge, 4 à 10 fois = crue, plus de 10 fois = forte crue
+  //    (Rhône : 1,5 / 2,5 / 4 fois, voir plus bas).
   // 2) Sinon, indice de pluie sur le bassin versant [P].
   // Les seuils sont des estimations de départ, à caler avec ton carnet (le débit et la pluie y sont enregistrés).
   M.riverLevel = c => {
@@ -103,7 +104,10 @@
     const a = c.apiBasin;
     const rainLv = a >= 100 ? 3 : a >= 50 ? 2 : a >= 20 ? 1 : 0;
     if (f && f.ratio != null) {
-      const lv = f.ratio >= 10 ? 3 : f.ratio >= 4 ? 2 : f.ratio >= 2 ? 1 : 0;
+      // Rhône : seuils plus bas (simulation 2020-2026 [M] : dès 1,6 fois la normale, l'eau devient très chargée
+      // aux Saintes-Maries ; le rapport n'a jamais dépassé 5,2 depuis 2020, les seuils 2 / 4 / 10 ne voyaient pas ses crues).
+      const S = c.spot.river === "rhone" ? [1.5, 2.5, 4] : [2, 4, 10];
+      const lv = f.ratio >= S[2] ? 3 : f.ratio >= S[1] ? 2 : f.ratio >= S[0] ? 1 : 0;
       const trend = f.trend > 0.08 ? "en hausse" : f.trend < -0.08 ? "en baisse" : "stable";
       const mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"][f.month - 1];
       const why = `${f.name} : ${fmtQ(f.q)} m³/s, ${fmtQ(f.ratio)} × son débit habituel de ${mois} (${fmtQ(f.ref)} m³/s), ${trend}`;
@@ -115,10 +119,55 @@
   };
   const fmtQ = q => q >= 10 ? String(Math.round(q)) : q.toFixed(1).replace(".", ",");
 
+  // ---------- 2 bis. Couleur de l'eau estimée (turbidité en FNU) ----------
+  // Calée le 20 nov. 2026 sur 559 jours de turbidité mesurée par Sentinel-2 (Copernicus Marine, pixels de 100 m, à 300 m du bord)
+  // de 2020 à 2024, et testée sur 2025-2026 : corrélation de rang 0,77 (règle précédente : 0,47). Détail et limites :
+  // outils/turbidite/RESULTATS.md (branche essai-turbidite). [M] pour les coefficients, [P] pour les seuils des classes.
+  // log10(FNU) = base du poste + 0,41 × houle max des 48 h au poste (m) + 0,19 × houle au poste (m) + 0,098 × vent moyen 24 h (par 10 km/h)
+  //            + Σ fleuves k(poste) × log10(mémoire du débit).
+  // Mémoire du débit = max sur 15 jours de (débit moyen du jour / débit habituel du mois) × e^(−jours/τ), au moins 1.
+  // Postes 3, 8 et 14 : pas assez de mesures, valeurs reprises des postes voisins [P].
+  M.TURB = {
+    base: { 1: 0.42, 2: 0.396, 3: 0.325, 4: 0.255, 5: 0.419, 6: 0.472, 7: 0.299, 8: 0.472, 9: 0.283, 10: 0.188,
+            11: 0.148, 12: 0.115, 13: 0.265, 14: 0.247, 15: 0.228, 16: 0.17 },
+    hsmax48: 0.4097, hs: 0.1856, ws24: 0.0984,
+    rivers: {
+      rhone: { tau: 8, k: { 1: 2.017, 2: 0.910, 3: 0.742, 4: 0.574, 5: 0.030 } },
+      vidourle: { tau: 1, k: { 5: 0.152, 6: 0.428, 7: 0.276, 8: 0.428, 9: 0.225 } },
+      lez: { tau: 5, k: { 11: 0.098, 12: 0.036, 13: 0.058 } }
+    },
+    classes: [4, 10, 30],
+    names: ["claire", "piquée", "teintée", "très chargée"]
+  };
+  // x = { hs, hsmax48, ws24 (km/h), mem: { rhone, vidourle, lez } } → { fnu, cls, sea, river, why }
+  M.turbidity = (spot, x) => {
+    const T = M.TURB, b = T.base[spot.id];
+    if (b == null || x.hs == null) return null;
+    const lSea = T.hsmax48 * (x.hsmax48 ?? x.hs) + T.hs * x.hs + T.ws24 * (x.ws24 || 0) / 10;
+    let lRiv = 0; const rParts = [];
+    for (const [r, R] of Object.entries(T.rivers)) {
+      const k = R.k[spot.id], m = x.mem && x.mem[r];
+      if (!k || !m || m <= 1) continue;
+      const l = k * Math.log10(m); lRiv += l;
+      if (l >= 0.05) rParts.push(`${window.RIVERS ? window.RIVERS[r].name.split(" ")[0] : r} ×${(10 ** l).toFixed(1).replace(".", ",")}`);
+    }
+    const fnu = 10 ** (b + lSea + lRiv);
+    const c = T.classes, i = fnu < c[0] ? 0 : fnu < c[1] ? 1 : fnu < c[2] ? 2 : 3;
+    const fmt = v => v >= 10 ? String(Math.round(v)) : v.toFixed(1).replace(".", ",");
+    const why = `≈ ${fmt(fnu)} FNU estimés (sans houle ni vent ${fmt(10 ** b)}, houle des 48 h et vent ×${(10 ** lSea).toFixed(1).replace(".", ",")}`
+      + (rParts.length ? `, ${rParts.join(", ")}` : "") + ")";
+    return { fnu, cls: T.names[i], idx: i, sea: 10 ** lSea, river: 10 ** lRiv, why };
+  };
+  // Couleur de l'eau → note pour le loup sur 5 et facteur de la note du poste (guide Notion, § 2 et 4) [S]/[P] :
+  // piquée : souvent le meilleur créneau (scénarios E et H) ; teintée : la journée devient possible avec des coloris visibles (F, J) ;
+  // très chargée : repli (G). Dorade : n'aime pas l'eau chargée [P].
+  M.WATER_LOUP = { "claire": { note: 4, v: 1.0 }, "piquée": { note: 5, v: 1.05 }, "teintée": { note: 4, v: 1.0 }, "très chargée": { note: 1, v: 0.6 } };
+  M.WATER_DORADE = { "claire": 1.0, "piquée": 0.9, "teintée": 0.7, "très chargée": 0.45 };
+
   // ---------- 3. Scénario (matrice A-J de ton guide Notion) ----------
   M.scenario = c => {
     if (c.hsLocal != null && c.hsLocal >= 1.8) return "G";
-    if (c.spot.river && M.riverLevel(c).level >= 1) return "J";
+    if (c.turb ? (c.turb.river >= 1.5 && c.turb.river >= c.turb.sea && c.turb.idx >= 1) : (c.spot.river && M.riverLevel(c).level >= 1)) return "J";
     if (c.falling) return "H";
     if (c.hsLocal != null && c.hsLocal >= 0.8) return "F";
     if (c.onshore >= 35) return "I";
@@ -197,6 +246,20 @@
     // loup : un panache modéré le favorise (bordure d'eau sale, poissons désorientés), une vraie crue le chasse ;
     // dorade : n'aime pas l'eau douce et chargée ; une décrue qui s'éclaircit est un bon moment pour le loup.
     let rain = 1, rWhy = `${Math.round(c.rain7)} mm en 7 j, dont ${Math.round(c.rain72)} mm en 72 h`;
+    if (c.turb) {
+      // Couleur de l'eau estimée (section 2 bis). Si l'eau est très chargée surtout à cause de la houle, le facteur « Mer »
+      // la compte déjà : on ne pénalise pas deux fois (0,85 au lieu de 0,6 pour le loup).
+      const w = c.turb;
+      if (species === "loup") {
+        const L = M.WATER_LOUP[w.cls], dueToSea = w.idx === 3 && w.sea > w.river;
+        rain = dueToSea ? 0.85 : L.v;
+        rWhy = `eau ${w.cls} ${w.why} · pour le loup ${dueToSea ? "3/5 (surtout la houle, déjà comptée dans « Mer »)" : L.note + "/5"} · pluie : ${rWhy}`;
+      } else {
+        rain = M.WATER_DORADE[w.cls];
+        rWhy = `eau ${w.cls} ${w.why} · pluie : ${rWhy}`;
+      }
+      f.push({ k: "Couleur de l'eau", v: rain, why: rWhy });
+    } else {
     if (spot.river) {
       const rv = M.riverLevel(c);
       rWhy += ` · ${rv.why}`;
@@ -206,6 +269,7 @@
       else rWhy += [" : normal", " : panache d'eau sale", " : crue, eau très chargée", " : forte crue, poste à éviter"][rv.level];
     } else if (c.apiCoast >= 40) { rain = species === "loup" ? 1 : 0.9; rWhy += " : eau un peu piquée près du bord"; }
     f.push({ k: "Pluie", v: rain, why: rWhy });
+    }
 
     let temp = 1, tWhy = c.sst != null ? `eau à ${c.sst.toFixed(1)} °C` : "température de l'eau inconnue";
     if (c.sst != null) {
@@ -237,6 +301,7 @@
   // Principe : prospecter de haut en bas (surface → sous la surface → fond), du bord vers le large,
   // ~15-20 min par leurre avant de changer. Coloris selon l'eau et la lumière (guide, § 4). [S]/[P]
   M.water = c => {
+    if (c.turb) return c.turb.cls;
     const rl = M.riverLevel(c).level;
     if ((c.hsLocal != null && c.hsLocal >= 0.8) || rl >= 2) return "teintée";
     if (c.falling || (c.hsLocal != null && c.hsLocal >= 0.5) || rl === 1 || c.apiCoast >= 15) return "piquée";
@@ -246,7 +311,7 @@
     const w = M.water(c);
     if (c.light === "nuit") return c.darkNight ? { fam: "clair", ex: "Bone, Mat White, Ghost Minnow", why: "nuit sombre : un coloris clair se voit mieux" }
       : { fam: "sombre", ex: "Kaki, Black Mullet", why: "nuit claire : silhouette sombre vue d'en dessous" };
-    if (w === "teintée") return { fam: "blanc ou chartreuse", ex: "Lime Juice, Mat White, Bone", why: "eau teintée : il faut être vu" };
+    if (w === "teintée" || w === "très chargée") return { fam: "blanc ou chartreuse", ex: "Lime Juice, Mat White, Bone", why: "eau teintée : il faut être vu" };
     if (w === "piquée") return { fam: "pailleté, kaki ou nacré", ex: "Kaki pailleté, Neo Pearl", why: "eau légèrement piquée" };
     if (c.light === "jour" && c.cloud < 70) return { fam: "naturel translucide", ex: "Ghost Lançon, Real Anchovy, Ghost Minnow", why: "eau claire et soleil : la couleur compte, rester discret" };
     return { fam: "naturel à ventre blanc", ex: "Mat White, Neo Pearl, Ghost Lançon", why: "eau claire, lumière faible ou ciel couvert" };

@@ -178,12 +178,12 @@
   async function fetchFlows(force) {
     const cached = LS.get("cp_flow", null);
     if (!force && cached && Date.now() - cached.at < 30 * 60 * 1000) return cached.rivers;
-    const since = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 19);
+    const since = new Date(Date.now() - 16 * 86400000).toISOString().slice(0, 19); // 16 j : mémoire des crues (couleur de l'eau)
     const refs = await fetchFlowRefs();
     const rivers = {};
     await Promise.all(Object.entries(window.RIVERS).map(async ([key, rv]) => {
       try {
-        const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=${rv.station}&grandeur_hydro=Q&timestep=60&date_debut_obs=${since}&size=400&fields=date_obs,resultat_obs`;
+        const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=${rv.station}&grandeur_hydro=Q&timestep=60&date_debut_obs=${since}&size=500&fields=date_obs,resultat_obs`;
         const j = await (await fetch(url)).json();
         const pts = (j.data || []).map(o => [Date.parse(o.date_obs), o.resultat_obs == null ? null : o.resultat_obs / rv.div]).filter(p => isFinite(p[0]) && p[1] != null).sort((a, b) => a[0] - b[0]);
         if (pts.length >= 6) rivers[key] = { name: rv.name, pts, ref: refs[key] || null };
@@ -271,6 +271,28 @@
       ratio: ref && ref.q > 0 ? q / ref.q : null, trend: q6 > 0 ? (q - q6) / q6 : 0, at: new Date(pts[k][0]) };
   }
 
+  // Mémoire du débit pour la couleur de l'eau (model.js, section 2 bis) : débit moyen de chaque jour (heure de Paris),
+  // rapporté au débit habituel du mois, puis max sur 15 jours de rapport × e^(−jours/τ), en partant de la veille.
+  // Les jours sans mesure (à venir) sont sautés : l'effet d'une crue continue de baisser dans la prévision.
+  const memCache = {};
+  function riverMem(key, t) {
+    const r = state.flows && state.flows[key], R = M.TURB.rivers[key];
+    if (!r || !r.ref || !R) return null;
+    const ck = `${key}|${r.pts.length}|${r.pts[r.pts.length - 1][0]}|${localKey(t)}`;
+    if (ck in memCache) return memCache[ck];
+    const days = {};
+    for (const [ms, q] of r.pts) { const k = localKey(new Date(ms)); (days[k] = days[k] || []).push(q); }
+    let mem = 1;
+    for (let lag = 0; lag < 15; lag++) {
+      const d = new Date(t); d.setDate(d.getDate() - 1 - lag);
+      const qs = days[localKey(d)], ref = r.ref[d.getMonth() + 1];
+      if (!qs || qs.length < 6 || !ref || !(ref.q > 0)) continue;
+      const ratio = qs.reduce((a, b) => a + b, 0) / qs.length / ref.q;
+      mem = Math.max(mem, ratio * Math.exp(-lag / R.tau));
+    }
+    return (memCache[ck] = mem);
+  }
+
   // ---------- Temps de route (OSRM) ----------
   async function computeDrive() {
     const o = state.origin;
@@ -323,6 +345,12 @@
     let maxPast = 0;
     for (let k = Math.max(0, i - 36); k < i; k++) { const v = hsAt(k); if (v != null && v > maxPast) maxPast = v; }
     const falling = hsLocal != null && maxPast >= 1.0 && hsLocal <= 0.65 * maxPast && hsLocal < 1.2;
+    // Couleur de l'eau : houle max des 48 h au poste, vent moyen des 24 h, mémoire des 3 fleuves.
+    let hsmax48 = hsLocal ?? 0, ws = 0, nw = 0;
+    for (let k = Math.max(0, i - 48); k < i; k++) { const v = hsAt(k); if (v != null && v > hsmax48) hsmax48 = v; }
+    for (let k = Math.max(0, i - 24); k <= i; k++) if (F.wind[k] != null) { ws += F.wind[k]; nw++; }
+    const mem = {}; for (const r of Object.keys(M.TURB.rivers)) mem[r] = riverMem(r, D.times[i]);
+    const turb = M.turbidity(spot, { hs: hsLocal, hsmax48, ws24: nw ? ws / nw : 0, mem });
     const prev = hsAt(i - 6);
     const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
     // Pluie : sur la côte (zone du poste) et, pour les postes de fleuve, sur le bassin versant.
@@ -341,7 +369,7 @@
       darkNight: moon.illum < 0.35 || cloud >= 70,
       wind: F.wind[i] ?? 0, windDir: F.dir[i] ?? 0, gust: F.gust[i] ?? 0,
       onshore: M.onshore(spot, F.wind[i] ?? 0, F.dir[i] ?? 0),
-      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst,
+      hsLocal, hsOff: S.hs[i], waveDir: S.dir[i], period: S.per[i], falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst, turb,
       future: D.times[i].getTime() > Date.now() + 3 * 3600000
     };
   }
@@ -659,7 +687,9 @@
         // Ajout du 18 nov. 2026 : pour vérifier si filets et chalutiers font baisser les touches.
         // Vide = pas regardé / pas compté (différent de « aucun »), pour ne pas fausser les comparaisons.
         bites: $("#fBites").value === "" ? null : +$("#fBites").value,
-        nets: $("#fNets").value || null, trawlers: $("#fTrawl").value || null
+        nets: $("#fNets").value || null, trawlers: $("#fTrawl").value || null,
+        // Ajout du 20 nov. 2026 : couleur de l'eau vue sur place, pour caler les seuils de l'estimation (vide = pas regardé).
+        water: $("#fWater").value || null
       };
       entry.snapshot = snapshot(entry);
       state.carnet.unshift(entry); LS.set("cp_carnet", state.carnet);
@@ -692,7 +722,8 @@
       sea: M.seaState(c.hsLocal), falling: c.falling, light: c.light, moon: Math.round(c.moon.illum * 100), sst: c.sst, rain72: Math.round(c.rain72),
       rain7: Math.round(c.rain7), api: Math.round(c.apiBasin), flowRatio: c.flow && c.flow.ratio != null ? +c.flow.ratio.toFixed(2) : null, river: M.riverLevel(c).level,
       model: state.data.src ? state.data.src[i] : null,
-      scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c) };
+      scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c),
+      turb: c.turb ? +c.turb.fnu.toFixed(1) : null, waterPred: c.turb ? c.turb.cls : null };
   }
   function renderCarnet() {
     const list = state.carnet;
@@ -703,6 +734,7 @@
       const sn = e.snapshot;
       return `<div class="entry"><b>${esc(e.date)} ${esc(e.start)} · ${esc(s.name)}</b>
         <small>${res}${e.bites != null ? ` · ${e.bites} touche(s)` : ""} · ${esc(e.lure || "")}</small>
+        ${e.water ? `<small>Eau vue : ${esc(e.water)}${e.snapshot && e.snapshot.waterPred ? ` (estimée : ${esc(e.snapshot.waterPred)}, ${String(e.snapshot.turb).replace(".", ",")} FNU)` : ""}</small>` : ""}
         ${e.nets || e.trawlers ? `<small>Filets : ${{ aucun: "aucun", loin: "au large", pres: "près du bord" }[e.nets] || "pas regardé"} · chalutiers : ${e.trawlers == null ? "pas regardé" : e.trawlers === "0" ? "aucun" : esc(e.trawlers)}</small>` : ""}
         ${sn ? `<small>Vent ${sn.wind} km/h ${M.compass(sn.windDir)}, mer ${sn.sea}${sn.falling ? " qui retombe" : ""}, ${sn.light} · note prévue : loup ${sn.scoreLoup}, dorade ${sn.scoreDorade}</small>` : ""}
         ${e.notes ? `<small>${esc(e.notes)}</small>` : ""}
