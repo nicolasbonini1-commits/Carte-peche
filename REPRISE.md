@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d, le skill coach-peche et `git log -5`.
 **Résumé.** Tout le détail (calculs, essais, chiffres, commits) est dans `HISTORIQUE.md`, copie intégrale de l'ancien REPRISE.md au 20 nov. 16 h 30 : y chercher par le titre de section indiqué « (H : … ») avant de refaire un travail ou de répondre sur un point précis.
-État au 20 nov. 2026, 17 h 15 : `main` = 1c203e4, cache `carte-peche-v14`.
+État au 20 nov. 2026, 17 h 45 : `main` = cache `carte-peche-v14` (dernier changement de l'appli : 7a795f5).
 
 ## Le projet
 - Appli web (PWA) pour choisir son poste du bord, loup au leurre et dorade à la calée, des Saintes-Maries à Frontignan ; 1 h de route depuis Poulx ; remplace le carnet papier. Usage perso uniquement (API non commerciales OK, Play Store mis de côté).
@@ -19,7 +19,8 @@
 
 ## En attente d'une décision de Nico
 1. **Actions v5** (`checkout@v5`, `setup-node@v5` dans les 2 tâches) : branche `essai-actions-v5` (53416aa), les 2 tâches ont réussi ; sans effet sur l'appli. Recommandé : oui.
-2. **Couleur de l'eau en douceur** : interpoler le facteur sur log(FNU) entre les centres de classe (2 ; 6,3 ; 17,3 ; 60 FNU) au lieu des sauts (ex. poste 2 : 30 FNU → loup 82 % au lieu de 60 %). Rien codé ; recommandé : essai sur branche puis comparaison des notes. (H : « Fin d'après-midi du 20 nov. »)
+2. **Webcams (retour de Nico du 20 nov. 17 h 27)** : La Grande-Motte hors ligne depuis le 14 oct. → retirée ; Carnon OK ; le lien « Maguelone » ne montrait que Palavas → retiré, poste 14 → Palavas rive droite (≈ 5 km). Branche `essai-webcams-20nov` (6971ce6, cache v15), vérifié dans Node (liens des 16 postes), pas dans Chrome (changement de liens seulement).
+3. **Couleur de l'eau en douceur** : interpoler le facteur sur log(FNU) entre les centres de classe (2 ; 6,3 ; 17,3 ; 60 FNU) au lieu des sauts (ex. poste 2 : 30 FNU → loup 82 % au lieu de 60 %). Rien codé ; recommandé : essai sur branche puis comparaison des notes. (H : « Fin d'après-midi du 20 nov. »)
 
 ## Points ouverts
 - **Candhis injoignable depuis le 20 nov. vers 15 h** (dernière mesure 11 h 30 UTC). À revoir après le passage de 18 h 05.
@@ -29,11 +30,12 @@
 - Jamais vu en vrai : une notification partie seule, la pause de nuit, l'alerte « en panne », le relevé et « Pêchable ? » sur l'A55, la profondeur au toucher, la carte de nuit sur l'A55. Journal HA pas regardé.
 
 ## À faire par Nico
-- Écrire à Candhis (fuseau) ; envoyer un premier vrai relevé depuis l'A55 ; dire si les webcams La Grande-Motte, Carnon et Maguelone montrent la mer ; s'enregistrer sur RecFishing avant la prochaine sortie.
-- Supprimer les branches d'essai sur github.com/nicolasbonini1-commits/Carte-peche/branches (la session ne peut pas : 403) : `carte-nuit`, `v2`, `webcams`, `filets`, `houle`, `essai-candhis`, `essais-houle`, `essais-houle-captures`, `essais-carte`, `essais-filets`, `essai-couleur-eau`, `essais-couleur-eau-resultats`, `essai-releves`, `essais-releves-resultats`, `essai-note-houle`, `essai-pluie-houle`, `essais-pluie-houle-resultats`, `essai-apres-midi`, `essais-apres-midi-resultats`, `essais-releves-analyse` (derniers commits notés dans H : « Reste à faire » 6). **À garder** : `main`, `donnees`, `releves`, `essais-api`, `essai-chenaux`, `essais-chenaux-donnees`, `essai-turbidite`, `essais-turbidite-releves`, `essais-turbidite-satellite` (RESULTATS.md cités dans `js/model.js`), et pour l'instant `essai-actions-v5`, `essai-fuseau-candhis`.
+- Écrire à Candhis (fuseau) ; envoyer un premier vrai relevé depuis l'A55.
+- RecFishing (obligatoire avant la prochaine sortie) : bloqué le 20 nov. à la connexion EU Login (« Aucun appareil mobile n'a été trouvé ») → installer l'appli EU Login sur l'A55, puis sur un ordinateur : ecas.ec.europa.eu › roue dentée › Mon compte › Gérer mes appareils mobiles › Ajouter, et scanner le QR code avec l'A55 (procédure peche.com, article 51245).
+- Branches : supprimées par Nico le 20 nov. (17 h 25) sauf `essai-pluie-houle`, que GitHub refuse de supprimer (ni protégée, ni liée à une demande de fusion ouverte : cause inconnue). **À garder** : `main`, `donnees`, `releves`, `essais-api`, `essai-chenaux`, `essais-chenaux-donnees`, `essai-turbidite`, `essais-turbidite-releves`, `essais-turbidite-satellite` (RESULTATS.md cités dans `js/model.js`) ; en attente : `essai-actions-v5`, `essai-fuseau-candhis`, `essai-webcams-20nov`. Anciens commits des branches supprimées : H, « Reste à faire » 6.
 
 ## Plus tard
-Recaler sur place les postes « à vérifier » (1, 2, 4, 5, 7, 8, 9 ; le 3 est une zone de 15 km) · postes moins classiques (Ponant, canaux : Nico donne les lieux ; coordonnées sourcées + OSM + EMODnet) · caler seuils, saison et ordre des leurres avec une dizaine de sorties · témoignages vidéo en preuve [V] · chalutiers en direct (aisstream) · carnet vers Notion · agent du matin · idées v3 (truite, postes n'importe où). (H : « Reste à faire » 5 à 12, « Données en attente »)
+Revérifier la webcam de La Grande-Motte (grandemotte.roundshot.com/port-ouest/) · Recaler sur place les postes « à vérifier » (1, 2, 4, 5, 7, 8, 9 ; le 3 est une zone de 15 km) · postes moins classiques (Ponant, canaux : Nico donne les lieux ; coordonnées sourcées + OSM + EMODnet) · caler seuils, saison et ordre des leurres avec une dizaine de sorties · témoignages vidéo en preuve [V] · chalutiers en direct (aisstream) · carnet vers Notion · agent du matin · idées v3 (truite, postes n'importe où). (H : « Reste à faire » 5 à 12, « Données en attente »)
 
 ## Règles de travail
 - Toute modif de l'appli : branche d'essai → test Chrome sans écran par une tâche GitHub avec les vraies réponses (aussi sans réseau et au retour du réseau) → nouveau nom de cache dans `sw.js` → accord de Nico → `main` (fichiers de l'appli seulement, pas les fichiers d'essai) → contrôle du site en ligne → mise à jour de ce fichier avec les heures réelles (`gh run list`).
