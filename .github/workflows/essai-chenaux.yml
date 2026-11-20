@@ -20,6 +20,17 @@ jobs:
       - name: Enregistrer (branche essais-chenaux-donnees, dossier osm)
         if: always()
         run: bash outils/chenaux/enregistrer.sh /tmp/o osm "${{ github.token }}" "${{ github.repository }}"
+  galerie:
+    if: ${{ contains(github.event.head_commit.message, '[galerie]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q rasterio pystac-client numpy pillow
+      - run: mkdir -p /tmp/g && python3 outils/chenaux/galerie.py /tmp/g
+      - name: Enregistrer (branche essais-chenaux-donnees, dossier galerie)
+        if: always()
+        run: bash outils/chenaux/enregistrer.sh /tmp/g galerie "${{ github.token }}" "${{ github.repository }}"
   annees:
     runs-on: ubuntu-latest
     outputs:
