@@ -20,6 +20,8 @@ async function overpass(q) {
         body: "data=" + encodeURIComponent(q) });
       if (!r.ok) { erreurs.push(`${url} → ${r.status}`); continue; }
       const j = await r.json();
+      if (j.remark) erreurs.push(`${url} → remarque : ${j.remark}`);
+      if (j.remark && !j.elements.length) continue;
       return { serveur: url, erreurs, ...j };
     } catch (e) { erreurs.push(`${url} → ${e.message}`); }
   }
@@ -45,20 +47,20 @@ async function releve(id) {
   const dLat = R / 111320, dLon = R / (111320 * Math.cos(lat * Math.PI / 180));
   const bb = [lat - dLat, lon - dLon, lat + dLat, lon + dLon].map(v => v.toFixed(5)).join(",");
   const a = `(around:${R},${lat},${lon})`;
-  const q = `[out:json][timeout:90];
-(
-  node${a}["seamark:type"];
-  way${a}["seamark:type"];
-  way${a}["man_made"~"^(breakwater|groyne|pier)$"];
-  way${a}["natural"="coastline"];
-  way${a}["waterway"~"^(river|canal|riverbank)$"];
-  way${a}["natural"="water"];
-  nwr${a}["place"];
-  nwr${a}["natural"~"^(beach|cape|sand)$"];
-  nwr${a}["name"~"grau|embouchure|jetée|digue|épi|pointe|phare",i];
-);
-out geom(${bb});`;
-  const osm = await overpass(q);
+  // 20 nov. 19 h 10 : une seule grosse requête (avec les plans d'eau de Camargue) a rendu 0 élément → 3 petites requêtes.
+  const R2 = 4000; const a2 = `(around:${R2},${lat},${lon})`;
+  const reqs = {
+    reperes: `[out:json][timeout:60];(node${a}["seamark:type"];way${a}["seamark:type"];way${a}["man_made"~"^(breakwater|groyne|pier)$"];nwr${a}["name"~"grau|embouchure|jetée|digue|épi|pointe|phare",i];);out geom(${bb});`,
+    cote: `[out:json][timeout:60];way${a}["natural"="coastline"];out geom(${bb});`,
+    fleuves: `[out:json][timeout:60];way${a2}["waterway"~"^(river|canal)$"];out geom;`
+  };
+  const osm = { serveur: [], erreurs: [], elements: [], osm3s: null };
+  for (const [k, q] of Object.entries(reqs)) {
+    const r = await overpass(q);
+    osm.serveur.push(`${k}: ${r.serveur} (${r.elements.length})`); osm.erreurs.push(...r.erreurs);
+    osm.elements.push(...r.elements); osm.osm3s = osm.osm3s || r.osm3s;
+    await sleep(2000);
+  }
   // Grille de profondeur centrée sur le point actuel.
   const grille = [];
   for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
