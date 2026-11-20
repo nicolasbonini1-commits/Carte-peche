@@ -29,6 +29,10 @@ Branche d'essai `essai-chenaux`. Rien n'est sur `main` ; l'appli n'est pas modif
 - Sinon → **oui**.
 À caler avec l'avis de Nico sur la planche `galerie_grau_du_roi.jpg` (A et B marron, C presque clair à 4,3×, D normal) et avec le carnet.
 
+## Avis de Nico sur la planche (20 nov., 9 h 47) [C]
+- Pêchable : **C** (Vidourle 4,3× la veille, indice 11) et **D** (normal). Pas pêchable : **A** et **B** (9× et 30×, indice 44-47).
+- Règle corrigée : **non** si Vidourle ≥ 5× la normale hier ou aujourd'hui ; **douteux** entre 4 et 5×, ou dans les 2 jours qui suivent le dernier jour ≥ 4× ; **oui** en dessous de 4×. (Avant : douteux dès 2×, trop prudent d'après C.) Seuils [P] sur 8 jours marron : à revoir avec le carnet.
+
 ## Limites
 - Seulement les jours sans nuages : après les gros orages le ciel reste souvent couvert (8 jours marron seulement).
 - Débit journalier de la veille : une montée dans la journée n'est pas vue.
