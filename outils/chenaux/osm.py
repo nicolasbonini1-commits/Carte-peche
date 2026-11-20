@@ -14,7 +14,7 @@ Q = f"""[out:json][timeout:180];
   way["landuse"="harbour"]({BB});
   nwr["name"~"([Gg]rau|[Cc]henal|[Pp]asse|[Ee]mbouchure|[Pp]ertuis)"]({BB});
 );
-out geom tags;"""
+out geom;"""
 for url in ("https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"):
     try:
         data = urllib.request.urlopen(urllib.request.Request(url, data=urllib.parse.urlencode({"data": Q}).encode(),
