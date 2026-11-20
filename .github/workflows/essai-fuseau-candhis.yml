@@ -1,0 +1,27 @@
+# Essai temporaire (20 nov. 2026) : les heures des mesures Candhis sont-elles en UTC ?
+# Méthode : retrouver les mêmes bouées (Espiguette 03001, Sète 03404) dans une source qui donne l'heure en UTC
+# (EMODnet Physics ERDDAP, données Copernicus / Coriolis) et comparer les séries avec houle.json décalé de 0 et de -1 h.
+name: essai-fuseau-candhis
+on:
+  push:
+    branches: [essai-fuseau-candhis]
+permissions:
+  contents: read
+jobs:
+  fuseau:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Chercher les bouées dans ERDDAP
+        run: |
+          E=https://erddap.emodnet-physics.eu/erddap
+          for q in Espiguette Sete 03001 03404 6100190 6100196; do
+            echo "== recherche $q"; curl -sS -m 60 "$E/search/index.csv?page=1&itemsPerPage=20&searchFor=$q" | cut -c1-300 | head -8
+          done
+          echo "== stations proches (VHM0, lat 43.2-43.6, lon 3.6-4.4)"
+          curl -sS -m 90 "$E/tabledap/EP_ERD_INT_VHM0_AL_TS_NRT.csv?PLATFORMCODE,latitude,longitude,time&latitude>=43.2&latitude<=43.6&longitude>=3.6&longitude<=4.4&time>=now-2days&distinct()" | head -20 || true
+          curl -sS -m 90 "$E/tabledap/allDatasets.csv?datasetID,title" | grep -i -E 'wave|vhm0|houle' | head -20
+      - name: Mesures Candhis gardées (houle.json)
+        run: |
+          git init -q /tmp/d && cd /tmp/d && git fetch -q --depth=1 "https://github.com/${{ github.repository }}" donnees && git show FETCH_HEAD:houle.json > /tmp/houle.json
+          python3 -c "import json;d=json.load(open('/tmp/houle.json'));[print(b['nom'],[(m['t'][5:16],m['h']) for m in b['mesures'][-12:]]) for b in d['bouees']]"
