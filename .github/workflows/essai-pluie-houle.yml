@@ -20,6 +20,11 @@ jobs:
         run: |
           mkdir -p /tmp/r
           curl -s -H "Authorization: Bearer ${{ github.token }}" https://api.github.com/repos/${{ github.repository }} | jq '{has_issues, visibility}' | tee /tmp/r/depot.json
+      - name: Site en ligne (GitHub Pages) à jour ?
+        run: |
+          sleep 45
+          { echo "vérifié $(date -u +%FT%TZ)"; curl -s https://nicolasbonini1-commits.github.io/Carte-peche/sw.js | grep "const CACHE";
+            curl -s https://nicolasbonini1-commits.github.io/Carte-peche/js/model.js | grep -c "api: 0.0431"; } | tee /tmp/r/site_en_ligne.txt
       - name: Essai dans Chrome
         run: |
           python3 -m http.server 8080 >/dev/null 2>&1 &
