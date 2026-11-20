@@ -50,7 +50,9 @@ async function releve(id) {
   // 20 nov. 19 h 10 : une seule grosse requête (avec les plans d'eau de Camargue) a rendu 0 élément → 3 petites requêtes.
   const R2 = 4000; const a2 = `(around:${R2},${lat},${lon})`;
   const reqs = {
-    reperes: `[out:json][timeout:60];(node${a}["seamark:type"];way${a}["seamark:type"];way${a}["man_made"~"^(breakwater|groyne|pier)$"];nwr${a}["name"~"grau|embouchure|jetée|digue|épi|pointe|phare",i];);out geom(${bb});`,
+    // 20 nov. 19 h 30 : « repères » avec la recherche par nom (nwr + regex) dépassait le délai sur les 3 serveurs → séparée, nœuds seulement.
+    reperes: `[out:json][timeout:60];(node${a}["seamark:type"];way${a}["seamark:type"];way${a}["man_made"~"^(breakwater|groyne|pier)$"];);out geom(${bb});`,
+    noms: `[out:json][timeout:60];node${a}["name"~"grau|embouchure|jetée|digue|épi|pointe|phare",i];out;`,
     cote: `[out:json][timeout:60];way${a}["natural"="coastline"];out geom(${bb});`,
     fleuves: `[out:json][timeout:60];way${a2}["waterway"~"^(river|canal)$"];out geom;`
   };
