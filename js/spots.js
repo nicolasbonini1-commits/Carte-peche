@@ -7,6 +7,7 @@
 // river : fleuve ou rivière qui influence le poste ("rhone", "vidourle", "lez") ou false
 // lit : zone éclairée la nuit
 // autour : 2-3 points voisins (≤ ≈ 1 km) pour une pêche de zone : si rien ne mord, on change d'épi sans changer de secteur.
+// Règle de Nico (20 nov. 22 h 34) : les points « autour » doivent être joignables à pied depuis le poste (pas de chenal ni d’estuaire à contourner en voiture).
 //   Mêmes conditions que le poste, donc pas de note à part. Chaque point a sa source (src).
 // Niveaux de preuve : [S] sourcé, [P] pratique courante / estimation, [C] lecture de carte.
 window.SPOTS = [
@@ -15,6 +16,12 @@ window.SPOTS = [
     // Ancien point (43,4515 / 4,3945) : sur la terre, rive ouest, ≈ 310 m au NO ; Nico (20 nov.) : il fallait traverser l'estuaire à la nage.
     // Source : OSM way 231712579 « Le Petit Rhône » (dernier point) sur le trait de côte way 772046455 ; relevé du 20 nov. (branche essais-postes-donnees).
     lat: 43.44995, lon: 4.39771, type: "embouchure", seaward: 190, river: "rhone", lit: false,
+    // autour : accord de Nico le 20 nov. 22 h 34 (tous sur la rive est, joignables à pied).
+    autour: [
+      { name: "Pointe de la digue rive gauche", lat: 43.44645, lon: 4.40178, src: "OSM way 433543117 (bout côté mer) [C]", note: "510 m au SE, là où l'eau du Petit Rhône rencontre la mer" },
+      { name: "Épi du Clos du Rhône", lat: 43.44736, lon: 4.40128, src: "OSM way 433543123 ; SYMADREM épi tenon 175 m [C]", note: "410 m au SE" },
+      { name: "Brise-lames du Clos du Rhône", lat: 43.44684, lon: 4.40317, src: "OSM way 433543076 ; SYMADREM Clos du Rhône BL [C]", note: "560 m au SE" }
+    ],
     structure: "Grau d'Orgon, à 2 km à l'ouest du village [S] : mélange eau douce / eau salée, courant. [S] Le bar est euryhalin et fréquente estuaires et embouchures.",
     attention: "Pêcher depuis la rive est (côté camping du Clos du Rhône, parking sur la carte OSM) : la rive ouest impose de traverser l'estuaire. Par crue du Rhône, eau très chargée.",
     zone: "E"
@@ -42,15 +49,29 @@ window.SPOTS = [
     zone: "E"
   },
   {
-    id: 4, name: "Pointe et plage de l'Espiguette", commune: "Le Grau-du-Roi", pos: "à vérifier : point dans l'eau, ~3 m de fond, environ 500 m au large de la plage",
-    lat: 43.4750, lon: 4.1480, type: "plage_barres", seaward: 165, river: false, lit: false,
+    id: 4, name: "Pointe et plage de l'Espiguette", commune: "Le Grau-du-Roi", pos: "vérifiée le 20 nov. 2026 : bord de mer au droit du phare de l'Espiguette (OpenStreetMap) ; profondeur EMODnet 3,2 m à 250 m au large",
+    // Ancien point (43,4750 / 4,1480) : dans l'eau, 200 m au large, 1,1 km au SE. Accord de Nico le 20 nov. 22 h 34.
+    // Source : trait de côte OSM le plus proche du Phare de l'Espiguette (node 296911109), 644 m au SO du phare. seaward recalculé : côte orientée 118°, mer au 208°.
+    lat: 43.48239, lon: 4.13854, type: "plage_barres", seaward: 208, river: false, lit: false,
+    autour: [
+      { name: "Plage, 1 km au nord-ouest", lat: 43.48713, lon: 4.12804, src: "trait de côte OSM [C]", note: "même plage, sans ouvrage" },
+      { name: "Plage, 1 km au sud-est", lat: 43.47897, lon: 4.15018, src: "trait de côte OSM [C]", note: "même plage, sans ouvrage" }
+    ],
     structure: "Sable, barres et cuvettes ; site Natura 2000 « Bancs sableux de l'Espiguette ». [S]",
     attention: "Pêche interdite depuis les plages du 15 juin au 15 septembre, de 9 h à 20 h. [S] Longue marche.",
     zone: "C"
   },
   {
-    id: 5, name: "Digue de l'Espiguette (extérieur Port Camargue)", commune: "Le Grau-du-Roi", pos: "à vérifier : point dans l'eau à 500 m au sud de l'entrée du port",
-    lat: 43.5165, lon: 4.1210, type: "digue", seaward: 240, river: false, lit: false,
+    id: 5, name: "Digue de l'Espiguette (extérieur Port Camargue)", commune: "Le Grau-du-Roi", pos: "vérifiée le 20 nov. 2026 : feu en tête de la digue de l'Espiguette (OpenStreetMap) ; profondeur EMODnet 3 à 4,6 m à 200-300 m",
+    // Ancien point (43,5165 / 4,1210) : sur un épi de la plage sud de Port Camargue, 740 m au NNE. Accord de Nico le 20 nov. 22 h 34.
+    // Source : la digue de l'Espiguette limite au nord le site Natura 2000 FR9102014 (notice de l'arrêté ZSC) [S] ; feu OSM node 1420666369, digue way 433543104.
+    // seaward recalculé : bout de digue tourné vers l'ouest, mer ouverte à l'ouest (270°).
+    lat: 43.51076, lon: 4.11645, type: "digue", seaward: 270, river: false, lit: false,
+    // Pointe de l'Espiguette (balise node 1420666367, 540 m OSO) écartée par Nico : de l'autre côté du chenal sud, pas joignable à pied.
+    autour: [
+      { name: "Épi sud de la plage sud de Port Camargue", lat: 43.51400, lon: 4.11963, src: "OSM way 66033925 [C]", note: "440 m au NNE" },
+      { name: "Épi nord de la plage sud de Port Camargue", lat: 43.51734, lon: 4.12041, src: "OSM way 66034032 [C]", note: "800 m au NNE" }
+    ],
     structure: "Enrochements sur sable à l'extérieur du port. [P]",
     attention: "Pêche interdite dans la plupart des ports : rester à l'extérieur. [S]",
     zone: "C"
@@ -63,8 +84,15 @@ window.SPOTS = [
     zone: "C"
   },
   {
-    id: 7, name: "Digue et épis du Boucanet", commune: "Le Grau-du-Roi", pos: "à vérifier : point dans l'eau, ~250 m au large",
-    lat: 43.5440, lon: 4.1220, type: "digue", seaward: 210, river: false, lit: false,
+    id: 7, name: "Digue et épis du Boucanet", commune: "Le Grau-du-Roi", pos: "vérifiée le 20 nov. 2026 : bout d'un épi du Boucanet (OpenStreetMap) ; profondeur EMODnet 3,4 m à 250 m au large",
+    // Ancien point (43,5440 / 4,1220) : 37 m du bout de l'épi. OSM ne montre aucune « digue » ici, seulement des épis ≈ tous les 250 m. Accord de Nico le 20 nov. 22 h 34.
+    // Source : OSM way 66035454 (man_made=groyne). seaward recalculé : côte orientée 315°, mer au 225°.
+    lat: 43.54420, lon: 4.12236, type: "digue", seaward: 225, river: false, lit: false,
+    autour: [
+      { name: "Épi suivant (NO)", lat: 43.54636, lon: 4.11937, src: "OSM way 66035464 [C]", note: "340 m vers La Grande-Motte" },
+      { name: "2e épi (NO)", lat: 43.54795, lon: 4.11711, src: "OSM way 291336576 [C]", note: "595 m" },
+      { name: "3e épi (NO)", lat: 43.54906, lon: 4.11464, src: "OSM way 66035467 [C]", note: "825 m" }
+    ],
     structure: "Enrochements sur sable, pointes d'épis. [P]",
     attention: "Blocs glissants.",
     zone: "C"
