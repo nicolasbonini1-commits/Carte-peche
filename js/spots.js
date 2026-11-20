@@ -151,20 +151,19 @@ window.HOME = { name: "Poulx", lat: 43.909, lon: 4.418 };
 // D'où vient chaque adresse : trouvée dans une recherche web le 18 nov. (Viewsurf : annuaire bord-de-mer.com ;
 // Roundshot : même annuaire ; Windy, Windfinder, Surf-Forecast : pages de ces sites). Aucune n'a pu être ouverte
 // depuis le chat : emplacement exact et orientation vers la mer À VÉRIFIER de jour sur le téléphone.
+// Retour de Nico le 19 nov. (21 h 34), sur l'A55 : Palavas rive gauche et rive droite OK ; Saintes-Maries (Surf-Forecast),
+// Grau-du-Roi « Live » (Windy) et Espiguette (Windfinder) ne marchent pas → retirées le 20 nov. (postes 1 à 7 sans webcam).
+// La Grande-Motte, Carnon et Maguelone : pas encore de retour, gardées.
 (function () {
   const C = {
-    smm:     { label: "Saintes-Maries (Surf-Forecast)", url: "https://www.surf-forecast.com/breaks/Saintes-Maries/webcams/latest" },
-    espig:   { label: "Autour de l'Espiguette (liste Windfinder)", url: "https://www.windfinder.com/webcams/espiguette_bouee" },
-    grau:    { label: "Le Grau-du-Roi « Live » (Windy)", url: "https://www.windy.com/webcams/1388285382" },
     gmOuest: { label: "La Grande-Motte port ouest, 360° (Roundshot)", url: "https://grandemotte.roundshot.com/port-ouest/" },
     carnon:  { label: "Port de Carnon (Windy)", url: "https://www.windy.com/webcams/1724960038" },
     palG:    { label: "Palavas rive gauche (Viewsurf)", url: "https://pv.viewsurf.com/1510/Palavas-rive-gauche" },
     palD:    { label: "Palavas rive droite (Viewsurf)", url: "https://pv.viewsurf.com/1512/Palavas-rive-droite" },
     magu:    { label: "Autour de Maguelone (liste Windfinder)", url: "https://www.windfinder.com/webcams/plage_de_mageulone" }
   };
-  // Numéro du poste -> webcams, la plus proche d'abord. Postes 15 et 16 : aucune webcam trouvée.
-  const BY_SPOT = { 1: ["smm"], 2: ["smm"], 3: ["smm", "espig"], 4: ["espig"], 5: ["espig", "grau"], 6: ["grau", "espig"],
-    7: ["grau"], 8: ["gmOuest"], 9: ["gmOuest"], 10: ["gmOuest", "carnon"], 11: ["carnon"], 12: ["palG", "palD"],
+  // Numéro du poste -> webcams, la plus proche d'abord. Postes 1 à 7 : webcams retirées (ne marchent pas) ; 15 et 16 : aucune trouvée.
+  const BY_SPOT = { 8: ["gmOuest"], 9: ["gmOuest"], 10: ["gmOuest", "carnon"], 11: ["carnon"], 12: ["palG", "palD"],
     13: ["palD", "palG"], 14: ["magu"] };
   window.SPOTS.forEach(s => { s.webcams = (BY_SPOT[s.id] || []).map(k => C[k]); });
 })();

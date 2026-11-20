@@ -43,18 +43,22 @@
   }
 
   // Adresses demandées à Open-Meteo (mêmes pour l'appli et pour la tâche des alertes).
+  // Météo : 14 jours passés (7 avant le 20 nov. 2026). L'indice de pluie de la côte (couleur de l'eau) a été calé sur une série
+  // continue depuis 2020 : avec 7 jours seulement, la pluie d'il y a 8 jours (qui compte encore 0,85^8 = 27 %) était oubliée.
+  // Avec 14 jours, ce qui manque pèse au plus 0,85^14 = 10 %. La mer garde 7 jours passés (la houle ne regarde que 48 h en arrière).
+  const PAST_DAYS = 14;
   const MODELS = "meteofrance_seamless,ecmwf_ifs025";
   function urls(P) {
     const forecast = "https://api.open-meteo.com/v1/forecast?latitude=" + ZL.map(z => P[z].land[0]).join(",") +
       "&longitude=" + ZL.map(z => P[z].land[1]).join(",") +
       "&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,cloud_cover,precipitation" +
-      "&daily=sunrise,sunset&past_days=7&forecast_days=7&timezone=Europe%2FParis&wind_speed_unit=kmh";
+      "&daily=sunrise,sunset&past_days=" + PAST_DAYS + "&forecast_days=7&timezone=Europe%2FParis&wind_speed_unit=kmh";
     const marine = "https://marine-api.open-meteo.com/v1/marine?latitude=" + ZS.map(z => P[z].sea[0]).join(",") +
       "&longitude=" + ZS.map(z => P[z].sea[1]).join(",") +
       "&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature&past_days=7&forecast_days=7&timezone=Europe%2FParis";
     return { forecast, forecastModels: forecast + "&models=" + MODELS, marine };
   }
-  const DATA = { ZL, ZS, MODELS, urls, mergeModels, parse: parseData };
+  const DATA = { ZL, ZS, MODELS, PAST_DAYS, urls, mergeModels, parse: parseData };
   if (typeof window !== "undefined") window.DATA = DATA;
   if (typeof module !== "undefined") module.exports = DATA;
 })();

@@ -142,12 +142,20 @@
   //  - ecmwf_ifs025 : modèle européen ECMWF, pris quand Météo-France s'arrête (jours 4 à 7) et pour juger la fiabilité.
   // Mer : Open-Meteo Marine « best match », qui donne ici les mêmes valeurs que le modèle de vagues MFWAM de Météo-France
   // (vérifié le 18 nov. 2026 en comparant les deux réponses).
-  // 7 jours passés : pour la pluie des jours d'avant (état des fleuves et de l'eau).
+  // Jours passés (14 pour la météo depuis le 20 nov. 2026, 7 pour la mer) : pour la pluie des jours d'avant (état des fleuves et de l'eau).
   // lastOk : le dernier essai de téléchargement a-t-il marché ? (sert aux nouveaux essais automatiques et au message du bouton)
   let lastOk = true;
   async function fetchData(force) {
     const cached = LS.get("cp_data2", null);
-    if (!force && cached && Date.now() - cached.at < 45 * 60 * 1000) return parseData(cached);
+    if (!force && cached && Date.now() - cached.at < 45 * 60 * 1000) {
+      // Prévisions récentes (moins de 45 min) : pas de téléchargement. Correction du 20 nov. 2026 (défaut vu sur l'A55) :
+      // si le téléphone se sait hors ligne, on le dit quand même, et lastOk = false pour que le retour du réseau relance la mise à jour.
+      if (navigator.onLine === false) {
+        lastOk = false;
+        banner(`Pas de réseau. J'affiche les prévisions reçues le ${dayName(new Date(cached.at))} à ${hm(new Date(cached.at))}. Nouvel essai automatique dès qu'il revient.`);
+      }
+      return parseData(cached);
+    }
     const U = window.DATA.urls(window.WX_POINTS), base = U.forecast, sUrl = U.marine;
     const getJson = async url => { const r = await fetch(url); const j = await r.json(); if (!Array.isArray(j)) throw new Error(j.reason || "réponse inattendue"); return j; };
     try {
@@ -507,8 +515,12 @@
     const mx = basin ? coast.map((v, k) => Math.max(v || 0, basin.rain[k] || 0)) : coast;
     const n = mx.length, s72 = new Array(n), s168 = new Array(n), api = new Array(n), apiCoast = new Array(n);
     const kh = Math.pow(M.API_K, 1 / 24);
+    // Bassin (état du fleuve quand le débit manque, seuils 20 / 50 / 100 mm [P]) : calcul inchangé, il repart de zéro
+    // 7 jours avant aujourd'hui comme avant le 20 nov. 2026 ; seule la côte (couleur de l'eau) profite des 14 jours.
+    const off = Math.max(0, n - 14 * 24); // 7 j passés + 7 j de prévision ; 0 si les prévisions gardées datent d'avant (7 j passés)
     let a = 0, ac = 0;
     for (let i = 0; i < n; i++) {
+      if (i === off) a = 0;
       a = a * kh + (mx[i] || 0); ac = ac * kh + (coast[i] || 0);   // indice de pluie, décroissance continue
       api[i] = a; apiCoast[i] = ac;
       s72[i] = M.rainSum(mx, i, 72); s168[i] = M.rainSum(mx, i, 168);
@@ -968,7 +980,8 @@
   document.querySelectorAll("nav button").forEach(b => b.onclick = () => showView(b.dataset.view));
   let toastT;
   function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 3000); }
-  function banner(msg) { const b = $("#banner"); b.textContent = msg; b.hidden = !msg; }
+  // Bandeau collé sous l'en-tête (ajout du 20 nov. 2026) : visible même quand la page est descendue (vu dans l'essai : caché au-dessus).
+  function banner(msg) { const b = $("#banner"); b.textContent = msg; b.hidden = !msg; if (msg) b.style.top = $("header.top").offsetHeight + "px"; }
 
   // ---------- Mise à jour (bouton et essais automatiques) ----------
   // Après un échec, l'appli réessaie seule : quand le téléphone signale le retour du réseau (événement « online »),
@@ -991,6 +1004,12 @@
   }
   const retryNow = () => { if (!lastOk) { retryN = 0; setTimeout(() => refresh(false), 3000); } }; // 3 s : laisser le réseau s'établir
   window.addEventListener("online", retryNow);
+  // Réseau perdu pendant que l'appli est ouverte (ajout du 20 nov. 2026) : on le dit tout de suite, sans attendre un essai raté.
+  window.addEventListener("offline", () => {
+    lastOk = false;
+    const at = state.data && state.data.fetchedAt;
+    banner("Pas de réseau." + (at ? ` J'affiche les prévisions reçues le ${dayName(at)} à ${hm(at)}.` : "") + " Nouvel essai automatique dès qu'il revient.");
+  });
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") retryNow(); });
 
   // ---------- Démarrage ----------

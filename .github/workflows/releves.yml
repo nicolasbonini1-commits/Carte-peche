@@ -1,0 +1,42 @@
+# Analyse des relevés « Je suis sur place » (décision de Nico du 20 nov. 2026, 12 h 33 : « le plus fiable possible »).
+# Lit les tickets « Relevés sur place » du dépôt, écrits par le propriétaire du dépôt seulement (dépôt public : n'importe qui
+# peut ouvrir un ticket ; les autres sont écartés), et écrit releves.json dans la branche « releves » (pas « donnees » :
+# la tâche alertes réécrit entièrement « donnees » à chaque passage et effacerait ce fichier).
+# Se lance quand Nico envoie ou modifie un ticket, une fois par nuit en secours, ou à la main.
+# Les tickets ne sont jamais exécutés : leur texte est seulement lu comme du JSON par notif/releves.js.
+# Un ticket d'essai à exclure : lui mettre l'étiquette « ignorer ».
+name: releves
+on:
+  issues:
+    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled]
+  schedule:
+    - cron: "41 3 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: read
+concurrency: releves
+jobs:
+  analyse:
+    if: github.event_name != 'issues' || (github.event.issue.user.login == github.repository_owner && startsWith(github.event.issue.title, 'Relevés sur place'))
+    runs-on: ubuntu-latest
+    env:
+      DEST: ${{ github.ref_name == 'main' && 'releves' || 'essais-releves-analyse' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lire les tickets
+        run: |
+          gh api --paginate "repos/${{ github.repository }}/issues?state=all&per_page=100&creator=${{ github.repository_owner }}" --jq '.[] | tojson' > /tmp/tickets.jsonl
+          echo "$(wc -l < /tmp/tickets.jsonl) ticket(s) lus"
+      - name: Analyse
+        run: |
+          node notif/releves.js /tmp/tickets.jsonl "${{ github.repository_owner }}" > /tmp/releves.json
+          node -e 'const r = require("/tmp/releves.json"); console.log(r.ligne); console.log("écartés :", JSON.stringify(r.tickets_ecartes))'
+      - name: Enregistrer dans la branche releves (ou essais-releves-analyse pour un essai)
+        run: |
+          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b "$DEST"
+          cp /tmp/releves.json .
+          git config user.name "releves-bot"; git config user.email "releves@users.noreply.github.com"
+          git add releves.json && git commit -qm "relevés $(TZ=Europe/Paris date '+%d/%m %H:%M')"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$DEST"
