@@ -24,8 +24,12 @@
     loup:   [0.80, 0.75, 0.60, 0.50, 0.45, 0.35, 0.30, 0.35, 0.60, 0.85, 1.00, 0.90],
     dorade: [0.20, 0.20, 0.30, 0.50, 0.70, 0.85, 0.90, 0.90, 0.90, 1.00, 0.80, 0.40]
   };
-  // Sorties de lagune à l'automne : les graus en profitent [S] (calendrier) / [P] (valeur)
-  M.GRAU_AUTUMN = { 9: 1.10, 10: 1.25, 11: 1.20, 12: 1.10 };
+  // Sorties de lagune à l'automne : les graus en profitent. Calendrier [S] : départs surtout
+  // en oct.-nov., pic mi-octobre (Thambithurai et al. 2026, Movement Ecology 14:10) ; étang du
+  // Prévost : départ moyen 6 oct. ± 6 j, aucun en septembre ni en décembre (Mignucci et al. 2023).
+  // Valeurs ×1,25 / ×1,20 : [P]. Sept. et déc. retirés le 20 nov. 2026 (accord de Nico).
+  // NB : en octobre, 1,00 × 1,25 est plafonné à 1 → ce bonus est aujourd'hui sans effet (à revoir).
+  M.GRAU_AUTUMN = { 10: 1.25, 11: 1.20 };
 
   // ---------- Outils ----------
   const rad = d => d * Math.PI / 180;
