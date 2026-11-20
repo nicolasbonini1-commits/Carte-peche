@@ -24,7 +24,7 @@ jobs:
       DEST: ${{ github.ref_name == 'main' && 'releves' || 'essais-releves-analyse' }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Lire les tickets
         run: |
           gh api --paginate "repos/${{ github.repository }}/issues?state=all&per_page=100&creator=${{ github.repository_owner }}" --jq '.[] | tojson' > /tmp/tickets.jsonl

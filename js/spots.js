@@ -153,17 +153,17 @@ window.HOME = { name: "Poulx", lat: 43.909, lon: 4.418 };
 // depuis le chat : emplacement exact et orientation vers la mer À VÉRIFIER de jour sur le téléphone.
 // Retour de Nico le 19 nov. (21 h 34), sur l'A55 : Palavas rive gauche et rive droite OK ; Saintes-Maries (Surf-Forecast),
 // Grau-du-Roi « Live » (Windy) et Espiguette (Windfinder) ne marchent pas → retirées le 20 nov. (postes 1 à 7 sans webcam).
-// La Grande-Motte, Carnon et Maguelone : pas encore de retour, gardées.
+// Retour de Nico le 20 nov. (17 h 27) : La Grande-Motte (Roundshot) hors ligne, dernière image du 14 oct. 2026 → retirée
+// (à revérifier plus tard : grandemotte.roundshot.com/port-ouest/) ; Carnon (Windy) OK ; le lien « Maguelone » (Windfinder)
+// ne montrait que les 2 webcams de Palavas → retiré, le poste 14 renvoie à Palavas rive droite (côté Maguelone, ≈ 5 km).
 (function () {
   const C = {
-    gmOuest: { label: "La Grande-Motte port ouest, 360° (Roundshot)", url: "https://grandemotte.roundshot.com/port-ouest/" },
     carnon:  { label: "Port de Carnon (Windy)", url: "https://www.windy.com/webcams/1724960038" },
     palG:    { label: "Palavas rive gauche (Viewsurf)", url: "https://pv.viewsurf.com/1510/Palavas-rive-gauche" },
     palD:    { label: "Palavas rive droite (Viewsurf)", url: "https://pv.viewsurf.com/1512/Palavas-rive-droite" },
-    magu:    { label: "Autour de Maguelone (liste Windfinder)", url: "https://www.windfinder.com/webcams/plage_de_mageulone" }
+    palDloin: { label: "Palavas rive droite, à ≈ 5 km (Viewsurf)", url: "https://pv.viewsurf.com/1512/Palavas-rive-droite" }
   };
-  // Numéro du poste -> webcams, la plus proche d'abord. Postes 1 à 7 : webcams retirées (ne marchent pas) ; 15 et 16 : aucune trouvée.
-  const BY_SPOT = { 8: ["gmOuest"], 9: ["gmOuest"], 10: ["gmOuest", "carnon"], 11: ["carnon"], 12: ["palG", "palD"],
-    13: ["palD", "palG"], 14: ["magu"] };
+  // Numéro du poste -> webcams, la plus proche d'abord. Postes 1 à 9 : webcams retirées (ne marchent pas) ; 15 et 16 : aucune trouvée.
+  const BY_SPOT = { 10: ["carnon"], 11: ["carnon"], 12: ["palG", "palD"], 13: ["palD", "palG"], 14: ["palDloin"] };
   window.SPOTS.forEach(s => { s.webcams = (BY_SPOT[s.id] || []).map(k => C[k]); });
 })();
