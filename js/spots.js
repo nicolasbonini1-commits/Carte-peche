@@ -9,10 +9,12 @@
 // Niveaux de preuve : [S] sourcé, [P] pratique courante / estimation, [C] lecture de carte.
 window.SPOTS = [
   {
-    id: 1, name: "Embouchure du Petit Rhône", commune: "Saintes-Maries-de-la-Mer", pos: "à vérifier : point sur le trait de côte, embouchure non confirmée par une source",
-    lat: 43.4515, lon: 4.3945, type: "embouchure", seaward: 190, river: "rhone", lit: false,
+    id: 1, name: "Embouchure du Petit Rhône", commune: "Saintes-Maries-de-la-Mer", pos: "vérifiée le 20 nov. 2026 : fin du Petit Rhône sur le trait de côte (OpenStreetMap) ; profondeur EMODnet ≈ 0 m à l'embouchure, 3,7 m à 250 m au large",
+    // Ancien point (43,4515 / 4,3945) : sur la terre, rive ouest, ≈ 310 m au NO ; Nico (20 nov.) : il fallait traverser l'estuaire à la nage.
+    // Source : OSM way 231712579 « Le Petit Rhône » (dernier point) sur le trait de côte way 772046455 ; relevé du 20 nov. (branche essais-postes-donnees).
+    lat: 43.44995, lon: 4.39771, type: "embouchure", seaward: 190, river: "rhone", lit: false,
     structure: "Grau d'Orgon, à 2 km à l'ouest du village [S] : mélange eau douce / eau salée, courant. [S] Le bar est euryhalin et fréquente estuaires et embouchures.",
-    attention: "Accès par le sable, longue marche selon la rive. Par crue du Rhône, eau très chargée.",
+    attention: "Pêcher depuis la rive est (côté camping du Clos du Rhône, parking sur la carte OSM) : la rive ouest impose de traverser l'estuaire. Par crue du Rhône, eau très chargée.",
     zone: "E"
   },
   {
