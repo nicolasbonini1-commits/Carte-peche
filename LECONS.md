@@ -1,0 +1,9 @@
+# Leçons pêche (appli Carte-peche, sorties, coach)
+
+À lire au début de toute conversation pêche, avec `LECONS.md` du dépôt maison3d (leçons générales, dont « Sport et pêche » du 9-16 nov.).
+Créé le 20 nov. 2026 à la demande de Nico, car LECONS.md de maison3d avait atteint 20 leçons. Une ligne par leçon, datée ; au-delà de 20, regrouper les plus proches.
+
+- 20 nov. 2026 — Sources : toute règle de l'appli ou tout conseil de pêche doit être sourcé (lien ouvert et passage relu). Le guide Notion « Loup au leurre du bord », fait en version gratuite, n'est pas une référence : revérifier chaque point utilisé, même si ça coûte des tokens. Les dires de Nico ne servent qu'en dernier recours, quand aucune preuve tangible n'existe. Niveaux et règles détaillés : `chantiers/REGLES-COMMUNES.md`.
+- 20 nov. 2026 — Plan de sortie : avant de transmettre un plan calculé par l'appli, vérifier ce que le modèle ignore (température de l'eau, lune, saison) et le dire ; ne pas présenter un écart de 2-3 points entre postes comme un choix (grille [P]) (20 nov. : surface conseillée en premier sans regarder la température de l'eau, lune à 87 % oubliée, relevés par Nico).
+- 20 nov. 2026 — API depuis une tâche GitHub : toute requête vers une API publique (Overpass, etc.) envoie un en-tête User-Agent et prévoit un serveur de secours (20 nov. : Overpass a répondu 406 sans User-Agent, un essai perdu).
+- 20 nov. 2026 — Suivi du projet : garder REPRISE.md court (≈ 50 lignes) ; un sujet clos descend dans HISTORIQUE.md, daté. Prévenir Nico du coût dès que les gros fichiers s'accumulent, pas au 10e échange. Plusieurs conversations en parallèle : une fiche (`chantiers/`) et une branche par chantier, chacune ne touche que ses fichiers, une seule fusion sur `main` à la fois.

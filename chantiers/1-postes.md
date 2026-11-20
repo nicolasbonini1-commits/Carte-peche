@@ -1,6 +1,6 @@
 # Chantier 1 — Postes : positions vérifiées, prévision au poste, postes dans les terres
 
-Phrase de reprise : « reprise pêche chantier 1 : chantiers/1-postes.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d), skill coach-peche.
+Phrase de reprise : « reprise pêche chantier 1 : chantiers/1-postes.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d) et LECONS.md (ce dépôt), skill coach-peche.
 Branche : `chantier-1-postes`. Fichiers : `js/spots.js`, `js/data.js`, `js/app.js` (affichage des postes et de la météo), section types de postes (`M.HABITAT`) de `js/model.js`, `notif/alertes.js` si la prévision change.
 
 ## Pourquoi

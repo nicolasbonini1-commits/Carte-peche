@@ -1,6 +1,6 @@
 # Chantier 2 — Règles sourcées : leurres, mer, saison, lune, couleur de l'eau
 
-Phrase de reprise : « reprise pêche chantier 2 : chantiers/2-regles-sourcees.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d), skill coach-peche.
+Phrase de reprise : « reprise pêche chantier 2 : chantiers/2-regles-sourcees.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d) et LECONS.md (ce dépôt), skill coach-peche.
 Branche : `chantier-2-regles`. Fichiers : `js/model.js` (sauf `M.HABITAT`, voir chantier 1), guide Notion (après accord), skill coach-peche (proposition de modification).
 
 ## Pourquoi

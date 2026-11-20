@@ -1,6 +1,6 @@
 # Reprise du projet Carte-peche
 
-À lire au début d'une nouvelle conversation, avec `LECONS.md` du dépôt maison3d, le skill coach-peche et `git log -5`.
+À lire au début d'une nouvelle conversation, avec `LECONS.md` de ce dépôt (leçons pêche), `LECONS.md` du dépôt maison3d, le skill coach-peche et `git log -5`.
 **Résumé.** Tout le détail (calculs, essais, chiffres, commits) est dans `HISTORIQUE.md`, copie intégrale de l'ancien REPRISE.md au 20 nov. 16 h 30 : y chercher par le titre de section indiqué « (H : … ») avant de refaire un travail ou de répondre sur un point précis.
 État au 20 nov. 2026, 17 h 45 : `main` = cache `carte-peche-v14` (dernier changement de l'appli : 7a795f5).
 

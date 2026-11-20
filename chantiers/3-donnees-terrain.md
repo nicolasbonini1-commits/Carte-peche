@@ -1,6 +1,6 @@
 # Chantier 3 — Données terrain : expérience dorade de Nico, ami pêcheur du Grau-du-Roi
 
-Phrase de reprise : « reprise pêche chantier 3 : chantiers/3-donnees-terrain.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d), skill coach-peche.
+Phrase de reprise : « reprise pêche chantier 3 : chantiers/3-donnees-terrain.md ». Lire aussi `chantiers/REGLES-COMMUNES.md`, REPRISE.md, LECONS.md (maison3d) et LECONS.md (ce dépôt), skill coach-peche.
 Branche : `chantier-3-terrain`. Fichiers : nouveaux fichiers seulement (dossier `terrain/` ou page Notion privée, à choisir avec Nico) ; aucune modification du code de l'appli sans accord (les règles qui en sortent passent par le chantier 2).
 
 ## Pourquoi
