@@ -2,82 +2,47 @@
  "8": [
   {
    "label": "P",
-   "name": "Bout de la jetée est du grau des Abîmes (côté Boucanet)",
-   "lat": 43.55333,
-   "lon": 4.10137,
-   "src": "OSM way 66035894 (man_made=groyne, rock, source BDOrtho IGN 2023), bout le plus loin du trait de côte ; grau des Abîmes = communication de l'étang du Ponant avec la mer (Ifremer 2009) [S]"
+   "name": "Bout de la jetée ouest du grau des Abîmes (côté La Grande-Motte)",
+   "lat": 43.55286,
+   "lon": 4.09911,
+   "src": "OSM way 231620423 (groyne, 230 m) ; épi est de 230 m construit en 1984 au bout de la plage, près de la passe des Abîmes (Bonnefille 1989, La Houille Blanche) ; grau des Abîmes = communication de l'étang du Ponant avec la mer (Ifremer 2009) [S]"
   },
   {
    "label": "a",
-   "name": "Bout de l'épi est de La Grande-Motte (côté ouest du grau)",
-   "lat": 43.55286,
-   "lon": 4.09911,
-   "src": "OSM way 231620423 (groyne, 230 m) ; épi est de 230 m construit en 1984 au bout de la plage, près de la passe des Abîmes (Bonnefille 1989, La Houille Blanche) [S]"
+   "name": "Brise-lames rattaché à la plage (Point Zéro)",
+   "lat": 43.55364,
+   "lon": 4.09503,
+   "src": "OSM way 375073050 (groyne, rock) ; photo aérienne : relié à la plage par le sable [C]"
   },
   {
    "label": "b",
-   "name": "1er épi du Boucanet",
-   "lat": 43.55295,
-   "lon": 4.10341,
-   "src": "OSM way 66098050 (groyne, rock) [C]"
-  },
-  {
-   "label": "c",
-   "name": "2e épi du Boucanet",
-   "lat": 43.55221,
-   "lon": 4.10597,
-   "src": "OSM way 66035462 (groyne) [C]"
-  },
-  {
-   "label": "d",
-   "name": "3e épi du Boucanet",
-   "lat": 43.5517,
-   "lon": 4.10792,
-   "src": "OSM way 291336577 (groyne) [C]"
+   "name": "Rive est du grau : épi côté Boucanet",
+   "lat": 43.55333,
+   "lon": 4.10137,
+   "src": "OSM way 66035894 (groyne, rock) [C]"
   }
  ],
  "9": [
   {
    "label": "P",
-   "name": "Plage face au brise-lames paysager (provisoire)",
+   "name": "Plage face au brise-lames paysager",
    "lat": 43.55528,
    "lon": 4.08816,
-   "src": "trait de côte OSM au droit du brise-lames OSM way 9590832 (détaché) ; brise-lames paysager 120 m, à 140 m du rivage d'origine, 1987-88 (Bonnefille 1989) [S]"
+   "src": "trait de côte OSM au droit du brise-lames OSM way 9590832 (détaché) ; brise-lames « paysager » de 120 m à 140 m du rivage, 1987-88 (Bonnefille 1989) [S]"
   },
   {
    "label": "a",
-   "name": "Feu rouge, bout de la digue ouest du port",
-   "lat": 43.55204,
-   "lon": 4.08147,
-   "src": "OSM node 1420666376 (feu « La Grande Motte », rouge) ; jetée W Fl(2)R.6s, 43°33,1' N 4°04,9' E (Figaro Nautisme) [S]"
-  },
-  {
-   "label": "b",
    "name": "Feu vert, bout de la jetée est du port",
    "lat": 43.55327,
    "lon": 4.08122,
-   "src": "OSM node 13391321713 (« La Grande Motte tribord », vert) ; jetée E Fl.G.4s (Figaro Nautisme) [S]"
+   "src": "OSM node 13391321713 ; jetée E Fl.G.4s (Figaro Nautisme) ; digue de la Promenade Est (ville de La Grande-Motte) [S]"
   },
   {
-   "label": "c",
+   "label": "b",
    "name": "Plage face au 2e brise-lames",
    "lat": 43.55551,
    "lon": 4.09147,
    "src": "trait de côte OSM au droit du brise-lames OSM way 9590837 (détaché) [C]"
-  },
-  {
-   "label": "d",
-   "name": "Bout de l'ouvrage OSM way 375073050",
-   "lat": 43.55364,
-   "lon": 4.09503,
-   "src": "OSM way 375073050 (groyne, rock, source Bing) [C]"
-  },
-  {
-   "label": "e",
-   "name": "Bout de l'épi est de La Grande-Motte",
-   "lat": 43.55286,
-   "lon": 4.09911,
-   "src": "OSM way 231620423 ; épi est 230 m (1984, Bonnefille 1989) [S]"
   }
  ],
  "6": [
@@ -221,6 +186,119 @@
    "lat": 43.47123,
    "lon": 3.83082,
    "src": "trait de côte OSM [C]"
+  }
+ ],
+ "3": [
+  {
+   "label": "P",
+   "name": "Plage de l'Espiguette, partie est (2,3 km à l'est du phare)",
+   "lat": 43.47322,
+   "lon": 4.16541,
+   "src": "trait de côte OSM ; profondeur EMODnet 4,1 m à 150 m du bord (zone_3.json) [C]"
+  },
+  {
+   "label": "a",
+   "name": "Plage, 1 km plus à l'est",
+   "lat": 43.46969,
+   "lon": 4.17788,
+   "src": "trait de côte OSM ; EMODnet 3,3 m à 150 m [C]"
+  }
+ ],
+ "11": [
+  {
+   "label": "P",
+   "name": "Feu rouge « Carnon », tête de digue",
+   "lat": 43.53989,
+   "lon": 3.97724,
+   "src": "OSM node 670134477 (light_minor rouge « Carnon ») ; digue OSM way 366086860 [C]"
+  },
+  {
+   "label": "a",
+   "name": "Épi 34 (vers Palavas)",
+   "lat": 43.53962,
+   "lon": 3.96842,
+   "src": "OSM way 698165180 (groyne « épi 34 », BD Ortho 2019) [C]"
+  },
+  {
+   "label": "b",
+   "name": "Épi suivant (vers Palavas)",
+   "lat": 43.53934,
+   "lon": 3.96732,
+   "src": "OSM way 698165181 (groyne, BD Ortho 2019) [C]"
+  },
+  {
+   "label": "c",
+   "name": "Brise-lames est (vers La Grande-Motte)",
+   "lat": 43.54293,
+   "lon": 3.97851,
+   "src": "OSM way 366086841 (breakwater) [C]"
+  },
+  {
+   "label": "d",
+   "name": "2e brise-lames est",
+   "lat": 43.54301,
+   "lon": 3.98116,
+   "src": "OSM way 366086839 (breakwater) [C]"
+  }
+ ],
+ "14": [
+  {
+   "label": "P",
+   "name": "Plage du Pilou (devant le poste de secours)",
+   "lat": 43.50514,
+   "lon": 3.88363,
+   "src": "trait de côte OSM au droit du poste de secours Pilou (OSM node 9017360787) [C]"
+  },
+  {
+   "label": "a",
+   "name": "Plage, 800 m vers Frontignan",
+   "lat": 43.50075,
+   "lon": 3.87578,
+   "src": "trait de côte OSM [C]"
+  },
+  {
+   "label": "b",
+   "name": "Plage, 800 m vers Palavas",
+   "lat": 43.50941,
+   "lon": 3.89162,
+   "src": "trait de côte OSM [C]"
+  }
+ ],
+ "16": [
+  {
+   "label": "P",
+   "name": "Feu rouge, tête de digue",
+   "lat": 43.43031,
+   "lon": 3.77745,
+   "src": "OSM node 1420666406 ; digue OSM way 389802443 ; Digue W Fl.R.4s (Figaro Nautisme) [S]"
+  },
+  {
+   "label": "a",
+   "name": "1er épi à l'ouest",
+   "lat": 43.43116,
+   "lon": 3.77536,
+   "src": "OSM way 567474874 (groyne, BD Ortho IGN) [C]"
+  },
+  {
+   "label": "b",
+   "name": "2e épi à l'ouest",
+   "lat": 43.43097,
+   "lon": 3.77474,
+   "src": "OSM way 391636700 (groyne) [C]"
+  },
+  {
+   "label": "c",
+   "name": "1er épi à l'est",
+   "lat": 43.43266,
+   "lon": 3.77902,
+   "src": "OSM way 389802461 (groyne) [C]"
+  },
+  {
+   "label": "d",
+   "name": "Feu vert, autre tête de digue",
+   "lat": 43.4295,
+   "lon": 3.77753,
+   "src": "OSM node 1420666397 ; digue OSM way 389802451 [C]"
   }
  ]
 }

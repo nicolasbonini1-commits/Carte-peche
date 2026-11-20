@@ -94,7 +94,8 @@ function coupe(a, b, c, d) { // segments [a,b] et [c,d] se croisent ?
 
 // Cours d'eau entre deux points : le segment P → X coupe-t-il un cours d'eau ou canal OSM, prolongé de 400 m vers la mer
 // au niveau de son embouchure (le cours d'eau s'arrête au trait de côte, mais le chenal continue entre les jetées) ?
-// Un point à moins de 30 m du cours d'eau est « sur la rive » : ce cours d'eau n'est pas compté pour lui.
+// Un point à moins de 5 m du cours d'eau est posé dessus (poste 1 : fin du Petit Rhône) : ce cours d'eau n'est pas compté pour lui.
+// (21 nov. : avec 30 m, les deux jetées d'un même grau, à 20 m de l'axe, étaient données « joignables » — poste 6 et 13.)
 function eauxEntre(P, X, eaux, L) {
   const a = xy(P), b = xy(X), trouve = new Set();
   for (const [id, w] of eaux) for (const part of w.parts) {
@@ -108,7 +109,7 @@ function eauxEntre(P, X, eaux, L) {
     const segs = [];
     for (let k = 1; k < Q.length; k++) segs.push([Q[k - 1], Q[k]]);
     segs.push(...ext);
-    const pres = q => segs.some(([c, d]) => dSeg(q, c, d) < 30);
+    const pres = q => segs.some(([c, d]) => dSeg(q, c, d) < 5);
     if (pres(a) || pres(b)) continue;
     if (segs.some(([c, d]) => coupe(a, b, c, d))) trouve.add((w.tags.name || `${w.tags.waterway} ${id}`) + (ext.length ? "" : ""));
   }
@@ -181,7 +182,18 @@ function analyser(L, eaux, P, X, trajet) {
   return r;
 }
 
-module.exports = { charger, lignes, analyser, dist };
+// Direction de la mer (« seaward », degrés, 0 = nord) au droit d'un point : perpendiculaire à la côte lissée sur ± 300 m,
+// du côté mer (à droite du trait de côte OSM). Sert au vent de terre / de mer et à la houle de face.
+function versLeLarge(L, p) {
+  const pr = projeter(L, p); if (!pr) return null;
+  const l = L[pr.li];
+  const at = s => { s = Math.max(0, Math.min(l.s[l.s.length - 1], s)); let i = 1; while (i < l.s.length - 1 && l.s[i] < s) i++; const t = (s - l.s[i - 1]) / ((l.s[i] - l.s[i - 1]) || 1); return [l.P[i - 1][0] + t * (l.P[i][0] - l.P[i - 1][0]), l.P[i - 1][1] + t * (l.P[i][1] - l.P[i - 1][1])]; };
+  const a = at(pr.s - 300), b = at(pr.s + 300);
+  const dir = Math.atan2(b[0] - a[0], b[1] - a[1]) * 180 / Math.PI; // cap de la côte (sens OSM, terre à gauche)
+  return Math.round(((dir + 90) % 360 + 360) % 360 / 5) * 5; // à droite = mer, arrondi à 5°
+}
+
+module.exports = { charger, lignes, analyser, dist, versLeLarge };
 
 if (require.main === module) {
   const [dossier, ...ids] = process.argv.slice(2);
