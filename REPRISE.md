@@ -29,6 +29,12 @@
 - Embouchures : l'indice ne calcule pas l'étendue du panache, ne voit pas l'intérieur des chenaux ni les étangs ; Lez à Palavas, Carnon, Frontignan, La Grande-Motte illisibles au satellite → webcams + carnet.
 - Jamais vu en vrai : une notification partie seule, la pause de nuit, l'alerte « en panne », le relevé et « Pêchable ? » sur l'A55, la profondeur au toucher, la carte de nuit sur l'A55. Journal HA pas regardé.
 
+## Prochain chantier (choisi par Nico le 20 nov., 18 h 23)
+1. **Localisation poste par poste** : recaler les postes « à vérifier » (1, 2, 4, 5, 7, 8, 9 ; le 3 = zone de 15 km), positions prises dans OSM (feux, jetées, épis) + EMODnet. Méthode qui marche : requête Overpass lancée par une tâche GitHub, **avec un en-tête User-Agent** (sans lui : 406), serveurs de secours. Poste 12 contrôlé le 20 nov. : feu vert OSM 43,52373 / 3,93525 = tête de la jetée ouest de l'entrée commune Lez + port de Palavas ; le Lez finit 250 m plus au nord entre les feux « Le Lez » (rouge) et « Palavas les Flots » (vert) (`osm_lez.json`, branche `essais-sortie`).
+2. **Prévision plus fine par poste** (aujourd'hui : 3 zones de météo et de mer pour 16 postes).
+3. **Postes dans les terres, le long des canaux** (Nico donne les lieux) : nouveau type de poste (pas de houle ; courant, vent, couleur de l'eau ; règles de pêche des canaux et étangs à vérifier).
+- **Défaut relevé par Nico (20 nov.)** : `M.lureSequence` ne tient compte ni de la température de l'eau ni de la saison (surface toujours en premier à l'aube par mer calme). Sources (Figaro Nautisme, peche.com) : en hiver, eau à 12-15 °C, loup près du fond, animations lentes. Proposé [P] : eau < 15 °C ou décembre à mars → commencer près du fond, surface en court essai. Rien codé. Aussi oublié dans le plan du 21 nov. : lune presque pleine (87 %), le guide Notion dit l'aube moins productive [S].
+
 ## À faire par Nico
 - Écrire à Candhis (fuseau) ; envoyer un premier vrai relevé depuis l'A55.
 - RecFishing (obligatoire avant la prochaine sortie) : bloqué le 20 nov. à la connexion EU Login (« Aucun appareil mobile n'a été trouvé ») → installer l'appli EU Login sur l'A55, puis sur un ordinateur : ecas.ec.europa.eu › roue dentée › Mon compte › Gérer mes appareils mobiles › Ajouter, et scanner le QR code avec l'A55 (procédure peche.com, article 51245).
