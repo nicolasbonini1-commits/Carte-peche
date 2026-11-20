@@ -365,7 +365,7 @@
     if (sc.st !== "inconnue") sea = species === "loup" ? SEA_LOUP[sc.st][spot.type] : SEA_DORADE[sc.st];
     if (c.falling) { sea = Math.min(1, sea * (species === "loup" ? 1.15 : 1.1)); seaWhy += ", mer qui retombe : souvent le meilleur créneau"; }
     const note = sc.st === "inconnue" ? null : M.seaNote(sea);
-    if (note != null) seaWhy += ` → ${note}/5, ${M.SEA_NOTE_TXT[note]} pour le ${species}`;
+    if (note != null) seaWhy += ` → ${note}/5, ${M.SEA_NOTE_TXT[note]} pour ${species === "dorade" ? "la" : "le"} ${species}`;
     f.push({ k: "Mer", v: sea, why: seaWhy, note });
 
     let light;
