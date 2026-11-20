@@ -1,0 +1,482 @@
+{
+ "note": "Points de mesure Sentinel-2 choisis le 20 nov. 2026 dans les polygones d'eau OpenStreetMap (Overpass, branche essais-chenaux-donnees). bord_m = distance au bord du polygone (m). Pertuis de la Fourcade écarté : chenal trop étroit (aucun point à 15 m du bord).",
+ "points": [
+  {
+   "id": "petit-rhone_rhone1",
+   "groupe": "petit-rhone",
+   "type": "fleuve",
+   "lon": 4.39537,
+   "lat": 43.45437,
+   "bord_m": 134,
+   "source": "OSM w791608949 (lit du Petit Rhône)"
+  },
+  {
+   "id": "petit-rhone_rhone2",
+   "groupe": "petit-rhone",
+   "type": "fleuve",
+   "lon": 4.38854,
+   "lat": 43.45719,
+   "bord_m": 19,
+   "source": "OSM w791608949 (lit du Petit Rhône)"
+  },
+  {
+   "id": "petit-rhone_rhone3",
+   "groupe": "petit-rhone",
+   "type": "fleuve",
+   "lon": 4.39716,
+   "lat": 43.44996,
+   "bord_m": 17,
+   "source": "OSM w791608949 (lit du Petit Rhône)"
+  },
+  {
+   "id": "petit-rhone_mer300",
+   "groupe": "petit-rhone",
+   "type": "mer",
+   "lon": 4.39715,
+   "lat": 43.44733,
+   "bord_m": null,
+   "source": "embouchure (fin du polygone OSM w791608949), 300 m au cap 190°"
+  },
+  {
+   "id": "petit-rhone_mer1000",
+   "groupe": "petit-rhone",
+   "type": "mer",
+   "lon": 4.39565,
+   "lat": 43.44109,
+   "bord_m": null,
+   "source": "embouchure (fin du polygone OSM w791608949), 1000 m au cap 190°"
+  },
+  {
+   "id": "saintes-maries_gardian",
+   "groupe": "saintes-maries",
+   "type": "port",
+   "lon": 4.4226,
+   "lat": 43.44868,
+   "bord_m": 57,
+   "source": "OSM w35156829 Port Gardian"
+  },
+  {
+   "id": "saintes-maries_mer300",
+   "groupe": "saintes-maries",
+   "type": "mer",
+   "lon": 4.41468,
+   "lat": 43.4478,
+   "bord_m": null,
+   "source": "poste 2, 300 m au cap 185°"
+  },
+  {
+   "id": "saintes-maries_mer1000",
+   "groupe": "saintes-maries",
+   "type": "mer",
+   "lon": 4.41392,
+   "lat": 43.44149,
+   "bord_m": null,
+   "source": "poste 2, 1000 m au cap 185°"
+  },
+  {
+   "id": "grau-du-roi_chenal1",
+   "groupe": "grau-du-roi",
+   "type": "chenal",
+   "lon": 4.13695,
+   "lat": 43.54548,
+   "bord_m": 160,
+   "source": "OSM w11112344 (chenal du Grau-du-Roi / Vidourle)"
+  },
+  {
+   "id": "grau-du-roi_chenal2",
+   "groupe": "grau-du-roi",
+   "type": "chenal",
+   "lon": 4.1324,
+   "lat": 43.53513,
+   "bord_m": 15,
+   "source": "OSM w11112344 (chenal du Grau-du-Roi / Vidourle)"
+  },
+  {
+   "id": "grau-du-roi_chenal3",
+   "groupe": "grau-du-roi",
+   "type": "chenal",
+   "lon": 4.14002,
+   "lat": 43.53911,
+   "bord_m": 26,
+   "source": "OSM w11112344 (chenal du Grau-du-Roi / Vidourle)"
+  },
+  {
+   "id": "grau-du-roi_chenal4",
+   "groupe": "grau-du-roi",
+   "type": "chenal",
+   "lon": 4.13963,
+   "lat": 43.54259,
+   "bord_m": 16,
+   "source": "OSM w11112344 (chenal du Grau-du-Roi / Vidourle)"
+  },
+  {
+   "id": "grau-du-roi_portcamargue1",
+   "groupe": "grau-du-roi",
+   "type": "port",
+   "lon": 4.12815,
+   "lat": 43.51913,
+   "bord_m": 123,
+   "source": "OSM r2716148 Port Camargue"
+  },
+  {
+   "id": "grau-du-roi_portcamargue2",
+   "groupe": "grau-du-roi",
+   "type": "port",
+   "lon": 4.12934,
+   "lat": 43.51262,
+   "bord_m": 34,
+   "source": "OSM r2716148 Port Camargue"
+  },
+  {
+   "id": "grau-du-roi_mer300",
+   "groupe": "grau-du-roi",
+   "type": "mer",
+   "lon": 4.12991,
+   "lat": 43.53262,
+   "bord_m": null,
+   "source": "poste 6 (feu du port OSM), 300 m au cap 220°"
+  },
+  {
+   "id": "grau-du-roi_mer1000",
+   "groupe": "grau-du-roi",
+   "type": "mer",
+   "lon": 4.12434,
+   "lat": 43.52777,
+   "bord_m": null,
+   "source": "poste 6 (feu du port OSM), 1000 m au cap 220°"
+  },
+  {
+   "id": "ponant_ponant1",
+   "groupe": "ponant",
+   "type": "etang",
+   "lon": 4.12199,
+   "lat": 43.56022,
+   "bord_m": 386,
+   "source": "OSM r5291094 Étang du Ponant"
+  },
+  {
+   "id": "ponant_ponant2",
+   "groupe": "ponant",
+   "type": "etang",
+   "lon": 4.10208,
+   "lat": 43.56695,
+   "bord_m": 69,
+   "source": "OSM r5291094 Étang du Ponant"
+  },
+  {
+   "id": "ponant_ponant3",
+   "groupe": "ponant",
+   "type": "etang",
+   "lon": 4.14161,
+   "lat": 43.56051,
+   "bord_m": 71,
+   "source": "OSM r5291094 Étang du Ponant"
+  },
+  {
+   "id": "ponant_sudouest",
+   "groupe": "ponant",
+   "type": "etang",
+   "lon": 4.10267,
+   "lat": 43.55822,
+   "bord_m": 102,
+   "source": "OSM r5291094, bord sud-ouest (passe) ; pas de polygone propre pour la passe vers la mer"
+  },
+  {
+   "id": "ponant_mer300",
+   "groupe": "ponant",
+   "type": "mer",
+   "lon": 4.10665,
+   "lat": 43.55383,
+   "bord_m": null,
+   "source": "poste 8, 300 m au cap 170°"
+  },
+  {
+   "id": "ponant_mer1000",
+   "groupe": "ponant",
+   "type": "mer",
+   "lon": 4.10815,
+   "lat": 43.54759,
+   "bord_m": null,
+   "source": "poste 8, 1000 m au cap 170°"
+  },
+  {
+   "id": "grande-motte_port1",
+   "groupe": "grande-motte",
+   "type": "port",
+   "lon": 4.08109,
+   "lat": 43.55853,
+   "bord_m": 140,
+   "source": "OSM r7183392 Port de la Grande-Motte"
+  },
+  {
+   "id": "grande-motte_port2",
+   "groupe": "grande-motte",
+   "type": "port",
+   "lon": 4.08049,
+   "lat": 43.55267,
+   "bord_m": 17,
+   "source": "OSM r7183392 Port de la Grande-Motte"
+  },
+  {
+   "id": "grande-motte_mer300",
+   "groupe": "grande-motte",
+   "type": "mer",
+   "lon": 4.08115,
+   "lat": 43.55003,
+   "bord_m": null,
+   "source": "entrée du port (polygone OSM r7183392), 300 m au cap 170°"
+  },
+  {
+   "id": "grande-motte_mer1000",
+   "groupe": "grande-motte",
+   "type": "mer",
+   "lon": 4.08265,
+   "lat": 43.54379,
+   "bord_m": null,
+   "source": "entrée du port (polygone OSM r7183392), 1000 m au cap 170°"
+  },
+  {
+   "id": "carnon_grau1",
+   "groupe": "carnon",
+   "type": "chenal",
+   "lon": 3.97277,
+   "lat": 43.54849,
+   "bord_m": 20,
+   "source": "OSM w303850148 / w5200953 (grau de Carnon)"
+  },
+  {
+   "id": "carnon_grau2",
+   "groupe": "carnon",
+   "type": "chenal",
+   "lon": 3.97101,
+   "lat": 43.55165,
+   "bord_m": 21,
+   "source": "OSM w303850148 / w5200953 (grau de Carnon)"
+  },
+  {
+   "id": "carnon_canalrhonesete",
+   "groupe": "carnon",
+   "type": "chenal",
+   "lon": 3.98455,
+   "lat": 43.55105,
+   "bord_m": 20,
+   "source": "OSM w11024290 (canal du Rhône à Sète)"
+  },
+  {
+   "id": "carnon_mer300",
+   "groupe": "carnon",
+   "type": "mer",
+   "lon": 3.97847,
+   "lat": 43.53735,
+   "bord_m": null,
+   "source": "poste 11 (feu du port OSM), 300 m au cap 160°"
+  },
+  {
+   "id": "carnon_mer1000",
+   "groupe": "carnon",
+   "type": "mer",
+   "lon": 3.98144,
+   "lat": 43.5314,
+   "bord_m": null,
+   "source": "poste 11 (feu du port OSM), 1000 m au cap 160°"
+  },
+  {
+   "id": "etang-or_or1",
+   "groupe": "etang-or",
+   "type": "etang",
+   "lon": 4.00466,
+   "lat": 43.57433,
+   "bord_m": 1378,
+   "source": "OSM w15013442 Étang de l'Or"
+  },
+  {
+   "id": "etang-or_or2",
+   "groupe": "etang-or",
+   "type": "etang",
+   "lon": 3.96701,
+   "lat": 43.55805,
+   "bord_m": 169,
+   "source": "OSM w15013442 Étang de l'Or"
+  },
+  {
+   "id": "etang-or_or3",
+   "groupe": "etang-or",
+   "type": "etang",
+   "lon": 3.99426,
+   "lat": 43.55587,
+   "bord_m": 193,
+   "source": "OSM w15013442 Étang de l'Or"
+  },
+  {
+   "id": "etang-or_or4",
+   "groupe": "etang-or",
+   "type": "etang",
+   "lon": 4.02546,
+   "lat": 43.56311,
+   "bord_m": 150,
+   "source": "OSM w15013442 Étang de l'Or"
+  },
+  {
+   "id": "palavas_lez1",
+   "groupe": "palavas",
+   "type": "chenal",
+   "lon": 3.93487,
+   "lat": 43.52569,
+   "bord_m": 19,
+   "source": "OSM w11009710 Grau de Palavàs (Lez)"
+  },
+  {
+   "id": "palavas_lez2",
+   "groupe": "palavas",
+   "type": "chenal",
+   "lon": 3.92021,
+   "lat": 43.53336,
+   "bord_m": 16,
+   "source": "OSM w11009710 Grau de Palavàs (Lez)"
+  },
+  {
+   "id": "palavas_lez3",
+   "groupe": "palavas",
+   "type": "chenal",
+   "lon": 3.92714,
+   "lat": 43.5296,
+   "bord_m": 17,
+   "source": "OSM w11009710 Grau de Palavàs (Lez)"
+  },
+  {
+   "id": "palavas_grec",
+   "groupe": "palavas",
+   "type": "etang",
+   "lon": 3.94275,
+   "lat": 43.53759,
+   "bord_m": 246,
+   "source": "OSM r4041609"
+  },
+  {
+   "id": "palavas_mejean",
+   "groupe": "palavas",
+   "type": "etang",
+   "lon": 3.92257,
+   "lat": 43.54643,
+   "bord_m": 1086,
+   "source": "OSM w11271304"
+  },
+  {
+   "id": "palavas_arnel",
+   "groupe": "palavas",
+   "type": "etang",
+   "lon": 3.89141,
+   "lat": 43.52926,
+   "bord_m": 791,
+   "source": "OSM w11058815"
+  },
+  {
+   "id": "palavas_mer300",
+   "groupe": "palavas",
+   "type": "mer",
+   "lon": 3.93687,
+   "lat": 43.52124,
+   "bord_m": null,
+   "source": "poste 12 (feu du port OSM), 300 m au cap 155°"
+  },
+  {
+   "id": "palavas_mer1000",
+   "groupe": "palavas",
+   "type": "mer",
+   "lon": 3.94053,
+   "lat": 43.5155,
+   "bord_m": null,
+   "source": "poste 12 (feu du port OSM), 1000 m au cap 155°"
+  },
+  {
+   "id": "prevost_prevost1",
+   "groupe": "prevost",
+   "type": "etang",
+   "lon": 3.91131,
+   "lat": 43.52525,
+   "bord_m": 439,
+   "source": "OSM w11012934 Étang du Prévost"
+  },
+  {
+   "id": "prevost_prevost2",
+   "groupe": "prevost",
+   "type": "etang",
+   "lon": 3.88382,
+   "lat": 43.51656,
+   "bord_m": 89,
+   "source": "OSM w11012934 Étang du Prévost"
+  },
+  {
+   "id": "prevost_presdugrau",
+   "groupe": "prevost",
+   "type": "etang",
+   "lon": 3.90943,
+   "lat": 43.52116,
+   "bord_m": 102,
+   "source": "OSM w11012934, près du grau du Prévost (poste 13) ; le grau lui-même est trop étroit dans OSM"
+  },
+  {
+   "id": "prevost_mer300",
+   "groupe": "prevost",
+   "type": "mer",
+   "lon": 3.91167,
+   "lat": 43.51604,
+   "bord_m": null,
+   "source": "poste 13 (feu OSM), 300 m au cap 155°"
+  },
+  {
+   "id": "prevost_mer1000",
+   "groupe": "prevost",
+   "type": "mer",
+   "lon": 3.91533,
+   "lat": 43.5103,
+   "bord_m": null,
+   "source": "poste 13 (feu OSM), 1000 m au cap 155°"
+  },
+  {
+   "id": "frontignan_grau1",
+   "groupe": "frontignan",
+   "type": "chenal",
+   "lon": 3.77501,
+   "lat": 43.43409,
+   "bord_m": 69,
+   "source": "OSM w20567726 (grau de Frontignan)"
+  },
+  {
+   "id": "frontignan_grau2",
+   "groupe": "frontignan",
+   "type": "chenal",
+   "lon": 3.77808,
+   "lat": 43.43011,
+   "bord_m": 15,
+   "source": "OSM w20567726 (grau de Frontignan)"
+  },
+  {
+   "id": "frontignan_ingril",
+   "groupe": "frontignan",
+   "type": "etang",
+   "lon": 3.79002,
+   "lat": 43.45364,
+   "bord_m": 374,
+   "source": "OSM w39912371 Étang d'Ingril"
+  },
+  {
+   "id": "frontignan_mer300",
+   "groupe": "frontignan",
+   "type": "mer",
+   "lon": 3.77989,
+   "lat": 43.42822,
+   "bord_m": null,
+   "source": "poste 16 (feu du port OSM), 300 m au cap 140°"
+  },
+  {
+   "id": "frontignan_mer1000",
+   "groupe": "frontignan",
+   "type": "mer",
+   "lon": 3.78546,
+   "lat": 43.42337,
+   "bord_m": null,
+   "source": "poste 16 (feu du port OSM), 1000 m au cap 140°"
+  }
+ ]
+}
