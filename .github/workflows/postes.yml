@@ -1,0 +1,40 @@
+# Chantier 1 (positions des postes) : relevé OpenStreetMap (Overpass) + profondeur EMODnet autour des postes listés
+# dans outils/postes/a_relever.txt, puis capture de la carte de contrôle dans Chrome sans écran.
+# Ne tourne que sur la branche chantier-1-postes ; écrit dans la branche « essais-postes-donnees » (jamais « donnees »).
+name: postes
+on:
+  push:
+    branches: [chantier-1-postes]
+    paths: ["outils/postes/**", ".github/workflows/postes.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: postes
+jobs:
+  releve:
+    if: github.ref_name == 'chantier-1-postes'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Relevé OSM + EMODnet
+        run: node outils/postes/releve.js $(cat outils/postes/a_relever.txt)
+      - name: Cartes de contrôle (Chrome sans écran)
+        run: |
+          mkdir -p /tmp/web && cp outils/postes/carte.html /tmp/web/ && cp -r /tmp/sortie /tmp/web/
+          cp outils/postes/candidats.json /tmp/web/ 2>/dev/null || true
+          cd /tmp/web && (python3 -m http.server 8777 >/dev/null 2>&1 &) && sleep 1
+          for id in $(cat $GITHUB_WORKSPACE/outils/postes/a_relever.txt); do
+            google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1000,1000 \
+              --virtual-time-budget=20000 --screenshot=/tmp/sortie/carte_poste_$id.png "http://localhost:8777/carte.html?poste=$id" || true
+          done
+          ls -la /tmp/sortie
+      - name: Enregistrer dans la branche essais-postes-donnees
+        run: |
+          mkdir /tmp/d && cd /tmp/d && git init -q && git checkout -q -b essais-postes-donnees
+          cp /tmp/sortie/* .
+          git config user.name "postes-bot"; git config user.email "postes@users.noreply.github.com"
+          git add -A && git commit -qm "relevé postes $(TZ=Europe/Paris date '+%d/%m %H:%M') (commit ${GITHUB_SHA::7})"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-postes-donnees

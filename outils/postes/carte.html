@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- Chantier 1 : carte de contrôle d'un poste (point actuel, candidats, éléments OSM, grille de profondeur EMODnet).
+     Ouverte par la tâche « postes » dans Chrome sans écran, puis capturée en PNG. Usage : carte.html?poste=1 -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>html,body,#m{margin:0;height:100%;font:14px sans-serif}
+.leg{position:absolute;z-index:999;top:8px;left:50px;background:#fff;padding:6px 8px;border:1px solid #888;max-width:430px}
+.lab{background:#fff;border:1px solid #333;padding:1px 4px;font-weight:bold}</style></head>
+<body><div id="m"></div><div class="leg" id="leg"></div>
+<script>
+(async () => {
+  const id = new URLSearchParams(location.search).get("poste");
+  const d = await (await fetch(`sortie/poste_${id}.json`)).json();
+  let cands = [];
+  try { cands = ((await (await fetch("candidats.json")).json())[id]) || []; } catch (e) {}
+  const map = L.map("m", { zoomControl: false });
+  L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+  const pts = d.grille.map(g => [g.lat, g.lon]);
+  map.fitBounds(L.latLngBounds(pts).pad(0.08));
+  d.grille.forEach(g => {
+    if (g.avg == null) L.circleMarker([g.lat, g.lon], { radius: 3, color: "#777", weight: 1, fillOpacity: 0.6 }).addTo(map);
+    else L.circleMarker([g.lat, g.lon], { radius: 9, color: "#036", weight: 1, fillColor: "#09f", fillOpacity: Math.min(0.9, 0.15 + Math.abs(g.avg) / 10) })
+      .bindTooltip(Math.abs(g.avg).toFixed(1), { permanent: true, direction: "center", className: "" }).addTo(map);
+  });
+  const style = t => t.man_made ? { color: "#d00", weight: 5 } : t.natural === "coastline" ? { color: "#004", weight: 2, dashArray: "4 3" }
+    : t.waterway ? { color: "#0aa", weight: 4 } : t.natural === "water" ? { color: "#08c", weight: 1 } : { color: "#c60", weight: 2 };
+  d.elements.forEach(e => {
+    const t = e.tags || {};
+    if (e.type === "node") {
+      if (t["seamark:type"]) L.circleMarker([e.lat, e.lon], { radius: 6, color: "#000", weight: 1, fillColor: t["seamark:light:colour"] === "red" ? "#e00" : t["seamark:light:colour"] === "green" ? "#0a0" : "#fa0", fillOpacity: 1 }).addTo(map);
+      return;
+    }
+    if (e.geometry) L.polyline(e.geometry.filter(Boolean).map(p => [p.lat, p.lon]), style(t)).addTo(map);
+    else if (e.members) e.members.forEach(m => m.geometry && L.polyline(m.geometry.filter(Boolean).map(p => [p.lat, p.lon]), style(t)).addTo(map));
+  });
+  L.marker([d.poste.lat, d.poste.lon]).bindTooltip("actuel", { permanent: true, className: "lab" }).addTo(map);
+  cands.forEach((c, i) => L.circleMarker([c.lat, c.lon], { radius: 10, color: "#000", weight: 2, fillColor: "#ff0", fillOpacity: 1 })
+    .bindTooltip(String(i + 1), { permanent: true, className: "lab" }).addTo(map));
+  document.getElementById("leg").innerHTML = `<b>Poste ${id} — ${d.poste.name}</b><br>Repère « actuel » = position de l'appli ; jaunes = candidats.
+    Ronds bleus = profondeur EMODnet (m), gris = pas de donnée (terre ou étang). Rouge = digue / épi / jetée OSM ; turquoise = cours d'eau ;
+    pointillé = trait de côte OSM ; points rouges / verts / orange = balisage. Grille 250 m.`;
+  document.title = "pret";
+})();
+</script></body></html>
