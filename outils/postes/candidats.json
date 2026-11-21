@@ -108,38 +108,38 @@
  "12": [
   {
    "label": "P",
-   "name": "Feu vert « Palavas les Flots », tête de jetée à la sortie du Lez (rive droite)",
+   "name": "Feu vert « Palavas les Flots », tête de jetée rive gauche, à la sortie du Lez",
    "lat": 43.52598,
    "lon": 3.93449,
-   "src": "OSM node 1420666382 (light_minor vert « Palavas les Flots ») ; jetée OSM way 372219033 ; photo aérienne : tête de jetée au débouché du Lez, hors du port de plaisance [C]"
+   "src": "OSM node 1420666382 (light_minor vert « Palavas les Flots ») ; jetée OSM way 372219033 ; photo aérienne : tête de jetée au débouché du Lez, côté plage des Épis, hors du port de plaisance [C]"
   },
   {
    "label": "a",
-   "name": "Feu « Le Lez », angle du môle est du port (face à la sortie du Lez)",
-   "lat": 43.52567,
-   "lon": 3.93539,
-   "src": "OSM node 1420666380 (light_minor « Le Lez ») ; môle OSM way 388845267 [C]"
+   "name": "1er épi de la plage des Épis (rive gauche)",
+   "lat": 43.52757,
+   "lon": 3.936,
+   "src": "OSM way 372219038 (groyne, bing 2015) [C] ; bout côté large (vers le 145°)"
   },
   {
    "label": "b",
-   "name": "Plage rive droite, racine de la digue du large",
-   "lat": 43.52489,
-   "lon": 3.9299,
-   "src": "OSM way 389802450 (breakwater, extrémité côté plage) [C]"
+   "name": "2e épi de la plage des Épis",
+   "lat": 43.52847,
+   "lon": 3.93777,
+   "src": "OSM way 372219028 (groyne) [C] ; bout côté large (vers le 145°)"
+  },
+  {
+   "label": "c",
+   "name": "3e épi de la plage des Épis",
+   "lat": 43.52851,
+   "lon": 3.93975,
+   "src": "OSM way 372219024 (groyne) [C] ; bout côté large (vers le 145°)"
   },
   {
    "label": "x1",
-   "name": "Témoin : feu rouge, bout de la digue du large (entrée du port)",
-   "lat": 43.52367,
-   "lon": 3.9366,
-   "src": "OSM node 1420666381 [C]"
-  },
-  {
-   "label": "x2",
-   "name": "Témoin : 1er épi de la rive gauche (de l'autre côté du Lez)",
-   "lat": 43.5283,
-   "lon": 3.93563,
-   "src": "OSM way 372219038 [C]"
+   "name": "Témoin : feu « Le Lez », môle du port, rive droite (en face)",
+   "lat": 43.52567,
+   "lon": 3.93539,
+   "src": "OSM node 1420666380 [C]"
   }
  ],
  "13": [
@@ -198,17 +198,31 @@
  "3": [
   {
    "label": "P",
-   "name": "Plage de l'Espiguette, partie est (2,3 km à l'est du phare)",
-   "lat": 43.47322,
-   "lon": 4.16541,
-   "src": "trait de côte OSM ; profondeur EMODnet 4,1 m à 150 m du bord (zone_3.json) [C]"
+   "name": "2e épi de l'Espiguette est",
+   "lat": 43.47247,
+   "lon": 4.165,
+   "src": "OSM way 66036937 (groyne), série de 11 épis OSM sur 1,2 km à 2,2-3,5 km à l'est du phare ; EMODnet 4,1 m à 150 m du bord (zone_3.json) [C]"
   },
   {
    "label": "a",
-   "name": "Plage, 1 km plus à l'est",
-   "lat": 43.46969,
-   "lon": 4.17788,
-   "src": "trait de côte OSM ; EMODnet 3,3 m à 150 m [C]"
+   "name": "4e épi",
+   "lat": 43.47163,
+   "lon": 4.16771,
+   "src": "OSM way 66036957 (groyne) [C]"
+  },
+  {
+   "label": "b",
+   "name": "7e épi",
+   "lat": 43.47033,
+   "lon": 4.17183,
+   "src": "OSM way 66037018 (groyne) [C]"
+  },
+  {
+   "label": "c",
+   "name": "11e et dernier épi",
+   "lat": 43.46899,
+   "lon": 4.17741,
+   "src": "OSM way 66037119 (groyne) [C]"
   }
  ],
  "11": [
