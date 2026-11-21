@@ -1,0 +1,31 @@
+# Essai ponctuel (21 nov. 2026, chantier 1) : affichage « Autour », 16 fiches, sans réseau et retour du réseau, cache v18.
+# Version d'essai = main + chantier-1-postes. Écrit dans essais-autour, jamais dans donnees.
+name: essai-autour
+on:
+  push:
+    branches: [essai-autour-21nov]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  essai:
+    if: github.ref_name == 'essai-autour-21nov'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - run: git clone -q --depth 1 -b main "https://github.com/${{ github.repository }}.git" /tmp/main
+      - run: |
+          mkdir -p /tmp/out
+          grep -o 'carte-peche-v[0-9]*' sw.js | tee /tmp/out/cache_essai.txt
+          (python3 -m http.server 8080 >/dev/null 2>&1 &)
+          (cd /tmp/main && python3 -m http.server 8081 >/dev/null 2>&1 &)
+          cd /tmp && npm i -s puppeteer@23 >/dev/null 2>&1
+          cp $GITHUB_WORKSPACE/outils/essai_autour.js /tmp/ && cd /tmp && timeout 1200 node essai_autour.js
+      - if: always()
+        run: |
+          cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
+          git checkout -q --orphan essais-autour && git rm -rqf .
+          cp /tmp/out/* . 2>/dev/null; echo "$(TZ=Europe/Paris date '+%d/%m %H:%M') commit ${GITHUB_SHA::7}" > HEURE.txt
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "essai autour $(TZ=Europe/Paris date '+%d/%m %H:%M')" && git push -qf origin essais-autour
