@@ -18,7 +18,7 @@ Cartes et photos : branche `essais-postes-donnees` (`vue_*.png` = photo aérienn
 | 3 Rivage Espiguette | **2e des 11 épis de l'Espiguette est** (43,47247 / 4,16500) ; nom proposé « Épis de l'Espiguette est » | ancien point indicatif à 7 km | 4e, 7e et 11e épi (410 m à 1,25 km par la plage) | OSM, EMODnet 4 m à 100-150 m |
 | 4 Espiguette | inchangé (validé) | — | 2 points de plage confirmés (≈ 1 km) | OSM |
 | 5 Digue de l'Espiguette | inchangé (validé) | — | 2 épis confirmés (1,1 et 1,4 km par la digue et la plage) | OSM |
-| 6 Grau-du-Roi | feu vert, jetée rive gauche (4 m de l'ancien point) | 4 m | 3 épis de la plage rive gauche (230 m à 1 km) | OSM + photo |
+| 6 Grau-du-Roi | feu vert, jetée rive gauche (4 m de l'ancien point) | 4 m | 3 épis de la plage rive gauche (230 m, 630 m, 1 km) | OSM + photo |
 | 7 Boucanet | inchangé (validé) | — | 3 épis confirmés (650 m à 1,1 km) | OSM |
 | 8 Passe du Ponant | **bout de la jetée ouest du grau des Abîmes** (43,55286 / 4,09911) | ancien point dans la pinède, 525 m | brise-lames du Point Zéro (700 m) ; rive est du grau par le pont des Abîmes (1,3 km, à garder ou non) | OSM, Bonnefille 1989, Ifremer 2009 |
 | 9 La Grande-Motte | plage face au brise-lames « paysager » | 30 m | feu vert de la jetée est du port (750 m) ; 2e brise-lames (350 m) | OSM, Bonnefille 1989, Figaro Nautisme |

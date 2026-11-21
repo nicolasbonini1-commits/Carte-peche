@@ -93,7 +93,7 @@ window.SPOTS = [
     // (≈ 4,8 km à pied par les ponts) : écartée. 2e épi : bout côté large pris sur la photo (la côte OSM y est ancienne, la plage a avancé).
     autour: [
       { name: "1er épi de la plage rive gauche", lat: 43.53441, lon: 4.13393, src: "OSM way 66035073 [C]", note: "≈ 230 m par la plage" },
-      { name: "2e épi de la plage rive gauche", lat: 43.53339, lon: 4.13495, src: "OSM way 66035060, bout côté large d'après la photo aérienne [C]", note: "≈ 450 m ; relié à la plage à son autre bout : accès à vérifier sur place" },
+      { name: "2e épi de la plage rive gauche", lat: 43.53339, lon: 4.13495, src: "OSM way 66035060, bout côté large d'après la photo aérienne [C]", note: "≈ 630 m par la plage ; relié à la plage à son autre bout : accès à vérifier sur place" },
       { name: "3e épi de la plage rive gauche", lat: 43.53051, lon: 4.13777, src: "OSM way 66035063 [C]", note: "≈ 1 km par la plage" }
     ],
     structure: "Débouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]",
