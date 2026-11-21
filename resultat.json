@@ -1,0 +1,305 @@
+{
+ "genere": "2026-11-21T03:47:00.588Z",
+ "versions": {
+  "essai": {
+   "notes": [
+    "80 Épis et brise-lames du village Saintes-Maries-de-la-Mer · 82 min · 1.3 h de pêche · meilleure heure 07 h 00",
+    "80 Digue et épis du Boucanet Le Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "80 Brise-lames à l'est du port et « digue cassée » La Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "80 Digues du port de Carnon Mauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00",
+    "80 Embouchure du Lez et plage des Épis Palavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00",
+    "80 Grau du Prévost Palavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00",
+    "80 Digues et grau de Frontignan Frontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00",
+    "77 Jetées du chenal du Grau-du-Roi Le Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "77 Passe du Ponant (grau des Abîmes) La Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "74 Digue de l'Espiguette (extérieur Port Camargue) Le Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00",
+    "73 Embouchure du Petit Rhône Saintes-Maries-de-la-Mer · 85 min · 1.2 h de pêche · meilleure heure 07 h 00",
+    "67 Les Aresquiers (fonds rocheux) Vic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00",
+    "64 Épis de l'Espiguette est Le Grau-du-Roi · 86 min · 1.1 h de pêche · meilleure heure 07 h 00",
+    "64 Pointe et plage de l'Espiguette Le Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00",
+    "42 Plages du Grand et du Petit Travers La Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00",
+    "38 Plage de Maguelone (Pilou) Villeneuve-lès-Maguelone · 74 min · 1.5 h de pêche · meilleure heure 07 h 00"
+   ],
+   "banner": "",
+   "cacheShell": [
+    "carte-peche-v18",
+    "carte-peche-tuiles"
+   ],
+   "version": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+   ],
+   "fiches": {
+    "1": {
+     "ouverte": true,
+     "titre": "Embouchure du Petit Rhône\n73",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : Pointe de la digue rive gauche (510 m au SE, là où l'eau du Petit Rhône rencontre la mer) · Épi du Clos du Rhône (410 m au SE) · Brise-lames du Clos du Rhône (560 m au SE)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "2": {
+     "ouverte": true,
+     "titre": "Épis et brise-lames du village\n80",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : Épi Launes Ouest (même type d'épi, 440 m à l'ouest) · Brise-lames du Clos du Rhône (770 m à l'ouest ; s'il est détaché de la plage, lancer vers lui depuis le sable) · Digue ouest de Port Gardian (670 m à l'est, la plus profonde (4,6 à 5,6 m) ; pêche dans le port : à demander à la capitainerie (04 90 97 85 87))",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "3": {
+     "ouverte": true,
+     "titre": "Épis de l'Espiguette est\n64",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : 4e épi (≈ 410 m par la plage) · 7e épi (≈ 780 m par la plage) · 11e et dernier épi (≈ 1,25 km par la plage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "4": {
+     "ouverte": true,
+     "titre": "Pointe et plage de l'Espiguette\n64",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Plage, 1 km au nord-ouest (même plage, sans ouvrage) · Plage, 1 km au sud-est (même plage, sans ouvrage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "5": {
+     "ouverte": true,
+     "titre": "Digue de l'Espiguette (extérieur Port Camargue)\n74",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Épi sud de la plage sud de Port Camargue (440 m au NNE) · Épi nord de la plage sud de Port Camargue (800 m au NNE)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "6": {
+     "ouverte": true,
+     "titre": "Jetées du chenal du Grau-du-Roi\n77",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : 1er épi de la plage rive gauche (≈ 230 m par la plage) · 2e épi de la plage rive gauche (≈ 630 m par la plage ; relié à la plage à son autre bout : accès à vérifier sur place) · 3e épi de la plage rive gauche (≈ 1 km par la plage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false,
+     "texteAttendu": true
+    },
+    "7": {
+     "ouverte": true,
+     "titre": "Digue et épis du Boucanet\n80",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : Épi suivant (NO) (340 m vers La Grande-Motte) · 2e épi (NO) (595 m) · 3e épi (NO) (825 m)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "8": {
+     "ouverte": true,
+     "titre": "Passe du Ponant (grau des Abîmes)\n77",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Brise-lames rattaché à la plage (Point Zéro) (≈ 700 m par la plage) · Rive est du grau (épi côté Boucanet) (en face, ≈ 1,3 km à pied par le pont des Abîmes (à garder ou non : choix de Nico))",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "9": {
+     "ouverte": true,
+     "titre": "Brise-lames à l'est du port et « digue cassée »\n80",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Feu vert, bout de la jetée est du port (≈ 750 m par la promenade de la digue est) · Plage face au 2e brise-lames (≈ 350 m par la plage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "10": {
+     "ouverte": true,
+     "titre": "Plages du Grand et du Petit Travers\n42",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Brise-lames vers Carnon (≈ 750 m par la plage, premier d'une série) · Plage vers La Grande-Motte (≈ 700 m par la plage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "11": {
+     "ouverte": true,
+     "titre": "Digues du port de Carnon\n80",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Épi 34 (vers Palavas) (≈ 870 m par la digue et la plage) · Épi suivant (vers Palavas) (≈ 960 m)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "12": {
+     "ouverte": true,
+     "titre": "Embouchure du Lez et plage des Épis\n80",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : 1er épi de la plage des Épis (≈ 330 m par la plage ; potentiel loup non évalué) · 2e épi de la plage des Épis (≈ 560 m ; potentiel loup non évalué) · 3e épi de la plage des Épis (≈ 760 m ; potentiel loup non évalué)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false,
+     "texteAttendu": true
+    },
+    "13": {
+     "ouverte": true,
+     "titre": "Grau du Prévost\n80",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : Bout de la jetée est du grau (en face : ≈ 0,5-0,7 km par le pont de l'avenue de l'Évêché-de-Maguelone) · Brise-lames est (vers Palavas) (≈ 0,5-0,7 km par le même pont) · Plage vers Maguelone (≈ 1 km par la plage (passe le poste de secours))",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "14": {
+     "ouverte": true,
+     "titre": "Plage de Maguelone (Pilou)\n38",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Plage vers Frontignan (≈ 800 m par la plage) · Plage vers Palavas (≈ 800 m par la plage)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "15": {
+     "ouverte": true,
+     "titre": "Les Aresquiers (fonds rocheux)\n67",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : 1er épi vers Frontignan (≈ 790 m par la plage, début d'une série d'épis) · Plage vers Maguelone (≈ 700 m ; petit parking avant le pont du canal (Hérault Tourisme) [S])",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    },
+    "16": {
+     "ouverte": true,
+     "titre": "Digues et grau de Frontignan\n80",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : 1er épi à l'ouest (≈ 280 m par la plage) · 2e épi à l'ouest (≈ 350 m)",
+     "apresFermeture": 0,
+     "ok": true,
+     "resteProposé": false
+    }
+   },
+   "swPret": true,
+   "horsLigne": {
+    "postes": 16,
+    "banner": "Pas de réseau. J'affiche les prévisions reçues le sam. 21 nov. à 03 h 47. Nouvel essai automatique dès qu'il revient.",
+    "sw": true,
+    "fiche7": {
+     "ouverte": true,
+     "titre": "Digue et épis du Boucanet\n80",
+     "attendu": 3,
+     "points": 3,
+     "texte": "Autour (pêche de zone, points gris) : Épi suivant (NO) (340 m vers La Grande-Motte) · 2e épi (NO) (595 m) · 3e épi (NO) (825 m)",
+     "apresFermeture": 0
+    }
+   },
+   "retourAttente": 44,
+   "retourRequetes": [
+    "3 s https://marine-api.open-meteo.com/v1/marine",
+    "3 s https://api.open-meteo.com/v1/forecast",
+    "3 s https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+    "3 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "3 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "3 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "3 s ← 200 https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+    "6 s ← 200 https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "7 s ← 200 https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "11 s ← 200 https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "33 s https://api.open-meteo.com/v1/forecast",
+    "33 s ← 200 https://api.open-meteo.com/v1/forecast",
+    "43 s https://marine-api.open-meteo.com/v1/marine",
+    "43 s https://api.open-meteo.com/v1/forecast",
+    "43 s https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+    "43 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "43 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "43 s https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr",
+    "43 s ← 200 https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+    "44 s ← 200 https://api.open-meteo.com/v1/forecast",
+    "44 s ← 200 https://marine-api.open-meteo.com/v1/marine"
+   ],
+   "retour": {
+    "postes": 16,
+    "banner": "",
+    "fiche4": {
+     "ouverte": true,
+     "titre": "Pointe et plage de l'Espiguette\n64",
+     "attendu": 2,
+     "points": 2,
+     "texte": "Autour (pêche de zone, points gris) : Plage, 1 km au nord-ouest (même plage, sans ouvrage) · Plage, 1 km au sud-est (même plage, sans ouvrage)",
+     "apresFermeture": 0
+    }
+   },
+   "cacheApres": [
+    "carte-peche-v18",
+    "carte-peche-tuiles"
+   ]
+  },
+  "main": {
+   "notes": [
+    "80 Épis et brise-lames du village Saintes-Maries-de-la-Mer · 81 min · 1.3 h de pêche · meilleure heure 07 h 00",
+    "80 Digue et épis du Boucanet Le Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "80 Digues extérieures et « digue cassée » La Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "80 Digues du port de Carnon Mauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00",
+    "80 Embouchure du Lez et digues Palavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00",
+    "80 Digue de l'étang du Prévost Palavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00",
+    "80 Digues et grau de Frontignan Frontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00",
+    "79 Digue de l'Espiguette (extérieur Port Camargue) Le Grau-du-Roi · 70 min · 1.7 h de pêche · meilleure heure 07 h 00",
+    "77 Jetées du chenal du Grau-du-Roi Le Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "77 Passe du Ponant (Vidourle) La Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00",
+    "73 Embouchure du Petit Rhône Saintes-Maries-de-la-Mer · 84 min · 1.2 h de pêche · meilleure heure 07 h 00",
+    "67 Les Aresquiers (fonds rocheux) Vic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00",
+    "55 Pointe et plage de l'Espiguette Le Grau-du-Roi · 89 min · 1 h de pêche · meilleure heure 07 h 00",
+    "42 Plages du Grand et du Petit Travers La Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00",
+    "38 Plage de Maguelone Villeneuve-lès-Maguelone · 76 min · 1.5 h de pêche · meilleure heure 07 h 00",
+    "— Rivage sauvage Petit Rhône – Espiguette Camargue gardoise · 185 min · pas assez de temps sur place"
+   ],
+   "banner": "",
+   "cacheShell": [
+    "carte-peche-v17",
+    "carte-peche-tuiles"
+   ],
+   "version": []
+  }
+ },
+ "erreurs": [],
+ "console": [
+  "essai : Failed to load resource: net::ERR_TIMED_OUT",
+  "essai : Failed to load resource: net::ERR_TIMED_OUT"
+ ],
+ "resume": {
+  "fichesOk": 16,
+  "fichesKo": [],
+  "horsLigneOk": true,
+  "retourOk": true,
+  "cacheV18": true,
+  "erreurs": 0
+ }
+}
