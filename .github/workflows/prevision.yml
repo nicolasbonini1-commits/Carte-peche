@@ -26,12 +26,15 @@ jobs:
           cd /tmp && npm i -s puppeteer@23 >/dev/null 2>&1
           cp $GITHUB_WORKSPACE/outils/prevision/essai_prevision.js /tmp/ && cd /tmp && timeout 1200 node essai_prevision.js
           cd $GITHUB_WORKSPACE && node outils/prevision/compare.js /tmp/out
+      - name: Vent mesuré aux stations du littoral (plus fin = plus juste ?)
+        if: always()
+        run: node outils/prevision/stations.js /tmp/out
       - if: always()
         run: |
           D=$(TZ=Europe/Paris date '+%Y-%m-%d_%Hh%M')
           cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
           git fetch -q --depth=1 origin essais-prevision && git checkout -q -b essais-prevision FETCH_HEAD || { git checkout -q --orphan essais-prevision && git rm -rqf .; }
           mkdir -p $D && cp /tmp/out/resume.md /tmp/out/comparaison.json $D/ 2>/dev/null; gzip -c /tmp/out/zones.json > $D/zones.json.gz 2>/dev/null; gzip -c /tmp/out/poste.json > $D/poste.json.gz 2>/dev/null
-          cp $D/resume.md DERNIER.md 2>/dev/null || true
+          cp /tmp/out/stations.md /tmp/out/stations.json $D/ 2>/dev/null; cp $D/resume.md DERNIER.md 2>/dev/null || true; cp $D/stations.md STATIONS.md 2>/dev/null || true
           git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
           git add . && git commit -qm "prévision au poste $D (commit ${GITHUB_SHA::7})" && git push -q origin essais-prevision
