@@ -1,0 +1,26 @@
+# Essai ponctuel (21 nov. 2026) : plan des 4 prochains jours au poste 1 (Petit Rhône), calculé par la vraie appli. Écrit dans essais-plan-rhone, jamais dans donnees.
+name: essai-plan-rhone
+on:
+  push:
+    branches: [essai-plan-rhone]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  essai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p /tmp/out
+          (python3 -m http.server 8080 >/dev/null 2>&1 &)
+          cd /tmp && npm i -s puppeteer@23 >/dev/null 2>&1
+          cp $GITHUB_WORKSPACE/outils/essai_plan_rhone.js /tmp/ && cd /tmp && timeout 900 node essai_plan_rhone.js
+      - if: always()
+        run: |
+          cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
+          git checkout -q --orphan essais-plan-rhone && git rm -rqf .
+          cp /tmp/out/* . 2>/dev/null; echo "$(date '+%d/%m %H:%M')" > HEURE.txt
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "essai plan Rhône $(date '+%d/%m %H:%M')" && git push -qf origin essais-plan-rhone
