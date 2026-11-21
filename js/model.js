@@ -24,8 +24,12 @@
     loup:   [0.80, 0.75, 0.60, 0.50, 0.45, 0.35, 0.30, 0.35, 0.60, 0.85, 1.00, 0.90],
     dorade: [0.20, 0.20, 0.30, 0.50, 0.70, 0.85, 0.90, 0.90, 0.90, 1.00, 0.80, 0.40]
   };
-  // Sorties de lagune à l'automne : les graus en profitent [S] (calendrier) / [P] (valeur)
-  M.GRAU_AUTUMN = { 9: 1.10, 10: 1.25, 11: 1.20, 12: 1.10 };
+  // Sorties de lagune à l'automne : les graus en profitent. Calendrier [S] : départs surtout
+  // en oct.-nov., pic mi-octobre (Thambithurai et al. 2026, Movement Ecology 14:10) ; étang du
+  // Prévost : départ moyen 6 oct. ± 6 j, aucun en septembre ni en décembre (Mignucci et al. 2023).
+  // Valeurs ×1,25 / ×1,20 : [P]. Sept. et déc. retirés le 20 nov. 2026 (accord de Nico).
+  // NB : en octobre, 1,00 × 1,25 est plafonné à 1 → ce bonus est aujourd'hui sans effet (à revoir).
+  M.GRAU_AUTUMN = { 10: 1.25, 11: 1.20 };
 
   // ---------- Outils ----------
   const rad = d => d * Math.PI / 180;
@@ -361,7 +365,7 @@
     if (sc.st !== "inconnue") sea = species === "loup" ? SEA_LOUP[sc.st][spot.type] : SEA_DORADE[sc.st];
     if (c.falling) { sea = Math.min(1, sea * (species === "loup" ? 1.15 : 1.1)); seaWhy += ", mer qui retombe : souvent le meilleur créneau"; }
     const note = sc.st === "inconnue" ? null : M.seaNote(sea);
-    if (note != null) seaWhy += ` → ${note}/5, ${M.SEA_NOTE_TXT[note]} pour le ${species}`;
+    if (note != null) seaWhy += ` → ${note}/5, ${M.SEA_NOTE_TXT[note]} pour ${species === "dorade" ? "la" : "le"} ${species}`;
     f.push({ k: "Mer", v: sea, why: seaWhy, note });
 
     let light;
@@ -460,6 +464,11 @@
     if (c.light === "jour" && c.cloud < 70) return { fam: "naturel translucide", ex: "Ghost Lançon, Real Anchovy, Ghost Minnow", why: "eau claire et soleil : la couleur compte, rester discret" };
     return { fam: "naturel à ventre blanc", ex: "Mat White, Neo Pearl, Ghost Lançon", why: "eau claire, lumière faible ou ciel couvert" };
   };
+  M.COLD_WATER = 14; // °C, seuil [P] de l'ordre « eau froide » (voir fin de M.lureSequence)
+  // Phrase ajoutée à la ligne « Leurre : » des scénarios en eau froide, pour ne pas contredire l'ordre des leurres (accord de Nico, 20 nov. 2026, 21 h 27)
+  M.coldNote = c => (c && c.sst != null && c.sst < M.COLD_WATER)
+    ? ` <b>Eau à ${c.sst.toFixed(1).replace(".", ",")} °C :</b> commence près du fond, surface en court essai [P] à vérifier ; tout en plus lent [S].`
+    : "";
   M.lureSequence = c => {
     const col = M.colorFor(c), st = M.seaState(c.hsLocal), spot = c.spot;
     const shallow = spot.type === "plage_lisse" || spot.type === "plage_barres";
@@ -482,7 +491,26 @@
     const bm = st === "formée" || st === "forte" || (spot.type === "grau" && !shallow) ? "L2 Black Minnow 120, tête Search 18 g" : shallow || c.light === "nuit" ? "L3 Black Minnow 120, tête Shallow 6 g" : "L1 Black Minnow 120, tête Shore 12 g";
     const bmCol = col.fam === "blanc ou chartreuse" ? "Lime Juice" : col.fam === "sombre" ? "Kaki" : col.fam === "clair" ? "Ghost Minnow" : col.fam === "pailleté, kaki ou nacré" ? "Kaki pailleté" : "Kaki ou Ghost Minnow";
     steps.push({ zone: "Près du fond", lure: bm, color: bmCol, anim: spot.type === "grau" || spot.type === "embouchure" ? "dérive dans la veine de courant, puis linéaire lent" : "linéaire lent près du fond, tirées-relâchées si rien" });
-    return { steps: steps.slice(0, 3), color: col, water: M.water(c) };
+    // Eau froide (chantier 2, accord de Nico le 20 nov. 2026, 18 h 56) :
+    //  - animation lente sur tous les leurres [S] : métabolisme de base du loup 36 mg O2/kg/h à 10 °C contre 89 à 20 °C
+    //    (Claireaux & Lagardère 1999, J. Sea Res. 42) ; arrêt de l'alimentation vers 7 °C (Kara & Quignard 2018, cité par Mignucci et al. 2023) ;
+    //  - commencer près du fond, surface en court essai [P] « à vérifier » : aucune étude trouvée, magazines seulement ;
+    //  - seuil 14 °C [P] (magazines : 12-15 °C). Température inconnue : ordre habituel.
+    const cold = c.sst != null && c.sst < M.COLD_WATER;
+    if (cold) {
+      const t = c.sst.toFixed(1).replace(".", ",");
+      const kept = steps.slice(0, 3);
+      const fond = kept.pop();
+      fond.zone = `Près du fond en premier (eau à ${t} °C, sous ${M.COLD_WATER} °C) [P] à vérifier`;
+      fond.anim = (spot.type === "grau" || spot.type === "embouchure" ? "dérive lente dans la veine de courant, près du fond" : "très lent, au contact du fond, pauses longues") + " [S] eau froide : loup moins actif";
+      kept.forEach(s => {
+        if (s.zone === "Surface") s.zone = "Surface : court essai (5 min) [P] à vérifier";
+        s.anim = s.lure.startsWith("J1") ? "tirées-relâchées lentes, laisser retomber au fond [S] eau froide" : /très lent/.test(s.anim) ? `${s.anim} [S] eau froide` : `${s.anim.replace(/rapide ou /, "")}, en plus lent [S] eau froide`;
+      });
+      const surf = kept.filter(s => s.zone.startsWith("Surface")), mid = kept.filter(s => !s.zone.startsWith("Surface"));
+      return { steps: [fond, ...mid, ...surf], color: col, water: M.water(c), cold: true };
+    }
+    return { steps: steps.slice(0, 3), color: col, water: M.water(c), cold: false };
   };
 
   // ---------- 8. Alertes des 3 prochains jours ----------
