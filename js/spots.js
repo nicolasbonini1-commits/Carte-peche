@@ -42,7 +42,7 @@ window.SPOTS = [
     zone: "E"
   },
   {
-    id: 3, name: "Épis de l'Espiguette est", commune: "Le Grau-du-Roi", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : bout du 2e des 11 épis OSM à l'est du phare de l'Espiguette ; profondeur EMODnet 4,1 m à 100 m",
+    id: 3, name: "Épis de l'Espiguette est", commune: "Le Grau-du-Roi", pos: "validé par Nico le 21 nov. 2026 (4 h) : bout du 2e des 11 épis OSM à l'est du phare de l'Espiguette ; profondeur EMODnet 4,1 m à 100 m",
     // Ancien poste : « Rivage sauvage Petit Rhône – Espiguette », zone de 15 km, point indicatif 43,4620 / 4,2500 (zone E).
     // Relevé de la bande côtière (zone_3.json, 21 nov.) : aucun parking public ni accès voiture connu dans OSM entre l'Espiguette
     // et le Petit Rhône ; le seul accès réaliste est à pied depuis l'Espiguette. Les 11 épis OSM (sur 1,2 km, à 2,2-3,5 km du phare)
@@ -89,7 +89,7 @@ window.SPOTS = [
   {
     id: 6, name: "Jetées du chenal du Grau-du-Roi", commune: "Le Grau-du-Roi", pos: "feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienne le 21 nov.",
     lat: 43.53468, lon: 4.13225, type: "grau", seaward: 220, river: "vidourle", lit: true,
-    // PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : autour = épis de la plage rive gauche (même rive). La jetée rive droite, à 67 m, est de l'autre côté du chenal
+    // validé par Nico le 21 nov. 2026 (4 h) : autour = épis de la plage rive gauche (même rive). La jetée rive droite, à 67 m, est de l'autre côté du chenal
     // (≈ 4,8 km à pied par les ponts) : écartée. 2e épi : bout côté large pris sur la photo (la côte OSM y est ancienne, la plage a avancé).
     autour: [
       { name: "1er épi de la plage rive gauche", lat: 43.53441, lon: 4.13393, src: "OSM way 66035073 [C]", note: "≈ 230 m par la plage" },
@@ -97,7 +97,7 @@ window.SPOTS = [
       { name: "3e épi de la plage rive gauche", lat: 43.53051, lon: 4.13777, src: "OSM way 66035063 [C]", note: "≈ 1 km par la plage" }
     ],
     structure: "Débouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]",
-    attention: "Règlement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus : à vérifier à la capitainerie avant d'y pêcher au leurre. [S, texte complet non lu]",
+    attention: "Règlement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].",
     zone: "C"
   },
   {
@@ -115,7 +115,7 @@ window.SPOTS = [
     zone: "C"
   },
   {
-    id: 8, name: "Passe du Ponant (grau des Abîmes)", commune: "La Grande-Motte", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : bout de la jetée ouest du grau des Abîmes (OpenStreetMap + photo aérienne) ; profondeur EMODnet 3,1 m à 100 m",
+    id: 8, name: "Passe du Ponant (grau des Abîmes)", commune: "La Grande-Motte", pos: "validé par Nico le 21 nov. 2026 (4 h) : bout de la jetée ouest du grau des Abîmes (OpenStreetMap + photo aérienne) ; profondeur EMODnet 3,1 m à 100 m",
     // Ancien point (43,5565 / 4,1060) : dans la pinède du Boucanet, 525 m au NE, à 6 m au-dessus de la mer (EMODnet).
     // Source : OSM way 231620423 (groyne, 230 m) = épi est de 230 m construit en 1984 près de la passe des Abîmes (Bonnefille 1989,
     // La Houille Blanche) [S] ; l'étang du Ponant communique avec la mer par le grau des Abîmes (Ifremer 2009) [S].
@@ -130,7 +130,7 @@ window.SPOTS = [
     zone: "C"
   },
   {
-    id: 9, name: "Brise-lames à l'est du port et « digue cassée »", commune: "La Grande-Motte", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : plage face au brise-lames « paysager » (OpenStreetMap + photo aérienne) ; ancien point à 30 m",
+    id: 9, name: "Brise-lames à l'est du port et « digue cassée »", commune: "La Grande-Motte", pos: "validé par Nico le 21 nov. 2026 (4 h) : plage face au brise-lames « paysager » (OpenStreetMap + photo aérienne) ; ancien point à 30 m",
     // Ouvrages à l'est du port, contre l'érosion (Bonnefille 1989, La Houille Blanche) [S] : épi est de 230 m (1984), brise-lames
     // détachés (1987-88) dont un « paysager » de 120 m à 140 m du rivage = OSM way 9590832. La « digue cassée » « face au port et
     // au casino » (blog pechecustom34, sans date) [V] n'a pas pu être située avec certitude : brise-lames détachés ou tenon rocheux
@@ -147,7 +147,7 @@ window.SPOTS = [
   {
     id: 10, name: "Plages du Grand et du Petit Travers", commune: "La Grande-Motte / Carnon", pos: "plage, point sur le trait de côte entre Petit et Grand Travers (OpenStreetMap, contrôlé sur photo le 21 nov.)",
     lat: 43.55337, lon: 4.01490, type: "plage_lisse", seaward: 165, river: false, lit: false,
-    // PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : point recalé de 42 m sur le bord de l'eau ; autour = brise-lames côté Carnon et plage côté La Grande-Motte.
+    // validé par Nico le 21 nov. 2026 (4 h) : point recalé de 42 m sur le bord de l'eau ; autour = brise-lames côté Carnon et plage côté La Grande-Motte.
     autour: [
       { name: "Brise-lames vers Carnon", lat: 43.55176, lon: 4.00620, src: "OSM way 366086857 (breakwater) [C]", note: "≈ 750 m par la plage, premier d'une série" },
       { name: "Plage vers La Grande-Motte", lat: 43.55464, lon: 4.02339, src: "trait de côte OSM [C]", note: "≈ 700 m par la plage" }
@@ -159,7 +159,7 @@ window.SPOTS = [
   {
     id: 11, name: "Digues du port de Carnon", commune: "Mauguio-Carnon", pos: "feu rouge « Carnon » en tête de digue (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienne le 21 nov.",
     lat: 43.53989, lon: 3.97724, type: "grau", seaward: 160, river: false, lit: true,
-    // PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : autour = épis de la plage ouest (même côté que la digue). Les brise-lames à l'est sont de l'autre côté
+    // validé par Nico le 21 nov. 2026 (4 h) : autour = épis de la plage ouest (même côté que la digue). Les brise-lames à l'est sont de l'autre côté
     // de l'entrée du port (pont à ≈ 800 m dans les terres) : écartés.
     autour: [
       { name: "Épi 34 (vers Palavas)", lat: 43.53962, lon: 3.96842, src: "OSM way 698165180 (« épi 34 », BD Ortho 2019) [C]", note: "≈ 870 m par la digue et la plage" },
@@ -186,7 +186,7 @@ window.SPOTS = [
     zone: "W"
   },
   {
-    id: 13, name: "Grau du Prévost", commune: "Palavas-les-Flots", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : bout de la jetée ouest du grau du Prévost (OpenStreetMap + photo aérienne) ; profondeur EMODnet 5,2 m à 200 m",
+    id: 13, name: "Grau du Prévost", commune: "Palavas-les-Flots", pos: "validé par Nico le 21 nov. 2026 (4 h) : bout de la jetée ouest du grau du Prévost (OpenStreetMap + photo aérienne) ; profondeur EMODnet 5,2 m à 200 m",
     // Ancien point (43,5185 / 3,9101) : poste de secours du Grau du Prévost, sur la plage, 425 m à l'ouest du grau.
     // Source : jetée OSM way 389802447 ; grau = canal OSM way 9219451, de l'étang à la mer ; photo vue_p13b.png.
     lat: 43.51802, lon: 3.91524, type: "grau", seaward: 155, river: false, lit: false,
@@ -200,7 +200,7 @@ window.SPOTS = [
     zone: "W"
   },
   {
-    id: 14, name: "Plage de Maguelone (Pilou)", commune: "Villeneuve-lès-Maguelone", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : bord de l'eau devant le poste de secours du Pilou (OpenStreetMap + photo aérienne)",
+    id: 14, name: "Plage de Maguelone (Pilou)", commune: "Villeneuve-lès-Maguelone", pos: "validé par Nico le 21 nov. 2026 (4 h) : bord de l'eau devant le poste de secours du Pilou (OpenStreetMap + photo aérienne)",
     // Ancien point (43,5050 / 3,8780) : DANS l'étang, derrière le lido (photo vue_p14.png), à 470 m du bord de mer.
     // Source : poste de secours Pilou (OSM node 9017360787), trait de côte OSM. seaward : inchangé (côte OSM 145°).
     lat: 43.50514, lon: 3.88363, type: "plage_barres", seaward: 150, river: false, lit: false,
@@ -215,7 +215,7 @@ window.SPOTS = [
   {
     id: 15, name: "Les Aresquiers (fonds rocheux)", commune: "Vic-la-Gardiole / Frontignan", pos: "plage des Aresquiers, point sur le trait de côte (OpenStreetMap, contrôlé sur photo le 21 nov.)",
     lat: 43.46623, lon: 3.82565, type: "roche", seaward: 125, river: false, lit: false,
-    // PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : point recalé de 39 m sur le bord de l'eau ; seaward 140 → 125 (côte OSM lissée : le lido est orienté ≈ 35°).
+    // validé par Nico le 21 nov. 2026 (4 h) : point recalé de 39 m sur le bord de l'eau ; seaward 140 → 125 (côte OSM lissée : le lido est orienté ≈ 35°).
     // Photo vue_p15.png : bandes sombres au large (fonds rocheux, posidonies) à partir de ≈ 150 m du bord.
     autour: [
       { name: "1er épi vers Frontignan", lat: 43.46053, lon: 3.81985, src: "OSM way 965374972 [C]", note: "≈ 790 m par la plage, début d'une série d'épis" },
@@ -228,7 +228,7 @@ window.SPOTS = [
   {
     id: 16, name: "Digues et grau de Frontignan", commune: "Frontignan", pos: "feu rouge en tête de la digue ouest du port de Frontignan (OpenStreetMap, balisage ; Digue W Fl.R.4s, Figaro Nautisme) [S] ; contrôlé sur photo le 21 nov.",
     lat: 43.43031, lon: 3.77745, type: "grau", seaward: 140, river: false, lit: true,
-    // PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : autour = épis de la plage ouest (même côté). La digue est (feu vert) et la plage est sont de l'autre côté du chenal : écartées.
+    // validé par Nico le 21 nov. 2026 (4 h) : autour = épis de la plage ouest (même côté). La digue est (feu vert) et la plage est sont de l'autre côté du chenal : écartées.
     autour: [
       { name: "1er épi à l'ouest", lat: 43.43116, lon: 3.77536, src: "OSM way 567474874 (BD Ortho IGN) [C]", note: "≈ 280 m par la plage" },
       { name: "2e épi à l'ouest", lat: 43.43097, lon: 3.77474, src: "OSM way 391636700 [C]", note: "≈ 350 m" }
