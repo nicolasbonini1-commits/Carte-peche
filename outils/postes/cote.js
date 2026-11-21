@@ -15,6 +15,11 @@
 // Avis : « joignable par le bord » si pas d'obstacle et ≤ 1 500 m ; « joignable par un pont » si le trajet du routeur
 // fait ≤ 1 500 m (à confirmer par Nico : même zone ou pas ?) ; sinon « à écarter ».
 // Seuils [P] (Nico, 20 nov. : ≈ 1 km, joignable à pied) : 1 500 m ≈ 20 min de marche.
+// 5. Deux têtes de jetée face à face (feu rouge / feu vert à moins de 250 m) = entrée de port ou de chenal entre les deux.
+// 6. Si le routeur piéton fait un très grand détour alors que le bord semble libre : « à vérifier sur la photo ».
+// Contrôle : outils/postes/temoins.js (9 cas connus, 9 conformes le 21 nov.). Limites connues : un chenal de port que OSM
+// ne dessine pas (ni cours d'eau, ni côte qui y entre) n'est vu que par les feux ou par le routeur ; le trait de côte OSM
+// peut être ancien (plage qui a avancé, poste 6) ; le routeur ignore la marche sur le sable. Toujours finir par la photo aérienne.
 // Usage : node outils/postes/cote.js dossier_des_releves 8 [9 …]  (lit poste_*.json et verif_*.json du dossier)
 const fs = require("fs");
 const rad = d => d * Math.PI / 180;
@@ -25,11 +30,13 @@ const dist = (a, b) => d2(xy(a), xy(b));
 const key = p => p.lat.toFixed(7) + "," + p.lon.toFixed(7);
 
 function charger(dossier) {
-  const cote = new Map(), eaux = new Map(), noms = new Map();
+  const cote = new Map(), eaux = new Map(), noms = new Map(), feux = new Map();
   for (const f of fs.readdirSync(dossier).filter(f => /^(poste|verif)_\d+\.json$/.test(f))) {
     const j = JSON.parse(fs.readFileSync(`${dossier}/${f}`, "utf8"));
     const els = [...(j.elements || []), ...((j.cote && j.cote.elements) || [])];
     for (const e of els) {
+      const tf = e.tags || {};
+      if (e.type === "node" && /^(red|green)$/.test(tf["seamark:light:colour"] || "")) feux.set(e.id, { lat: e.lat, lon: e.lon, couleur: tf["seamark:light:colour"] });
       if (e.type !== "way" || !e.geometry) continue;
       const t = e.tags || {};
       // morceaux continus (les géométries coupées par la boîte de recherche ont des trous)
@@ -45,7 +52,7 @@ function charger(dossier) {
       if (t.name) noms.set(e.id, t.name);
     }
   }
-  return { cote, eaux };
+  return { cote, eaux, feux };
 }
 
 // Met les morceaux de côte bout à bout (le dernier point de l'un = le premier de l'autre)
@@ -157,10 +164,21 @@ function parLeBord(L, l, s1, s2) {
   return { arc: hi - lo, bord: D[N.length - 1] };
 }
 
-function analyser(L, eaux, P, X, trajet) {
+// Deux têtes de jetée face à face : un point à moins de 40 m d'un feu rouge, l'autre à moins de 40 m d'un feu vert,
+// les deux feux à moins de 250 m l'un de l'autre → entrée de port ou de chenal entre les deux (21 nov. : poste 16,
+// chenal du port de Frontignan que OSM ne dessine ni en cours d'eau ni en côte).
+function feuxEnFace(P, X, feux) {
+  if (!feux) return null;
+  const pres = q => [...feux.values()].filter(f => dist(q, f) < 40);
+  for (const a of pres(P)) for (const b of pres(X)) if (a.couleur !== b.couleur && dist(a, b) < 250) return `entrée entre le feu ${a.couleur === "red" ? "rouge" : "vert"} et le feu ${b.couleur === "red" ? "rouge" : "vert"}`;
+  return null;
+}
+
+function analyser(L, eaux, P, X, trajet, feux) {
   const pp = projeter(L, P), px = projeter(L, X), vol = dist(P, X);
   const r = { vol: Math.round(vol), aCote: [Math.round(pp.d), Math.round(px.d)] };
   r.eaux = eauxEntre(P, X, eaux, L);
+  const ff = feuxEnFace(P, X, feux); if (ff) r.eaux.push(ff);
   let bordOk = false;
   if (pp.li === px.li) {
     const b = parLeBord(L, L[pp.li], pp.s, px.s);
@@ -172,7 +190,14 @@ function analyser(L, eaux, P, X, trajet) {
   } else r.bord = null;
   const route = trajet && !trajet.erreur ? trajet.pied + trajet.accroche[0] + trajet.accroche[1] : null;
   r.route = route;
-  if (bordOk && r.bord <= 1500) { r.avis = "joignable par le bord"; r.pourquoi = `≈ ${r.bord} m en longeant la côte (≈ ${Math.round(r.bord / 75)} min), aucun cours d'eau ni chenal entre les deux`; }
+  // Désaccord avec le routeur : il fait un très grand détour (plus de 3 fois la ligne droite entre ses points d'accroche,
+  // et plus de 800 m de plus) alors que le bord semble libre → peut-être un chenal que OSM ne dessine pas (poste 16).
+  if (trajet && !trajet.erreur && trajet.accroches) {
+    const entre = Math.max(dist(trajet.accroches[0], trajet.accroches[1]), 1);
+    if (trajet.pied > 3 * entre && trajet.pied - entre > 800) r.alerte = `le routeur piéton fait ${trajet.pied} m pour ${Math.round(entre)} m : chenal ou port possible, à vérifier sur la photo`;
+  }
+  if (bordOk && r.bord <= 1500 && r.alerte) { r.avis = "à vérifier sur la photo"; r.pourquoi = `≈ ${r.bord} m en longeant la côte, mais ${r.alerte}`; }
+  else if (bordOk && r.bord <= 1500) { r.avis = "joignable par le bord"; r.pourquoi = `≈ ${r.bord} m en longeant la côte (≈ ${Math.round(r.bord / 75)} min), aucun cours d'eau ni chenal entre les deux`; }
   else if (bordOk) { r.avis = "à écarter"; r.pourquoi = `${r.bord} m en longeant la côte : plus de 1 500 m`; }
   else {
     const obst = r.bord == null ? "pas de côte continue entre les deux dans OSM" : r.eaux.length ? `${r.eaux.join(", ")} entre les deux` : `la côte fait le tour d'un port ou d'un chenal (${r.bord} m par le bord pour ${r.vol} m à vol d'oiseau)`;
@@ -197,13 +222,13 @@ module.exports = { charger, lignes, analyser, dist, versLeLarge };
 
 if (require.main === module) {
   const [dossier, ...ids] = process.argv.slice(2);
-  const { cote, eaux } = charger(dossier), L = lignes(cote);
+  const { cote, eaux, feux } = charger(dossier), L = lignes(cote);
   console.log(`côte : ${cote.size} lignes OSM → ${L.length} morceaux continus (${L.filter(l => l.fermee).length} fermés) ; cours d'eau : ${eaux.size}`);
   const res = {};
   for (const id of ids.map(Number)) {
     const v = JSON.parse(fs.readFileSync(`${dossier}/verif_${id}.json`, "utf8"));
     const P = v.points.find(p => p.label === "P") || v.points[0];
-    res[id] = v.points.filter(p => p !== P).map(x => ({ label: x.label, name: x.name, ...analyser(L, eaux, P, x, x.trajet) }));
+    res[id] = v.points.filter(p => p !== P).map(x => ({ label: x.label, name: x.name, ...analyser(L, eaux, P, x, x.trajet, feux) }));
     console.log(`poste ${id} :`);
     res[id].forEach(x => console.log(`  ${x.label} ${x.name} : ${x.avis} — ${x.pourquoi} [vol ${x.vol} m, à la côte ${x.aCote.join(" / ")} m]`));
   }

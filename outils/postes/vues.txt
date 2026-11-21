@@ -1,3 +1,0 @@
-# Vues rapprochées sur photo aérienne (Esri) : nom poste lat lon zoom (17 ≈ 860 m de large, 18 ≈ 430 m)
-p12c 12 43.5275 3.9370 17
-p3b 3 43.4710 4.1705 17

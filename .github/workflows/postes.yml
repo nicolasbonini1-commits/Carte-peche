@@ -146,7 +146,7 @@ jobs:
 
   enregistrer:
     needs: [plan, releve, verifier, zone, vues]
-    if: always() && needs.plan.result == 'success'
+    if: always() && needs.plan.result == 'success' && (needs.plan.outputs.releve != '[]' || needs.plan.outputs.verifier != '[]' || needs.plan.outputs.zone != '[]' || needs.plan.outputs.vues == 'oui')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
