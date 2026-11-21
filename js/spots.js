@@ -170,16 +170,16 @@ window.SPOTS = [
     zone: "W"
   },
   {
-    id: 12, name: "Embouchure du Lez et plage des Épis", commune: "Palavas-les-Flots", pos: "PROPOSÉ le 21 nov. 2026 (nuit), en attente de l'accord de Nico : feu vert « Palavas les Flots », tête de jetée rive gauche à la sortie du Lez (OpenStreetMap + photo aérienne)",
+    id: 12, name: "Embouchure du Lez et plage des Épis", commune: "Palavas-les-Flots", pos: "validé par Nico le 21 nov. 2026 (4 h 41) : feu vert « Palavas les Flots », tête de jetée rive gauche à la sortie du Lez (OpenStreetMap + photo aérienne)",
     // Ancien point (43,5237 / 3,9353, feu vert « tête de la jetée ouest », retenu le 20 nov.) : la photo aérienne du 21 nov. (vue_p12.png)
     // le montre DANS le port de plaisance, au bout d'un môle intérieur. Le Lez sort 250 m plus au nord, entre la jetée rive gauche
     // (ce point) et le môle du port (feu « Le Lez », rive droite, en face, ≈ 1,5 km à pied par le pont de l'Union : écarté).
     // Source : OSM node 1420666382 (feu vert « Palavas les Flots »), jetée way 372219033. seaward : inchangé (côte rive gauche ≈ 145-155°).
     lat: 43.52598, lon: 3.93449, type: "grau", seaward: 155, river: "lez", lit: true,
     autour: [
-      { name: "1er épi de la plage des Épis", lat: 43.52757, lon: 3.93600, src: "OSM way 372219038 [C]", note: "≈ 330 m par la plage" },
-      { name: "2e épi de la plage des Épis", lat: 43.52847, lon: 3.93777, src: "OSM way 372219028 [C]", note: "≈ 560 m" },
-      { name: "3e épi de la plage des Épis", lat: 43.52851, lon: 3.93975, src: "OSM way 372219024 [C]", note: "≈ 760 m" }
+      { name: "1er épi de la plage des Épis", lat: 43.52757, lon: 3.93600, src: "OSM way 372219038 [C]", note: "≈ 330 m par la plage ; potentiel loup non évalué" },
+      { name: "2e épi de la plage des Épis", lat: 43.52847, lon: 3.93777, src: "OSM way 372219028 [C]", note: "≈ 560 m ; potentiel loup non évalué" },
+      { name: "3e épi de la plage des Épis", lat: 43.52851, lon: 3.93975, src: "OSM way 372219024 [C]", note: "≈ 760 m ; potentiel loup non évalué" }
     ],
     structure: "Embouchure du Lez, blocs posés sur le sable. [S] Plateau rocheux de Palavas-Carnon au large : un banc à 4-6 m, un second à 10-15 m (ZNIEFF). [S]",
     attention: "Plage des Épis : restriction horaire en saison seulement. [S] Rester hors du port de plaisance.",
