@@ -1,0 +1,1728 @@
+{
+ "poste": {
+  "id": 5,
+  "name": "Digue de l'Espiguette (extérieur Port Camargue)",
+  "seaward": 270,
+  "actuel": {
+   "lat": 43.51076,
+   "lon": 4.11645
+  }
+ },
+ "origine": "js/spots.js",
+ "date": "2026-11-20T22:18:18.713Z",
+ "sources": {
+  "pied": "routeur OSRM profil piéton, FOSSGIS (routing.openstreetmap.de), données © contributeurs OpenStreetMap (ODbL)",
+  "profondeur": "EMODnet Bathymetry, depth_sample (maille ~115 m)",
+  "osm": "© contributeurs OpenStreetMap (ODbL), via Overpass"
+ },
+ "points": [
+  {
+   "label": "P",
+   "name": "Digue de l'Espiguette (extérieur Port Camargue)",
+   "lat": 43.51076,
+   "lon": 4.11645,
+   "src": "vérifiée le 20 nov. 2026 : feu en tête de la digue de l'Espiguette (OpenStreetMap) ; profondeur EMODnet 3 à 4,6 m à 200-300 m",
+   "profondeur": {
+    "ici": -3.8,
+    "100m": -4.5,
+    "200m": -4.3,
+    "300m": -4
+   }
+  },
+  {
+   "label": "a",
+   "name": "Épi sud de la plage sud de Port Camargue",
+   "lat": 43.514,
+   "lon": 4.11963,
+   "src": "OSM way 66033925 [C]",
+   "note": "440 m au NNE",
+   "profondeur": {
+    "ici": -2.1,
+    "100m": -3.1,
+    "200m": -3.9,
+    "300m": -4.6
+   },
+   "vol": 442,
+   "cap": 35,
+   "trajet": {
+    "pied": 776,
+    "minutes": 10,
+    "accroche": [
+     321,
+     321
+    ],
+    "accroches": [
+     {
+      "lat": 43.510567,
+      "lon": 4.12041
+     },
+     {
+      "lat": 43.513966,
+      "lon": 4.123603
+     }
+    ],
+    "trace": [
+     [
+      43.51057,
+      4.12041
+     ],
+     [
+      43.51057,
+      4.12041
+     ],
+     [
+      43.51057,
+      4.12056
+     ],
+     [
+      43.51047,
+      4.12063
+     ],
+     [
+      43.51049,
+      4.12126
+     ],
+     [
+      43.51053,
+      4.12232
+     ],
+     [
+      43.51059,
+      4.12411
+     ],
+     [
+      43.51082,
+      4.12413
+     ],
+     [
+      43.51118,
+      4.12417
+     ],
+     [
+      43.51134,
+      4.12419
+     ],
+     [
+      43.51143,
+      4.1242
+     ],
+     [
+      43.51152,
+      4.12421
+     ],
+     [
+      43.51154,
+      4.12421
+     ],
+     [
+      43.51165,
+      4.12423
+     ],
+     [
+      43.51175,
+      4.12423
+     ],
+     [
+      43.51177,
+      4.12424
+     ],
+     [
+      43.5123,
+      4.12429
+     ],
+     [
+      43.51247,
+      4.12431
+     ],
+     [
+      43.51278,
+      4.12434
+     ],
+     [
+      43.51287,
+      4.12435
+     ],
+     [
+      43.51345,
+      4.12442
+     ],
+     [
+      43.51375,
+      4.12446
+     ],
+     [
+      43.51387,
+      4.12447
+     ],
+     [
+      43.51401,
+      4.12448
+     ],
+     [
+      43.51413,
+      4.12448
+     ],
+     [
+      43.51403,
+      4.12407
+     ],
+     [
+      43.51397,
+      4.1236
+     ],
+     [
+      43.51397,
+      4.1236
+     ]
+    ]
+   },
+   "verdict": {
+    "avis": "joignable",
+    "total": 1418,
+    "ratio": 1.7,
+    "pourquoi": "1418 m à pied (≈ 19 min, dont 642 m hors chemin) pour 442 m à vol d'oiseau",
+    "notes": [
+     "P à 321 m du chemin OSM le plus proche : accès réel à vérifier sur la photo aérienne",
+     "point à 321 m du chemin OSM le plus proche : accès réel à vérifier sur la photo aérienne"
+    ]
+   }
+  },
+  {
+   "label": "b",
+   "name": "Épi nord de la plage sud de Port Camargue",
+   "lat": 43.51734,
+   "lon": 4.12041,
+   "src": "OSM way 66034032 [C]",
+   "note": "800 m au NNE",
+   "profondeur": {
+    "ici": -2,
+    "100m": -3.3,
+    "200m": -3.9,
+    "300m": -4.6
+   },
+   "vol": 798,
+   "cap": 24,
+   "trajet": {
+    "pied": 1184,
+    "minutes": 16,
+    "accroche": [
+     321,
+     241
+    ],
+    "accroches": [
+     {
+      "lat": 43.510567,
+      "lon": 4.12041
+     },
+     {
+      "lat": 43.517594,
+      "lon": 4.123365
+     }
+    ],
+    "trace": [
+     [
+      43.51057,
+      4.12041
+     ],
+     [
+      43.51057,
+      4.12041
+     ],
+     [
+      43.51057,
+      4.12056
+     ],
+     [
+      43.51047,
+      4.12063
+     ],
+     [
+      43.51049,
+      4.12126
+     ],
+     [
+      43.51053,
+      4.12232
+     ],
+     [
+      43.51059,
+      4.12411
+     ],
+     [
+      43.51082,
+      4.12413
+     ],
+     [
+      43.51118,
+      4.12417
+     ],
+     [
+      43.51134,
+      4.12419
+     ],
+     [
+      43.51143,
+      4.1242
+     ],
+     [
+      43.51152,
+      4.12421
+     ],
+     [
+      43.51154,
+      4.12421
+     ],
+     [
+      43.51165,
+      4.12423
+     ],
+     [
+      43.51175,
+      4.12423
+     ],
+     [
+      43.51177,
+      4.12424
+     ],
+     [
+      43.5123,
+      4.12429
+     ],
+     [
+      43.51247,
+      4.12431
+     ],
+     [
+      43.51278,
+      4.12434
+     ],
+     [
+      43.51287,
+      4.12435
+     ],
+     [
+      43.51345,
+      4.12442
+     ],
+     [
+      43.51375,
+      4.12446
+     ],
+     [
+      43.51387,
+      4.12447
+     ],
+     [
+      43.51401,
+      4.12448
+     ],
+     [
+      43.51413,
+      4.12448
+     ],
+     [
+      43.51426,
+      4.12449
+     ],
+     [
+      43.51436,
+      4.12446
+     ],
+     [
+      43.51444,
+      4.12444
+     ],
+     [
+      43.51454,
+      4.12441
+     ],
+     [
+      43.51459,
+      4.1244
+     ],
+     [
+      43.51462,
+      4.1244
+     ],
+     [
+      43.51472,
+      4.12438
+     ],
+     [
+      43.51488,
+      4.1244
+     ],
+     [
+      43.51501,
+      4.12441
+     ],
+     [
+      43.51515,
+      4.12443
+     ],
+     [
+      43.51539,
+      4.12446
+     ],
+     [
+      43.51543,
+      4.12447
+     ],
+     [
+      43.51572,
+      4.12451
+     ],
+     [
+      43.51578,
+      4.12451
+     ],
+     [
+      43.516,
+      4.12454
+     ],
+     [
+      43.51618,
+      4.12457
+     ],
+     [
+      43.51628,
+      4.12458
+     ],
+     [
+      43.51657,
+      4.12464
+     ],
+     [
+      43.51671,
+      4.12452
+     ],
+     [
+      43.51682,
+      4.12448
+     ],
+     [
+      43.51691,
+      4.12448
+     ],
+     [
+      43.51703,
+      4.12449
+     ],
+     [
+      43.51724,
+      4.12458
+     ],
+     [
+      43.51734,
+      4.12457
+     ],
+     [
+      43.51744,
+      4.12455
+     ],
+     [
+      43.51751,
+      4.12458
+     ],
+     [
+      43.51752,
+      4.12422
+     ],
+     [
+      43.51763,
+      4.1237
+     ],
+     [
+      43.51759,
+      4.12336
+     ]
+    ]
+   },
+   "verdict": {
+    "avis": "à écarter",
+    "total": 1746,
+    "ratio": 1.4,
+    "pourquoi": "1746 m à pied (≈ 23 min, dont 562 m hors chemin) pour 798 m à vol d'oiseau : plus de 1 500 m",
+    "notes": [
+     "P à 321 m du chemin OSM le plus proche : accès réel à vérifier sur la photo aérienne",
+     "point à 241 m du chemin OSM le plus proche : accès réel à vérifier sur la photo aérienne"
+    ]
+   }
+  }
+ ],
+ "acces": {
+  "serveur": "https://overpass.kumi.systems/api/interpreter",
+  "erreurs": [
+   "https://overpass-api.de/api/interpreter → fetch failed",
+   "https://overpass.private.coffee/api/interpreter → The operation was aborted due to timeout"
+  ],
+  "elements": [
+   {
+    "type": "node",
+    "id": 8664374543,
+    "lat": 43.514633,
+    "lon": 4.1230704,
+    "tags": {
+     "emergency": "lifeguard",
+     "lifeguard": "tower",
+     "name": "Poste de Secours Port Camargue Sud",
+     "opening_hours": "Jun 29-Sep 01 11:00-18:30"
+    }
+   },
+   {
+    "type": "node",
+    "id": 12127398173,
+    "lat": 43.4975745,
+    "lon": 4.1161638,
+    "tags": {
+     "emergency": "lifeguard",
+     "lifeguard": "tower",
+     "name": "Poste de Secours de la Pointe de l'Espiguette",
+     "opening_hours": "Jun 29-Sep 01 11:00-18:30"
+    }
+   },
+   {
+    "type": "way",
+    "id": 27060688,
+    "lat": 43.5023621,
+    "lon": 4.1258878,
+    "tags": {
+     "amenity": "parking",
+     "name": "Parking de L'Espiguette",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 30964044,
+    "lat": 43.5136029,
+    "lon": 4.1272069,
+    "tags": {
+     "bridge": "yes",
+     "highway": "residential",
+     "layer": "1",
+     "maxspeed": "30",
+     "name": "Pont de la Lune",
+     "sidewalk": "both",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre;mise à jour : 2009",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 33927336,
+    "lat": 43.5155175,
+    "lon": 4.1247849,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "yes",
+     "name": "Parking de la Plage Sud",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre;mise à jour : 2009"
+    }
+   },
+   {
+    "type": "way",
+    "id": 33927337,
+    "lat": 43.513711,
+    "lon": 4.1258317,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "no",
+     "name": "Parking du Pont de la Lune",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre;mise à jour : 2009",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 66774112,
+    "lat": 43.5167238,
+    "lon": 4.1258793,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "name": "Parking du Jason",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 129704978,
+    "lat": 43.5066252,
+    "lon": 4.1294114,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 204016489,
+    "lat": 43.5208778,
+    "lon": 4.127676,
+    "tags": {
+     "amenity": "parking",
+     "name": "Place de la Capitainerie",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 221170440,
+    "lat": 43.5219938,
+    "lon": 4.1259889,
+    "tags": {
+     "amenity": "parking",
+     "name": "Parking de la Marine",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 256068983,
+    "lat": 43.5019564,
+    "lon": 4.1240273,
+    "tags": {
+     "bridge": "yes",
+     "highway": "path",
+     "layer": "1",
+     "name": "Accès 76",
+     "surface": "metal"
+    }
+   },
+   {
+    "type": "way",
+    "id": 265383666,
+    "lat": 43.5039045,
+    "lon": 4.1301546,
+    "tags": {
+     "bridge": "yes",
+     "highway": "track",
+     "layer": "1"
+    }
+   },
+   {
+    "type": "way",
+    "id": 290834176,
+    "lat": 43.5189882,
+    "lon": 4.1308231,
+    "tags": {
+     "amenity": "parking",
+     "name": "Place de Bonne",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 290860261,
+    "lat": 43.5110012,
+    "lon": 4.127546,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "no",
+     "name": "Parking du Chenal",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291099245,
+    "lat": 43.5160259,
+    "lon": 4.1303414,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "parking": "surface",
+     "source": "bing2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291099251,
+    "lat": 43.5162432,
+    "lon": 4.129868,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "parking": "surface",
+     "source": "bing2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291099252,
+    "lat": 43.5159738,
+    "lon": 4.1301858,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "capacity": "5",
+     "parking": "surface",
+     "source": "bing2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291099253,
+    "lat": 43.515326,
+    "lon": 4.1289417,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291099254,
+    "lat": 43.5154041,
+    "lon": 4.1294248,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954405,
+    "lat": 43.505648,
+    "lon": 4.1248947,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954406,
+    "lat": 43.5078239,
+    "lon": 4.1238804,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954407,
+    "lat": 43.5059263,
+    "lon": 4.1285796,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "18",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954408,
+    "lat": 43.5061546,
+    "lon": 4.1247507,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954409,
+    "lat": 43.5060519,
+    "lon": 4.1240593,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "5",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954410,
+    "lat": 43.5062105,
+    "lon": 4.1282669,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "3",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954411,
+    "lat": 43.5060694,
+    "lon": 4.1248832,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954412,
+    "lat": 43.506359,
+    "lon": 4.1239093,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "7",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954413,
+    "lat": 43.5076555,
+    "lon": 4.1256803,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954414,
+    "lat": 43.5058357,
+    "lon": 4.1250279,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954415,
+    "lat": 43.5058817,
+    "lon": 4.1247871,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954416,
+    "lat": 43.506344,
+    "lon": 4.1236819,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "3",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954417,
+    "lat": 43.5055845,
+    "lon": 4.1286267,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "21",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954418,
+    "lat": 43.5060827,
+    "lon": 4.1281615,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "10",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954419,
+    "lat": 43.5080051,
+    "lon": 4.1239169,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954420,
+    "lat": 43.5074143,
+    "lon": 4.1255499,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954423,
+    "lat": 43.505779,
+    "lon": 4.128398,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "20",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954424,
+    "lat": 43.505652,
+    "lon": 4.1285152,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "30",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954425,
+    "lat": 43.5065153,
+    "lon": 4.1239721,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954426,
+    "lat": 43.5059077,
+    "lon": 4.1282875,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "9",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954427,
+    "lat": 43.5053193,
+    "lon": 4.124325,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "capacity": "14",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954428,
+    "lat": 43.5069151,
+    "lon": 4.1253751,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 291954429,
+    "lat": 43.5057038,
+    "lon": 4.1241847,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "source": "bing2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 370159571,
+    "lat": 43.5219891,
+    "lon": 4.126731,
+    "tags": {
+     "amenity": "parking",
+     "fee": "yes",
+     "name": "Parking de la Marine",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 370159572,
+    "lat": 43.5217744,
+    "lon": 4.1260655,
+    "tags": {
+     "amenity": "parking",
+     "boat": "yes",
+     "motor_vehicle": "no",
+     "name": "Parking de la Marine",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 617816482,
+    "lat": 43.5134111,
+    "lon": 4.1298253,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "fee": "no",
+     "park_ride": "no",
+     "parking": "surface",
+     "supervised": "no",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 667692861,
+    "lat": 43.5187337,
+    "lon": 4.1319723,
+    "tags": {
+     "access": "yes",
+     "amenity": "parking",
+     "fee": "no",
+     "name": "Place de Bonne",
+     "parking": "surface",
+     "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2014"
+    }
+   },
+   {
+    "type": "way",
+    "id": 928820066,
+    "lat": 43.5130352,
+    "lon": 4.1253642,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "capacity:disabled": "2",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 928820069,
+    "lat": 43.5127059,
+    "lon": 4.1268979,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311295,
+    "lat": 43.5112165,
+    "lon": 4.1262159,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311311,
+    "lat": 43.5116453,
+    "lon": 4.1280058,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311312,
+    "lat": 43.5114081,
+    "lon": 4.1287567,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311313,
+    "lat": 43.5113324,
+    "lon": 4.1310385,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311314,
+    "lat": 43.511274,
+    "lon": 4.1329315,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929311315,
+    "lat": 43.5111967,
+    "lon": 4.1296491,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 929321549,
+    "lat": 43.5150541,
+    "lon": 4.1315746,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 931958761,
+    "lat": 43.5214905,
+    "lon": 4.1276919,
+    "tags": {
+     "amenity": "parking",
+     "capacity": "80",
+     "capacity:disabled": "3",
+     "name": "Parking de l'École de Mer",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934951146,
+    "lat": 43.5172656,
+    "lon": 4.1256911,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934951147,
+    "lat": 43.5176888,
+    "lon": 4.1269775,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934951148,
+    "lat": 43.51777,
+    "lon": 4.1258004,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934951149,
+    "lat": 43.5188287,
+    "lon": 4.1257337,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934951152,
+    "lat": 43.5136279,
+    "lon": 4.1250807,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "operator": "Centre Commercial Plage Sud",
+     "operator:type": "private",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934953315,
+    "lat": 43.5138237,
+    "lon": 4.1259149,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934955780,
+    "lat": 43.5144526,
+    "lon": 4.1275335,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934955781,
+    "lat": 43.514277,
+    "lon": 4.1284105,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934955783,
+    "lat": 43.5157177,
+    "lon": 4.1277458,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934955784,
+    "lat": 43.5155589,
+    "lon": 4.1277929,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934957092,
+    "lat": 43.5140157,
+    "lon": 4.1300748,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934957096,
+    "lat": 43.5137603,
+    "lon": 4.1319031,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934957097,
+    "lat": 43.5138149,
+    "lon": 4.1317017,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934957098,
+    "lat": 43.5133316,
+    "lon": 4.1320061,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934957099,
+    "lat": 43.5132747,
+    "lon": 4.1316387,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 934980175,
+    "lat": 43.5151812,
+    "lon": 4.1254543,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 941007239,
+    "lat": 43.5168774,
+    "lon": 4.1291858,
+    "tags": {
+     "access": "private",
+     "amenity": "parking",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 1085810783,
+    "lat": 43.512777,
+    "lon": 4.1341884,
+    "tags": {
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface",
+     "surface": "asphalt"
+    }
+   },
+   {
+    "type": "way",
+    "id": 1103941932,
+    "lat": 43.5061258,
+    "lon": 4.1274716,
+    "tags": {
+     "access": "customers",
+     "amenity": "parking",
+     "fee": "no",
+     "parking": "surface"
+    }
+   }
+  ]
+ },
+ "approche": [
+  {
+   "parking": {
+    "id": "way/291954419",
+    "lat": 43.5080051,
+    "lon": 4.1239169,
+    "nom": null,
+    "acces": "customers",
+    "payant": "no"
+   },
+   "vol": 676,
+   "trajet": {
+    "pied": 277,
+    "minutes": 4,
+    "accroche": [
+     286,
+     321
+    ],
+    "accroches": [
+     {
+      "lat": 43.510579,
+      "lon": 4.123737
+     },
+     {
+      "lat": 43.510567,
+      "lon": 4.12041
+     }
+    ],
+    "trace": [
+     [
+      43.51058,
+      4.12374
+     ],
+     [
+      43.51053,
+      4.12232
+     ],
+     [
+      43.51049,
+      4.12126
+     ],
+     [
+      43.51047,
+      4.12063
+     ],
+     [
+      43.51057,
+      4.12056
+     ],
+     [
+      43.51057,
+      4.12041
+     ]
+    ]
+   }
+  },
+  {
+   "parking": {
+    "id": "way/291954406",
+    "lat": 43.5078239,
+    "lon": 4.1238804,
+    "nom": null,
+    "acces": "customers",
+    "payant": "no"
+   },
+   "vol": 682,
+   "trajet": {
+    "pied": 273,
+    "minutes": 4,
+    "accroche": [
+     306,
+     321
+    ],
+    "accroches": [
+     {
+      "lat": 43.510577,
+      "lon": 4.123688
+     },
+     {
+      "lat": 43.510567,
+      "lon": 4.12041
+     }
+    ],
+    "trace": [
+     [
+      43.51058,
+      4.12369
+     ],
+     [
+      43.51053,
+      4.12232
+     ],
+     [
+      43.51049,
+      4.12126
+     ],
+     [
+      43.51047,
+      4.12063
+     ],
+     [
+      43.51057,
+      4.12056
+     ],
+     [
+      43.51057,
+      4.12041
+     ]
+    ]
+   }
+  },
+  {
+   "parking": {
+    "id": "way/928820066",
+    "lat": 43.5130352,
+    "lon": 4.1253642,
+    "nom": null,
+    "acces": "private",
+    "payant": null
+   },
+   "vol": 762,
+   "trajet": {
+    "pied": 832,
+    "minutes": 11,
+    "accroche": [
+     35,
+     321
+    ],
+    "accroches": [
+     {
+      "lat": 43.513153,
+      "lon": 4.125762
+     },
+     {
+      "lat": 43.510567,
+      "lon": 4.12041
+     }
+    ],
+    "trace": [
+     [
+      43.51315,
+      4.12576
+     ],
+     [
+      43.51311,
+      4.12579
+     ],
+     [
+      43.51303,
+      4.12584
+     ],
+     [
+      43.51301,
+      4.12585
+     ],
+     [
+      43.51299,
+      4.12586
+     ],
+     [
+      43.51297,
+      4.12588
+     ],
+     [
+      43.51296,
+      4.12591
+     ],
+     [
+      43.51295,
+      4.12593
+     ],
+     [
+      43.51295,
+      4.12597
+     ],
+     [
+      43.51292,
+      4.12601
+     ],
+     [
+      43.51285,
+      4.12611
+     ],
+     [
+      43.51282,
+      4.12617
+     ],
+     [
+      43.51278,
+      4.1262
+     ],
+     [
+      43.51241,
+      4.1265
+     ],
+     [
+      43.51209,
+      4.1268
+     ],
+     [
+      43.51192,
+      4.12695
+     ],
+     [
+      43.5119,
+      4.12689
+     ],
+     [
+      43.51209,
+      4.12669
+     ],
+     [
+      43.51188,
+      4.12608
+     ],
+     [
+      43.51186,
+      4.12604
+     ],
+     [
+      43.51185,
+      4.1257
+     ],
+     [
+      43.51184,
+      4.12533
+     ],
+     [
+      43.51183,
+      4.12488
+     ],
+     [
+      43.51176,
+      4.12488
+     ],
+     [
+      43.51158,
+      4.12479
+     ],
+     [
+      43.51148,
+      4.12468
+     ],
+     [
+      43.5114,
+      4.12456
+     ],
+     [
+      43.51135,
+      4.12438
+     ],
+     [
+      43.51134,
+      4.12419
+     ],
+     [
+      43.51118,
+      4.12417
+     ],
+     [
+      43.51082,
+      4.12413
+     ],
+     [
+      43.51059,
+      4.12411
+     ],
+     [
+      43.51053,
+      4.12232
+     ],
+     [
+      43.51049,
+      4.12126
+     ],
+     [
+      43.51047,
+      4.12063
+     ],
+     [
+      43.51057,
+      4.12056
+     ],
+     [
+      43.51057,
+      4.12041
+     ]
+    ]
+   }
+  }
+ ],
+ "cote": {
+  "serveur": null,
+  "erreurs": [
+   "https://overpass-api.de/api/interpreter → fetch failed",
+   "https://overpass.private.coffee/api/interpreter → The operation was aborted due to timeout",
+   "https://overpass.kumi.systems/api/interpreter → The operation was aborted due to timeout",
+   "https://overpass-api.de/api/interpreter → fetch failed",
+   "https://overpass.private.coffee/api/interpreter → The operation was aborted due to timeout",
+   "https://overpass.kumi.systems/api/interpreter → The operation was aborted due to timeout"
+  ],
+  "elements": []
+ }
+}
