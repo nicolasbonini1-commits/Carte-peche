@@ -26,7 +26,9 @@ for (const id of Object.keys(Z.postes)) {
     if (x.vent >= 10 && y.vent >= 10) dang.push(dAng(x.dir, y.dir));
     if (x.houle != null && y.houle != null) dh.push(Math.abs(x.houle - y.houle));
     if (x.fnu != null && y.fnu != null) { df.push(Math.abs(x.fnu - y.fnu)); nf++; if (cls(x.fnu) !== cls(y.fnu)) classeFnu++; }
-    nterre++; if (x.terre !== y.terre) terre++;
+    // vent de mer (composante vers la terre > 3 km/h) ou de terre (< −3 km/h) : M.onshore donne une vitesse, pas oui/non
+    const sens = v => v > 3 ? 1 : v < -3 ? -1 : 0;
+    if (x.terre != null && y.terre != null && x.vent >= 10 && y.vent >= 10) { nterre++; if (sens(x.terre) !== sens(y.terre)) terre++; }
   }
   parPoste[id] = { nom: NOMS[id], zone: Z.postes[id].zone, heures: n,
     noteLoup: { moy: moy(dl), p90: q(dl, 0.9), max: Math.max(...dl), plus5: dl.filter(v => v >= 5).length, plus10: dl.filter(v => v >= 10).length },
@@ -37,7 +39,8 @@ for (const id of Object.keys(Z.postes)) {
 // Décision : pour chaque jour (0 à 2), créneau du matin (5-11 h) et du soir (15-21 h), chaque espèce,
 // meilleure note de chaque poste dans le créneau, puis classement des postes. Même meilleur poste ? même trio de tête ?
 const heure = k => +Z.heures[k].slice(11, 13), jour = k => Z.heures[k].slice(0, 10);
-const jours = [...new Set(Z.heures.map((h, k) => jour(k)))].slice(0, 3);
+// jours qui ont au moins un créneau complet dans les 72 h
+const jours = [...new Set(Z.heures.map((h, k) => jour(k)))].filter(j => Z.heures.filter(h => h.startsWith(j) && +h.slice(11, 13) >= 5 && +h.slice(11, 13) <= 11).length >= 5 || Z.heures.filter(h => h.startsWith(j) && +h.slice(11, 13) >= 15 && +h.slice(11, 13) <= 21).length >= 5).slice(0, 3);
 const decisions = [];
 for (const j of jours) for (const [cren, h1, h2] of [["matin", 5, 11], ["soir", 15, 21]]) for (const esp of ["loup", "dorade"]) {
   const ks = Z.heures.map((h, k) => k).filter(k => jour(k) === j && heure(k) >= h1 && heure(k) <= h2);
@@ -66,7 +69,7 @@ const nd = decisions.length, mm = decisions.filter(d => d.memeMeilleur).length, 
 const L = [];
 L.push(`# Étape 2 : prévision au poste ou par zone ? (essai du ${new Date(Z.genere).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })})`);
 L.push("");
-L.push(`Deux copies de l'appli, mêmes données du même moment : **zones** (3 points météo et mer pour 16 postes, l'appli actuelle) et **poste** (un point météo à chaque poste, un point mer à 3 km au large de chaque poste). ${Z.heures.length} heures comparées à partir de ${Z.heures[0]} (heure de Paris). Mêmes heures dans les deux : ${memesHeures ? "oui" : "NON"}. Météo-France jusqu'à l'heure n° ${Z.mfEnd} de la série (après : ECMWF, maille 25 km, qui ne voit presque pas la différence entre postes).`);
+L.push(`Deux copies de l'appli, mêmes données du même moment : **zones** (3 points météo et mer pour 16 postes, l'appli actuelle) et **poste** (un point météo à chaque poste, un point mer à 3 km au large de chaque poste). ${Z.heures.length} heures comparées à partir de ${Z.heures[0]} (heure de Paris). Mêmes heures dans les deux : ${memesHeures ? "oui" : "NON"}. Vent : Météo-France (AROME, maille ≈ 1,3 km, puis ARPEGE) jusqu'au ${Z.keys && Z.keys[Z.mfEnd] ? Z.keys[Z.mfEnd].replace("T", " à ") : "?"}, ensuite ECMWF (maille ≈ 25 km, qui ne voit presque pas la différence entre postes).`);
 L.push("");
 L.push(`## Ce que ça change pour le choix du poste`);
 L.push(`- Meilleur poste identique : **${mm} cas sur ${nd}** (${jours.length} jours × matin et soir × loup et dorade).`);
@@ -78,7 +81,7 @@ if (diff.length) {
 }
 L.push("");
 L.push(`## Écart des notes, poste par poste (72 h, points de note sur 100)`);
-L.push(`| Poste | zone | loup : écart moyen / 90 % / max | heures ≥ 5 pts | dorade : moyen / 90 % / max | vent (km/h) | direction (°, vent ≥ 10) | houle au poste (m) | couleur de l'eau : FNU / classe changée | vent de terre ↔ de mer changé |`);
+L.push(`| Poste | zone | loup : écart moyen / 90 % / max | heures ≥ 5 pts | dorade : moyen / 90 % / max | vent (km/h) | direction (°, vent ≥ 10) | houle au poste (m) | couleur de l'eau : FNU / classe changée | vent de terre ↔ de mer changé (vent ≥ 10 km/h) |`);
 L.push(`|---|---|---|---|---|---|---|---|---|---|`);
 for (const [id, x] of Object.entries(parPoste)) L.push(`| ${id}. ${x.nom} | ${x.zone} | ${r1(x.noteLoup.moy)} / ${x.noteLoup.p90} / ${x.noteLoup.max} | ${pc(x.noteLoup.plus5, x.heures)} | ${r1(x.noteDorade.moy)} / ${x.noteDorade.p90} / ${x.noteDorade.max} | ${r1(x.vent)} | ${r1(x.direction)} | ${r1(x.houle)} | ${r1(x.fnu)} / ${pc(x.classeFnuDiff, x.nf)} | ${pc(x.ventTerreMerDiff, x.nterre)} |`);
 L.push("");
