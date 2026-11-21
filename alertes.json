@@ -1,0 +1,44 @@
+{
+ "genere": "2026-11-21T17:05:14.174Z",
+ "modele": "Météo-France puis ECMWF",
+ "nouvelles": 0,
+ "message": "",
+ "alertes": [
+  {
+   "level": 1,
+   "kind": "vent",
+   "title": "Vent qui forcit",
+   "text": "sud : de 18 à 39 km/h, du samedi 21 à 20 h au dimanche 22 à 2 h.",
+   "debut": "2026-11-21T20:00",
+   "notifier": false,
+   "nouvelle": false
+  },
+  {
+   "level": 1,
+   "kind": "fiabilite",
+   "title": "Prévision incertaine",
+   "text": "Météo-France et le modèle européen ECMWF ne sont pas d'accord sur le vent pendant 9 h (dès dimanche 22 à 5 h). À revérifier la veille.",
+   "debut": "2026-11-22T05:00",
+   "notifier": false,
+   "nouvelle": false
+  },
+  {
+   "level": 2,
+   "kind": "mer",
+   "title": "Coup de mer",
+   "text": "Houle jusqu'à 1,8 m (Petite Camargue) du dimanche 22 à midi au lundi 23 à 1 h, pic à 16 h. Digues et roches exposées dangereuses.",
+   "debut": "2026-11-22T12:00",
+   "notifier": true,
+   "nouvelle": false
+  },
+  {
+   "level": 0,
+   "kind": "chance",
+   "title": "Mer qui retombe : créneau à viser",
+   "text": "La houle redescend lundi 23 vers 7 h. Après un coup de mer, eau teintée qui s'éclaircit : souvent le meilleur moment pour le loup (scénario H).",
+   "debut": "2026-11-23T07:00",
+   "notifier": true,
+   "nouvelle": false
+  }
+ ]
+}
