@@ -1,0 +1,37 @@
+# Chantier 1, étape 2 (22 nov. 2026, nuit) : la prévision au poste vaut-elle le coup ? Essai, aucune modification de l'appli.
+# Compare l'appli de main (3 zones) et une copie où chaque poste a son propre point météo et mer (outils/prevision/).
+# Relancer à d'autres moments (autre situation météo) : workflow_dispatch, ou toucher outils/prevision/relance.txt.
+# Résultats dans la branche essais-prevision (un dossier par passage), jamais dans donnees.
+name: prevision
+on:
+  push:
+    branches: [chantier-1-postes]
+    paths: ["outils/prevision/**", ".github/workflows/prevision.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  essai:
+    if: github.ref_name == 'chantier-1-postes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p /tmp/out /tmp/zones /tmp/poste
+          for d in zones poste; do cp -r index.html css js icon.svg manifest.webmanifest /tmp/$d/; done
+          node outils/prevision/patch_poste.js /tmp/zones /tmp/poste
+          (cd /tmp/zones && python3 -m http.server 8091 >/dev/null 2>&1 &)
+          (cd /tmp/poste && python3 -m http.server 8092 >/dev/null 2>&1 &)
+          cd /tmp && npm i -s puppeteer@23 >/dev/null 2>&1
+          cp $GITHUB_WORKSPACE/outils/prevision/essai_prevision.js /tmp/ && cd /tmp && timeout 1200 node essai_prevision.js
+          cd $GITHUB_WORKSPACE && node outils/prevision/compare.js /tmp/out
+      - if: always()
+        run: |
+          D=$(TZ=Europe/Paris date '+%Y-%m-%d_%Hh%M')
+          cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
+          git fetch -q --depth=1 origin essais-prevision && git checkout -q -b essais-prevision FETCH_HEAD || { git checkout -q --orphan essais-prevision && git rm -rqf .; }
+          mkdir -p $D && cp /tmp/out/resume.md /tmp/out/comparaison.json $D/ 2>/dev/null; gzip -c /tmp/out/zones.json > $D/zones.json.gz 2>/dev/null; gzip -c /tmp/out/poste.json > $D/poste.json.gz 2>/dev/null
+          cp $D/resume.md DERNIER.md 2>/dev/null || true
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "prévision au poste $D (commit ${GITHUB_SHA::7})" && git push -q origin essais-prevision
