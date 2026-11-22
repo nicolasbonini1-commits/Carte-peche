@@ -1,0 +1,35 @@
+# Poste 17 (candidat Beauduc / digue frontale), étape 1 : relevé OSM + photos aériennes datées.
+# Ne tourne que sur la branche essai-poste17 ; écrit dans « essais-poste17 », un dossier par passage (jamais réécrit, LECONS 22 nov.).
+# N'écrit jamais dans « donnees » (lue par Home Assistant).
+name: poste17
+on:
+  push:
+    branches: [essai-poste17]
+    paths: ["outils/poste17/**", ".github/workflows/poste17.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: poste17
+  cancel-in-progress: false
+jobs:
+  lieu:
+    if: github.ref_name == 'essai-poste17'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node outils/poste17/lieu.js
+      - name: Enregistrer dans essais-poste17/passage-HHhMM
+        if: always()
+        run: |
+          D=passage-$(TZ=Europe/Paris date '+%d-%Hh%M')
+          mkdir /tmp/d && cd /tmp/d && git init -q
+          if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-poste17; then git checkout -q -b essais-poste17 FETCH_HEAD; else git checkout -q --orphan essais-poste17; fi
+          mkdir -p $D && cp -r /tmp/sortie/. $D/ || echo "rien" > $D/vide.txt
+          git config user.name "poste17-bot"; git config user.email "poste17@users.noreply.github.com"
+          git add -A && git commit -qm "poste17 $D (commit ${GITHUB_SHA::7})"
+          git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-poste17
