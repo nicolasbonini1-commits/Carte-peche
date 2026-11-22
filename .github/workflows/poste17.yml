@@ -5,7 +5,7 @@ name: poste17
 on:
   push:
     branches: [essai-poste17]
-    paths: ["outils/poste17/**", ".github/workflows/poste17.yml"]
+    paths: ["outils/poste17/**", "!outils/poste17/nuit/**", "!outils/poste17/turbidite/**", ".github/workflows/poste17.yml"]  # nuit/ et turbidite/ : tâche poste17-nuit
   workflow_dispatch:
 permissions:
   contents: write
