@@ -1,0 +1,35 @@
+[
+ {
+  "place_id": 82630661,
+  "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
+  "osm_type": "relation",
+  "osm_id": 378684,
+  "lat": "43.9105000",
+  "lon": "4.4240800",
+  "category": "boundary",
+  "type": "administrative",
+  "place_rank": 16,
+  "importance": 0.5555843333490605,
+  "addresstype": "village",
+  "name": "Poulx",
+  "display_name": "Poulx, Nîmes, Gard, Occitanie, France métropolitaine, 30320, France",
+  "address": {
+   "village": "Poulx",
+   "municipality": "Nîmes",
+   "county": "Gard",
+   "ISO3166-2-lvl6": "FR-30",
+   "state": "Occitanie",
+   "ISO3166-2-lvl4": "FR-OCC",
+   "region": "France métropolitaine",
+   "postcode": "30320",
+   "country": "France",
+   "country_code": "fr"
+  },
+  "boundingbox": [
+   "43.8957960",
+   "43.9329369",
+   "4.3966399",
+   "4.4473495"
+  ]
+ }
+]

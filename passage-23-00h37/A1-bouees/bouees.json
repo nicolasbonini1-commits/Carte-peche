@@ -1,0 +1,131 @@
+{
+ "P": [
+  43.36147,
+  4.59261
+ ],
+ "requetes": 8,
+ "journal": [
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampInfos.php?camp=01301",
+   "debut": "2026-11-22T23:37:42.224427Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.21
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampInfos.php?camp=01303",
+   "debut": "2026-11-22T23:38:42.431266Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.06
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampInfos.php?camp=01306",
+   "debut": "2026-11-22T23:39:42.492735Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.01
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampInfos.php?camp=03001",
+   "debut": "2026-11-22T23:40:42.502653Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.06
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampTR.php?camp=01301&dateDeb=2026-11-12&dateFin=2026-11-23",
+   "debut": "2026-11-22T23:41:42.564219Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.06
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampTR.php?camp=01303&dateDeb=2026-11-12&dateFin=2026-11-23",
+   "debut": "2026-11-22T23:42:42.625685Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.09
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampTR.php?camp=01306&dateDeb=2026-11-12&dateFin=2026-11-23",
+   "debut": "2026-11-22T23:43:42.717183Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.03
+  },
+  {
+   "url": "https://candhis.cerema.fr/API/v1/getCampTR.php?camp=03001&dateDeb=2026-11-12&dateFin=2026-11-23",
+   "debut": "2026-11-22T23:44:42.750615Z",
+   "code": null,
+   "erreur": "URLError: <urlopen error timed out>",
+   "duree_s": 60.06
+  }
+ ],
+ "bouees": {
+  "01301": {
+   "nom": "Camargue",
+   "infos_ok": false,
+   "tr_ok": false,
+   "tr_message": null,
+   "nb_mesures_10j": 0,
+   "derniere_mesure": null,
+   "entete": null,
+   "lat": null,
+   "lon": null,
+   "distance_P_km": null,
+   "profondeur": null,
+   "etat": null,
+   "date_fin": null,
+   "date_debut": null
+  },
+  "01303": {
+   "nom": "Fos",
+   "infos_ok": false,
+   "tr_ok": false,
+   "tr_message": null,
+   "nb_mesures_10j": 0,
+   "derniere_mesure": null,
+   "entete": null,
+   "lat": null,
+   "lon": null,
+   "distance_P_km": null,
+   "profondeur": null,
+   "etat": null,
+   "date_fin": null,
+   "date_debut": null
+  },
+  "01306": {
+   "nom": "Golfe de Fos",
+   "infos_ok": false,
+   "tr_ok": false,
+   "tr_message": null,
+   "nb_mesures_10j": 0,
+   "derniere_mesure": null,
+   "entete": null,
+   "lat": null,
+   "lon": null,
+   "distance_P_km": null,
+   "profondeur": null,
+   "etat": null,
+   "date_fin": null,
+   "date_debut": null
+  },
+  "03001": {
+   "nom": "Espiguette",
+   "infos_ok": false,
+   "tr_ok": false,
+   "tr_message": null,
+   "nb_mesures_10j": 0,
+   "derniere_mesure": null,
+   "entete": null,
+   "lat": null,
+   "lon": null,
+   "distance_P_km": null,
+   "profondeur": null,
+   "etat": null,
+   "date_fin": null,
+   "date_debut": null
+  }
+ }
+}

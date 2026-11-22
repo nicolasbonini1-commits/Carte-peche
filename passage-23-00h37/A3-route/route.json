@@ -1,0 +1,57 @@
+{
+ "poulx": {
+  "source": "nominatim",
+  "lat": 43.9105,
+  "lon": 4.42408,
+  "nom": "Poulx, Nîmes, Gard, Occitanie, France métropolitaine, 30320, France"
+ },
+ "routes": {
+  "parking_beauduc": {
+   "serveur": "router.project-osrm.org",
+   "distance_km": 85.7,
+   "duree_min": 98,
+   "ecart_depart_m": 3,
+   "ecart_arrivee_m": 3889,
+   "arrivee_accrochee": [
+    43.439779,
+    4.614863
+   ],
+   "ecart_arrivee_m_calcule": 3891,
+   "nom_voie_arrivee": ""
+  },
+  "poste_1": {
+   "serveur": "router.project-osrm.org",
+   "distance_km": 83.0,
+   "duree_min": 74,
+   "ecart_depart_m": 3,
+   "ecart_arrivee_m": 93,
+   "arrivee_accrochee": [
+    43.450429,
+    4.398655
+   ],
+   "ecart_arrivee_m_calcule": 93,
+   "nom_voie_arrivee": ""
+  }
+ },
+ "vol_oiseau_poulx_parking_km": 57.7,
+ "journal": [
+  {
+   "url": "https://nominatim.openstreetmap.org/search?q=Poulx%2C+Gard%2C+France&format=jsonv2&limit=3&addressdetails=1",
+   "debut": "2026-11-22T23:45:42.867428Z",
+   "code": 200,
+   "duree_s": 0.17
+  },
+  {
+   "url": "https://router.project-osrm.org/route/v1/driving/4.42408,43.9105;4.59691,43.40731?overview=full&geometries=geojson&steps=false",
+   "debut": "2026-11-22T23:45:43.035464Z",
+   "code": 200,
+   "duree_s": 0.72
+  },
+  {
+   "url": "https://router.project-osrm.org/route/v1/driving/4.42408,43.9105;4.39771,43.44995?overview=full&geometries=geojson&steps=false",
+   "debut": "2026-11-22T23:45:43.759567Z",
+   "code": 200,
+   "duree_s": 0.74
+  }
+ ]
+}
