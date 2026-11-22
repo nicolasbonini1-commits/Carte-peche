@@ -70,7 +70,7 @@ async function ign(nom, couche, b) {
 const boite = (lat, lon, km) => { const dl = km / 2 / 111.32, dL = km / 2 / (111.32 * Math.cos(lat * Math.PI / 180)); return [lat - dl, lon - dL, lat + dl, lon + dL]; };
 
 (async () => {
-  // Passe 2 (22 nov. 16 h 30) : la passe 1 a eu 0 réponse d'Overpass en 39 min (overpass-api.de « fetch failed » en 0,2 s,
+  // Passe 2 (poussée le 22 nov. à 16 h 18) : la passe 1 a eu 0 réponse d'Overpass en 39 min (overpass-api.de « fetch failed » en 0,2 s,
   // les 2 autres en délai dépassé). On passe par l'API officielle d'OpenStreetMap (requête « map », boîtes < 0,25 deg²).
   const osmBoites = [[43.345, 4.555, 43.385, 4.600], [43.340, 4.595, 43.375, 4.640], [43.335, 4.635, 43.370, 4.680], [43.335, 4.675, 43.370, 4.720], [43.335, 4.715, 43.370, 4.770]];
   for (const [i, b] of osmBoites.entries()) {
