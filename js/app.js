@@ -93,8 +93,7 @@
     const { lat, lng } = e.latlng;
     const pop = L.popup().setLatLng(e.latlng).setContent("Profondeur…").openOn(map);
     try {
-      const r = await fetch(`https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(${lng.toFixed(5)}%20${lat.toFixed(5)})`);
-      const j = await r.json();
+      const { j } = await fetchT(`https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(${lng.toFixed(5)}%20${lat.toFixed(5)})`, DELAI.profondeur);
       const v = j.avg ?? j.depth ?? j.mean;
       pop.setContent(v != null ? `Profondeur moyenne ≈ ${Math.abs(v).toFixed(1)} m<br><small>EMODnet, maille ~115 m</small>` : "Pas de donnée ici");
     } catch (err) { pop.setContent("Profondeur indisponible (service EMODnet)"); }
@@ -133,6 +132,25 @@
     });
   }
 
+  // ---------- Réseau : délai maximum par requête (22 nov. 2026) ----------
+  // Sans délai, une API qui ne répond pas (ni oui ni non) bloquait tout : essais Chrome du 21 nov., liste des postes jamais
+  // affichée (4 h 45, Hub'Eau muet) et bandeau « Pas de réseau » resté 34 à 44 s au retour du réseau (une requête Open-Meteo
+  // pendue jusqu'au délai du navigateur). Délais [P] : assez longs pour un réseau faible sur la digue, assez courts pour réessayer.
+  // Météo et mer : délais très longs (90 et 60 s). Essais du 21-22 nov. : Open-Meteo a parfois mis 44 s à répondre ; avec 25 puis
+  // 40 s, l'appli abandonnait une réponse qui allait arriver. Ces délais ne servent qu'à ne pas rester bloqué pour toujours
+  // (requête pendue après une coupure) : l'appli n'attend plus la météo pour s'afficher (dernières prévisions gardées, voir start()).
+  const DELAI = { meteo: 90000, mer: 60000, meteoSecours: 30000, debits: 15000, debitsRef: 20000, houle: 10000, routes: 12000, profondeur: 10000 };
+  async function fetchT(url, ms, opts = {}) {
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
+    try { const r = await fetch(url, { ...opts, signal: ctl.signal }); return { r, j: await r.json() }; } // le délai couvre aussi la lecture
+    finally { clearTimeout(t); }
+  }
+  // Pas de réponse (réseau absent, trop faible, ou délai dépassé) ≠ réponse d'erreur du service.
+  const pasDeReponse = e => navigator.onLine === false || e instanceof TypeError || (e && (e.name === "AbortError" || e.name === "TimeoutError"));
+  const attendre = ms => new Promise(r => setTimeout(r, ms));
+  // Débits, houle et routes : l'appli les attend au plus 8 s avant de s'afficher [P] ; s'ils arrivent après, elle se redessine.
+  const ATTENTE_SECONDAIRE = 8000;
+
   // ---------- Données : météo, mer ----------
   function localKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
   const toMin = s => { const t = s.split("T")[1]; return +t.slice(0, 2) * 60 + +t.slice(3, 5); };
@@ -157,13 +175,17 @@
       return parseData(cached);
     }
     const U = window.DATA.urls(window.WX_POINTS), base = U.forecast, sUrl = U.marine;
-    const getJson = async url => { const r = await fetch(url); const j = await r.json(); if (!Array.isArray(j)) throw new Error(j.reason || "réponse inattendue"); return j; };
+    const getJson = async (url, ms) => { const { j } = await fetchT(url, ms); if (!Array.isArray(j)) throw new Error(j.reason || "réponse inattendue"); return j; };
     try {
-      const sP = getJson(sUrl);
+      const sP = getJson(sUrl, DELAI.mer);
       sP.catch(() => { }); // si la météo échoue avant, l'échec de la mer n'est pas une « erreur non rattrapée »
       let f, multi = true;
-      try { f = await getJson(U.forecastModels); }
-      catch (e) { multi = false; f = await getJson(base); } // secours : modèle par défaut d'Open-Meteo
+      try { f = await getJson(U.forecastModels, DELAI.meteo); }
+      catch (e) {
+        if (navigator.onLine === false || e instanceof TypeError) throw e; // pas de réseau du tout : inutile d'essayer le secours
+        // Réponse d'erreur, ou trop lente : secours = modèle par défaut d'Open-Meteo (réponse plus petite), délai plus court si c'était la lenteur
+        multi = false; f = await getJson(base, pasDeReponse(e) ? DELAI.meteoSecours : DELAI.meteo);
+      }
       const raw = { at: Date.now(), f, s: await sP, multi };
       LS.set("cp_data2", raw);
       lastOk = true; banner("");
@@ -173,7 +195,7 @@
       lastOk = false;
       // « Failed to fetch » (Chrome) / « NetworkError » (Firefox) / « Load failed » (Safari) = aucune réponse : réseau absent ou trop faible.
       // C'est aussi le cas d'un Wi-Fi connecté sans internet (le téléphone se croit alors en ligne).
-      const noNet = navigator.onLine === false || e instanceof TypeError;
+      const noNet = pasDeReponse(e); // délai dépassé compris (22 nov. 2026)
       banner((noNet ? "Pas de réseau (ou réseau trop faible). Nouvel essai automatique dès qu'il revient." : `Météo indisponible (${e.message}).`) + when);
       return cached ? parseData(cached) : null;
     }
@@ -192,7 +214,7 @@
     await Promise.all(Object.entries(window.RIVERS).map(async ([key, rv]) => {
       try {
         const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=${rv.station}&grandeur_hydro=Q&timestep=60&date_debut_obs=${since}&size=500&fields=date_obs,resultat_obs`;
-        const j = await (await fetch(url)).json();
+        const { j } = await fetchT(url, DELAI.debits);
         const pts = (j.data || []).map(o => [Date.parse(o.date_obs), o.resultat_obs == null ? null : o.resultat_obs / rv.div]).filter(p => isFinite(p[0]) && p[1] != null).sort((a, b) => a[0] - b[0]);
         if (pts.length >= 6) rivers[key] = { name: rv.name, pts, ref: refs[key] || null };
       } catch (e) { /* station muette : on se rabat sur la pluie */ }
@@ -210,9 +232,8 @@
     const cached = LS.get("cp_houle", null);
     if (!force && cached && Date.now() - cached.at < 20 * 60 * 1000) return cached.d;
     try {
-      const r = await fetch(HOULE_URL, { cache: "no-store" });
+      const { r, j: d } = await fetchT(HOULE_URL, DELAI.houle, { cache: "no-store" });
       if (!r.ok) throw new Error("HTTP " + r.status);
-      const d = await r.json();
       if (!d || !Array.isArray(d.bouees)) throw new Error("réponse inattendue");
       LS.set("cp_houle", { at: Date.now(), d });
       return d;
@@ -277,7 +298,7 @@
     await Promise.all(Object.entries(window.RIVERS).map(async ([key, rv]) => {
       try {
         const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=${rv.station}&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1000&fields=date_obs_elab,resultat_obs_elab`;
-        const j = await (await fetch(url)).json();
+        const { j } = await fetchT(url, DELAI.debitsRef);
         const byM = {};
         (j.data || []).forEach(o => { if (o.resultat_obs_elab == null) return; const m = +o.date_obs_elab.slice(5, 7); (byM[m] = byM[m] || []).push(o.resultat_obs_elab / rv.div); });
         const med = v => { const s = v.slice().sort((a, b) => a - b), n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; };
@@ -485,12 +506,13 @@
   async function computeDrive() {
     const o = state.origin;
     const sig = `${o.lat.toFixed(3)},${o.lon.toFixed(3)}|` + SPOTS.map(s => `${s.lat.toFixed(3)},${s.lon.toFixed(3)}`).join(";");
-    if (state.drive && state.drive.sig === sig) return;
+    // Temps OSRM déjà calculés pour ces positions : gardés. Une estimation (OSRM injoignable) est recalculée à la prochaine ouverture
+    // (22 nov. 2026 : avant, elle restait gardée tant que les postes et le départ ne changeaient pas).
+    if (state.drive && state.drive.sig === sig && state.drive.src === "OSRM") return;
     const coords = [`${o.lon},${o.lat}`].concat(SPOTS.map(s => `${s.lon},${s.lat}`)).join(";");
     let mins = {}, src = "OSRM";
     try {
-      const r = await fetch(`https://router.project-osrm.org/table/v1/driving/${coords}?sources=0&annotations=duration`);
-      const j = await r.json();
+      const { j } = await fetchT(`https://router.project-osrm.org/table/v1/driving/${coords}?sources=0&annotations=duration`, DELAI.routes);
       SPOTS.forEach((s, k) => { mins[s.id] = Math.round(j.durations[0][k + 1] / 60) + 10; }); // +10 min : se garer et marcher
     } catch (e) {
       src = "estimation";
@@ -999,12 +1021,16 @@
   let busy = false, retryT = null, retryN = 0;
   const RETRY_S = [10, 30, 60];
   async function refresh(manual) {
-    if (busy) return;
+    if (busy) { if (manual) toast("Mise à jour déjà en cours…"); return; }
     busy = true; clearTimeout(retryT);
+    if (manual) toast("Mise à jour en cours…"); // réponse tout de suite au toucher (22 nov. 2026), la météo peut mettre du temps
     try {
-      const [d, fl, hl] = await Promise.all([fetchData(true), fetchFlows(true).catch(() => state.flows || {}), fetchHoule(true).catch(() => state.houle)]);
+      // Météo d'abord ; débits et houle attendus au plus 8 s, sinon ils mettront l'affichage à jour en arrivant (22 nov. 2026).
+      const autres = Promise.all([fetchFlows(true).catch(() => state.flows || {}), fetchHoule(true).catch(() => state.houle)]);
+      const [d, vite] = await Promise.all([fetchData(true), Promise.race([autres, attendre(ATTENTE_SECONDAIRE).then(() => null)])]);
       if (d) state.data = d;
-      state.flows = fl; if (hl) state.houle = hl;
+      if (vite) { state.flows = vite[0]; if (vite[1]) state.houle = vite[1]; }
+      else autres.then(([fl, hl]) => { state.flows = fl; if (hl) state.houle = hl; if (state.data) render(); });
       if (state.data) { applyTheme(); render(); }
       if (manual) toast(lastOk ? "Météo et débits mis à jour" : "Toujours pas de réseau : prévisions précédentes gardées");
       else if (lastOk) toast("Réseau revenu : météo mise à jour");
@@ -1027,11 +1053,33 @@
     applyTheme();
     bindPlan(); bindCarnet();
     $("#reco").innerHTML = "<p>Chargement de la météo et de la mer…</p>";
-    const [data, flows, houle] = await Promise.all([fetchData(false), fetchFlows(false).catch(() => ({})), fetchHoule(false).catch(() => null), computeDrive()]);
-    state.data = data; state.flows = flows; state.houle = houle;
+    // Dernières prévisions gardées (plus de 45 min, moins de 4 jours) : affichées tout de suite, puis remplacées par les nouvelles
+    // (22 nov. 2026 : sur la digue avec un réseau faible, l'appli restait sur « Chargement… » jusqu'à la réponse ou au délai).
+    const garde = LS.get("cp_data2", null);
+    if (garde && Date.now() - garde.at >= 45 * 60 * 1000 && Date.now() - garde.at < 4 * 86400000) {
+      try {
+        state.data = parseData(garde);
+        const fl = LS.get("cp_flow", null), ho = LS.get("cp_houle", null);
+        state.flows = fl ? fl.rivers : {}; state.houle = ho ? ho.d : null;
+        applyTheme(); render();
+        banner(`Prévisions du ${dayName(new Date(garde.at))} à ${hm(new Date(garde.at))} : mise à jour en cours…`);
+      } catch (e) { state.data = null; }
+    }
+    // Météo d'abord ; débits, houle et routes attendus au plus 8 s (22 nov. 2026 : un service muet bloquait l'affichage).
+    // En retard : on affiche avec les dernières valeurs gardées dans le téléphone, puis on redessine quand ils arrivent.
+    const autres = Promise.all([fetchFlows(false).catch(() => ({})), fetchHoule(false).catch(() => null), computeDrive().catch(() => { })]);
+    const [data, vite] = await Promise.all([fetchData(false), Promise.race([autres, attendre(ATTENTE_SECONDAIRE).then(() => null)])]);
+    if (data) state.data = data; // si la mise à jour échoue, on garde les prévisions déjà affichées
+    const data2 = state.data;
+    if (vite) { state.flows = vite[0]; state.houle = vite[1]; }
+    else {
+      const fl = LS.get("cp_flow", null), ho = LS.get("cp_houle", null);
+      state.flows = fl ? fl.rivers : {}; state.houle = ho ? ho.d : null;
+      autres.then(([f, h]) => { state.flows = f; if (h) state.houle = h; if (state.data) render(); });
+    }
     setInterval(() => { applyTheme(); }, 5 * 60 * 1000);
     if (!lastOk) retryT = setTimeout(() => refresh(false), RETRY_S[retryN++] * 1000);
-    if (!data) { $("#reco").innerHTML = "<p>Pas de données météo. L'appli réessaie seule quand le réseau revient (ou touche « Mettre à jour »).</p>"; return; }
+    if (!data2) { $("#reco").innerHTML = "<p>Pas de données météo. L'appli réessaie seule quand le réseau revient (ou touche « Mettre à jour »).</p>"; return; }
     applyTheme(); render();
   }
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => { });
