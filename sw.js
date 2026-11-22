@@ -1,10 +1,10 @@
 // Service worker : garde l'appli disponible sans réseau ou avec un réseau faible sur la digue.
-// - L'appli elle-même (pages, scripts, Leaflet) : réseau d'abord pour recevoir les mises à jour, mémoire en secours.
+// - L'appli elle-même (pages, scripts, Leaflet) : réseau d'abord pour recevoir les mises à jour (au plus 5 s), mémoire en secours.
 // - Les morceaux de carte (tuiles) et les polices : ceux déjà regardés sont gardés et resservis sans réseau
 //   (au plus 3000 tuiles, les plus anciennes sont effacées). On ne télécharge jamais de zone en avance :
 //   les règles d'OpenStreetMap l'interdisent.
 // - La météo, la mer, la houle mesurée et les débits ne passent pas par ici : l'appli garde la dernière réponse dans le téléphone.
-const CACHE = "carte-peche-v18";
+const CACHE = "carte-peche-v19";
 const TILES = "carte-peche-tuiles";
 const MAX_TILES = 3000;
 const SHELL = ["./", "index.html", "css/style.css", "js/spots.js", "js/model.js", "js/data.js", "js/app.js", "icon.svg", "manifest.webmanifest",
@@ -36,6 +36,11 @@ self.addEventListener("fetch", e => {
   }
   const isShell = url.origin === location.origin || url.hostname === "unpkg.com";
   if (!isShell) return; // météo, mer, débits, routes : toujours en direct
-  e.respondWith(fetch(e.request).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); return r; })
-    .catch(() => caches.match(e.request, { ignoreSearch: true })));
+  // Réseau d'abord, mais au plus 5 s [P] quand une copie est gardée (22 nov. 2026) : sur la digue avec un réseau faible,
+  // l'appli s'ouvrait seulement quand le navigateur abandonnait (parfois plus de 30 s). La réponse du réseau, si elle arrive,
+  // remplace la copie pour la fois suivante.
+  const net = fetch(e.request).then(r => { if (r.ok || r.type === "opaque") { const copy = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); } return r; });
+  e.waitUntil(net.catch(() => { })); // appelé tout de suite (pas après un await), comme le veut le navigateur
+  e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(hit => !hit ? net
+    : Promise.race([net.catch(() => hit), new Promise(r => setTimeout(() => r(hit), 5000))])));
 });
