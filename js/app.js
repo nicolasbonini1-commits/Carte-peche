@@ -139,7 +139,7 @@
   // Météo et mer : délais très longs (90 et 60 s). Essais du 21-22 nov. : Open-Meteo a parfois mis 44 s à répondre ; avec 25 puis
   // 40 s, l'appli abandonnait une réponse qui allait arriver. Ces délais ne servent qu'à ne pas rester bloqué pour toujours
   // (requête pendue après une coupure) : l'appli n'attend plus la météo pour s'afficher (dernières prévisions gardées, voir start()).
-  const DELAI = { meteo: 90000, mer: 60000, meteoSecours: 30000, debits: 15000, debitsRef: 20000, houle: 10000, routes: 12000, profondeur: 10000 };
+  const DELAI = { meteo: 90000, mer: 60000, meteoSecours: 30000, vent: 60000, debits: 15000, debitsRef: 20000, houle: 10000, routes: 12000, profondeur: 10000 };
   async function fetchT(url, ms, opts = {}) {
     const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms);
     try { const r = await fetch(url, { ...opts, signal: ctl.signal }); return { r, j: await r.json() }; } // le délai couvre aussi la lecture
@@ -202,6 +202,43 @@
   }
 
   const parseData = raw => window.DATA.parse(raw);
+
+  // ---------- Vent au poste (chantier 1, étape 2, 22 nov. 2026) ----------
+  // Requête à part (16 postes, vent seulement, voir js/data.js) lancée en même temps que la météo des zones, jamais attendue :
+  // l'appli s'affiche avec le vent des zones, puis se redessine quand le vent des postes arrive. Sans réponse : vent de la zone.
+  // Gardée sur le téléphone (« cp_vent ») avec la position de chaque poste : un poste déplacé à la main reprend le vent de sa
+  // zone jusqu'au téléchargement suivant (le vent gardé n'est plus celui de sa nouvelle position).
+  // Vent gardé jusqu'à 6 h plus ancien que la météo des zones [P] : au-delà, la prévision de la zone, plus récente, est prise.
+  const VENT_MAX_RETARD = 6 * 3600000;
+  const ventSig = () => SPOTS.map(s => `${s.lat.toFixed(4)},${s.lon.toFixed(4)}`).join(";");
+  state.ventRaw = LS.get("cp_vent", null);
+  async function fetchVent(force) {
+    const cached = state.ventRaw;
+    if (!force && cached && cached.sig === ventSig() && Date.now() - cached.at < 45 * 60 * 1000) return cached;
+    try {
+      const { j } = await fetchT(window.DATA.ventUrl(SPOTS), DELAI.vent);
+      if (!Array.isArray(j) || j.length !== SPOTS.length) throw new Error("réponse inattendue");
+      const raw = { at: Date.now(), ids: SPOTS.map(s => s.id), sig: ventSig(), pos: SPOTS.map(s => [+s.lat.toFixed(4), +s.lon.toFixed(4)]), r: j };
+      LS.set("cp_vent", raw);
+      state.ventRaw = raw;
+      return raw;
+    } catch (e) { return cached; } // pas grave : vent des zones
+  }
+  // Lancée sans être attendue ; redessine seulement si une nouvelle réponse est arrivée.
+  function lancerVent(force) {
+    const avant = state.ventRaw && state.ventRaw.at;
+    return fetchVent(force).then(v => { if (v && v.at !== avant && state.data) render(); }).catch(() => { });
+  }
+  const ventCache = { key: null, map: {} };
+  function ventPoste(spot) {
+    const D = state.data, V = state.ventRaw;
+    if (!D || !V || D.fetchedAt.getTime() - V.at > VENT_MAX_RETARD) return null;
+    const key = `${D.fetchedAt.getTime()}|${V.at}`;
+    if (ventCache.key !== key) { ventCache.map = window.DATA.parseVent(V, D.keys); ventCache.key = key; }
+    const n = V.ids.indexOf(spot.id);
+    if (n < 0 || !V.pos || !V.pos[n] || Math.abs(V.pos[n][0] - spot.lat) > 1e-4 || Math.abs(V.pos[n][1] - spot.lon) > 1e-4) return null; // poste déplacé depuis
+    return ventCache.map[spot.id] || null;
+  }
 
   // ---------- Débits des fleuves (Hub'Eau, données Vigicrues) ----------
   // Une station par fleuve (window.RIVERS). Débit horaire des 7 derniers jours. Gardé 30 min sur le téléphone.
@@ -401,7 +438,7 @@
     Object.assign(out, {
       eau: c.turb ? c.turb.cls : null, fnu: c.turb ? +c.turb.fnu.toFixed(1) : null,
       mer: M.seaState(c.hsLocal), houle_poste: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null, houle_large: c.hsOff ?? null,
-      periode: c.period ?? null, retombe: c.falling, vent: Math.round(c.wind), rafales: Math.round(c.gust), vent_dir: Math.round(c.windDir),
+      periode: c.period ?? null, retombe: c.falling, vent: Math.round(c.wind), rafales: Math.round(c.gust), vent_dir: Math.round(c.windDir), vent_source: c.windSrc,
       note_loup: M.score(spot, "loup", c).score, note_dorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c)
     });
     return out;
@@ -591,11 +628,16 @@
     const light = M.lightPeriod(t.getHours() * 60 + t.getMinutes(), sun.rise, sun.set);
     const moon = M.moon(t);
     const cloud = F.cloud[i] ?? 0;
+    // Vent : celui du poste s'il est là pour cette heure, sinon celui de la zone (22 nov. 2026). La couleur de l'eau garde
+    // le vent moyen de la zone sur 24 h (ws24 ci-dessus) : son calage (R² 0,654) a été fait avec le vent des zones.
+    const VP = ventPoste(spot), auPoste = !!(VP && VP.wind[i] != null);
+    const wind = auPoste ? VP.wind[i] : F.wind[i] ?? 0, windDir = auPoste ? VP.dir[i] : F.dir[i] ?? 0;
+    const gust = auPoste ? (VP.gust[i] ?? F.gust[i] ?? 0) : F.gust[i] ?? 0;
     return {
       spot, month: t.getMonth() + 1, light, cloud, moon,
       darkNight: moon.illum < 0.35 || cloud >= 70,
-      wind: F.wind[i] ?? 0, windDir: F.dir[i] ?? 0, gust: F.gust[i] ?? 0,
-      onshore: M.onshore(spot, F.wind[i] ?? 0, F.dir[i] ?? 0),
+      wind, windDir, gust, windSrc: auPoste ? "poste" : "zone",
+      onshore: M.onshore(spot, wind, windDir),
       hsLocal, hsOff: w.hs, waveDir: w.dir, period: w.per, waveSrc: w.src, waveBuoy: w.buoy, waveRatio: w.ratio, waveAt: w.at, falling, rising, rain72, rain7, apiCoast, apiBasin, flow, sst, turb,
       future: D.times[i].getTime() > Date.now() + 3 * 3600000
     };
@@ -972,7 +1014,7 @@
     if (i < 0) return null;
     const spot = SPOTS.find(s => s.id === e.spotId);
     const c = conditions(spot, i);
-    return { wind: Math.round(c.wind), windDir: Math.round(c.windDir), gust: Math.round(c.gust), hsLocal: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null,
+    return { wind: Math.round(c.wind), windDir: Math.round(c.windDir), gust: Math.round(c.gust), windSrc: c.windSrc, hsLocal: c.hsLocal != null ? +c.hsLocal.toFixed(2) : null,
       sea: M.seaState(c.hsLocal), falling: c.falling, light: c.light, moon: Math.round(c.moon.illum * 100), sst: c.sst, rain72: Math.round(c.rain72),
       rain7: Math.round(c.rain7), api: Math.round(c.apiBasin), flowRatio: c.flow && c.flow.ratio != null ? +c.flow.ratio.toFixed(2) : null, river: M.riverLevel(c).level,
       model: state.data.src ? state.data.src[i] : null,
@@ -1026,6 +1068,7 @@
     if (manual) toast("Mise à jour en cours…"); // réponse tout de suite au toucher (22 nov. 2026), la météo peut mettre du temps
     try {
       // Météo d'abord ; débits et houle attendus au plus 8 s, sinon ils mettront l'affichage à jour en arrivant (22 nov. 2026).
+      lancerVent(true); // vent au poste : jamais attendu, redessine en arrivant
       const autres = Promise.all([fetchFlows(true).catch(() => state.flows || {}), fetchHoule(true).catch(() => state.houle)]);
       const [d, vite] = await Promise.all([fetchData(true), Promise.race([autres, attendre(ATTENTE_SECONDAIRE).then(() => null)])]);
       if (d) state.data = d;
@@ -1067,6 +1110,7 @@
     }
     // Météo d'abord ; débits, houle et routes attendus au plus 8 s (22 nov. 2026 : un service muet bloquait l'affichage).
     // En retard : on affiche avec les dernières valeurs gardées dans le téléphone, puis on redessine quand ils arrivent.
+    lancerVent(false); // vent au poste : jamais attendu (22 nov. 2026)
     const autres = Promise.all([fetchFlows(false).catch(() => ({})), fetchHoule(false).catch(() => null), computeDrive().catch(() => { })]);
     const [data, vite] = await Promise.all([fetchData(false), Promise.race([autres, attendre(ATTENTE_SECONDAIRE).then(() => null)])]);
     if (data) state.data = data; // si la mise à jour échoue, on garde les prévisions déjà affichées

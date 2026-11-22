@@ -383,7 +383,8 @@
     }
     f.push({ k: "Lumière", v: Math.min(1, light), why: lWhy });
 
-    let wind = 1, wWhy = `${M.windName(c.windDir)} ${Math.round(c.wind)} km/h`;
+    // windSrc (22 nov. 2026) : « poste » = vent prévu au poste, « zone » = vent du point de zone (en secours)
+    let wind = 1, wWhy = `${M.windName(c.windDir)} ${Math.round(c.wind)} km/h${c.windSrc === "poste" ? " (au poste)" : c.windSrc === "zone" ? " (vent de la zone)" : ""}`;
     if (c.onshore >= 35) { wind *= 0.8; wWhy += ", de face : lancer difficile"; }
     else if (c.onshore <= -25) wWhy += ", de terre : mer plate et eau claire";
     if (c.gust >= 60) { wind *= 0.6; wWhy += `, rafales ${Math.round(c.gust)} km/h : prudence`; }
