@@ -70,45 +70,34 @@ async function ign(nom, couche, b) {
 const boite = (lat, lon, km) => { const dl = km / 2 / 111.32, dL = km / 2 / (111.32 * Math.cos(lat * Math.PI / 180)); return [lat - dl, lon - dL, lat + dl, lon + dL]; };
 
 (async () => {
-  // 1. OpenStreetMap : petites requêtes séparées (une grosse requête a déjà rendu 0 élément, LECONS 20 nov.).
-  const q = {
-    ouvrages: `[out:json][timeout:80];(nwr["man_made"~"^(lighthouse|groyne|breakwater|pier|dyke|embankment)$"](${bb});way["embankment"="yes"](${bb});nwr["seamark:type"](${bb}););out geom;`,
-    noms: `[out:json][timeout:80];nwr["name"~"Véran|Veran|Beauduc|Dent|Faraman|Quenin|Sainte-Anne|Sablon|Courbe|Galère|Piémanson|Vaisseau|Gacholle|Sémaphore",i](${bb});out center tags;`,
-    cote: `[out:json][timeout:80];way["natural"="coastline"](${bb});out geom;`,
-    eau: `[out:json][timeout:80];(way["natural"="water"](${bb});way["natural"="wetland"]["name"](${bb}););out geom;relation["natural"="water"](${bb});out center tags;`,
-    acces: `[out:json][timeout:80];(way["highway"](${bb});nwr["amenity"="parking"](${bb});node["barrier"](${bb}););out geom;`,
-    protection: `[out:json][timeout:80];(nwr["boundary"="protected_area"](${bb});nwr["leisure"="nature_reserve"](${bb});nwr["boundary"="national_park"](${bb}););out center tags;`
-  };
-  const osm = {};
-  for (const [k, v] of Object.entries(q)) { osm[k] = await overpass(k, v); await sleep(2000); }
-
-  // 2. Points de vue : tout le secteur, puis la côte tous les ≈ 2,4 km (point du trait de côte le plus au sud à cette longitude).
-  const pts = [];
-  for (const w of osm.cote.elements || []) for (const g of w.geometry || []) pts.push(g);
-  const vues = [["secteur", (BB[0] + BB[2]) / 2, (BB[1] + BB[3]) / 2, 26]];
-  for (let lon = 4.53; lon <= 4.80; lon += 0.03) {
-    const p = pts.filter(g => Math.abs(g.lon - lon) < 0.004).sort((a, b) => a.lat - b.lat)[0];
-    if (p) vues.push([`cote_${lon.toFixed(2)}`, p.lat + 0.004, lon, 3.2]);
+  // Passe 2 (22 nov. 16 h 30) : la passe 1 a eu 0 réponse d'Overpass en 39 min (overpass-api.de « fetch failed » en 0,2 s,
+  // les 2 autres en délai dépassé). On passe par l'API officielle d'OpenStreetMap (requête « map », boîtes < 0,25 deg²).
+  const osmBoites = [[43.345, 4.555, 43.385, 4.600], [43.340, 4.595, 43.375, 4.640], [43.335, 4.635, 43.370, 4.680], [43.335, 4.675, 43.370, 4.720], [43.335, 4.715, 43.370, 4.770]];
+  for (const [i, b] of osmBoites.entries()) {
+    const r = await get(`https://api.openstreetmap.org/api/0.6/map?bbox=${b[1]},${b[0]},${b[3]},${b[2]}`, {}, 120000);
+    fs.writeFileSync(`${OUT}/osm_map_${i}.xml`, r.buf ? r.buf : (r.erreur || "échec"));
+    await sleep(2000);
   }
-  for (const e of osm.ouvrages.elements || []) if (e.tags && e.tags.man_made === "lighthouse") {
-    const la = e.lat ?? e.bounds?.minlat, lo = e.lon ?? e.bounds?.minlon;
-    if (la) vues.push([`phare_${(e.tags.name || e.id).toString().replace(/\W+/g, "_")}`, la, lo, 2]);
+  // Nominatim (1 requête/s max) : lieux nommés.
+  for (const n of ["Phare de Beauduc", "Grau de la Dent", "Phare de Faraman", "Étang de Beauduc", "Digue de Véran", "Plage de Beauduc", "Baisse de Quenin"]) {
+    const r = await get(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(n + ", Arles")}&format=jsonv2&limit=5&extratags=1`, {}, 30000);
+    fs.writeFileSync(`${OUT}/nominatim_${n.replace(/\W+/g, "_")}.json`, r.buf ? r.buf : (r.erreur || "échec"));
+    await sleep(1500);
   }
+  // Vues rapprochées le long de la côte (centres lus sur la photo Esri du secteur de la passe 1, à ± 500 m) : 2,4 km de côté.
+  const vues = [["phare_beauduc", 43.3647, 4.5846, 2.4]];
+  const cote = { 4.56: 43.385, 4.58: 43.366, 4.60: 43.360, 4.62: 43.356, 4.64: 43.352, 4.66: 43.350, 4.68: 43.350, 4.70: 43.351, 4.72: 43.353, 4.74: 43.355, 4.76: 43.356 };
+  for (const [lo, la] of Object.entries(cote)) vues.push([`cote_${(+lo).toFixed(2)}`, la + 0.003, +lo, 2.4]);
   fs.writeFileSync(`${OUT}/vues.json`, JSON.stringify(vues));
   for (const [nom, la, lo, km] of vues) { await esri(nom, boite(la, lo, km)); await esriDate(nom, la, lo); }
-
-  // 3. IGN : liste des couches d'orthophotos (dates), puis l'ortho actuelle et les anciennes sur les vues de côte.
-  const cap = await get("https://data.geopf.fr/wms-r?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0", {}, 90000);
-  let couches = [];
-  if (cap.ok) {
-    const x = cap.buf.toString();
-    couches = [...x.matchAll(/<Name>(ORTHOIMAGERY\.ORTHOPHOTOS[^<]*)<\/Name>\s*<Title>([^<]*)<\/Title>/g)].map(m => ({ nom: m[1], titre: m[2] }));
-    fs.writeFileSync(`${OUT}/ign_couches.json`, JSON.stringify(couches, null, 1));
-  }
-  const voulues = couches.map(c => c.nom).filter(n => /^ORTHOIMAGERY\.ORTHOPHOTOS(\.BDORTHO)?$|ORTHOPHOTOS20\d\d|ORTHOPHOTOS\.(19|20)\d\d|ORTHO-EXPRESS/.test(n)).slice(0, 6);
-  fs.writeFileSync(`${OUT}/ign_voulues.json`, JSON.stringify(voulues));
-  for (const [nom, la, lo, km] of vues.filter(v => (v[0].startsWith("cote_") && v[2] >= 4.555 && v[2] <= 4.685) || v[0].startsWith("phare_")))
-    for (const c of voulues.length ? voulues : ["ORTHOIMAGERY.ORTHOPHOTOS"]) await ign(nom, c, boite(la, lo, km));
+  // IGN : mêmes vues de 4,58 à 4,68 (hypothèse de Nico), 5 dates pour voir l'état de la digue avant/après les effondrements.
+  const couches = ["ORTHOIMAGERY.ORTHOPHOTOS2012", "ORTHOIMAGERY.ORTHOPHOTOS2018", "ORTHOIMAGERY.ORTHOPHOTOS2024", "ORTHOIMAGERY.ORTHOPHOTOS.ORTHO-EXPRESS.2025", "ORTHOIMAGERY.ORTHOPHOTOS"];
+  for (const [nom, la, lo, km] of vues.filter(v => v[2] >= 4.575 && v[2] <= 4.685))
+    for (const c of couches) await ign(nom, c, boite(la, lo, km));
+  // Date de l'ortho IGN actuelle (GetFeatureInfo, brut).
+  const b = boite(43.36, 4.62, 2.4);
+  const fi = await get(`https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetFeatureInfo&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&QUERY_LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=${b.join(",")}&WIDTH=800&HEIGHT=800&I=400&J=400&INFO_FORMAT=text/html`, {}, 30000);
+  fs.writeFileSync(`${OUT}/ign_date_actuelle.txt`, fi.buf ? fi.buf.toString().slice(0, 5000) : (fi.erreur || ""));
 
   fs.writeFileSync(`${OUT}/journal.json`, JSON.stringify(journal, null, 1));
   console.log(`${journal.length} requêtes ; échecs : ${journal.filter(j => j.erreur || j.code >= 400).length}`);
