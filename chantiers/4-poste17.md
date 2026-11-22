@@ -34,8 +34,15 @@ Vidéo : « PECHE DU LOUP/BAR EN BORD DE MER AU LEURRE », chaîne Fada2pêche, 
 - **Chemin réel** (calcul dans le chat : chemins OSM publics + trait de côte OSM, raccords sur le sable ≤ 150 m) : **≈ 9,1 km** = pistes 0,6 km → plage du golfe 1,7 km → sentier sableux 685971637 (`motor_vehicle=no`) 4,4 km → plage sud 2,1 km (dont 0,74 km phare → P). ≈ 2 h à 4,5 km/h, plus sur sable mou. Le routeur piéton FOSSGIS donne 13,3 km avec P « accroché » à 3,6 km d'un chemin : inutilisable ici. Digues des salins (`access=private`) : non comptées.
 - Date des photos : 25 mars 2025 (identify Esri de l'étape 1) ; le service de métadonnées Esri répond 404 depuis 17 h 22. IGN (ortho actuelle, date inconnue) : vue d'ensemble reçue, pas encore comparée.
 
+### Validation de l'étape 3 (Nico, 22 nov. 2026, 22 h 54-23 h 08, Géoportail)
+- **P** : pointe de sable présente à la rive ouest du grau → validé.
+- **a** : l'ancienne digue part bien de la plage sous le phare, mais elle est entièrement immergée sur Géoportail → validé.
+- **b** : la ligne de blocs est visible en face, mais elle a l'air entièrement immergée → validé. Ce n'est pas contraire à la vidéo (blocs émergés) : en Méditerranée, le niveau de la mer varie d'environ 30 à 50 cm selon le vent et la pression, donc des blocs au ras de l'eau peuvent être visibles ou couverts selon le jour [P].
+- **Parking** OSM 240666081 → validé.
+- **Chemin** : Nico remarque que le pêcheur annonce « 1 h de marche » dans la vidéo [V], alors que 9,1 km font près de 2 h. Raccourci étudié (données OSM de `passage-22-16h20` et `passage-22-17h19`) : piste sableuse du parking jusqu'à ≈ 43,394 / 4,596 (way 240665817, `motor_vehicle=no`), puis 1,6 km sans chemin OSM jusqu'à ≈ 43,380 / 4,593, puis « Digue des Pétroliers » (ways 106772065 et 727991528, `access=private`) jusqu'au phare → ≈ 6 km (≈ 1 h 05-1 h 20). **Écarté** : **brèche** confirmée par Nico sur Géoportail vers 43,378 / 4,593, ≈ 50 m d'eau (mesure sur sa capture : barre de 100 m ≈ 420 px, écart entre les bouts de digue ≈ 220 px), eau plus sombre donc probablement plus profonde ; s'y ajoutent le marquage privé et le tronçon sans chemin (non regardé : l'appli Géoportail plante au collage des coordonnées). **Chemin retenu : 9,1 km.** Le « 1 h » de la vidéo reste inexpliqué (temps sous-estimé, autre accès, passage à gué ?) → à voir sur place.
+
 ## Reste à faire
-3. Fait (22 nov., 17 h 30), en attente de validation de Nico : P, a, b, parking, chemin.
+3. Fait (22 nov., 17 h 30). **Validé par Nico le 22 nov. (22 h 54-23 h 08, Géoportail)** : P, a, b, parking, chemin de 9,1 km (voir « Validation de l'étape 3 » ci-dessous).
 4. Limites de la fiche : hors secteur, bouée Candhis la plus proche, couleur de l'eau non réglée ici (Grand Rhône).
 6. Procédure habituelle (REPRISE.md, essai Chrome, cache v21, accord de Nico, `main`).
 - Petit défaut corrigé (commentaire de `lieu.js`, 17 h 18).
