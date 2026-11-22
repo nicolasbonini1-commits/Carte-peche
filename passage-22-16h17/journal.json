@@ -1,0 +1,294 @@
+[
+ {
+  "debut": "2026-11-22T14:38:07.933Z",
+  "fin": "2026-11-22T14:38:08.241Z",
+  "s": 0.309,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:38:08.241Z",
+  "fin": "2026-11-22T14:39:38.242Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:39:38.242Z",
+  "fin": "2026-11-22T14:40:11.273Z",
+  "s": 33.031,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "code": 504,
+  "type": "text/html; charset=utf-8",
+  "octets": 695
+ },
+ {
+  "debut": "2026-11-22T14:40:56.313Z",
+  "fin": "2026-11-22T14:40:56.528Z",
+  "s": 0.215,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:40:56.528Z",
+  "fin": "2026-11-22T14:42:26.529Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:42:26.529Z",
+  "fin": "2026-11-22T14:43:56.531Z",
+  "s": 90.002,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:43:58.532Z",
+  "fin": "2026-11-22T14:43:58.747Z",
+  "s": 0.215,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:43:58.748Z",
+  "fin": "2026-11-22T14:45:28.749Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:45:28.749Z",
+  "fin": "2026-11-22T14:46:58.750Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:47:43.791Z",
+  "fin": "2026-11-22T14:47:44.005Z",
+  "s": 0.214,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:47:44.005Z",
+  "fin": "2026-11-22T14:49:14.008Z",
+  "s": 90.003,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:49:14.008Z",
+  "fin": "2026-11-22T14:50:44.008Z",
+  "s": 90,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:50:46.010Z",
+  "fin": "2026-11-22T14:50:46.229Z",
+  "s": 0.219,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:50:46.229Z",
+  "fin": "2026-11-22T14:52:16.229Z",
+  "s": 90,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:52:16.229Z",
+  "fin": "2026-11-22T14:53:46.230Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:54:31.265Z",
+  "fin": "2026-11-22T14:54:31.485Z",
+  "s": 0.22,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:54:31.485Z",
+  "fin": "2026-11-22T14:56:01.486Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:56:01.486Z",
+  "fin": "2026-11-22T14:57:31.487Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:57:33.489Z",
+  "fin": "2026-11-22T14:57:33.705Z",
+  "s": 0.216,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T14:57:33.705Z",
+  "fin": "2026-11-22T14:59:03.706Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T14:59:03.706Z",
+  "fin": "2026-11-22T15:00:33.707Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:01:18.748Z",
+  "fin": "2026-11-22T15:01:18.962Z",
+  "s": 0.214,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T15:01:18.962Z",
+  "fin": "2026-11-22T15:02:48.963Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:02:48.963Z",
+  "fin": "2026-11-22T15:03:20.626Z",
+  "s": 31.663,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "code": 504,
+  "type": "text/html; charset=utf-8",
+  "octets": 695
+ },
+ {
+  "debut": "2026-11-22T15:03:22.628Z",
+  "fin": "2026-11-22T15:03:22.844Z",
+  "s": 0.216,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T15:03:22.844Z",
+  "fin": "2026-11-22T15:04:52.844Z",
+  "s": 90,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:04:52.844Z",
+  "fin": "2026-11-22T15:06:22.844Z",
+  "s": 90,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:07:07.872Z",
+  "fin": "2026-11-22T15:07:08.088Z",
+  "s": 0.216,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T15:07:08.088Z",
+  "fin": "2026-11-22T15:08:38.089Z",
+  "s": 90.001,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:08:38.089Z",
+  "fin": "2026-11-22T15:10:08.090Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:10:10.091Z",
+  "fin": "2026-11-22T15:10:10.306Z",
+  "s": 0.215,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T15:10:10.306Z",
+  "fin": "2026-11-22T15:11:40.305Z",
+  "s": 89.999,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:11:40.305Z",
+  "fin": "2026-11-22T15:13:10.306Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:13:55.347Z",
+  "fin": "2026-11-22T15:13:55.567Z",
+  "s": 0.22,
+  "url": "https://overpass-api.de/api/interpreter",
+  "erreur": "fetch failed"
+ },
+ {
+  "debut": "2026-11-22T15:13:55.567Z",
+  "fin": "2026-11-22T15:15:25.567Z",
+  "s": 90,
+  "url": "https://overpass.private.coffee/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:15:25.567Z",
+  "fin": "2026-11-22T15:16:55.568Z",
+  "s": 90.001,
+  "url": "https://overpass.kumi.systems/api/interpreter",
+  "erreur": "The operation was aborted due to timeout"
+ },
+ {
+  "debut": "2026-11-22T15:16:57.569Z",
+  "fin": "2026-11-22T15:17:01.531Z",
+  "s": 3.962,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=4.499325634953345,43.26321954725116,4.8206743650466555,43.49678045274883&bboxSR=4326&imageSR=3857&size=1000,1",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 229199
+ },
+ {
+  "debut": "2026-11-22T15:17:01.531Z",
+  "fin": "2026-11-22T15:17:01.780Z",
+  "s": 0.249,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.66,43.379999999999995&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapEx",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T15:17:01.780Z",
+  "fin": "2026-11-22T15:17:01.913Z",
+  "s": 0.133,
+  "url": "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/identify?geometry=4.66,43.379999999999995&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.65,43",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 7727
+ },
+ {
+  "debut": "2026-11-22T15:17:01.913Z",
+  "fin": "2026-11-22T15:17:02.830Z",
+  "s": 0.917,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0",
+  "code": 200,
+  "type": "application/xml",
+  "octets": 960278
+ }
+]

@@ -1,0 +1,1 @@
+{"echec":true,"requete":"[out:json][timeout:80];nwr[\"name\"~\"Véran|Veran|Beauduc|Dent|Faraman|Quenin|Sainte-Anne|Sablon|Courbe|Galère|Piémanson|Vaisseau|Gacholle|Sémaphore\",i](43.33,4.5,43.43,4.82);out center tags;"}

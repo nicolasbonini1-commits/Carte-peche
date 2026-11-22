@@ -1,0 +1,1 @@
+{"echec":true,"requete":"[out:json][timeout:80];(nwr[\"boundary\"=\"protected_area\"](43.33,4.5,43.43,4.82);nwr[\"leisure\"=\"nature_reserve\"](43.33,4.5,43.43,4.82);nwr[\"boundary\"=\"national_park\"](43.33,4.5,43.43,4.82););out center tags;"}

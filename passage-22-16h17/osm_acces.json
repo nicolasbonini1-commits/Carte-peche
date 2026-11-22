@@ -1,0 +1,1 @@
+{"echec":true,"requete":"[out:json][timeout:80];(way[\"highway\"](43.33,4.5,43.43,4.82);nwr[\"amenity\"=\"parking\"](43.33,4.5,43.43,4.82);node[\"barrier\"](43.33,4.5,43.43,4.82););out geom;"}

@@ -1,0 +1,1 @@
+{"echec":true,"requete":"[out:json][timeout:80];(nwr[\"man_made\"~\"^(lighthouse|groyne|breakwater|pier|dyke|embankment)$\"](43.33,4.5,43.43,4.82);way[\"embankment\"=\"yes\"](43.33,4.5,43.43,4.82);nwr[\"seamark:type\"](43.33,4.5,43.43,4.82););out geom;"}

@@ -1,0 +1,1 @@
+{"echec":true,"requete":"[out:json][timeout:80];(way[\"natural\"=\"water\"](43.33,4.5,43.43,4.82);way[\"natural\"=\"wetland\"][\"name\"](43.33,4.5,43.43,4.82););out geom;relation[\"natural\"=\"water\"](43.33,4.5,43.43,4.82);out center tags;"}
