@@ -1,0 +1,47 @@
+# Poste 17, tâche de nuit A (23 nov. 2026), A1 bis : le 1er passage (Python urllib) n'a eu aucune réponse de Candhis
+# (8 délais dépassés à 60 s). Ici : curl, comme alertes.yml. Pages publiques des 4 campagnes (sans clé, hors API)
+# puis 2 requêtes API au plus (total API de la nuit : 10). Résultats dans essais-poste17/passage-JJ-HHhMM.
+name: poste17-candhis
+on:
+  push:
+    branches: [essai-poste17]
+    paths: [".github/workflows/poste17-candhis.yml"]
+permissions:
+  contents: write
+jobs:
+  candhis:
+    if: github.ref_name == 'essai-poste17'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      K: ${{ secrets.CANDHIS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Adresses de candhis.cerema.fr (IPv4 / IPv6)
+        run: |
+          echo "D=passage-$(TZ=Europe/Paris date '+%d-%Hh%M')" >> $GITHUB_ENV
+          mkdir -p /tmp/sortie/A1bis && getent ahosts candhis.cerema.fr | tee /tmp/sortie/A1bis/dns.txt || true
+      - name: Pages publiques des campagnes (hors API)
+        run: |
+          cd /tmp/sortie/A1bis
+          for c in 01301 01303 01306 03001; do
+            b=$(echo -n "camp=$c" | base64)
+            echo "== $c $(date -u +%H:%M:%S)"
+            curl -sS -m 60 -L -A "Mozilla/5.0 (Carte-peche, usage perso)" "https://candhis.cerema.fr/_public_/campagne.php?$b" -o page_$c.html -w "%{http_code} %{size_download} o %{time_total} s ip %{remote_ip}\n" || echo "échec $c"
+            iconv -f latin1 -t utf8 page_$c.html 2>/dev/null | sed 's/<[^>]*>/ /g' | tr -s ' \n\t' ' ' > page_$c.txt || true
+            head -c 3000 page_$c.txt; echo
+          done 2>&1 | tee journal_pages.txt
+      - name: API Candhis, 2 requêtes au plus (curl, clé seule dans Authorization)
+        run: |
+          cd /tmp/sortie/A1bis
+          for c in 01301 01306; do
+            echo "== getCampInfos $c $(date -u +%H:%M:%S)"
+            curl -sS -m 60 -H "Authorization: $K" "https://candhis.cerema.fr/API/v1/getCampInfos.php?camp=$c" -o api_infos_$c.json -w "%{http_code} %{size_download} o %{time_total} s ip %{remote_ip}\n" || echo "échec $c"
+            head -c 1500 api_infos_$c.json; echo
+          done 2>&1 | tee journal_api.txt
+      - name: Enregistrer
+        if: always()
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOK: ${{ github.token }}
+        run: bash outils/poste17/nuit/enregistrer.sh
