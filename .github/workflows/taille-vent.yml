@@ -1,0 +1,31 @@
+# Chantier 1, étape 2 (22 nov. 2026) : chiffrer la requête « vent au poste » avant de coder (taille, temps, contenu).
+# 3 tours, ordre alterné (leçon du 22 nov.). Aucune modification de l'appli. Résultats dans essais-prevision/taille/, jamais dans donnees.
+name: taille-vent
+on:
+  push:
+    branches: [chantier-1-postes]
+    paths: ["outils/taille_vent/**", ".github/workflows/taille-vent.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  mesure:
+    if: github.ref_name == 'chantier-1-postes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - run: |
+          mkdir -p /tmp/out && node outils/taille_vent/urls.js > /tmp/urls.txt
+          get() { curl -s -A "Carte-peche/essai (github.com/nicolasbonini1-commits/Carte-peche)" -H "Accept-Encoding: gzip" --max-time 120 \
+                  -o /tmp/out/$2_$1.gz -w "$1 $2 %{http_code} %{size_download} %{time_total}\n" "$(grep "^$2 " /tmp/urls.txt | cut -d' ' -f2)" >> /tmp/out/temps.txt; sleep 3; }
+          get 1 actuel; get 1 vent; get 2 vent; get 2 actuel; get 3 actuel; get 3 vent; get 1 mer
+          node outils/taille_vent/mesure.js /tmp/out
+      - if: always()
+        run: |
+          cd /tmp && git clone -q --depth 1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d && cd d
+          git fetch -q --depth=1 origin essais-prevision && git checkout -q -b essais-prevision FETCH_HEAD
+          mkdir -p taille && cp /tmp/out/RESULTAT.md /tmp/out/temps.txt taille/ 2>/dev/null; cp /tmp/out/vent_1.gz taille/ 2>/dev/null
+          echo "$(TZ=Europe/Paris date '+%d/%m %H:%M') commit ${GITHUB_SHA::7}" > taille/HEURE.txt
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "taille vent au poste $(TZ=Europe/Paris date '+%d/%m %H:%M')" && git push -q origin essais-prevision
