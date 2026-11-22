@@ -1,0 +1,46 @@
+{
+ "source": "EMODnet Bathymetry depth_sample, maille ≈ 115 m",
+ "cap_large": 215,
+ "prof": {
+  "P": {
+   "ici": -0.9,
+   "large_50m": 2.33,
+   "large_100m": 2.33,
+   "large_200m": -0.99,
+   "large_300m": -2.5,
+   "large_500m": -3.68
+  },
+  "a": {
+   "ici": 0.11,
+   "large_50m": -0.72,
+   "large_100m": -0.66,
+   "large_200m": 0.03,
+   "large_300m": -3.36,
+   "large_500m": -4.7
+  },
+  "b": {
+   "ici": -0.48,
+   "large_50m": -0.58,
+   "large_100m": -0.58,
+   "large_200m": -2.34,
+   "large_300m": -2.34,
+   "large_500m": -4.32
+  },
+  "c": {
+   "ici": -2.67,
+   "large_50m": -3.44,
+   "large_100m": -3.44,
+   "large_200m": -3.58,
+   "large_300m": -4.08,
+   "large_500m": -5.66
+  },
+  "blocs": {
+   "ici": -1.07,
+   "large_50m": 0.13,
+   "large_100m": 0.13,
+   "large_200m": -3.18,
+   "large_300m": -3.56,
+   "large_500m": -5.16
+  }
+ }
+}

@@ -1,0 +1,497 @@
+[
+ {
+  "debut": "2026-11-22T16:19:01.697Z",
+  "fin": "2026-11-22T16:19:03.525Z",
+  "s": 1.828,
+  "url": "https://api.openstreetmap.org/api/0.6/map?bbox=4.53,43.375,4.63,43.425",
+  "code": 200,
+  "type": "application/xml; charset=utf-8",
+  "octets": 3529575
+ },
+ {
+  "debut": "2026-11-22T16:19:03.598Z",
+  "fin": "2026-11-22T16:19:04.362Z",
+  "s": 0.764,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.596909,43.407308;4.592610,43.361470?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 4112
+ },
+ {
+  "debut": "2026-11-22T16:19:05.463Z",
+  "fin": "2026-11-22T16:19:05.607Z",
+  "s": 0.144,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.596909,43.407308;4.584530,43.362060?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 4214
+ },
+ {
+  "debut": "2026-11-22T16:19:06.708Z",
+  "fin": "2026-11-22T16:19:06.852Z",
+  "s": 0.144,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.592610,43.361470;4.584530,43.362060?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 687
+ },
+ {
+  "debut": "2026-11-22T16:19:07.953Z",
+  "fin": "2026-11-22T16:19:08.098Z",
+  "s": 0.145,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.592610,43.361470;4.588750,43.361790?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 646
+ },
+ {
+  "debut": "2026-11-22T16:19:09.198Z",
+  "fin": "2026-11-22T16:19:09.343Z",
+  "s": 0.145,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.592610,43.361470;4.600210,43.357060?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 646
+ },
+ {
+  "debut": "2026-11-22T16:19:10.443Z",
+  "fin": "2026-11-22T16:19:10.587Z",
+  "s": 0.144,
+  "url": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/4.592610,43.361470;4.592010,43.359420?overview=full&geometries=geojson&steps=false",
+  "code": 200,
+  "type": "application/json; charset=UTF-8",
+  "octets": 646
+ },
+ {
+  "debut": "2026-11-22T16:19:11.689Z",
+  "fin": "2026-11-22T16:19:13.016Z",
+  "s": 1.327,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59261%2043.36147)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 132
+ },
+ {
+  "debut": "2026-11-22T16:19:13.216Z",
+  "fin": "2026-11-22T16:19:13.370Z",
+  "s": 0.154,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59226%2043.36110)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:13.570Z",
+  "fin": "2026-11-22T16:19:13.722Z",
+  "s": 0.152,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59190%2043.36073)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:13.923Z",
+  "fin": "2026-11-22T16:19:14.074Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59119%2043.36000)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 133
+ },
+ {
+  "debut": "2026-11-22T16:19:14.274Z",
+  "fin": "2026-11-22T16:19:14.424Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59048%2043.35926)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 316
+ },
+ {
+  "debut": "2026-11-22T16:19:14.624Z",
+  "fin": "2026-11-22T16:19:14.774Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58907%2043.35779)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 316
+ },
+ {
+  "debut": "2026-11-22T16:19:14.974Z",
+  "fin": "2026-11-22T16:19:15.125Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58453%2043.36206)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:15.324Z",
+  "fin": "2026-11-22T16:19:15.474Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58418%2043.36169)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 132
+ },
+ {
+  "debut": "2026-11-22T16:19:15.675Z",
+  "fin": "2026-11-22T16:19:15.825Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58382%2043.36132)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 131
+ },
+ {
+  "debut": "2026-11-22T16:19:16.025Z",
+  "fin": "2026-11-22T16:19:16.175Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58311%2043.36059)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 132
+ },
+ {
+  "debut": "2026-11-22T16:19:16.375Z",
+  "fin": "2026-11-22T16:19:16.524Z",
+  "s": 0.149,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58240%2043.35985)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 317
+ },
+ {
+  "debut": "2026-11-22T16:19:16.725Z",
+  "fin": "2026-11-22T16:19:16.876Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58099%2043.35838)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 309
+ },
+ {
+  "debut": "2026-11-22T16:19:17.076Z",
+  "fin": "2026-11-22T16:19:17.234Z",
+  "s": 0.158,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58875%2043.36179)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 128
+ },
+ {
+  "debut": "2026-11-22T16:19:17.433Z",
+  "fin": "2026-11-22T16:19:17.583Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58840%2043.36142)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 134
+ },
+ {
+  "debut": "2026-11-22T16:19:17.782Z",
+  "fin": "2026-11-22T16:19:17.933Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58804%2043.36105)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 134
+ },
+ {
+  "debut": "2026-11-22T16:19:18.134Z",
+  "fin": "2026-11-22T16:19:18.284Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58733%2043.36032)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 317
+ },
+ {
+  "debut": "2026-11-22T16:19:18.485Z",
+  "fin": "2026-11-22T16:19:18.635Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58662%2043.35958)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 317
+ },
+ {
+  "debut": "2026-11-22T16:19:18.836Z",
+  "fin": "2026-11-22T16:19:18.986Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58521%2043.35811)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 318
+ },
+ {
+  "debut": "2026-11-22T16:19:19.185Z",
+  "fin": "2026-11-22T16:19:19.336Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.60021%2043.35706)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 131
+ },
+ {
+  "debut": "2026-11-22T16:19:19.537Z",
+  "fin": "2026-11-22T16:19:19.687Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59986%2043.35669)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:19.887Z",
+  "fin": "2026-11-22T16:19:20.037Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59950%2043.35632)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:20.236Z",
+  "fin": "2026-11-22T16:19:20.387Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59879%2043.35559)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 313
+ },
+ {
+  "debut": "2026-11-22T16:19:20.587Z",
+  "fin": "2026-11-22T16:19:20.738Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59808%2043.35485)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 312
+ },
+ {
+  "debut": "2026-11-22T16:19:20.938Z",
+  "fin": "2026-11-22T16:19:21.088Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59667%2043.35338)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 316
+ },
+ {
+  "debut": "2026-11-22T16:19:21.288Z",
+  "fin": "2026-11-22T16:19:21.438Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59201%2043.35942)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 130
+ },
+ {
+  "debut": "2026-11-22T16:19:21.638Z",
+  "fin": "2026-11-22T16:19:21.787Z",
+  "s": 0.149,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59166%2043.35905)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 129
+ },
+ {
+  "debut": "2026-11-22T16:19:21.988Z",
+  "fin": "2026-11-22T16:19:22.137Z",
+  "s": 0.149,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59130%2043.35868)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 129
+ },
+ {
+  "debut": "2026-11-22T16:19:22.337Z",
+  "fin": "2026-11-22T16:19:22.488Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.59059%2043.35795)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 317
+ },
+ {
+  "debut": "2026-11-22T16:19:22.688Z",
+  "fin": "2026-11-22T16:19:22.839Z",
+  "s": 0.151,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58988%2043.35721)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 312
+ },
+ {
+  "debut": "2026-11-22T16:19:23.038Z",
+  "fin": "2026-11-22T16:19:23.188Z",
+  "s": 0.15,
+  "url": "https://rest.emodnet-bathymetry.eu/depth_sample?geom=POINT(4.58847%2043.35574)",
+  "code": 200,
+  "type": "application/json",
+  "octets": 318
+ },
+ {
+  "debut": "2026-11-22T16:19:23.389Z",
+  "fin": "2026-11-22T16:19:25.034Z",
+  "s": 1.645,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=510834.3745027246,5366741.491156635,511659.6387214675,5367566.755376223&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=imag",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 151394
+ },
+ {
+  "debut": "2026-11-22T16:19:25.034Z",
+  "fin": "2026-11-22T16:19:25.201Z",
+  "s": 0.167,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.59261,43.36147&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.58761,43.35646999999",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:25.201Z",
+  "fin": "2026-11-22T16:19:27.257Z",
+  "s": 2.056,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=43.358775066475026,4.588903262694331,43.36416493352497,4.596316737305668&WIDTH=1000&HEIGHT=1",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 89195
+ },
+ {
+  "debut": "2026-11-22T16:19:27.258Z",
+  "fin": "2026-11-22T16:19:28.180Z",
+  "s": 0.922,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=509934.9090043313,5366831.824856001,510760.18124864163,5367657.09710116&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=imag",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 142514
+ },
+ {
+  "debut": "2026-11-22T16:19:28.180Z",
+  "fin": "2026-11-22T16:19:28.228Z",
+  "s": 0.048,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.58453,43.36206&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.57953,43.35706,4.589",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:28.228Z",
+  "fin": "2026-11-22T16:19:29.156Z",
+  "s": 0.928,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=43.35936506647503,4.580823226646882,43.36475493352497,4.588236773353118&WIDTH=1000&HEIGHT=10",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 89766
+ },
+ {
+  "debut": "2026-11-22T16:19:29.156Z",
+  "fin": "2026-11-22T16:19:31.150Z",
+  "s": 1.994,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=510404.6790918527,5366790.485596433,511229.94766341563,5367615.754168845&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=ima",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 165053
+ },
+ {
+  "debut": "2026-11-22T16:19:31.150Z",
+  "fin": "2026-11-22T16:19:31.188Z",
+  "s": 0.038,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.58875,43.36179&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.58375,43.35679,4.593",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:31.188Z",
+  "fin": "2026-11-22T16:19:33.000Z",
+  "s": 1.812,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=43.35909506647503,4.585043243143308,43.36448493352497,4.592456756856692&WIDTH=1000&HEIGHT=10",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 103163
+ },
+ {
+  "debut": "2026-11-22T16:19:33.000Z",
+  "fin": "2026-11-22T16:19:34.792Z",
+  "s": 1.792,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=511680.4326227541,5366066.312849059,512505.63686149585,5366891.517088645&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=ima",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 117281
+ },
+ {
+  "debut": "2026-11-22T16:19:34.792Z",
+  "fin": "2026-11-22T16:19:34.830Z",
+  "s": 0.038,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.60021,43.35706&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.59521,43.35205999999",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:34.830Z",
+  "fin": "2026-11-22T16:19:35.804Z",
+  "s": 0.974,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=43.354365066475026,4.59650353209909,43.35975493352497,4.603916467900909&WIDTH=1000&HEIGHT=10",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 72975
+ },
+ {
+  "debut": "2026-11-22T16:19:35.805Z",
+  "fin": "2026-11-22T16:19:37.005Z",
+  "s": 1.2,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=510767.5967500249,5366427.626656361,511592.83308521536,5367252.862992399&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=ima",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 116461
+ },
+ {
+  "debut": "2026-11-22T16:19:37.005Z",
+  "fin": "2026-11-22T16:19:37.043Z",
+  "s": 0.038,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.59201,43.35942&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.58701,43.35442,4.597",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:37.043Z",
+  "fin": "2026-11-22T16:19:38.238Z",
+  "s": 1.195,
+  "url": "https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS&STYLES=&CRS=EPSG:4326&BBOX=43.35672506647503,4.588303387935438,43.36211493352497,4.595716612064562&WIDTH=1000&HEIGHT=10",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 67889
+ },
+ {
+  "debut": "2026-11-22T16:19:38.238Z",
+  "fin": "2026-11-22T16:19:40.885Z",
+  "s": 2.647,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=511312.620628562,5373762.314552096,512138.50909598556,5374588.203020371&bboxSR=3857&imageSR=3857&size=1000,1000&format=jpg&f=imag",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 221305
+ },
+ {
+  "debut": "2026-11-22T16:19:40.885Z",
+  "fin": "2026-11-22T16:19:40.923Z",
+  "s": 0.038,
+  "url": "https://metadata.maptiles.arcgis.com/arcgis/rest/services/World_Imagery_Metadata/MapServer/identify?geometry=4.596908961904761,43.407308271428576&geometryType=esriGeometryPoint&sr=4326&layers=all&tolerance=2&mapExtent=4.",
+  "code": 200,
+  "type": "application/json;charset=UTF-8",
+  "octets": 99
+ },
+ {
+  "debut": "2026-11-22T16:19:40.924Z",
+  "fin": "2026-11-22T16:19:47.552Z",
+  "s": 6.628,
+  "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=509536.3703570285,5366066.312849059,514037.6645668401,5380081.0225028&bboxSR=3857&imageSR=3857&size=2000,6227&format=jpg&f=image",
+  "code": 200,
+  "type": "image/jpeg",
+  "octets": 949475
+ }
+]

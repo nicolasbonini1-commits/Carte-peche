@@ -1,0 +1,32 @@
+[
+ {
+  "id": "P",
+  "nom": "Grau de l'étang de Beauduc, rive ouest",
+  "lat": 43.36147,
+  "lon": 4.59261
+ },
+ {
+  "id": "a",
+  "nom": "Racine de l'ancienne digue, sous le phare",
+  "lat": 43.36206,
+  "lon": 4.58453
+ },
+ {
+  "id": "b",
+  "nom": "Plage face à la ligne de blocs",
+  "lat": 43.36179,
+  "lon": 4.58875
+ },
+ {
+  "id": "c",
+  "nom": "Jonction blocs / rivage, rive est du grau",
+  "lat": 43.35706,
+  "lon": 4.60021
+ },
+ {
+  "id": "blocs",
+  "nom": "Ligne de blocs, milieu",
+  "lat": 43.35942,
+  "lon": 4.59201
+ }
+]

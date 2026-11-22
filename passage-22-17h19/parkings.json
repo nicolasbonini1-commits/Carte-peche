@@ -1,0 +1,55 @@
+{
+ "boite": [
+  43.375,
+  4.53,
+  43.425,
+  4.63
+ ],
+ "parkings": [
+  {
+   "osm": "way/240666081",
+   "lat": 43.407308271428576,
+   "lon": 4.596908961904761,
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "parking": "surface",
+    "surface": "sand"
+   },
+   "vol_P": 5109
+  }
+ ],
+ "noms": [
+  {
+   "osm": "node/1676703176",
+   "lat": 43.4024147,
+   "lon": 4.5955805,
+   "tags": {
+    "name": "Beauduc",
+    "place": "locality",
+    "wikidata": "Q2893152",
+    "wikipedia": "fr:Beauduc"
+   }
+  },
+  {
+   "osm": "node/1676823809",
+   "lat": 43.3960688,
+   "lon": 4.5953518,
+   "tags": {
+    "name": "Les Sablons",
+    "place": "hamlet"
+   }
+  },
+  {
+   "osm": "node/13598345202",
+   "lat": 43.3853213,
+   "lon": 4.5531009,
+   "tags": {
+    "name": "Pointe de Beauduc ou du Sablon",
+    "natural": "cape",
+    "source": "IGN - 2025-12-15"
+   }
+  }
+ ]
+}
