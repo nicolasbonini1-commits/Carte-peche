@@ -1,0 +1,69 @@
+# Poste 17 (pointe de Beauduc), tâche de nuit A du 23 nov. 2026 : bouées Candhis proches (A1), route (A3), turbidité à P (A2).
+# Ne tourne que sur la branche essai-poste17 ; écrit dans « essais-poste17/passage-JJ-HHhMM » (un dossier par passage,
+# branche jamais réécrite, LECONS 22 nov.). N'écrit jamais dans « donnees » (lue par Home Assistant) ni dans main.
+# Étapes choisies par le message du commit : [A1] [A2] [A3] (aucune → rien). Lancement manuel : les trois.
+# Candhis : 8 requêtes au plus, sans nouvelle tentative (limite 150/jour partagée avec les alertes).
+name: poste17-nuit
+on:
+  push:
+    branches: [essai-poste17]
+    paths: ["outils/poste17/nuit/**", "outils/poste17/turbidite/**", ".github/workflows/poste17-nuit.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: poste17-nuit
+  cancel-in-progress: false
+jobs:
+  nuit:
+    if: github.ref_name == 'essai-poste17'
+    runs-on: ubuntu-latest
+    timeout-minutes: 280
+    env:
+      MSG: ${{ github.event.head_commit.message }}
+      EV: ${{ github.event_name }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dossier du passage
+        run: |
+          echo "D=passage-$(TZ=Europe/Paris date '+%d-%Hh%M')" >> $GITHUB_ENV
+          mkdir -p /tmp/sortie
+          a() { [ "$EV" = workflow_dispatch ] || echo "$MSG" | grep -q "\[$1\]"; }
+          a A1 && echo "A1=1" >> $GITHUB_ENV || true
+          a A2 && echo "A2=1" >> $GITHUB_ENV || true
+          a A3 && echo "A3=1" >> $GITHUB_ENV || true
+      - name: A1 bouées Candhis
+        if: env.A1 == '1'
+        env:
+          K: ${{ secrets.CANDHIS_TOKEN }}
+        run: python3 outils/poste17/nuit/bouees.py /tmp/sortie/A1-bouees 2>&1 | tee /tmp/sortie/A1-journal.txt
+      - name: A3 route
+        if: env.A3 == '1'
+        run: python3 outils/poste17/nuit/route.py /tmp/sortie/A3-route 2>&1 | tee /tmp/sortie/A3-journal.txt
+      - name: Enregistrer (A1, A3)
+        if: always()
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOK: ${{ github.token }}
+        run: bash outils/poste17/nuit/enregistrer.sh
+      - name: A2 turbidité Copernicus à P
+        if: env.A2 == '1'
+        run: python3 outils/poste17/turbidite/telecharger.py /tmp/sortie/A2-turbidite 2>&1 | tee /tmp/sortie/A2-journal-telechargement.txt
+      - name: A2 analyse (relevés de essais-turbidite-releves, mêmes coefficients que l'appli)
+        if: env.A2 == '1'
+        run: |
+          pip install -q numpy pandas scipy
+          mkdir -p /tmp/rel /tmp/sat && cd /tmp/rel && git init -q
+          git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-turbidite-releves && git checkout -q FETCH_HEAD
+          cd /tmp/sat && git init -q && git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-turbidite-satellite && git checkout -q FETCH_HEAD
+          cd "$GITHUB_WORKSPACE"
+          python3 outils/poste17/turbidite/analyse.py /tmp/rel /tmp/sortie/A2-turbidite/turbidite.json /tmp/sortie/A2-analyse /tmp/sat/turbidite.json 2>&1 | tee /tmp/sortie/A2-journal-analyse.txt
+      - name: Enregistrer (A2)
+        if: always()
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOK: ${{ github.token }}
+        run: bash outils/poste17/nuit/enregistrer.sh
