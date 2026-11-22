@@ -1,0 +1,6 @@
+== getCampInfos 01301 23:47:11
+200 245 o 0.526202 s ip 192.93.225.70
+{"apiVer":"1.00","success":true,"message":"Infos campagne `01301`","nbLig":1,"entete":["Nom","Latitude","Longitude","Profondeur","Directionnel","Capteur"],"results":[["Camargue","43.3499985","4.5666666","17.000","1","Houlographe Datawell DWR"]]}
+== getCampInfos 01306 23:47:12
+200 255 o 0.347285 s ip 192.93.225.70
+{"apiVer":"1.00","success":true,"message":"Infos campagne `01306`","nbLig":1,"entete":["Nom","Latitude","Longitude","Profondeur","Directionnel","Capteur"],"results":[["Golfe de Fos","43.3161163","4.9203668","55.000","1","Houlographe Datawell DWR MkIII"]]}

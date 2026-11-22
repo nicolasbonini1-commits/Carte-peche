@@ -1,0 +1,1252 @@
+
+<script type='text/javascript'>
+var bDebug = 0;
+
+//var langPHP = {};
+//console.log("langPHP 1",langPHP);
+var langPHP = "fr";
+var langJsonPHP = "{\n  \"cookie1\" : \"Informations sur les cookies &#x1F36A;\",\n  \"cookie2\" : \"Nous utilisons des cookies sur ce site, uniquement pour am\u00e9liorer votre exp\u00e9rience d'utilisateur.\",\n  \"cookie3\" : \"En cliquant sur `Accepter` ou en poursuivant la navigation sur le site, vous acceptez les `CGU \/ politique de confidentialit\u00e9` et les cookies n\u00e9cessaires au bon fonctionnement de celui-ci.\",\n  \"cookie4\" : \"Plus d'informations\",\n  \"cookie5\" : \"Fermer\",\n  \"cookie6\" : \"Accepter\",\n\n  \"epa\" : \"Le Cerema (Centre d'\u00e9tudes et d'expertise sur les risques, l'environnement, la mobilit\u00e9 et l'am\u00e9nagement) est un \u00e9tablissement public tourn\u00e9 vers l\u2019appui aux politiques publiques, plac\u00e9 sous la double tutelle du minist\u00e8re de la transition \u00e9cologique et du minist\u00e8re de la coh\u00e9sion des territoires et des relations avec les collectivit\u00e9s territoriales.\",\n\n  \"errTit\" : \"Erreur\",\n  \"errLis\" : [ \"Erreur d'authentification\", \"Acc\u00e8s interdit\", \"La page demand\u00e9e est introuvable\", \"Erreur interne du serveur\" ],\n\n  \"menuTitCerema\"  : \"Cerema, l'expertise publique pour la transition \u00e9cologique\",\n  \"menuTitCandhisOLD\" : \"Centre d'Archivage National de Donn\u00e9es de Houle In-Situ\",\n  \"menuTitCandhis\" : \"Observatoire c\u00f4tier national de mesure in situ des \u00e9tats de mer\",\n  \"menuAccS\"  : \"Accueil\",\n  \"menuAccH\"  : \"Page d'accueil du site\",\n  \"menuCartS\" : \"Carte\",\n  \"menuCartH\" : \"Localisation des campagnes de mesures\",\n  \"menuCampS\" : \"Campagnes\",\n  \"menuCampH\" : \"Liste des campagnes de mesures\",\n  \"menuDocS\"  : \"Documentations\",\n  \"menuDocH\"  : \"T\u00e9l\u00e9chargement documentations Candhis\",\n  \"menuDocS1\" : \"Conditions d'utilisation\",\n  \"menuDocH1\" : \"Avertissement d'utilisation et qualit\u00e9 des donn\u00e9es\",\n  \"menuDocS2\" : \"D\u00e9tail des param\u00e8tres\",\n  \"menuDocH2\" : \"Information founitures des donn\u00e9es\",\n  \"menuDocS3\" : \"Publications\",\n  \"menuDocH3\" : \"Publications annuelles\",\n  \"menuDocS4\" : \"API Candhis\",\n  \"menuDocH4\" : \"Utilisation de l'API Candhis\",\n  \"menuDocS5\" : \"Informations compl\u00e9mentaires\",\n  \"menuDocH5\" : \"Fichiers d'informations divers\",\n\n  \"footMLT\" : \"Mentions l\u00e9gales\",\n  \"footMLH\" : \"Mentions l\u00e9gales d'utilisation du site\",\n  \"footCTT\" : \"Contact\",\n  \"footCTH\" : \"Contact \u00e9quipe Candhis\",\n  \"footTop\" : \"Haut de page\",\n  \"footTitREM\" : \"Direction technique Risques, eau et mer\",\n  \"footTitCRM\" : \"Le Cerema est un \u00e9tablissement public qui apporte son expertise pour la transition \u00e9cologique, l\u2019adaptation au changement climatique et la coh\u00e9sion des territoires. Gr\u00e2ce \u00e0 ses 26 implantations partout en France, il accompagne les collectivit\u00e9s dans la r\u00e9alisation de leurs projets.\",\n\n  \"accTit\"   : \"Accueil\",\n  \"accPreT\"  : \"Pr\u00e9sentation\",\n  \"accPreP1\" : \"<b>Candhis<\/b> est l'observatoire c\u00f4tier national de mesure in situ des \u00e9tats de mer.<br \/><br \/>Son objectif principal est de promouvoir la mesure des \u00e9tats de mer dans le domaine proche c\u00f4tier et d\u2019assurer la diffusion des donn\u00e9es aupr\u00e8s de la communaut\u00e9 scientifique, des professionnels de la mer et du grand public.<br \/><br \/>Ce site Internet vous donne acc\u00e8s aux m\u00e9tadonn\u00e9es des campagnes de mesures, ainsi qu'en t\u00e9l\u00e9chargement aux donn\u00e9es temps r\u00e9el et aux donn\u00e9es archiv\u00e9es.<br \/><br \/><b>Candhis<\/b>, g\u00e9r\u00e9 par le <b>Cerema<\/b>, rassemble plus d'une cinquantaine de\",\n  \"accPreP2\" : \"<b>partenaires<\/b>\",\n  \"accPreP3\" : \"Partenaires Candhis\",\n  \"accPreP4\" : \"Liens vers les sites Web des partenaires\",\n  \"accActT\"  : \"Actualit\u00e9s\",\n  \"accActI\"  : \"INFORMATION\",\n  \"accActTH\" : [ \"Site\", \"Date\", \"Commentaires\" ],\n  \"errAct\"   : \"Aucune actualit\u00e9\",\n\n  \"cartTit\"  : \"Carte\",\n  \"cartFM00\" : \"Zones pr\u00e9d\u00e9finies\",\n  \"cartFM01\" : \"France m\u00e9tropolitaine\",\n  \"cartFM02\" : \"Guadeloupe\",\n  \"cartFM03\" : \"Martinique\",\n  \"cartFM04\" : \"Guyane\",\n  \"cartFM05\" : \"La R\u00e9union\",\n  \"cartFM06\" : \"Mayotte\",\n  \"cartFM07\" : \"Saint-Pierre & Miquelon\",\n  \"cartFM08\" : \"Saint-Barth\u00e9l\u00e9my\",\n  \"cartFM09\" : \"Saint-Martin\",\n  \"cartFM10\" : \"Wallis & Futuna\",\n  \"cartFM11\" : \"Polyn\u00e9sie Fran\u00e7aise\",\n  \"cartFM12\" : \"Nouvelle-Cal\u00e9donie\",\n  \"cartOui\"  : \"Oui\",\n  \"cartNon\"  : \"Non\",\n  \"cartRens\" : \"Non renseign\u00e9\",\n  \"cartAR\"   : \"Archives\",\n  \"cartTR\"   : \"Temps r\u00e9el\",\n  \"cartMN\"   : \"Maintenance\",\n  \"cartNSEO\" : \"NSEO\",\n  \"cartFond\" : \"Fond carto\",\n  \"cartHoul\" : \"Houlographes\",\n  \"cartAutr\" : \"Autre\",\n  \"cartVueS\" : \"Vue suivante\",\n  \"cartVueP\" : \"Vue pr\u00e9c\u00e9dente\",\n  \"cartVueI\" : \"Vue initiale\",\n  \"cartMPE\"  : \"Mode plein \u00e9cran\",\n  \"cartMPEX\" : \"Sortie mode plein \u00e9cran\",\n  \"cartHDet\" : \"D\u00e9tails campagne\",\n  \"cartHDir\" : \"Directionnelle : \",\n  \"cartHTR\"  : \"Temps r\u00e9el : \",\n  \"cartHCpt\" : \"Capteur : \",\n  \"cartHPrf\" : \"Profondeur : \",\n  \"cartHLat\" : \"Latitude : \",\n  \"cartHLon\" : \"Longitude : \",\n  \"cartHMS1\" : \" mesures du \",\n  \"cartHMS2\" : \" au \",\n  \"cartPrT0\" : \"Centre d'Archivage National de Donn\u00e9es de Houle In-Situ\",\n  \"cartPrT1\" : \"Impression carte\",\n  \"cartPrT2\" : \"Candhis - Cerema Risques, eaux et mer\",\n  \"cartPrPo\" : \"Portrait\",\n  \"cartPrLs\" : \"Paysage\",\n  \"cartPrZo\" : \"Zone\",\n  \"cartPrTt\" : \"Tout\",\n\n  \"campBCamp\"   : \" Campagne\",\n  \"campHCamp\"   : \"Liste des campagnes<br><i>[TR] : temps r\u00e9el<br>[MN] : maintenance<br>[PRIV] : priv\u00e9<\/i>\",\n  \"campLCamp\"   : \"Liste des campagnes\",\n  \"campBTR\"     : \" Temps r\u00e9el\",\n  \"campHTR\"     : \"Donn\u00e9es temps r\u00e9el\",\n  \"campBCar\"    : \" Caract\u00e9ristiques\",\n  \"campHCar\"    : \"Caract\u00e9ristiques g\u00e9n\u00e9rales\",\n  \"campBAr\"     : \" Archives\",\n  \"campHAr\"     : \"Donn\u00e9es archiv\u00e9es\",\n  \"campBTTR\"    : \" Temps r\u00e9el\",\n  \"campHTTR\"    : \"T\u00e9l\u00e9chargement donn\u00e9es temps r\u00e9el\",\n  \"campBTAr\"    : \" Archives\",\n  \"campHTAr\"    : \"T\u00e9l\u00e9chargement donn\u00e9es archiv\u00e9es\",\n  \"campBAnal\"   : \" Analyse\",\n  \"campHAnal\"   : \"T\u00e9l\u00e9chargement analyse campagnes\",\n  \"campIPBan\"   : \"IP bannie\",\n  \"campAlert1\"  : \"Veuillez s\u00e9lectionner une campagne\",\n  \"campAlert2\"  : \"Pas de donn\u00e9es temps r\u00e9el\",\n  \"campAlert3\"  : \"En maintenance\",\n  \"campAlert4\"  : \"Aucun historique\",\n  \"campAlert5\"  : \"Pas d'informations de disponibilit\u00e9 de la campagne\",\n  \"campAlert6\"  : \"Pas de donn\u00e9es temps r\u00e9el\",\n  \"campAlert7\"  : \"Pas de donn\u00e9es archiv\u00e9es\",\n  \"campAlert8\"  : \"Pas de donn\u00e9es archiv\u00e9es aux dates s\u00e9lectionn\u00e9es\",\n  \"campAlert9\"  : \"Donn\u00e9es temps r\u00e9el non disponibles<br \/><br \/>Pour plus d'informations veuillez consulter l'onglet `Caract\u00e9ristiques`\",\n  \"campEcrTRKO\" : \"Format fichier `temps r\u00e9el` inconnu\",\n  \"campInfTit\"  : \"Campagne \",\n  \"campLInfCol\" : [\n  \t\t[ \"Code campagne\", \"Nom campagne\", \"Latitude\", \"Longitude\" ],        \n  \t\t[ \"Profondeur (m)\", \"Capteur\", \"Directionnel\" ],                     \n  \t\t[ \"Nombre de mesures\", \"Date de d\u00e9but\", \"Date de fin\", \"Temps r\u00e9el\" ]\n    ],              \n  \"campInfOui\"  : \"Oui\",\n  \"campInfNon\"  : \"Non\",\n  \"campInfNR\"   : \"Non renseign\u00e9\",\n  \"campCarTit\"  : \"Caract\u00e9ristiques\",\n  \"campCarP1\"   : \"Partenaire\",\n  \"campCarP2\"   : \"Partenaires\",\n  \"campHisTit\"  : \"Historique\",\n  \"campHisArr\"  : [ \"Date\", \"Commentaire\" ],\n  \"campDisTit\"  : \"Disponibilit\u00e9 (mesures)\",\n  \"campLDis\"    : [ \"Ann\u00e9e\", \"Jan\", \"F\u00e9v\", \"Mar\", \"Avr\", \"Mai\", \"Jun\", \"Jul\", \"Ao\u00fb\", \"Sep\", \"Oct\", \"Nov\", \"D\u00e9c\", \"Total\" ],\n  \"campTREnt\"   : [ \"Date\", \"Heure (TU)\" ],\n  \"campLTabTR\"  : [\n  \t\t[ \"H1\/3 (m)\", \"Hmax (m)\", \"Th1\/3 (s)\", \"T. au pic (s)\",   \"Temp. mer (\u00b0C)\" ],\n  \t\t[ \"Hm0 (m)\",  \"Hmax (m)\", \"T02 (s)\",   \"Dir. au pic (\u00b0)\", \"Temp. mer (\u00b0C)\" ],\n  \t\t[ \"H1\/3 (m)\", \"Hmax (m)\", \"Th1\/3 (s)\", \"Dir. au pic (\u00b0)\", \"Etal. au pic (\u00b0)\", \"Temp. mer (\u00b0C)\" ]\n    ],              \n  \"campLGraTR\"  : [\n      [ \"H1\/3 et Hmax (m)\", \"Th1\/3 (s)\", \"T. au pic (s)\",   \"Temp. mer (\u00b0C)\" ],\n      [ \"Hm0 et Hmax (m)\",  \"T02 (s)\",   \"Dir. au pic (\u00b0)\", \"Temp. mer (\u00b0C)\" ],\n      [ \"H1\/3 et Hmax (m)\", \"Th1\/3 (s)\", \"Dir. au pic (\u00b0)\", \"Etal. au pic (\u00b0)\", \"Temp. mer (\u00b0C)\" ]\n    ],\n  \"campLLegYTR\" : [\n      [ \"M\u00e8tres\", \"Secondes\", \"Secondes\", \"\u00b0C\" ],\n      [ \"M\u00e8tres\", \"Secondes\", \"Degr\u00e9s\",   \"\u00b0C\" ],\n      [ \"M\u00e8tres\", \"Secondes\", \"Degr\u00e9s\",   \"Degr\u00e9s\", \"\u00b0C\" ]                                                  \n    ],\n  \"campLEntTR1\" : \"Date;H1\/3;Hmax;Th1\/3;DirPic;TempMer\",\n  \"campLEntTR2\" : \"Date;Hm0;Hmax;T02;DirPic;TempMer\",\n  \"campLEntTR3\" : \"Date;H1\/3;Hmax;Th1\/3;DirPic;EtalPic;TempMer\",\n  \"campGraBTyp\" : \" Donn\u00e9es\",\n  \"campGraHTyp\" : \"Type de donn\u00e9es \u00e0 afficher\",\n  \"campGraLTyp\" : \"Type de donn\u00e9es\",\n  \"campGraHDat\" : \"Plage de dates\",\n  \"campGraBSav\" : \" Sauvegarde\",\n  \"campGraHSav\" : \"Sauvegarde du graphique\",\n  \"campGraBInt\" : \" Interpolation&nbsp;\",\n  \"campGraHInt\" : \"Interpolation des donn\u00e9es manquantes\",\n  \"campGraBLis\" : \" Lissage&nbsp;\",\n  \"campGraHLis\" : \"Lissage des courbes\",\n  \"campGraBEpa\" : \" Epaisseur&nbsp;\",\n  \"campGraHEpa\" : \"Epaisseur des courbes\",\n  \"campLTabAr\"  : [\n  \t\t[ \"H1\/3 (m)\", \"Hmax (m)\", \"Th1\/3 (s)\", \"Hm0 (m)\", \"Tp (s)\", \"T02 (s)\", \"Dir. au pic (\u00b0)\" ]\n    ],              \n  \"campLTabArFT\"  : [\n  \t\t[ \"H1\/3 (m)\", \"Hmax (m)\", \"Th1\/3 (s)\", \"Hm0 (m)\", \"Tp (s)\", \"T02 (s)\", \"Dir. au pic (\u00b0)\", \"Thmax (s)\" ]\n    ],              \n  \"campLGraAr\"  : [\n      [ \"H1\/3 et Hmax (m)\", \"Th1\/3 (s)\", \"Hm0 (m)\", \"T02 et Tp (s)\", \"Dir. au pic (\u00b0)\" ]\n    ],\n  \"campLLegYAr\" : [\n      [ \"M\u00e8tres\", \"Secondes\", \"M\u00e8tres\", \"Secondes\", \"Degr\u00e9s\" ]                                                  \n    ],\n  \"campArTit1\"  : \"Donn\u00e9es archiv\u00e9es disponibles du \",\n  \"campArTit2\"  : \" au \",\n  \"campArEnt\"   : [ \"Date\", \"Heure (TU)\" ],\n  \"campGraTT\"   : \" \u00e0 \",\n  \"campForDes1\" : \"Les donn\u00e9es sont diffus\u00e9es gratuitement sous licence <b><a href=\\\"https:\/\/www.etalab.gouv.fr\/licence-ouverte-open-licence\\\" target=_blank>Etalab<\/a><\/b>. Merci de nous aider \u00e0 tracer l'utilisation faite de ces donn\u00e9es en prenant le temps de renseigner le formulaire.\",\n  \"campForDes2\" : \"Ces informations nous sont tr\u00e8s utiles pour justifier de notre activit\u00e9 aupr\u00e8s de nos financeurs.\",\n  \"campLForAct\" : [ \"S\u00e9curit\u00e9 de la navigation\", \"Submersion marine\", \"Activit\u00e9 portuaire\", \"Am\u00e9nagement du littoral\", \"Energies renouvelables\", \"Changement climatique\", \"Suivis environnementaux\", \"Atlas de donn\u00e9es\", \"Autre\" ],\n  \"campLForStr\" : [ \"Public\", \"Priv\u00e9\", \"Particulier\" ],\n  \"campForTTR\"  : \"T\u00e9l\u00e9chargement donn\u00e9es temps r\u00e9el (48 derni\u00e8res heures)\",\n  \"campForTAr\"  : \"T\u00e9l\u00e9chargement donn\u00e9es archiv\u00e9es\",\n  \"campForErr\"  : \"Formulaire incomplet\",\n  \"campForOK\"   : \"T\u00e9l\u00e9chargement disponible\",\n  \"campLForDom\" : \"Domaine d'activit\u00e9\",\n  \"campLForTyp\" : \"Type de structure\",\n  \"campLForAnn\" : \"Ann\u00e9e\",\n  \"campForTit\"  : \"Formulaire de t\u00e9l\u00e9chargement\",\n  \"campForBVal\" : \"Valider\",\n  \"campForHVal\" : \"Validation du formulaire\",\n  \"campForBTel\" : \"T\u00e9l\u00e9charger\",\n  \"campForHTel\" : \"T\u00e9l\u00e9chargement des donn\u00e9es\",\n  \"campEcrTR1\"  : \"Date;H1\/3;Hmax;Th1\/3;DirPic;TempMer\",\n  \"campEcrTR2\"  : \"Date;Hm0;Hmax;T02;DirPic;TempMer\",\n  \"campEcrTR3\"  : \"Date;H1\/3;Hmax;Th1\/3;DirPic;EtalPic;TempMer\",\n  \"campEcrErr\"  : \"Format fichier `temps r\u00e9el` inconnu\",\n\n  \"BSAtt\" : \"Attention\",\n  \"BSMsg\" : \"Message\",\n\n  \"\" :\"\"\n}\n";
+//console.log("langPHP 2",langPHP);
+
+var sArch =
+  '<h4><b>2023</b></h4><br />' + 
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595381/candhis-analyses-2023-des-etats-de-mer-tome-1-mer-du-nord-manche-et-atlantique" target=_blank>Analyses - Tome 1 - Mer du Nord, Manche et Atlantique</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595394/candhis-analyses-2023-des-etats-de-mer-tome-2-mediterranee" target=_blank>Analyses - Tome 2 - Méditerranée</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595396/candhis-analyses-2023-des-etats-de-mer-tome-3-outre-mer" target=_blank>Analyses - Tome 3 - Outre-mer</a><br /><br />' +
+  '<h4><b>2022</h4></b><br />' + 
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586282/candhis-analyses-2022-des-etats-de-mer-tome-1-mer-dunord-manche-et-atlantique" target=_blank>Analyses - Tome 1 - Mer du Nord, Manche et Atlantique</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586399/candhis-analyses-2022-des-etats-de-mer-tome-2-mediterranee" target=_blank>Analyses - Tome 2 - Méditerranée</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586401/candhis-analyses-2022-des-etats-de-mer-tome-3-outremer" target=_blank>Analyses - Tome 3 - Outre-mer</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/594923/candhis-l-observatoire-cotier-national-de-mesure-de-houle-bilan-de-l-annee-2022" target=_blank>Bilan de l\'année</a><br /><br />' +
+  '<h4><b>2021</b></h4><br />' + 
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21315/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-1-mer-du-nord-manche-et-atlant" target=_blank>Fiches synthétiques - Tome 1 - Mer du Nord, Manche et Atlantique</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21317/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-2-mediterranee" target=_blank>Fiches synthétiques - Tome 2 - Méditerranée</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21319/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-3-outre-mer" target=_blank>Fiches synthétiques - Tome 3 - Outre-mer</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/590329/candhis-l-observatoire-cotier-national-de-mesure-de-houle-bilan-2021" target=_blank>Bilan de l\'année</a><br /><br />' +
+  '<h4><b>2020</b></h4><br />' + 
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16296/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-1-mer-du-nord-manche-" target=_blank>Fiches synthétiques - Tome 1 - Mer du Nord, Manche et Atlantique</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16297/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-2-mediterranee" target=_blank>Fiches synhtétiques - Tome 2 - Méditerranée</a><br />' +
+  '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16298/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-3-outre-mer" target=_blank>Fiches synthétiques - Tome 3 - Outre-mer</a>'
+ 
+var sArch =
+  '<div>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2023</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595381/candhis-analyses-2023-des-etats-de-mer-tome-1-mer-du-nord-manche-et-atlantique" target=_blank>Candhis - Analyses des états de mer - Tome 1 - Mer du Nord, Manche et Atlantique</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595394/candhis-analyses-2023-des-etats-de-mer-tome-2-mediterranee" target=_blank>Candhis - Analyses des états de mer - Tome 2 - Méditerranée</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/595396/candhis-analyses-2023-des-etats-de-mer-tome-3-outre-mer" target=_blank>Candhis - Analyses des états de mer - Tome 3 - Outre-mer</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/594923/candhis-l-observatoire-cotier-national-de-mesure-de-houle-bilan-de-l-annee-2022" target=_blank>Bilan de l\'année 2022</a></li>' +
+    '</h6>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2022</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586282/candhis-analyses-2022-des-etats-de-mer-tome-1-mer-dunord-manche-et-atlantique" target=_blank>Candhis - Analyses des états de mer - T1 Mer du Nord, Manche et Atlantique</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586399/candhis-analyses-2022-des-etats-de-mer-tome-2-mediterranee" target=_blank>Candhis - Analyses des états de mer - Tome 2 - Méditerranée</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586401/candhis-analyses-2022-des-etats-de-mer-tome-3-outremer" target=_blank>Candhis - Analyses des états de mer - Tome 3 - Outre-mer</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/590329/candhis-l-observatoire-cotier-national-de-mesure-de-houle-bilan-2021" target=_blank>Bilan de l\'année 2021</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/585271/comparaison-des-principaux-observatoires-de-mesure-de-houle-a-l-etranger-perspectives-d-evolutions-d" target=_blank>Candhis - Benchmark international</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/590824/comparaison-de-bouees-de-mesure-de-houle-sofarocean-spotter-versus-datawell-mkiii" target=_blank>Candhis - Comparaison de bouées de mesure de houle SofarOcean Spotter vs Datawell MKIII</a></li>' +
+    '</h6>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2021</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21315/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-1-mer-du-nord-manche-et-atlant" target=_blank>Fiches synthétiques - Tome 1 - Mer du Nord, Manche et Atlantique</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21317/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-2-mediterranee" target=_blank>Fiches synthétiques - Tome 2 - Méditerranée</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/21319/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-tome-3-outre-mer" target=_blank>Fiches synthétiques - Tome 3 - Outre-mer</a></li>' +
+    '</h6>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2020</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16296/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-1-mer-du-nord-manche-" target=_blank>Fiches synthétiques - Tome 1 - Mer du Nord, Manche et Atlantique</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16297/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-2-mediterranee" target=_blank>Fiches synthétiques - Tome 2 - Méditerranée</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/16298/fiches-synthetiques-de-mesure-des-etats-de-mer-du-reseau-candhis-maj-2020-tome-3-outre-mer" target=_blank>Fiches synthétiques - Tome 3 - Outre-mer</a></li>' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/154/le-reseau-de-mesure-des-etats-de-mer-candhis-bilan-2019-point-technique-synthese-sur-l-utilisation-d" target=_blank>Bilan de l\'année 2019</a></li>' +
+    '</h6>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2014</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/15861/candhis-observations-des-etats-de-mer-analyse-des-tempetes-sur-le-littoral-metropolitain-automne-hiv" target=_blank>Candhis -  Analyse des tempêtes 2013-2014</a></li>' +
+    '</h6>' +
+    '<h6 class="card-header text-white bg-secondary"><b>2013</b></h6>' +
+    '<h6 class="alert alert-secondary">' +
+      '<li><a href="https://doc.cerema.fr/Default/doc/SYRACUSE/586987/candhis-le-centre-d-archivage-national-de-donnees-de-houle-in-situ-de-la-mesure-in-situ-a-la-valoris" target=_blank>Candhis -  De la mesure in situ à la valorisation des données, description des différentes étapes</a></li>' +
+    '</h6>' +
+  '</div>'
+
+
+
+
+
+var mentsPHP = true;
+//console.log("mentsPHP",mentsPHP);
+var publiPHP = true;
+//console.log("publiPHP",publiPHP);
+var partsPHP = ["\n      <table class=\"clALGLBInfo clALGTxtJCandhis12\" rules=\"basic\" border=\"0\" role=\"grid\">\n        <colgroup>\n          <col width=\"34%\">\n          <col width=\"33%\">                                               \n          <col width=\"33%\">                                               \n        <\/colgroup>\n      <tbody>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.ademe.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_ademe.jpg' width='100px'>\">\n        ADEME - Agence de la transition \u00e9cologique\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.agglo-royan.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/01705.jpg' width='100px'>\">\n        Agglom\u00e9ration Royan Atlantique\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.ampmetropole.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0017.jpg' width='100px'>\">\n        Aix Marseille Provence\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.brest.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02909.jpg' width='100px'>\">\n        Brest M\u00e9tropole\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.brgm.fr\/fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/log_BRGM.jpg' width='100px'>\">\n        BRGM\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.bayonne.cci.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_CCI-Bayonne.jpg' width='100px'>\">\n        CCI Bayonne Pays Basque\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.ccihc.fr\/accueil.php\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02B03.jpg' width='100px'>\">\n        CCI de Haute Corse\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.bretagne-ouest.cci.bzh\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02910.jpg' width='100px'>\">\n        CCI M\u00e9tropolitaine Bretagne Ouest\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.cerema.fr\/fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0000.jpg' width='100px'>\">\n        Cerema\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.com-saint-martin.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/St-Martin.jpg' width='100px'>\">\n        Collectivit\u00e9 de Saint-Martin\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.collectivitedemartinique.mq\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0001.jpg' width='100px'>\">\n        Collectivit\u00e9 Territoriale de Martinique\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.communaute-paysbasque.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_Comm_Aglo_Pays-Basque.jpg' width='100px'>\">\n        Communaut\u00e9 d'agglom\u00e9ration Pays Basque\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.cdc-iledenoirmoutier.com\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/ile_de_noimoutier_logo_b.jpg' width='100px'>\">\n        Communaut\u00e9 de communes de l'\u00eele de Noirmoutier\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.cc-macs.org\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/macs-logo-sign.png' width='100px'>\">\n        Communaut\u00e9 de communes Marennes Adour C\u00f4te-Sud\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.vendee.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/08504.jpg' width='100px'>\">\n        Conseil D\u00e9partemental de la Vend\u00e9e\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/creocean.fr\/fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_Creocean.jpg' width='100px'>\">\n        CreOcean\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.departement06.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/00601.jpg' width='100px'>\">\n        D\u00e9partement des Alpes Maritimes\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.le64.fr\/accueil.html\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/06403.jpg' width='100px'>\">\n        D\u00e9partement des Pyrenn\u00e9es Atlantiques\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.pyrenees-orientales.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DDTM66.jpg' width='100px'>\">\n        Direction d\u00e9partementale des territoires et de la mer (DDTM66)\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.herault.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DDTM34.jpg' width='100px'>\">\n        Direction D\u00e9partementale des Territoires et de la Mer de l\u2019H\u00e9rault (DDTM 34)\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.defense.gouv.fr\/dga\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02914.jpg' width='100px'>\">\n        Direction g\u00e9n\u00e9rale de l'armement\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.ecologie.gouv.fr\/direction-generale-lenergie-et-du-climat-dgec\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_gouv.jpg' width='100px'>\">\n        Direction g\u00e9n\u00e9rale de l\u2019\u00e9nergie et du climat (DGEC)\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.dirm.memn.developpement-durable.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DIRM_MM_eDaldxH.png' width='100px'>\">\n        Direction Interr\u00e9gionale de la Mer Manche Est Mer du Nord\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.dirm.mediterranee.developpement-durable.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DIRM_MM_zIrdoqE.png' width='100px'>\">\n        Direction Interr\u00e9gionale de la Mer M\u00e9diterran\u00e9e\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.dirm.nord-atlantique-manche-ouest.developpement-durable.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DIRM_MM.png' width='100px'>\">\n        Direction Interr\u00e9gionale de la Mer Nord Atlantique Manche Ouest\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.dirm.sud-atlantique.developpement-durable.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/DIRM_MM_JcxHB56.png' width='100px'>\">\n        Direction Interr\u00e9gionale de la Mer Sud-Atlantique\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.prefectures-regions.gouv.fr\/occitanie\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/01101.jpg' width='100px'>\">\n        DREAL Occitanie\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.edf.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/05009.jpg' width='100px'>\">\n        EDF\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.france-energies-marines.org\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0016.jpg' width='100px'>\">\n        France Energies Marines\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.reunion.port.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_GP_Reunion.jpg' width='100px'>\">\n        Grand Port Maritime de La R\u00e9union\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/guadeloupe-portcaraibes.com\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97104.jpg' width='100px'>\">\n        Guadeloupe Port Cara\u00efbes\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.ville-saintdenis-reunion.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97401.jpg' width='100px'>\">\n        \u00cele de La R\u00e9union - Ville de Saint-Denis\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"saintjoseph.re\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97407.jpg' width='100px'>\">\n        \u00cele de La R\u00e9union - Ville de Saint-Joseph\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.ville-saintpierre.fr\/index.php\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97405.jpg' width='100px'>\">\n        \u00cele de La R\u00e9union - Ville de Saint-Pierre\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.nouvelle-aquitaine.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_Region_Nvlle-Aquitaine.jpg' width='100px'>\">\n        La R\u00e9gion Nouvelle-Aquitaine\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.umr-lops.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02911.jpg' width='100px'>\">\n        Laboratoire d'Oc\u00e9anographie Physique et Spatiale\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/lienss.univ-larochelle.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0003.jpg' width='100px'>\">\n        LIttoral ENvironnement et Soci\u00e9t\u00e9s\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/marc.ifremer.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_LOPS_Ifremer.jpg' width='100px'>\">\n        LOPS MARC Ifremer\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.meteofrance.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97102.jpg' width='100px'>\">\n        M\u00e9t\u00e9o France\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.ecologique-solidaire.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0007.jpg' width='100px'>\">\n        Minist\u00e8re de la transition \u00e9cologique et solidaire\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/wwwphp.obs-banyuls.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0008.jpg' width='100px'>\">\n        Observatoire Oc\u00e9anologique de Banyuls\/Mer\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.marseille-port.fr\/fr\/Accueil\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/01302.jpg' width='100px'>\">\n        Port de Marseille Fos\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.nantes.port.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/04401.jpg' width='100px'>\">\n        Port de Nantes Saint-Nazaire\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.haropaports.com\/fr\/rouen\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0010.jpg' width='100px'>\">\n        Port de Rouen\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.haropaports.com\/fr\/le-havre\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/07601.jpg' width='100px'>\">\n        Port du Havre\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.port-la-nouvelle.com\/fr\/accueil-fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/pln-logo-2.jpg' width='100px'>\">\n        Port La Nouvelle (SEMOP)\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.pna-ports.fr\/web\/accueil.html\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/05008.jpg' width='100px'>\">\n        Ports Normands Associ\u00e9s\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.guyane.gouv.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97301.jpg' width='100px'>\">\n        Pr\u00e9fecture de la r\u00e9gion Guyane\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.prefectures-regions.gouv.fr\/hauts-de-france\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/05902.jpg' width='100px'>\">\n        Pr\u00e9fecture de la r\u00e9gion Hauts-de-France\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.reunion.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/pref_La-Reunion.png' width='100px'>\">\n        Pr\u00e9fecture de la r\u00e9gion R\u00e9union\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.reunion.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/97402.jpg' width='100px'>\">\n        Pr\u00e9fecture de La R\u00e9union\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.saint-pierre-et-miquelon.developpement-durable.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/Pref_Saint-Pierre-et-Miquelon.jpg' width='100px'>\">\n        Pr\u00e9fecture de Saint-Pierre et Miquelon\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.alpes-maritimes.gouv.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/Pref_Alpes-Maritimes.jpg' width='100px'>\">\n        Pr\u00e9fecture des Alpes-Maritimes\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.previmer.org\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0009.jpg' width='100px'>\">\n        Previmer\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.gouv.mc\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/98000.jpg' width='100px'>\">\n        Principaut\u00e9 de Monaco\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.maregionsud.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0018.jpg' width='100px'>\">\n        R\u00e9gion PACA\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/fondation-open-c.org\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/fondation_open-c.jpg' width='100px'>\">\n        SEM-REV - Fondation Open-C\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"http:\/\/www.shom.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/02915.jpg' width='100px'>\">\n        SHOM\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.baiedesomme.org\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/SMBS.jpg' width='100px'>\">\n        Syndicat Mixte Baie de Somme - Grand Littoral Picard\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/europa.eu\/european-union\/index_fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0004.jpg' width='100px'>\">\n        Union Europ\u00e9enne\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.u-bordeaux.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0005.jpg' width='100px'>\">\n        Universit\u00e9 de Bordeaux\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.univ-larochelle.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/P0006.jpg' width='100px'>\">\n        Universit\u00e9 de La Rochelle\n      <\/a>\n    <\/td>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancP\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.univ-pau.fr\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/06402.jpg' width='100px'>\">\n        Universit\u00e9 de Pau\n      <\/a>\n    <\/td>","<\/tr>","<tr>","<td id=\"idParts\" class=\"clALGLBInfo clALGTabBkgBlancF\" role=\"gridcell\">\n      <a class=\"clALGLBLinkInfo\" href=\"https:\/\/www.capbreton.fr\/\" target=\"_blank\" data-toggle=\"tooltip\" data-placement=\"bottom\"\n        data-custom-class=\"clALGTooltip\"\n        data-html=\"true\" title=\"<img src='.\/_privC_\/Logos\/logo_Capbreton.jpg' width='100px'>\">\n        Ville de Capbreton\n      <\/a>\n    <\/td>","<td class=\"clALGLBInfoVide clALGTabBkgBlancP\"><\/td>","<td class=\"clALGLBInfoVide clALGTabBkgBlancP\"><\/td>","<\/tr>","\n      <\/tbody>\n    <\/table>\n    "];
+//console.log("partsPHP",partsPHP);
+var contsPHP = "<div>\n  <h6 class=\"card-header text-white bg-secondary\">\n    Par courrier\n  <\/h6>\n  <h5 class=\"alert alert-secondary\">\n    <b>Cerema<br\/>\n    Candhis<\/b><br\/> \n    Technop\u00f4le Brest-Iroise - BP5<br\/>\n    155, rue Pierre Bouguer<br\/>\n    29280 PLOUZANE<br\/><br\/>\n  <\/h5>\n\n  <h6 class=\"card-header text-white bg-secondary\">\n    Par mail\n  <\/h6>\n  <h5 class=\"alert alert-secondary\">\n    <a href=\"mailto:candhis@cerema.fr?subject=Candhis (contact)\">\n      candhis@cerema.fr\n    <\/a>\n  <\/h5>\n<\/div>\n";
+//console.log("contsPHP",contsPHP);
+var racinePHP = "..";
+//console.log("racinePHP",racinePHP);
+var footMLHPHP = "Mentions l\u00e9gales d'utilisation du site";
+
+//function EscapeQuoteJS(str)
+//  {
+//  return( < ? php echo json_encode($str); ? > );
+//  }
+</script>  
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../utils/JS/Bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
+<!--COM--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.3.1/css/flag-icon.min.css" /--COM-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+<link rel="stylesheet" type="text/css" href="../utils/JS/jQueryUI/Overcast/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="../utils/JS/simpleLightbox/dist/simpleLightbox.css" />
+
+<link rel="stylesheet" type="text/css" href="../utils/css/fonte/MarianneWFK/stylesheet.css" />
+<!--link rel="stylesheet" type="text/css" href="../utils/css/fonte/MontserratWFKoptimal/stylesheet.css" /-->
+<!--link rel="stylesheet" type="text/css" href="../utils/css/fonte/OpenSansWFK/stylesheet.css" /-->
+
+<!--link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet"-->
+
+
+
+
+<!--link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,700i" />
+<link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&amp;amp;subset=latin-ext" />
+<link rel="stylesheet" media="all" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_GsnOJ1I7bWuygVOl8oVLe7WtRPsKHzmQnMAbjp-Lp8Y.css" /-->
+
+
+
+
+
+
+
+<script src="../utils/JS/jQuery/jquery-3.6.0.min.js"></script>
+<script src="../utils/JS/jQueryUI/Overcast/jquery-ui.min.js"></script>
+<script src="../utils/JS/simpleLightbox/dist/simpleLightbox.min.js"></script>
+
+<script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script src="../utils/JS/Bootstrap/js/bootstrap.min.js"></script>
+<script src="../utils/JS/download/download.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+
+@-moz-document url-prefix() *
+  {
+  font-family: Arial !important;
+  }
+
+*:not(.clALGTab):not(i):not(.fa):not(select):not(option):not(.leaflet-control-mouseposition)
+  {
+/*  font-family: marianneregular !important;*//*--COM--*/
+  font-family: marianne !important;
+/*  color: #33475B !important;*//*--COM--*/
+/*  font-family: montserratregular !important;*/   
+/*  font-family: open_sansregular !important;*/   
+  }
+
+/*@-moz-document url-prefix() :select > option*/
+//.leaflet-control-locationlist:.leaflet-control-locationlist-form:.leaflet-control-locationlist-list
+//  {
+//  font-family: Helvetica !important;
+//  }
+
+.dropdown:hover > .dropdown-menu
+  {
+  display: block;
+/*...v11  min-width:100% !important...*/
+  }
+
+/*...v10...
+dropdown > .dropdown-toggle:active
+  {
+  pointer-events: none; / *  avec cette ligne, le menu n'est jamais `sticky`  * /
+  }
+...*/
+
+.dropdown-header, .dropdown-menu
+  {
+  font-size: 0.75rem;
+  }
+
+.li > a :
+  {
+  height: 100%;
+  }
+
+::placeholder           /*  champs vides à l'initialisation (input, textarea, select, ...)  */
+  {
+  font-style: italic;
+  }
+
+.formHeader
+  {
+  font-size: 18px;
+  padding: 10px;
+  }
+
+.formIcon
+  {
+  font-size: 32px;
+  }
+
+.force-scroll-liste
+  {
+  overflow-y: scroll;
+  height: 200px;
+  }
+
+.navbar-nav li.active > a
+  {
+	background-color: #888;
+	color: #fff;
+  border-radius: 3px;
+  }
+
+                        /*  menu hamburger  */
+//custom-toggler.navbar-toggler
+//  {
+//  border-color: #EF7757;
+//  border-width: 2px;
+//  }
+.navbar-dark .navbar-toggler-icon
+  {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(240,125,0,0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+thead, tbody
+  { font-size: 1.3vw; }
+.clALGTitBS
+  { font-size: 1.2rem; }
+.clALGIcoBS
+  { font-size: 1.0rem; }
+
+.btn-responsive 
+  {
+  padding: 6px 10px;
+  font-size: 0.90rem;
+  border-radius: 4px;
+  }
+#idInputDate
+  {
+  width: 170px;
+  padding: 0px 8px;
+  font-size: 0.80rem;
+  }
+.input-group-text
+  {
+  padding: 0px 8px;
+  font-size: 0.90rem;
+  }
+
+/*---COM---*/
+.hSepALG
+  {
+/*  border-bottom: 1px solid #E7E7E7;*/
+  border-bottom: 1px solid #123456;
+  }
+.vSepALG
+  {
+  border-left: 1px solid #E7E7E7;
+  }
+/*---COM---*/
+
+@media (min-width: 2048px )
+  {
+  thead, tbody
+    { font-size: 1.3vw; }
+  .clALGTitBS
+    { font-size: 20px; }
+  .clALGIcoBS
+    { font-size: 24px; }
+  .btn-responsive
+    {
+    padding: 8px 16px;
+    font-size: 1.20rem;
+    border-radius: 4px;
+    }
+  }
+
+@media (max-width: 1200px)
+  {
+  thead, tbody
+    { font-size: 1.5vw; }
+  .clALGTitBS
+    { font-size: 18px; }
+  .clALGIcoBS
+    { font-size: 16px; }
+  .btn-responsive
+    {
+    padding: 6px 10px;
+    font-size: 0.80rem;
+    border-radius: 3px;
+    }
+  }
+
+@media (max-width: 1048px)
+  {
+  thead, tbody, #idALGCardCampagne
+    { font-size: 1.6vw; }
+  .clALGTitBS
+    { font-size: 16px; }
+  .clALGIcoBS
+    { font-size: 14px; }
+  .btn-responsive
+    {
+    padding: 4px 6px;
+    font-size: 0.70rem;
+    border-radius: 3px;
+    }
+  #idInputDate
+    {
+    font-size: 0.75rem;
+    width: 180px;
+    }
+  .input-group-text
+    {
+    font-size: 0.75rem;
+    }
+  }
+
+.cardALGAccTop
+  {
+  color: #33475B !important;/*--COM--*/
+  margin-top: 15px;
+  padding-bottom: 15px;
+  }
+.cardALGAccNext, .cardALGCampTop, .cardALGCampNext
+  {
+  color: #33475B !important;/*--COM--*/
+  margin-top: 15px;
+  }
+.cardALGEntCandhisTit, .cardALGEntCandhisSTit
+  {
+/*--COM--  color: #292574 !important;*/
+  color: #33475B !important;
+  font-weight: bold;
+/*--COM--  font-size: 24px;*/
+  font-size: 1.4rem;
+  }
+.cardALGEntCandhisTit:hover
+  {
+/*--COM--*/
+  color: #EF7757 !important;
+/*--COM--*/
+  text-decoration: none;
+  }
+.cardALGEntCandhisSTit
+  {
+/*--COM--  color: #292574 !important;*/
+  color: #33475B !important;
+  font-weight: bold;
+/*--COM--  font-weight: bold;*/
+/*--COM--  font-size: 15px;*/
+  font-size: 1.rem;
+  }
+.cardALGEntCerema
+  {
+  color: white;
+  background: #EF7757;
+  }
+.cardALGEntTabCerema
+  {
+  color: white;
+  background: #C9C8DC;
+  }
+/*--COM-- .cardALGEntImgMarianne
+  { height:106px; }*/
+/*--COM--  */
+.cardALGEntCellMarianneH
+  { padding:  0px 10px; }
+/*--COM--  */
+.cardALGEntImgMarianneH
+  {
+  max-width:  191px;
+  max-height: auto;
+/*  padding:  15px 0px;*//*  COM  */
+  }
+.cardALGEntImgMarianneF
+  {
+  height:  102px;
+  margin:  0px 0px;
+  }
+.cardALGEntImgMariannePrint
+  { height:50px; }
+.cardALGEntImgCerema
+  { height:80px; }
+.cardALGEntImgCeremaREM
+  { height:120px; }
+.card-body
+  { margin-bottom: -15px; }
+
+@media (max-width: 767px)
+  {
+  thead, tbody
+    { font-size: 1.8vw; }
+  #idBandeau, #idHoulographe, #idMarianneH
+    { display:none; }
+/*--COM--  .cardALGEntCandhisTit
+    {
+/ *--COM--      font-size: 18px;* /
+    font-size: 1.4rem;
+/ *--COM--          font-weight: 600;* /
+    }
+--COM--*/
+  .cardALGEntCandhisSTit
+    {
+    font-size: 14px;
+    font-weight: 300;
+    }
+  .cardALGEntImgMarianne
+    { height:72px; }
+  .cardALGEntImgCerema
+    { height:50px; }
+  .cardALGEntImgCeremaREM
+    { height:80px; }
+  #idInputDate
+    {
+    font-size: 0.65rem;
+    width: 160px;
+    padding: 0px 3px;
+    }
+  .input-group-text
+    {
+    font-size: 0.65rem;
+    padding: 0px 3px;
+    }
+  .clALGBtn
+    {
+    width: 110px;
+    text-align: left;
+    margin-bottom: 2px;
+    }
+
+  #idNavbar
+    {
+    background-color: white;
+    }
+  #idNavbar > #idLogo > .navbar-brand
+    {
+    color: #EF7757 !important;
+    }
+
+  .clALGTitBS, .clALGIcoBS
+    { font-size: 12px; }
+  .table > thead > tr > th, .table > tbody > tr > td 
+    { font-size: 0.55rem; }
+/*    { font-size: 0.8rem; }*/
+  .cardALGAccTop, .cardALGAccNext
+    { 
+    margin-top:    0px;
+    margin-right: -4px;
+    margin-left: -15px;
+    }
+  .cardALGCampTop
+    { 
+    margin-right: -15px;
+    margin-left:  -15px;
+    }
+  .cardALGCampNext
+    { 
+    margin-top:     0px;
+    margin-right: -15px;
+    margin-left:  -15px;
+    }
+
+  h6
+    { font-size: 0.80rem; }
+  }
+
+h7
+  { font-size: 0.80rem; }
+
+.not-active
+  { 
+  pointer-events: none; 
+  cursor: default; 
+  text-decoration: none; 
+/*--COM--  color: black;*/ 
+  color: #33475B !important;
+  } 
+
+@media (max-width: 576px)
+  {
+/*---COM---*/
+  .hSepALG
+    {
+    border-bottom: 0px;
+    }
+  .vSepALG
+    {
+    border-left: 0px;
+    }
+/*---COM---*/
+  }
+
+
+@media (max-width: 480px)
+  {
+  #idEpaisseurTxt, #idEpaisseur
+    { display:none; }
+  .clALGTitBS
+    { font-size: 12px; }
+/*---COM---*/
+  .hSepALG
+    {
+    border-bottom: 0px;
+    }
+  .vSepALG
+    {
+    border-left: 0px;
+    }
+/*---COM---*/
+  }
+
+@media (max-width: 320px)
+  {
+  .clALGTitBS
+    { font-size: 10px; }
+/*---COM---*/
+  .hSepALG
+    {
+    border-bottom: 0px;
+    }
+  .vSepALG
+    {
+    border-left: 0px;
+    }
+/*---COM---*/
+  }
+
+                        /*  menu  */
+/*...02/02@media (min-width: 768px)...*/
+@media (min-width: 992px)
+  {
+  nav li
+    {
+    text-align: center;
+    }
+  .navbar-nav > li > a
+    {
+    margin-top: -8px;   /*  -6px si on veut décalage  */
+    padding-top: 8px;
+    margin-bottom: -8px;/*  -6px si on veut décalage  */
+    padding-bottom: 8px;
+    }
+                        /*  a[href*="./"] : uniquement pour les liens vers les pages du site (menu)  */
+  li > a[href*="./"]:after, .btnFoot:after  /*  surlignage menu  */
+    {
+    content: '';
+    display: block;
+    height: 1.5px;
+    background: #EF7757 !important;
+    transform: scaleX(0);
+    transition: transform .3s;
+    }
+/*  li > a:not(clALGNot):hover:after, .btnFoot:hover:after*/
+  li > a[href*="./"]:hover:after, .btnFoot:hover:after
+    {
+    transform: scaleX(1);
+    transition: transform .3s;
+    }
+  .active
+    {
+    color: #FBC02D !important;
+    }
+  }
+/*...02/02@media (max-width: 767px)...*/
+@media (max-width: 991px)
+  {
+  nav li
+    {
+    text-align: justify;
+    }
+  .dropdown-menu
+    {                                  
+    border: none;
+    outline: none;
+    }
+  .nav-item
+    {                                  
+    margin-left: 12px;
+    width: 40%;
+    }
+  }
+
+.navbar-nav .nav-item:hover .nav-link, .btnFoot:hover
+  {
+  color: #EF7757 !important;
+  }
+  
+.dropdown .dropdown-menu a:hover
+  {
+  background: #EF7757 !important;
+  color: #F8F9FA !important;/*  light Bootstrap  */
+  }
+  
+                        /*  bouton CEREMA  */
+.btnNav:hover
+  {
+  background: #EF7757 !important;
+  border-color: #EF7757 !important;
+  }
+
+.text-cerema
+  {
+  color: #EF7757 !important;
+  background: #EF7757 !important;
+  }
+
+.footerSticky
+  {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  }
+
+.footerNonSticky
+  {
+  width: 100%;
+  padding:  15px 0px;/*--COM--  */
+  }
+
+/*--COM--*/
+.footerTitCRM
+  {
+  color: #33475B;
+  line-height: 1.625rem;
+  font-size: .875rem;
+  }
+.footerSitCRM
+  {
+  color: #33475B;
+  font-size: .875rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  }
+.footerTxtCRM
+  {
+  color: #33475B;
+  font-size: 0.8rem;
+  }
+.btnHead
+  {
+  color: #EF7757;
+  }
+.tabGris
+  {
+  color: #33475B;
+  }
+html
+  {
+  scroll-behavior: smooth;
+  }
+/*--COM--*/
+                        /*  a[href*="http"] : uniquement pour les liens vers les sites extérieurs de `Mentions légales`  */
+///v1.07...a[href*="http"]:not(.navbar-brand):not(.clALGLBLinkInfo):hover
+a[href*="http"]:not(.navbar-brand):not(.btnNav):not(.clALGLBLinkInfo):hover
+  {
+  color: #EF7757 !important;
+  }
+
+                        /*  hack clALG :-)  */
+td.clALGLBInfo:hover a
+  {
+  color: #F8F9FA !important;/*  light Bootstrap  */
+  background: #EF7757 !important;
+  }
+.clALGLBInfo:hover
+  {
+  color: #F8F9FA !important;/*  light Bootstrap  */
+  background: #EF7757 !important;
+  }
+
+                        /*  fenêtres modales (partenaires, ...)  */
+@media (min-width: 768px)
+  {
+  .modal-dialog
+    {
+    max-width: 700px;
+    }
+  .modal-content
+    {
+    width: 90%;
+    }
+  }
+@media (min-width: 992px)
+  {
+  .modal-dialog
+    {
+    max-width: 900px;
+    }
+  .modal-content
+    {
+    width: 90%;
+    }
+  }
+
+                        /*  tooltip Bootstrap  */
+.tooltip-inner 
+  { 
+  font-size: 0.75rem; 
+  white-space: nowrap;
+  max-width: none;
+/*
+  padding : 2px;
+  margin : 4px;
+*/
+  }
+
+.clALGTooltip
+  { 
+  placement: "right";
+  }
+
+.clALGTooltip > .tooltip-inner
+  { 
+/*
+  padding-top : 4px;
+  padding-bottom : 4px;
+  padding-left : 2px;
+  padding-right : 2px;
+  margin : 0px;
+*/
+  padding : 2px;
+  margin : 0px;
+  }
+
+</style>
+
+<script>
+$(function ()
+    {
+    $('[data-toggle="tooltip"]').tooltip();
+    }
+  )
+
+//$("a").tooltip();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type='text/javascript'>
+var debugPHP = 0;
+</script>
+
+
+<style type="text/css">
+.card-menu-ALG
+  {
+  max-width: 180px;
+  }
+
+.alert-info,
+.alert-secondary
+  {
+  margin-top:     0px;
+  padding-top:    6px;
+  padding-bottom: 0px;
+  }
+.enCours
+  {
+  }
+.btn.btn-secondary.enCours
+  {
+  cursor: default;
+  background-color: white !important;
+  color:  #EF7757 !important;/*  orange Cerema  */
+  font-weight: bold; 
+  }
+.btn.btn-secondary.disabled:not(.enCours)
+  {
+  cursor: not-allowed !important;
+/*  opacity: .6;*/  
+  }
+/*...v1.06...*/
+.btnFormDis:hover
+  {
+  cursor: not-allowed !important;
+  }
+/*...v1.06...*/
+
+
+#idMiniMap
+  { /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+/*  max-width:128px;*/
+  height:200px;
+  }
+</style>
+    
+<!DOCTYPE html lang="fr">
+<html>
+
+<script>  
+$(function ()
+    {
+    $("[data-toggle='tooltip']").tooltip();
+//    $("input[type='number']").inputSpinner();
+    }
+  )
+$("a").tooltip();
+</script>  
+
+
+<head>
+  <title>CANDHIS - Campagne </title>
+
+  <meta content="A. LE GALL - Cerema  - D2PN">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Rechargement automatique de la page toutes les 30 mn-->
+  <meta HTTP-EQUIV="refresh" content="1800">
+
+  <!-- ----------------  Leaflet : CSS  ------------------------------------ -->
+  <link rel="stylesheet" type='text/css' href="../utils/leaflet-1.7.1/leaflet.css" />
+  <!-- ----------------  Leaflet : JavaScript  ----------------------------- -->
+  <script>L_PREFER_CANVAS = true;</script>
+  <script src="../utils/leaflet-1.7.1/leaflet.js"></script>
+  <script charset="UTF-8" src="../utils/JS/miniMap.js"></script>
+  <!-- ---------------- ---------------------------------------------------- -->
+
+  <link rel="icon" type="image/x-icon" href="../utils/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="../utils/css/cssALG.php" />
+<!--link rel="stylesheet" type="text/css" href="< ?php echo $racineUtils ? >/css/impression.css" media="print" /-->
+<!--link rel="stylesheet" type="text/css" href="< ?php echo $racineUtils ? >/css/formulaire.css" /-->
+
+  <link rel="stylesheet" type='text/css' href="../utils/JS/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type='text/css' href="../utils/JS/simpleLightbox/dist/simpleLightbox.min.css" />
+  
+  <script src="https://cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js"></script>
+  <script src="../utils/JS/daterangepicker/daterangepicker.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="../utils/JS/simpleLightbox/dist/simpleLightbox.min.js"></script>
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script-->
+<!--script src="< ? php echo $racineUtils ? >/JS/html2canvas/html2canvas.js"></script->
+<!--script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script-->
+
+<!--script src="< ?php echo $racineUtils ? >/JS/watermarkjs/dist/watermark.js"></script-->
+<!--script src="< ?php echo $racineUtils ? >/JS/watermark-master/dist/jquery.watermark.js"></script-->
+
+  <!--script src="< ? php echo $racineUtils ? >/JS/bootstrap4-input-spinner/src/bootstrap-input-spinner.js"></script-->
+
+  <script src="../utils/JS/UtilsALG.js"></script>
+  
+  <script charset="UTF-8" src="./campagne.js"></script>
+  
+      <script type="text/javascript" src="../utils/JS/MatomoCandhis.js"></script>
+  </head>
+
+<body class="clALGPagePublic" alink="#000099" vlink="#990099" link="#000099"
+     oncontextmenu="return false;">
+
+<!--  $_SERVER["PHP_SELF"] est égal au nom de ce fichier PHP  -->
+<!--  mt-n2 : marge négative, permet de remonter le header  -->
+  <form name="FormCamp" class="pt-0 mt-n2" action="/_public_/campagne.php" method="post">
+
+<!--  bandeau  -->
+      
+  <div class="modal fade" id="idModal" tabindex="-1" role="dialog"
+      aria-labelledby="idModalTit" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" id="idModalDlg">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title" id="idModalTit"><strong>Titre</strong></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body clALGPagePublic">
+          <div id="idModalMsgAjax"></div>
+          <!--div id="idModalMsgAjaxALL"></div-->
+          <div id="idModalMsgAjaxML"></div>
+          <div id="idModalMsgAjaxPB"></div>
+          <div id="idModalMsg"></div>
+        </div>
+        <div class="modal-footer" hidden="true">
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#top"></a>
+
+<!--nav id="idNavHeader" class="navbar navbar-default navbar-expand-md navbar-dark shadow bg-white mx-0 my-0 px-0 py-0 px-4 .$sSticky."-->
+  <!--OK--nav id="idNavHeader" class="navbar navbar-default navbar-expand-md navbar-dark shadow bg-white .$sSticky."-->
+  <nav id="idNavHeader" class="navbar navbar-default navbar-expand-md navbar-dark shadow bg-white d-flex ">
+      
+    <div class="container-fluid">
+  	    
+      <div class="row">
+
+        <div class="col-xl-1 col-lg-1 col-md-0">
+        </div><!-- col 1/0 -->
+
+        <div class="col-xl-10 col-lg-10 col-md-12">
+
+    	    <div class="row align-items-center">
+
+    		    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-xs-6">
+              <div class="navbar-header my-auto">
+                <a class="navbar-brand" href="../index.php" data-toggle="tooltip" data-placement="bottom" 
+                    title="Observatoire côtier national de mesure in situ des états de mer" style="color:#FFFF99; text-decoration:none;">
+                  <img class="cardALGEntImgMarianneH mx-auto my-auto" src="../utils/images/logo_cerema_rf_fab-vertical_1_10.png" id="idLogoCerema" alt="LogoCerema" />
+                </a><!-- navbar-brand -->
+              </div><!-- navbar-header -->
+  	  	    </div><!-- col 3/3/3/4/6 -->
+
+            <!--div class="border-left d-sm-none d-md-block" style="width: 0px;">
+            </div--><!-- COM -->
+
+    		    <div class="col-xl-5 col-lg-4 col-md-2 col-sm-6 col-xs-5">
+              <div class="d-table mx-1 py-n5 my-3 px-3 vSepALG">
+                <a class="navbar-text mt-n3" href="../index.php" data-toggle="tooltip" data-placement="center" 
+                    title="Page d'accueil du site" style="color:#FFFF99; text-decoration:none;">
+                  <div class="d-table-row">
+                    <a class="label label-default cardALGEntCandhisTit " href="../index.php" data-toggle="tooltip" data-placement="right" 
+                        title="Page d'accueil du site">Candhis</a><!-- hitAcc ou titCandhis -->
+                  </div>
+                  <div class="d-table-row" >
+                    <span class="label label-default cardALGEntCandhisSTit">
+                      <h6>Observatoire côtier national de mesure in situ des états de mer</h6>
+                    </span>
+                  </div>
+                </a>            
+              </div><!-- d-table -->
+        		</div><!-- col 5/4/2/4/5 -->
+
+	  	      <div class="col-xl-4 col-lg-5 col-md-7 col-sm-1 col-xs-1 text-right">
+
+              <button type="button" class="navbar-toggler collapsed ml-auto"
+                  data-toggle="collapse" data-target="#idNavCollapse" data-display="dynamic"
+                  aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+
+              <div class="collapse navbar-collapse clALGIcoBS" id="idNavCollapse">
+<!--ul class="navbar-nav ml-0 pl-0"-->
+                <ul class="navbar-nav align-items-right">
+                  <li class="nav-item ">
+                    <a class="nav-link text-text-dark" data-toggle="tooltip" data-placement="auto" 
+                        href="../index.php"
+                        title="Page d'accueil du site"
+                        style="color:#33475B; text-align: center;">
+                      <span>
+                        <i class="fas fa-home"></i>
+                      </span>
+                      <div style="line-height:50%;">
+                        <br>
+                      </div>
+                      <span>Accueil</span>
+                    </a>
+                  </li>
+                  <li class="nav-item ">
+                    <a class="nav-link text-text-dark" data-toggle="tooltip" data-placement="auto" 
+                        href="../_public_/cartes.php"
+                        title="Localisation des campagnes de mesures"
+                        style="color: #33475B; text-align: center;">
+                      <span>
+                        <i class="fas fa-map-marker-alt"></i>
+                      </span>
+                      <div style="line-height:50%;">
+                        <br>
+                      </div>
+                      <span>Carte</span>
+                    </a>
+                  </li>
+                  <li class="nav-item not-active">
+                    <a class="nav-link text-" data-toggle="tooltip" data-placement="auto" 
+                        
+                        title=""
+                        style="color: #EF7757; font-weight: bold; text-align: center;">
+                      <span>
+                        <i class="fas fa-list-ul"></i>
+                      </span>
+                      <div style="line-height:50%;">
+                        <br>
+                      </div>
+                      <span>Campagnes</span>
+                    </a>
+                  </li>
+                  
+                </ul>
+              </div><!-- navbar collapse -->
+        		</div><!-- col 4/5/7/3/1 -->
+
+
+          </row><!-- row -->
+
+        </div><!-- col 10/10/12 -->
+      
+        <div class="col-xl-1 col-lg-1 col-md-0">
+        </div><!-- col 1/1/0 -->
+
+      </div><!-- row -->
+
+    </div><!-- container-fluid -->
+  </nav>
+  
+<!--  bouton caché inhibe une commande en cas de retour chariot !  -->
+    <div style="height:0px; width:0px; overflow:hidden;">
+      <button id="forceindex" name="BtnForceIndex" type="submit"></button>
+    </div>
+
+<!--  champ caché pour le `data` des graphiques  -->
+    <div id="idHid" style="display: none;">
+    </div>
+
+    <div class="container-fluid">
+      <div class="row no-gutters">
+        <div class="col-lg-1 md-0"></div>
+  
+<!--  zone de texte  -->
+
+<!-- affichage warning si navigateur incompatible  -->
+        <div id="idALGTabTit">
+        <table rules="basic" style="width: 100%;" border="1">
+          <tbody>
+            <tr>
+              <td class="clALGCelQuadInfo clALGCelQuadR clALGTabInfoTit"><br/>ATTENTION<br/><br/>Affichage du site dégradé avec `Mozilla version 0`<br/><br/>        </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+        <div class="col-lg-10 md-12">
+
+<!-- sticky !!! -->
+
+          <nav class="navbar sticky-top navbar-expand-sm navbar-info
+                  mt-md-2 mt-sm-0 z-depth-2 rounded border bg-light 
+                   cardALGCampTop 
+                role="navigation" aria-label="menuCampagne">
+            <div class="dropdown">
+                      <button type="button" id="idLisCamp"
+                  class="btn btnMarge btnNav btn-secondary btn-sm dropdown-toggle mr-3 btn-responsive" data-toggle="dropdown">
+                <span data-toggle="tooltip" data-html="true" title="Liste des campagnes<br><i>[TR] : temps réel<br>[MN] : maintenance<br>[PRIV] : privé</i>">
+                  <i class="fab fa-buffer"></i> Campagne
+                </span>
+    	        </button>    	        <div class="dropdown-menu dropdown-primary force-scroll-liste" aria-labelledby="idLisCamp">
+                <h6 class="dropdown-header">Liste des campagnes</h6>
+                            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTEwMQ==" style="text-decoration: none; color: black;">01101 - Leucate [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwNQ==" style="text-decoration: none; color: black;">01305 - Le Planier [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwNQ==" style="text-decoration: none; color: black;">01705 - Royan [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxMQ==" style="text-decoration: none; color: black;">02911 - Les Pierres Noires [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkyMg==" style="text-decoration: none; color: black;">02922 - Ile de Batz [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMkEwMQ==" style="text-decoration: none; color: black;">02A01 - Bonifacio [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMkIwNA==" style="text-decoration: none; color: black;">02B04 - La Revellata [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMkIwNQ==" style="text-decoration: none; color: black;">02B05 - Alistro [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzAwMQ==" style="text-decoration: none; color: black;">03001 - Espiguette [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzMwMg==" style="text-decoration: none; color: black;">03302 - Cap Ferret [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzQwNA==" style="text-decoration: none; color: black;">03404 - Sète [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNDQwMw==" style="text-decoration: none; color: black;">04403 - SEM-REV - Plateau du Four [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwOA==" style="text-decoration: none; color: black;">05008 - Cherbourg (extérieur) [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTYwMg==" style="text-decoration: none; color: black;">05602 - Belle-Ile [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjQwMg==" style="text-decoration: none; color: black;">06402 - Anglet [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjQwMw==" style="text-decoration: none; color: black;">06403 - Saint-Jean-de-Luz [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwOQ==" style="text-decoration: none; color: black;">07609 - Le Havre - Haut du Sud-Ouest [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODAwMg==" style="text-decoration: none; color: black;">08002 - Baie de Somme [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODMwMg==" style="text-decoration: none; color: black;">08302 - Porquerolles [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODMwMw==" style="text-decoration: none; color: black;">08303 - Cap Roux [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODUwNA==" style="text-decoration: none; color: black;">08504 - Ile d'Yeu Nord [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODUwNQ==" style="text-decoration: none; color: black;">08505 - Noirmoutier [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwNw==" style="text-decoration: none; color: black;">97107 - La Vigie [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzIwMg==" style="text-decoration: none; color: black;">97202 - Basse Pointe [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzIwNA==" style="text-decoration: none; color: black;">97204 - Fort de France [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzIwNQ==" style="text-decoration: none; color: black;">97205 - Sainte Lucie [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzMwNA==" style="text-decoration: none; color: black;">97304 - Ile de Cayenne [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQxMA==" style="text-decoration: none; color: black;">97410 - Saint-Pierre (large) [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzUwMQ==" style="text-decoration: none; color: black;">97501 - Saint-Pierre et Miquelon [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzYwMQ==" style="text-decoration: none; color: black;">97601 - Récif Nord [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05ODAwMA==" style="text-decoration: none; color: black;">98000 - Monaco [TR]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTEwMg==" style="text-decoration: none; color: black;">01102 - Port La Nouvelle (SEMOP) [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwNA==" style="text-decoration: none; color: black;">01704 - Oléron Large [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTkwMw==" style="text-decoration: none; color: black;">05903 - Gravelines [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjYwMQ==" style="text-decoration: none; color: black;">06601 - Banyuls [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYxMA==" style="text-decoration: none; color: black;">07610 - Port d'Antifer [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYxMQ==" style="text-decoration: none; color: black;">07611 - Le Havre - Nord du mouillage [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzgwMQ==" style="text-decoration: none; color: black;">97801 - Saint-Martin [TR] [MN]</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMDYwMQ==" style="text-decoration: none; color: black;">00601 - Nice</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwMQ==" style="text-decoration: none; color: black;">01301 - Camargue</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwMg==" style="text-decoration: none; color: black;">01302 - Port de Bouc</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwMw==" style="text-decoration: none; color: black;">01303 - Fos</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwNA==" style="text-decoration: none; color: black;">01304 - Marseille</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTMwNg==" style="text-decoration: none; color: black;">01306 - Golfe de Fos</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwMg==" style="text-decoration: none; color: black;">01702 - Oléron</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwMw==" style="text-decoration: none; color: black;">01703 - Oléron (SHOM)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwNg==" style="text-decoration: none; color: black;">01706 - Ile de Ré Large - Shom</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMTcwNw==" style="text-decoration: none; color: black;">01707 - Ile de Ré - Shom</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwMQ==" style="text-decoration: none; color: black;">02201 - Lezardrieux</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwMg==" style="text-decoration: none; color: black;">02202 - Les Minquiers2</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwMw==" style="text-decoration: none; color: black;">02203 - Les Minquiers Nord</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwNA==" style="text-decoration: none; color: black;">02204 - Bréhat</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwNQ==" style="text-decoration: none; color: black;">02205 - Bréhat (Nord Horaine)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjIwNg==" style="text-decoration: none; color: black;">02206 - Basse des Sauvages</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwMg==" style="text-decoration: none; color: black;">02902 - Ouessant large</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwMw==" style="text-decoration: none; color: black;">02903 - Le Toulinguet</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwNg==" style="text-decoration: none; color: black;">02906 - Ouessant</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwNw==" style="text-decoration: none; color: black;">02907 - Blancs Sablons</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwOA==" style="text-decoration: none; color: black;">02908 - Porsmilin</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkwOQ==" style="text-decoration: none; color: black;">02909 - Brest (Port du château)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxMA==" style="text-decoration: none; color: black;">02910 - Roscoff (Port de Bloscon)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxNA==" style="text-decoration: none; color: black;">02914 - Penmarc'h</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxNQ==" style="text-decoration: none; color: black;">02915 - Ile de Sein Sud</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxNg==" style="text-decoration: none; color: black;">02916 - Ile de Sein Nord</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxNw==" style="text-decoration: none; color: black;">02917 - Ouessant sud</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkxOQ==" style="text-decoration: none; color: black;">02919 - Kereon</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkyMA==" style="text-decoration: none; color: black;">02920 - Ile de Sein</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMjkyMQ==" style="text-decoration: none; color: black;">02921 - Esquibien</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMkIwMg==" style="text-decoration: none; color: black;">02B02 - Cap Corse</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMkIwMw==" style="text-decoration: none; color: black;">02B03 - Bastia</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzMwMw==" style="text-decoration: none; color: black;">03303 - Cap Ferret</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzQwMQ==" style="text-decoration: none; color: black;">03401 - Sète (Marseillan)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzQwMg==" style="text-decoration: none; color: black;">03402 - Sète (Frontignan)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzQwMw==" style="text-decoration: none; color: black;">03403 - Sète</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzUwMQ==" style="text-decoration: none; color: black;">03501 - Saint Malo</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wMzUwMg==" style="text-decoration: none; color: black;">03502 - Basse Trouvée</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNDQwMQ==" style="text-decoration: none; color: black;">04401 - Saint Nazaire</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNDQwMg==" style="text-decoration: none; color: black;">04402 - Le Croisic</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwMQ==" style="text-decoration: none; color: black;">05001 - Mont Saint-Michel</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwMg==" style="text-decoration: none; color: black;">05002 - Cherbourg (petite rade)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwMw==" style="text-decoration: none; color: black;">05003 - Cherbourg (grande rade)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwNA==" style="text-decoration: none; color: black;">05004 - Cherbourg (grande rade)</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwNQ==" style="text-decoration: none; color: black;">05005 - Chausey Sud</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwNg==" style="text-decoration: none; color: black;">05006 - Chausey Ouest</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwNw==" style="text-decoration: none; color: black;">05007 - Mont Saint Michel 2</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAwOQ==" style="text-decoration: none; color: black;">05009 - Flamanville</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTAxMA==" style="text-decoration: none; color: black;">05010 - Barfleur</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTYwMQ==" style="text-decoration: none; color: black;">05601 - Gâvres</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTkwMQ==" style="text-decoration: none; color: black;">05901 - Dunkerque</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNTkwMg==" style="text-decoration: none; color: black;">05902 - Ruytingen</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjIwMQ==" style="text-decoration: none; color: black;">06201 - Vergoyer</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjIwMg==" style="text-decoration: none; color: black;">06202 - Calais</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNjQwMQ==" style="text-decoration: none; color: black;">06401 - Bayonne</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwMQ==" style="text-decoration: none; color: black;">07601 - Antifer</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwMg==" style="text-decoration: none; color: black;">07602 - Le Havre</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwMw==" style="text-decoration: none; color: black;">07603 - Le Havre LHA</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwNA==" style="text-decoration: none; color: black;">07604 - Dieppe</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwNQ==" style="text-decoration: none; color: black;">07605 - Le Havre 2</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwNg==" style="text-decoration: none; color: black;">07606 - Le Havre - Metzinger</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwNw==" style="text-decoration: none; color: black;">07607 - Paluel</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wNzYwOA==" style="text-decoration: none; color: black;">07608 - Penly</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODAwMQ==" style="text-decoration: none; color: black;">08001 - Cayeux</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODMwMQ==" style="text-decoration: none; color: black;">08301 - Porquerolles</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODUwMQ==" style="text-decoration: none; color: black;">08501 - Ile d'Yeu</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODUwMg==" style="text-decoration: none; color: black;">08502 - Ile d'Yeu</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD0wODUwMw==" style="text-decoration: none; color: black;">08503 - Ile d'Yeu</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwMQ==" style="text-decoration: none; color: black;">97101 - Port Louis</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwMg==" style="text-decoration: none; color: black;">97102 - La Désirade</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwMw==" style="text-decoration: none; color: black;">97103 - Pointe de la Grande Vigie</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwNA==" style="text-decoration: none; color: black;">97104 - Pointe à Pitre</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwNQ==" style="text-decoration: none; color: black;">97105 - Port du Moule</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzEwNg==" style="text-decoration: none; color: black;">97106 - Côte Caraïbes</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzIwMQ==" style="text-decoration: none; color: black;">97201 - Grand'Rivière</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzIwNg==" style="text-decoration: none; color: black;">97206 - Ilets aux Chiens</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzMwMQ==" style="text-decoration: none; color: black;">97301 - Guyane Mahury</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzMwMg==" style="text-decoration: none; color: black;">97302 - Guyane Mahury</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzMwMw==" style="text-decoration: none; color: black;">97303 - Kourou</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwMQ==" style="text-decoration: none; color: black;">97401 - Baie de la Possession</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwMg==" style="text-decoration: none; color: black;">97402 - Pointe du Phare</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwMw==" style="text-decoration: none; color: black;">97403 - Rivière des Galets</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwNA==" style="text-decoration: none; color: black;">97404 - Pointe du Gouffre</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwNQ==" style="text-decoration: none; color: black;">97405 - Saint Pierre</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwNg==" style="text-decoration: none; color: black;">97406 - Sainte Rose</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwNw==" style="text-decoration: none; color: black;">97407 - Vincendo</a>            <a class="dropdown-item" href="/_public_/campagne.php?Y2FtcD05NzQwOA==" style="text-decoration: none; color: black;">97408 - Port Réunion Est</a>              </div>
+            </div><!-- dropdown -->
+            <div class="btn-toolbar mt-1 w-100" id="toolCamp" role="group">
+                          <button type="button" id="idBtnTR"
+                    class="btn mb-1 btnMarge btn-secondary btn-sm mr-1 btn-responsive disabled"                  name="BtnReel">
+                <i class="far fa-clock"></i> Temps réel              </button>
+                          <button type="button" id="idBtnCar"
+                    class="btn mb-1 btnMarge btn-secondary btn-sm mr-1 btn-responsive enCours"                  name="BtnInfo">
+                <i class="fa fa-info"></i> Caractéristiques              </button>
+                        <button type="submit" id="idBtnAr"
+                  class="btn mb-1 btnMarge btnNav btn-secondary btn-sm mr-1 btn-responsive" data-toggle="tooltip" data-placement="auto"
+                  title="Données archivées"                  name="BtnArch">
+                <i class="fa fa-database"></i> Archives     
+              </button>
+            </div><!-- toolbar -->
+            <div class="btn-toolbar w-100 d-flex justify-content-sm-end justify-content-sm-left" role="group">
+                          <button type="button" id="idBtnTTR"
+                    class="btn mb-1 btnMarge btn-secondary btn-sm mr-1 btn-responsive disabled"                  name="BtnTeleReel">
+    	          <i class="fa fa-download"></i> Temps réel              </button>
+                        <button type="submit" id="idBtnTAr"
+                  class="btn mb-1 btnMarge btnNav btn-secondary btn-sm mr-1 btn-responsive" data-toggle="tooltip" data-placement="auto"
+                  title="Téléchargement données archivées"                  name="BtnTeleArch">
+    	          <i class="fa fa-download"></i> Archives              </button>
+                        <a href="https://doc.cerema.fr/search.aspx?SC=DEFAULT&amp;QUERY=candhis+%3A+analyses&amp;QUERY_LABEL=#/Search/(query:(InitialSearch:!t,Page:0,PageRange:3,QueryString:'candhis%20:%20analyses',ResultSize:-1,ScenarioCode:DEFAULT,SearchContext:0,SearchLabel:''))" class="text-white btn mb-1 btnMarge btnNav btn-secondary btn-sm mr-1 btn-responsive" data-toggle="tooltip" data-placement="auto"
+                    target="_blank"
+                    title="Téléchargement analyse campagnes">
+                 <i class="fa fa-download"></i> Analyse
+                </a>            </div><!-- toolbar -->
+          </nav><!-- navbar -->
+
+          <div class="card bg-default cardALGCampNext" id="idCardCamp">
+            <div class="card-body">
+
+  <div style="padding-top: 10px;" class="alert alert-info" role="alert">
+    <h4 class="text-center clALGTitBS"><strong class="clALGTab">Campagne  01301 Camargue</strong></h4>
+  </div>
+  <script>
+        MAJBtnTRCar("idBtnTR","idBtnCar");
+</script>
+
+	<div class="card mb-3">
+    <div class="alert alert-secondary text-center" role="alert">
+      <h4 class="clALGTitBS">Caractéristiques</h4>
+    </div>
+    <div class="container-fluid">
+    	<div class="row">
+    		<div class="col-md-12">
+    			<div class="row">
+    				<div class="col-md-3">
+<!--...v1.04...div class="container ml-n3 mt-3 mb-3"-->
+              <div class="container px-0 mb-3">
+                <div class="table-responsive">
+              		<table id="idTabCmpPart" class="table table-striped table-bordered" role="grid">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong class="clALGTab">Partenaire</strong><br>
+              					</td>
+              				</tr>
+             					<tr>
+                        <td class="clALGLBInfo"><strong>
+                          <a class="clALGLBLinkInfo clALGTab" href="https://www.cerema.fr/fr" target="_blank" data-toggle="tooltip" data-placement="bottom"
+                            data-html="true" title="<img src='../_privC_/Logos/P0000.jpg' width='100px'>" style="text-align: center">
+                            Cerema
+                          </a>
+                        </strong></td>
+                      </tr>
+<!-- pour éviter le mauvais positionnement du tooltip partenaire -->
+                      <tr>
+                        <td>
+                          <strong class="clALGTab">Localisation</strong><br>
+              					</td>
+              				</tr>
+                      <tr>
+                        <td>
+<!--...v1.04...img class="m-n2" style="max-width:128px;" src=" .$src. " id="idImgCart" /-->
+<!--...v1.11...-->
+                          <!--img class="m-n2" style="max-width:128px;" src=" cote .$src. cote " id="idImgCart" /-->
+                          <div id="idMiniMap">
+
+<script>
+                            var latMiniMapPHP  = "43.3499985";
+                            var lonMiniMapPHP  = "4.5666666";
+                            var hintMiniMapPHP = "Camargue";
+
+                            afficheMiniMap();/*  affichage miniMap Leaflet  */
+</script>
+
+
+                          </div>
+<!--...v1.11...-->
+                        </td>
+            					</tr>
+                    </tbody>
+                  </table>
+                </div><!-- table-responsive -->
+              </div><!-- container -->
+    				</div><!-- col-md-3 --->
+    				<div class="col-md-9">
+              <div class="container">
+                <div class="table-responsive">
+              		<table id="idTabCmpCarac" class="table table-striped table-bordered">
+                    <tbody>
+             					<tr class="table-warning text-center">
+        								<td><strong class="clALGTab">Code campagne</strong></td>
+        								<td><strong class="clALGTab">Nom campagne</strong></td>
+        								<td><strong class="clALGTab">Latitude</strong></td>
+        								<td><strong class="clALGTab">Longitude</strong></td>
+                      </tr>
+        							<tr>
+        								<td>01301</td><!-- UTF8_WIN($resC[1]) -->
+        								<td>Camargue</td><!-- UTF8_WIN($resC[2]) -->
+        								<td>43&deg;21.000&rsquo; N</td><!-- UTF8_WIN($resC[3]) -->
+        								<td>04&deg;34.000&rsquo; E</td><!-- UTF8_WIN($resC[4]) -->
+        							</tr>
+        							<tr class="table-warning text-center">
+        								<td><strong class="clALGTab">Profondeur (m)</strong></td>
+        								<td colspan="2"><strong class="clALGTab">Capteur</strong></td>
+        								<td><strong class="clALGTab">Directionnel</strong></td>
+        							</tr>
+        							<tr>
+        								<td>17</td><!-- UTF8_WIN($resC[5]) -->
+        								<td colspan="2">Houlographe Datawell DWR</td>
+        								<td>Oui</td><!-- UTF8_WIN($resC[8]) -->
+        							</tr>
+        							<tr class="table-warning text-center">
+        								<td><strong class="clALGTab">Nombre de mesures</strong></td>
+        								<td><strong class="clALGTab">Date de début</strong></td>
+        								<td><strong class="clALGTab">Date de fin</strong></td>
+        								<td><strong class="clALGTab">Temps réel</strong></td>
+        							</tr>
+        							<tr>
+        								<td>14441</td><!-- UTF8_WIN($resC[ 9]) -->
+        								<td>09/07/1999 12:00</td><!-- UTF8_WIN($resC[10]) -->
+        								<td>09/01/2004 09:00</td><!-- UTF8_WIN($resC[11]) -->
+        								<td>Non</td><!-- UTF8_WIN($resC[12]) -->
+        							</tr>
+                    </tbody>
+                  </table>
+                </div><!-- table-responsive -->
+              </div><!-- container -->
+            </div><!-- col-md-9 -->
+          </div><!-- row -->
+        </div><!-- col-md-12 -->
+      </div><!-- row -->
+    </div><!-- container-fluid -->
+  </div><!-- card -->
+  
+  <div id="idAlert" class="alert alert-danger alert-sm alert-dismissible fade show pb-2" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h5 class="text-center clALGTitBS">Aucun historique</h5>
+  </div>
+	<div class="card mb-3">
+    <div class="alert alert-secondary text-center mb-0" role="alert">
+      <h5 class="clALGTitBS">Disponibilité (mesures)</h5>
+    </div>
+  <div class="container-fluid mt-3">
+  	<div class="row">
+  		<div class="col-0"></div>
+  		<div class="col-12">
+      	<div class="row" style="overflow:scroll; overflow-x:auto; overflow-y:hidden;">
+          <table class="table table-striped table-bordered ">
+            <thead>
+    		      <tr class="table-warning text-center">            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Année</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Jan</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Fév</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Mar</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Avr</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Mai</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Jun</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Jul</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Aoû</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Sep</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Oct</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Nov</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Déc</strong></th>            <th class="clALGTab tabGris"><strong class="clALGTab tabGris">Total</strong></th>	      </tr>
+            </thead>
+            <tbody>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">2004            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">60            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">60            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">2003            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">44            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">228            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">246            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">232            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">245            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">247            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">221            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">253            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">228            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">256            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">2200            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">2002            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">296            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">659            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">601            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">355            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">577            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">720            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">66            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">3274            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">2001            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">56            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">493            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">657            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">120            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">228            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">172            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">104            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">678            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">2508            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">2000            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">248            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">226            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">228            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">199            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">567            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">133            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">608            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">739            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">166            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">534            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">717            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">640            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">5005            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">1999            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">179            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">244            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">220            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">260            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">231            </span>          </td>          <td class="text-center clALGTab tabGris">            <span class="clALGTab tabGris">260            </span>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1394            </strong>          </td>        </tr>        <tr>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">Total            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">660            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">885            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">873            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1275            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">2047            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1085            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1098            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1350            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">835            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1219            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1280            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">1834            </strong>          </td>          <td class="text-center clALGTab tabGris">            <strong class="clALGTab tabGris">14441            </strong>          </td>        </tr>      </tbody>
+          </table>
+        </div><!-- row -->
+      </div><!-- col -->
+  		<div class="col-0"></div>
+    </div><!-- row -->
+  </div><!-- container-fluid -->
+  </div><!-- card -->        		</div><!-- card-body -->
+          </div><!-- card -->
+        </div><!-- col-lg-10 -->
+
+        <div class="col-lg-1 md-0"></div>
+      </div><!-- no-gutters -->
+    </div><!-- container-fluid -->
+
+  </form>
+
+
+
+
+
+
+
+    
+    
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+</body>
+
+</html>
