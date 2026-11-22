@@ -1,4 +1,4 @@
-# Poste 17 (candidat Beauduc / digue frontale) : étape 1 (lieu.js, relevé OSM + photos datées), étape 3 (position.js, position, autour, parking, chemin).
+# Poste 17 (candidat Beauduc / digue frontale) : étape 1 (lieu.js, relevé OSM + photos datées), étape 3 (position.js : points, parking, EMODnet, vues ; vue.js : vue d'ensemble).
 # Ne tourne que sur la branche essai-poste17 ; écrit dans « essais-poste17 », un dossier par passage (jamais réécrit, LECONS 22 nov.).
 # N'écrit jamais dans « donnees » (lue par Home Assistant).
 name: poste17
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: node outils/poste17/position.js
+      - run: node outils/poste17/vue.js
       - name: Enregistrer dans essais-poste17/passage-HHhMM
         if: always()
         run: |
