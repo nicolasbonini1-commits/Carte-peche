@@ -22,8 +22,18 @@ Vidéo : « PECHE DU LOUP/BAR EN BORD DE MER AU LEURRE », chaîne Fada2pêche, 
 - Plan PNR 2014 (ancien) : « zone dévolue à la pêche (surfcasting) du 01/10 au 31/03 » sur la plage de Beauduc.
 - Réserve naturelle nationale de Camargue : aucune relation OSM dans les boîtes 4,555-4,77 E → secteur a priori hors RNN (à revoir si OSM incomplet).
 
+## Étape 3 — position, autour, parking, chemin (22 nov. 2026, en attente de validation par Nico)
+- Passages : `essais-poste17/passage-22-17h19` (`position.js` : OSM nord, routeur, EMODnet, vues 600 m) et `passage-22-17h22` (`vue.js` : vue d'ensemble Esri + IGN). Image de contrôle et calcul du chemin : `essais-poste17/controle-22-17h30/`.
+- **P = rive ouest du grau de l'étang de Beauduc** 43,36147 / 4,59261 (lu sur la photo Esri du 25 mars 2025, contrôlé en vue 600 m ≈ 0,9 m/pixel) : pointe de sable à l'embouchure du grau, ligne de blocs de l'ancienne digue à ≈ 230 m au large. Côté phare : aucune eau à traverser depuis le parking.
+- Autour (par la plage, vol d'oiseau ≈ trajet, plage droite) : **a** racine de l'ancienne digue sous le phare 43,36206 / 4,58453 (656 m) ; **b** plage face à la ligne de blocs 43,36179 / 4,58875 (314 m).
+- **c écarté** : jonction blocs / rivage, rive est du grau, 43,35706 / 4,60021 (786 m) ; colle le mieux aux captures 5, 7, 9, 10 et a l'eau la plus profonde (EMODnet ≈ 2,7-3,4 m au pied), mais il faut traverser le grau (chenal ≈ 70 m sur la photo, profondeur et courant inconnus) → non joignable à pied tant que ce n'est pas vu sur place (règle du 20 nov.).
+- EMODnet (maille ≈ 115 m, cap 215°) : P −0,9 m, +2,3 à 50-100 m (maille ancienne : la côte a bougé, peu fiable), −2,5 à 300 m, −3,7 à 500 m ; a +0,1 / −3,4 à 300 m ; b −0,5 / −2,3 à 200 m ; c −2,7 / −3,4 à 100 m / −5,7 à 500 m.
+- **Parking** : OSM way 240666081 (`amenity=parking`, `access=yes`, `fee=no`, sable) 43,40731 / 4,59691, au bout de la piste à Beauduc (lieu-dit OSM « Beauduc » 43,4024 / 4,5956). Lien avec le « parking public 6 h-22 h » de l'étape 2 non vérifié.
+- **Chemin réel** (calcul dans le chat : chemins OSM publics + trait de côte OSM, raccords sur le sable ≤ 150 m) : **≈ 9,1 km** = pistes 0,6 km → plage du golfe 1,7 km → sentier sableux 685971637 (`motor_vehicle=no`) 4,4 km → plage sud 2,1 km (dont 0,74 km phare → P). ≈ 2 h à 4,5 km/h, plus sur sable mou. Le routeur piéton FOSSGIS donne 13,3 km avec P « accroché » à 3,6 km d'un chemin : inutilisable ici. Digues des salins (`access=private`) : non comptées.
+- Date des photos : 25 mars 2025 (identify Esri de l'étape 1) ; le service de métadonnées Esri répond 404 depuis 17 h 22. IGN (ortho actuelle, date inconnue) : vue d'ensemble reçue, pas encore comparée.
+
 ## Reste à faire
-3. Position sourcée (OSM + EMODnet + photo aérienne) + 2-3 points « autour » joignables à pied ; relever le parking de Beauduc (boîte plus au nord).
+3. Fait (22 nov., 17 h 30), en attente de validation de Nico : P, a, b, parking, chemin.
 4. Limites de la fiche : hors secteur, bouée Candhis la plus proche, couleur de l'eau non réglée ici (Grand Rhône).
 6. Procédure habituelle (REPRISE.md, essai Chrome, cache v21, accord de Nico, `main`).
-- Petit défaut : le commentaire « passe 2 (22 nov. 16 h 30) » de `outils/poste17/lieu.js` est faux (poussé à 16 h 18).
+- Petit défaut corrigé (commentaire de `lieu.js`, 17 h 18).
