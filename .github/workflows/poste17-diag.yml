@@ -1,0 +1,30 @@
+# Poste 17, nuit A (23 nov. 2026) : diagnostic réseau. Python urllib n'a eu aucune réponse de Candhis (1er passage)
+# alors que curl répond en 0,5 s. Ici : Copernicus WMTS et page publique Candhis (hors API), par curl et par Python.
+name: poste17-diag
+on:
+  push:
+    branches: [essai-poste17]
+    paths: [".github/workflows/poste17-diag.yml"]
+permissions:
+  contents: read
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - run: |
+          W="https://wmts.marine.copernicus.eu/teroWmts/OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205?service=WMTS&version=1.0.0&request=GetCapabilities"
+          C="https://candhis.cerema.fr/_public_/aide.php"
+          for u in "$W" "$C"; do
+            curl -sS -m 30 -o /dev/null -w "curl %{http_code} %{size_download} o %{time_total} s $u\n" "$u" || echo "curl échec $u"
+            for ua in "Carte-peche essai poste 17 (usage perso)" "Mozilla/5.0" ""; do
+              python3 - "$u" "$ua" <<'PY'
+          import sys, time, urllib.request
+          u, ua = sys.argv[1], sys.argv[2]; t = time.time()
+          try:
+              h = {"User-Agent": ua} if ua else {}
+              with urllib.request.urlopen(urllib.request.Request(u, headers=h), timeout=30) as r: n = len(r.read()); print("python", r.status, n, "o", round(time.time()-t, 2), "s UA=", repr(ua))
+          except Exception as e: print("python échec", type(e).__name__, e, round(time.time()-t, 1), "s UA=", repr(ua))
+          PY
+            done
+          done
