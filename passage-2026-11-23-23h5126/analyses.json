@@ -1,0 +1,36 @@
+{
+ "le": "2026-11-23T22:39:57.724Z",
+ "modele": [
+  "gemini-3.8-flash",
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-2.5-flash",
+  "gemini-flash-latest"
+ ],
+ "analysees": [
+  {
+   "id": "7QcD9Jp7y4s",
+   "titre": "BARLOUP.FR - Pêche aux leurres sur l'embouchure du Rhône en Camargue !",
+   "page": "https://www.notion.so/421a0be6c30781548bdcf5f98fd19a3b",
+   "modele": "gemini-3.6-flash (1 image / 5 s)",
+   "jetons": 72334,
+   "lieu": "Zone : Embouchure du Grand Rhône (They de Roustan / Plage Napoléon)",
+   "confiance": "Moyenne",
+   "filme_depuis": "bord",
+   "demandee": false
+  }
+ ],
+ "ecartees": [
+  {
+   "id": "CCptCFRz8Ig",
+   "titre": "petit tassergal embouchure du petit rhone #camargue #fishing",
+   "raison": "Gemini : filmé depuis bateau, mer Méditerranée, zone oui"
+  },
+  {
+   "id": "30SFOErKOM8",
+   "raison": "fiche déjà dans Notion"
+  }
+ ],
+ "erreurs": []
+}

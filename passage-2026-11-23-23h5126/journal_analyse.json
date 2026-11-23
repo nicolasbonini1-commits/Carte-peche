@@ -1,0 +1,124 @@
+[
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "models",
+  "code": 200
+ },
+ {
+  "mesure": "countTokens",
+  "video": "30SFOErKOM8",
+  "code": 200,
+  "jetons": 20286
+ },
+ {
+  "mesure": "countTokens",
+  "video": "7QcD9Jp7y4s",
+  "code": 200,
+  "jetons": 184858
+ },
+ {
+  "mesure": "countTokens",
+  "video": "CCptCFRz8Ig",
+  "code": 200,
+  "jetons": 5976
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 429,
+  "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate…"
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 200,
+  "jetons": 7313
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "fps": 0.2,
+  "code": 429,
+  "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate…"
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 429,
+  "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate…"
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "fps": 0.2,
+  "code": 429,
+  "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate…"
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 200,
+  "jetons": 72334
+ },
+ {
+  "notion": "pages",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ }
+]
