@@ -1,0 +1,9 @@
+{
+ "_note": "Règles de tri du robot (version texte, 23 nov. 2026). Poids choisis par Claude, à discuter avec Nico : ce ne sont pas des valeurs mesurées.",
+ "zone": ["saintes-maries", "saintes maries", "camargue", "beauduc", "piemanson", "port-saint-louis", "port saint louis", "salin-de-giraud", "salin de giraud", "faraman", "espiguette", "grau-du-roi", "grau du roi", "port-camargue", "port camargue", "grande-motte", "grande motte", "carnon", "palavas", "maguelone", "villeneuve-les-maguelone", "frontignan", "sete", "thau", "aigues-mortes", "aigues mortes", "petit rhone", "grand rhone", "embouchure du rhone", "vidourle", "mauguio", "perols", "carteau", "port-de-bouc", "port de bouc", "fos-sur-mer", "fos sur mer"],
+ "hors_zone_proche": ["agde", "valras", "marseillan", "vias", "serignan", "cap d'agde", "martigues", "carro", "cote bleue"],
+ "espece": ["loup", "bar ", "bars ", "dorade", "daurade", "marbre", "sar ", "sars ", "leurre", "calee", "surfcasting", "mouche"],
+ "poste": ["digue", "jetee", "epi ", "epis", "enrochement", "brise-lames", "phare", "grau", "chenal", "canal", "embouchure", "plage", "quai", "pointe", "musoir"],
+ "exclure": ["bateau", "kayak", "float tube", "thon", "bonite", "black-bass", "black bass", "carpe", "brochet", "truite", "silure", "sandre", "#shorts", "atlantique", "bretagne", "vendee"],
+ "poids": {"zone": 3, "hors_zone_proche": 1, "espece": 1, "poste": 1, "exclure": -3}
+}

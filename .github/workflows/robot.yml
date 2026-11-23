@@ -1,0 +1,35 @@
+# Robot vidéos pêche, version « texte seulement » (essai du 23 nov. 2026).
+# Ne tourne que sur la branche essai-robot ; écrit dans « essais-robot », un dossier par passage. N'écrit jamais dans « donnees » ni dans Notion.
+# Pas de planning automatique tant que Nico n'a pas validé (lancement à la main ou par un commit sur outils/robot/).
+name: robot
+on:
+  push:
+    branches: [essai-robot]
+    paths: ["outils/robot/**", ".github/workflows/robot.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: robot
+  cancel-in-progress: false
+jobs:
+  rss:
+    if: github.ref_name == 'essai-robot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node outils/robot/rss.js
+      - name: Enregistrer dans essais-robot/passage-JJ-HHhMM
+        if: always()
+        run: |
+          D=passage-$(TZ=Europe/Paris date '+%d-%Hh%M')
+          mkdir /tmp/d && cd /tmp/d && git init -q
+          if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-robot; then git checkout -q -b essais-robot FETCH_HEAD; else git checkout -q --orphan essais-robot; fi
+          mkdir -p $D && cp -r /tmp/sortie/. $D/ || echo "rien" > $D/vide.txt
+          git config user.name "robot-bot"; git config user.email "robot@users.noreply.github.com"
+          git add -A && git commit -qm "robot $D (commit ${GITHUB_SHA::7})"
+          git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-robot
