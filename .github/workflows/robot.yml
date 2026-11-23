@@ -48,7 +48,7 @@ jobs:
       - name: Enregistrer le passage
         if: always()
         run: |
-          D=passage-$(TZ=Europe/Paris date '+%Y-%m-%d-%Hh%M')
+          D=passage-$(TZ=Europe/Paris date '+%Y-%m-%d-%Hh%M%S')${VIDEO:+-demande}
           mkdir /tmp/d && cd /tmp/d && git init -q
           if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" "$DEST"; then git checkout -q -b "$DEST" FETCH_HEAD; else git checkout -q --orphan "$DEST"; fi
           mkdir -p "$D" && (cp -r /tmp/sortie/. "$D"/ || echo "rien" > "$D"/vide.txt)
