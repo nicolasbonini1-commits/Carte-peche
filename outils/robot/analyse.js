@@ -80,7 +80,8 @@ const SCHEMA = { type: "OBJECT", properties: {
   ordre_rive_en_face: { type: "STRING" },
   lieux_possibles: { type: "ARRAY", items: { type: "OBJECT", properties: {
     nom: { type: "STRING" }, commune: { type: "STRING" }, confiance: { type: "STRING", enum: ["Élevée", "Moyenne", "Faible"] },
-    pour: { type: "STRING" }, contre: { type: "STRING" }, a_regarder_sur_geoportail: { type: "STRING" } } } },
+    pour: { type: "STRING" }, contre: { type: "STRING" }, a_regarder_sur_geoportail: { type: "STRING" } },
+    required: ["nom", "confiance", "pour", "contre"], propertyOrdering: ["nom", "commune", "confiance", "pour", "contre", "a_regarder_sur_geoportail"] } },
   dans_la_zone: { type: "STRING", enum: ["oui", "non", "incertain"] },
   especes: { type: "STRING" }, technique_leurres: { type: "STRING" }, saison_conditions: { type: "STRING" }, acces_marche: { type: "STRING" }
 }, required: ["filme_depuis", "mer", "resume", "reperes", "lieux_possibles", "dans_la_zone"] };
@@ -98,11 +99,27 @@ Règles strictes :
 - Pour chaque repère, dis ce qui pourrait être mal lu (exemple : une « plage de rochers » peut être une digue effondrée).
 - Si on voit une rive en face (canal, chenal, grau), décris l'ordre des repères de gauche à droite.
 - Un sponsor ou un magasin affiché donne la région du pêcheur, pas le lieu de pêche.
-- Propose 1 à 3 lieux possibles, classés, avec la confiance : Élevée seulement si un ouvrage unique est reconnu ; Moyenne si plusieurs indices cohérents mais un autre lieu reste possible ; Faible si seulement un type de côte. Pour chacun : raisons pour, raisons contre, et quoi regarder précisément sur une photo aérienne.`;
+- Le titre, la description et les hashtags ne sont PAS des preuves : ils donnent au mieux une zone. Juge sur ce qui se VOIT.
+- S'il n'y a pas de rive en face, écris « aucune ».
+- Propose 1 à 3 lieux possibles, classés, aussi précis que possible (un poste de moins de 500 m : tel épi, telle digue, tel grau) ; si l'image ne permet qu'une zone, dis-le dans « nom » (ex. « zone : plage de l'Espiguette, poste non identifiable »).
+- Confiance : Élevée SEULEMENT si un ouvrage unique est VU à l'image et reconnu ; Moyenne si plusieurs indices VUS sont cohérents mais un autre lieu reste possible ; Faible si seulement un type de côte, ou si le lieu ne vient que du titre. Pour chacun : raisons pour, raisons contre (une ou deux phrases chacune), et quoi regarder précisément sur une photo aérienne.`;
+
+// Contrôle de la réponse : Gemini peut se tromper de case, se répéter ou surestimer sa confiance.
+function controler(r) {
+  r.alertes = [];
+  const rare = (r.reperes || []).some(x => x.rare && /ouvrage/.test(x.categorie || ""));
+  for (const l of r.lieux_possibles || []) {
+    for (const k of ["pour", "contre", "a_regarder_sur_geoportail"]) if ((l[k] || "").length > 700) { l[k] = coupe(l[k], 700); r.alertes.push("réponse de Gemini trop longue ou répétée (coupée)"); }
+    if (!["Élevée", "Moyenne", "Faible"].includes(l.confiance)) { l.confiance = "Faible"; r.alertes.push("confiance absente dans la réponse : mise à Faible"); }
+    if (l.confiance === "Élevée" && !rare) { l.confiance = "Moyenne"; r.alertes.push("Élevée sans ouvrage rare vu : ramenée à Moyenne (règle du skill)"); }
+  }
+  r.alertes = [...new Set(r.alertes)];
+  return r;
+}
 
 async function gemini(v, liste) {
   const corps = { contents: [{ parts: [{ file_data: { file_uri: v.lien } }, { text: consigne(v) }] }],
-    generationConfig: { temperature: 0.2, responseMimeType: "application/json", responseSchema: SCHEMA } };
+    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: "application/json", responseSchema: SCHEMA } };
   let derniere = "";
   for (const m of liste) {
     for (let essai = 1; essai <= 2; essai++) {
@@ -113,7 +130,7 @@ async function gemini(v, liste) {
         journal.push({ gemini: m, video: v.id, essai, code: r.status, jetons: j.usageMetadata?.totalTokenCount });
         if (r.ok) {
           const t = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
-          return { modele: m, jetons: j.usageMetadata?.totalTokenCount, r: JSON.parse(t) };
+          return { modele: m, jetons: j.usageMetadata?.totalTokenCount, r: controler(JSON.parse(t)) };
         }
         derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
         if (r.status === 429) { await pause(65000); continue; } // limite par minute du gratuit
@@ -134,7 +151,7 @@ function fiche(v, a) {
     "Chaîne": { rich_text: txt(v.chaine || "") },
     "Lieu le plus probable": { rich_text: txt(p ? `[V][Gemini] ${p.nom}${p.commune ? " (" + p.commune + ")" : ""}` : "[V][Gemini] aucun lieu proposé") },
     "Autres lieux possibles": { rich_text: txt(l.slice(1).map(x => `${x.nom} (${x.confiance})`).join(" ; ")) },
-    "À vérifier": { rich_text: txt(`${geste}Analyse automatique, rien de vérifié. Coordonnées et prévalidation sur imagerie à faire. ${p?.a_regarder_sur_geoportail || ""}`) }
+    "À vérifier": { rich_text: txt(`${geste}${(r.alertes || []).length ? "⚠️ " + r.alertes.join(" ; ") + ". " : ""}Analyse automatique, rien de vérifié. Coordonnées et prévalidation sur imagerie à faire. ${p?.a_regarder_sur_geoportail || ""}`) }
   };
   if (p?.confiance) proprietes["Confiance"] = { select: { name: p.confiance } };
   if (v.date) proprietes["Date vidéo"] = { date: { start: v.date } };
@@ -142,6 +159,7 @@ function fiche(v, a) {
     para(`Fiche écrite par le robot le ${new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })} — Gemini (${a.modele}) a regardé la vidéo depuis son lien public, sans téléchargement. Tout est [V] : rien n'est vérifié. Pas de coordonnées : elles viendront de la prévalidation (OSM, IGN, Sentinel-2), puis du contrôle Géoportail de Nico.`),
     titre("Résumé"), para(r.resume || ""),
     para(`Filmé depuis : ${r.filme_depuis} — Mer : ${r.mer} — Dans la zone Valras → Fos : ${r.dans_la_zone}`),
+    ...(r.alertes || []).map(x => puce("⚠️ Contrôle du robot : " + x)),
     titre("Lieux possibles (Gemini)"),
     ...l.map(x => puce(`${x.nom}${x.commune ? " (" + x.commune + ")" : ""} — confiance ${x.confiance}. Pour : ${x.pour || "—"}. Contre : ${x.contre || "—"}. À regarder : ${x.a_regarder_sur_geoportail || "—"}`)),
     titre("Lieux nommés dans la vidéo"),
