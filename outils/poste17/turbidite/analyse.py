@@ -6,7 +6,7 @@ Même chaîne que outils/turbidite/features.py + indice.py + final.py (branche e
 - mémoire du débit du Rhône (Tarascon) : max sur 15 j du rapport (débit de la veille / médiane du mois depuis 1990) × e^(−j/8) ;
 - coefficients communs FIXÉS (js/model.js, M.TURB) : hsmax48 0,3653 ; hs 0,1732 ; ws24 0,1049 (par 10 km/h) ; pluie 0,0431·ln(1+indice) ;
 - seuls la base du poste 17 et son coefficient Rhône k sont calés (moindres carrés, 2020-2024), test sur 2025-2026.
-Usage : python3 analyse.py RELEVES_DIR TURBIDITE_JSON SORTIE_DIR [turbidite_16_postes.json]
+Usage : [POINT=17_1000] python3 analyse.py RELEVES_DIR TURBIDITE_JSON SORTIE_DIR [turbidite_16_postes.json]
 """
 import json, math, sys, os
 import numpy as np, pandas as pd
@@ -75,6 +75,7 @@ out["valeurs_par_point"] = S.groupby("pt").size().to_dict()
 out["periode_mesures"] = [str(S.date.min().date()), str(S.date.max().date())]
 out["periode_conditions"] = [str(daily.date.min().date()), str(daily.dropna(subset=["hs", "ratio"]).date.max().date())]
 PT = "17_300" if out["valeurs_par_point"].get("17_300", 0) >= 50 else "17_1000"
+PT = os.environ.get("POINT") or PT  # POINT=17_1000 : même calcul à 1 km (contrôle)
 out["point_utilise"] = PT
 
 # ---- calage base + k (coefficients communs fixés) ----

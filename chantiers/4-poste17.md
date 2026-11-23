@@ -51,8 +51,38 @@ Ce que l'appli ferait du poste 17 si on l'ajoutait tel quel, et ce qui serait ap
 - **Alertes** (`notif/alertes.js`) : calculées sur le point de zone C seulement → le poste 17 n'aurait pas d'alerte à lui. Choix de Nico : l'exclure des alertes tant que c'est un « point à explorer ».
 - **Route** : temps Poulx → parking de Beauduc non calculé (OSRM injoignable depuis le chat le 22 nov. à 23 h 30) → tâche de nuit A. À ajouter : ≈ 2 h de marche (9,1 km).
 
+### Tâche de nuit A (23 nov. 2026, 0 h 31 – 1 h 30, en autonomie, Nico dormait)
+Outils sur `essai-poste17`, résultats bruts sur `essais-poste17`. Rien sur `main`, `donnees`, `js/`, `sw.js`, `index.html`, `css/`, Notion.
+- Passages GitHub : `poste17-nuit` https://github.com/nicolasbonini1-commits/Carte-peche/actions/runs/45084253236 (A1, A2, A3 ; outils be04d7c ; résultats `passage-23-00h37`, commits 5b52b0c et 267b178) ;
+  `poste17-candhis` https://github.com/nicolasbonini1-commits/Carte-peche/actions/runs/45085090315 (A1 bis ; outils 973a0f1 ; `passage-23-00h47`, commit 64e1daa) ;
+  `poste17-diag` https://github.com/nicolasbonini1-commits/Carte-peche/actions/runs/45085764817 (diagnostic réseau, outils b9a88ee, rien d'écrit) ;
+  contrôle dans la session `controle-23-01h17` (commit e284117). Outils : 9e1210b (`poste17.yml` ne se lance plus pour `nuit/` et `turbidite/`), be04d7c, 973a0f1, b9a88ee, puis le commit de cette fiche.
+
+**A1 — bouée** : **garder Espiguette (03001)**. Les trois bouées plus proches sont arrêtées depuis longtemps [S, Candhis] :
+| bouée | position | profondeur | mesures | distance à P [M] |
+|---|---|---|---|---|
+| 01301 Camargue | 43,35000 / 4,56667 (API) | 17 m | 9 juil. 1999 → **9 janv. 2004**, plus de temps réel | **2,5 km** |
+| 01303 Fos | 43°24,530′ N / 4°53,570′ E (page publique) | 16 m | 26 mars 2003 → **25 janv. 2004** | 24,8 km |
+| 01306 Golfe de Fos | 43,31612 / 4,92037 (API) | 55 m | 3 déc. 2018 → **30 juin 2021** (panne le 1er juil. 2021, fin de campagne le 16 févr. 2022, « possible reprise en 2028 » par la Fondation Open-C) | 27,0 km |
+| 03001 Espiguette | 43,41100 / 4,16250 (`notif/houle.js`) | 32 m | **en service** : dernière mesure 22 nov. 2026 22 h 30 (lue comme UTC) dans `houle.json` de `donnees` (généré à 23 h 05 UTC, lu par git, sans requête) | 35,2 km |
+- Pourquoi : la seule bouée en service à moins de 35 km de P n'existe pas ; Espiguette (03001) est en service et mesure en continu (95 mesures sur 48 h dans `houle.json`). Sète (03404) est à 65,9 km [M].
+  Défaut connu : Espiguette est à l'ouest de la Camargue, à 35 km ; une houle d'est ou de sud-est peut être différente à Beauduc [P]. Idée (non faite) : les 14 441 mesures de Camargue 1999-2004 permettraient de comparer avec Espiguette si celle-ci mesurait déjà à cette époque (non vérifié).
+- Ce qui n'a pas marché : 1er passage en Python, 8 requêtes API, **aucune réponse** (8 délais dépassés à 60 s, 23 h 37 – 23 h 45 UTC). 2e passage en curl 1 min 30 après (nouvelle machine GitHub, comme à chaque passage) : réponses en 0,3-0,5 s.
+  Diagnostic (`poste17-diag`, 23 h 54 UTC) : Copernicus répond à curl et à Python, Candhis ne répond ni à curl ni à Python depuis cette machine → **Candhis injoignable depuis certaines machines GitHub ou par moments**, pas un problème de Python. À surveiller pour les alertes (elles gardent les mesures précédentes en cas de panne).
+- Requêtes API Candhis de la nuit : **10** (8 sans réponse, probablement jamais arrivées, + 2 getCampInfos 01301 et 01306). Pages publiques `campagne.php` (hors API, sans clé) : 4, plus 3 essais `aide.php` sans réponse. 01303 et le détail des dates viennent des pages publiques.
+
+**A2 — couleur de l'eau** : détail dans `outils/poste17/turbidite/RESULTATS.md`.
+- Proposition (300 m, 360 valeurs) : base 0,596 (3,9 FNU), k Rhône 0,378 ; test 2025-2026 : R² 0,41, rang 0,68, bonne classe 73 % ; ancienne règle `M.water` 9 % (3 classes ; indice 81 %). **Rien dans `js/model.js`.**
+- Mise en garde : à 300 m, P est plus trouble que ses voisins (médiane 8,4 FNU contre 4,4 aux postes 1 et 2, mêmes jours) → fond, blocs ou grau ? À 1 km : base 0,166, k 0,692, rang 0,71, et l'ancienne règle y fait jeu égal (71 %).
+- **Panache** : oui, l'eau de P se charge quand le Rhône monte : à 300 m 8,1 → 15,9 → 22,8 FNU (< 1,5 / 1,5-2,5 / 2,5-4 fois la normale ; 327 / 27 / 6 jours ; > 4 : 0 jour mesuré) ; × 11 au large du Grand Rhône, × 3,7 à Faraman, × 2 à 2,8 à P, × 2 au témoin à 5 km. Cause exacte (Grand Rhône, pluie, étangs) non séparée [P].
+- **Après un pic ≥ 1,6** : × 2 les 0-2 premiers jours, × 1,5 à 3-5 jours, proche de la normale vers **6 à 12 jours** (petits effectifs).
+
+**A3 — route** [M, OSRM `router.project-osrm.org`, 23 nov. 0 h 45] : Poulx (Nominatim : 43,9105 / 4,42408) → parking de Beauduc : **85,7 km, 1 h 38**, mais la route OSRM **s'arrête à 3,9 km** du parking (43,43978 / 4,61486) : la fin de la piste manque dans le graphe routier.
+Pour comparer : Poulx → poste 1 : 83,0 km, 1 h 14 (arrivée à 93 m du point).
+Total aller estimé : 1 h 38 + ≈ 10-15 min pour les ≈ 4-5 km de piste restants (vitesse sur sable et nids de poule [P]) + ≈ 2 h de marche (9,1 km) ≈ **3 h 50 à 3 h 55** [P], contre ≈ 1 h 15 pour le poste 1. Les temps OSRM sont souvent un peu optimistes [P].
+
 ## Reste à faire
 3. Fait (22 nov., 17 h 30). **Validé par Nico le 22 nov. (22 h 54-23 h 08, Géoportail)** : P, a, b, parking, chemin de 9,1 km (voir « Validation de l'étape 3 » ci-dessous).
-4. Limites de la fiche : faites (22 nov., 23 h 40, section « Étape 4 »). Reste ouvert : bouées Candhis proches, turbidité à P, temps de route → tâche de nuit A (23 nov.).
+4. Limites de la fiche : faites (22 nov., 23 h 40, section « Étape 4 »). Tâche de nuit A faite (23 nov., 1 h 30) : bouée = Espiguette (les 3 plus proches sont arrêtées) ; panache : oui, eau de P × 2 à 2,8 quand le Rhône est à 1,5-2,5 fois, normale 6-12 j après un pic ; route ≈ 1 h 38 + piste + 2 h de marche. **À décider par Nico** : base et k du poste 17 (300 m ou 1 km, `outils/poste17/turbidite/RESULTATS.md`) avant la tâche B.
 6. Procédure habituelle (REPRISE.md, essai Chrome, cache v21, accord de Nico, `main`).
 - Petit défaut corrigé (commentaire de `lieu.js`, 17 h 18).
