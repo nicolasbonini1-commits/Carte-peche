@@ -117,12 +117,29 @@ function controler(r) {
   return r;
 }
 
+// Vidéo longue = requête lourde : le gratuit la refuse (503 « surchargé », puis 429 « quota » qui bloque aussi les vidéos suivantes).
+// BARLOUP 7QcD9Jp7y4s (23 nov.) : 185 684 jetons à 1 image/s (≈ 30 min), 24 essais ratés ; les vidéos de 3 min (≈ 8 000 à 25 000 jetons) passent.
+// Donc : on mesure d'abord (countTokens, gratuit), et au-delà de LOURD on envoie 1 image toutes les 5 s (le son, 25 jetons/s, reste entier).
+const LOURD = 80000, FPS_LEGER = 0.2;
+const exclus = new Set(); // modèles qui ont répondu 404 (retirés par Google) : plus essayés de tout le passage
+async function compter(v) {
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${liste0}:countTokens?key=${GK}`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts: [{ file_data: { file_uri: v.lien } }, { text: "x" }] }] }), signal: AbortSignal.timeout(120000) });
+    const j = await r.json().catch(() => ({}));
+    journal.push({ mesure: "countTokens", video: v.id, code: r.status, jetons: j.totalTokens, message: coupe(j.error?.message || "", 160) || undefined });
+    return j.totalTokens || 0;
+  } catch (e) { journal.push({ mesure: "countTokens", video: v.id, erreur: e.message }); return 0; }
+}
+let liste0 = "";
 async function gemini(v, liste) {
-  // fps = images par seconde de vidéo envoyées à Gemini (1 par défaut). Secours pour les vidéos qui échouent partout
-  // (BARLOUP 7QcD9Jp7y4s, 23 nov. : 503 sur tous les modèles alors que les vidéos courtes passent) : 0,25 image/s = 4 fois moins de jetons d'image.
+  liste0 = liste0 || liste[0];
+  const taille = v.jetons ?? await compter(v);
+  const fpsDepart = taille > LOURD ? FPS_LEGER : 0;
   const corps = fps => ({ contents: [{ parts: [{ file_data: { file_uri: v.lien }, ...(fps ? { video_metadata: { fps } } : {}) }, { text: consigne(v) }] }],
     generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: "application/json", responseSchema: SCHEMA } });
-  let derniere = "", que5xx = true;
+  let derniere = "";
   const essayer = async (m, fps, essai) => {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${GK}`, {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps(fps)), signal: AbortSignal.timeout(300000) });
@@ -130,36 +147,25 @@ async function gemini(v, liste) {
     journal.push({ gemini: m, video: v.id, essai, fps: fps || 1, code: r.status, jetons: j.usageMetadata?.totalTokenCount, message: coupe(j.error?.message || "", 160) || undefined });
     if (r.ok) {
       const t = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
-      return { ok: true, res: { modele: m + (fps ? ` (fps ${fps})` : ""), jetons: j.usageMetadata?.totalTokenCount, r: controler(JSON.parse(t)) } };
+      return { ok: true, res: { modele: m + (fps ? ` (1 image / ${Math.round(1 / fps)} s)` : ""), jetons: j.usageMetadata?.totalTokenCount, r: controler(JSON.parse(t)) } };
     }
     derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
-    if (r.status < 500) que5xx = false;
+    if (r.status === 404) exclus.add(m);
     return { ok: false, code: r.status };
   };
-  for (const m of liste) {
+  // 3 modèles au plus par vidéo : au-delà on brûle le quota du jour pour rien (la vidéo est retentée au passage suivant).
+  for (const m of liste.filter(m => !exclus.has(m)).slice(0, 3)) {
     for (let essai = 1; essai <= 2; essai++) {
       try {
-        const x = await essayer(m, 0, essai);
+        const x = await essayer(m, fpsDepart, essai);
         if (x.ok) return x.res;
-        if (x.code === 429) { await pause(65000); continue; } // limite par minute du gratuit
+        if (x.code === 429) { await pause(65000); continue; } // quota par minute du gratuit : on attend qu'il se recharge
         if (x.code >= 500) { await pause(20000); continue; }   // 503 « surchargé » : on attend puis on réessaie une fois
         break; // 400/403/404 : modèle suivant
       } catch (e) { derniere = `${m} ${e.message}`; }
     }
   }
-  // Diagnostic : taille de la vidéo vue par Gemini (countTokens est gratuit) — dit si la vidéo est longue.
-  try {
-    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${liste[0]}:countTokens?key=${GK}`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: corps(0).contents }), signal: AbortSignal.timeout(120000) });
-    const j = await r.json().catch(() => ({}));
-    journal.push({ diagnostic: "countTokens", video: v.id, code: r.status, jetons: j.totalTokens, message: coupe(j.error?.message || "", 160) || undefined });
-  } catch (e) { journal.push({ diagnostic: "countTokens", video: v.id, erreur: e.message }); }
-  // Secours : même vidéo, 4 fois moins d'images, sur les deux premiers modèles de la liste.
-  for (const m of liste.slice(0, 2)) {
-    try { const x = await essayer(m, 0.25, "secours"); if (x.ok) return x.res; } catch (e) { derniere = `${m} ${e.message}`; }
-    await pause(20000);
-  }
-  throw new Error("Gemini : " + derniere + (que5xx ? " (que des erreurs 5xx)" : ""));
+  throw new Error(`Gemini : ${derniere} (vidéo de ${taille || "?"} jetons à 1 image/s${fpsDepart ? `, envoyée à 1 image / ${Math.round(1 / fpsDepart)} s` : ""})`);
 }
 
 // ---------- Fiche Notion ----------
@@ -205,6 +211,9 @@ function fiche(v, a) {
   console.log("file d'attente", attente.length, "| tri", tri.videos.length);
   let liste = [];
   try { liste = await modeles(); sortie.modele = liste; } catch (e) { sortie.erreurs.push("liste des modèles : " + e.message); }
+  // Mesure (gratuite) puis vidéos courtes d'abord : une vidéo longue ne doit pas épuiser le quota des autres.
+  if (liste.length) { liste0 = liste[0]; for (const v of aFaire) if (!v.page || v.demandee) v.jetons = await compter(v); }
+  aFaire.sort((x, y) => (x.demandee ? -1 : 0) - (y.demandee ? -1 : 0) || (x.jetons || 0) - (y.jetons || 0));
   const rater = []; // vidéos en échec : retirées de vues.json pour être retentées au passage suivant
   for (const v of aFaire) {
     try {
