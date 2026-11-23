@@ -1,0 +1,4 @@
+Contrôle fait dans la session (pas de réseau : seulement les fichiers déjà sur GitHub), 23 nov. 2026 vers 1 h 17 (heure de Paris).
+- 300m-reproduit/analyse.json : analyse.py relancé sur passage-23-00h37/A2-turbidite/turbidite.json + essais-turbidite-releves
+  → identique octet pour octet à passage-23-00h37/A2-analyse/analyse.json (diff vide).
+- 1km/ : même calcul avec POINT=17_1000 (P à 1 km au large au lieu de 300 m), commit d'outils de essai-poste17 qui ajoute POINT.

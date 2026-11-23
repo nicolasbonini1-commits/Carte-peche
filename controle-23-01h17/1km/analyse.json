@@ -1,0 +1,526 @@
+{
+ "methode": [
+  "Même chaîne que outils/turbidite/features.py + indice.py + final.py (branche essai-turbidite), pour un seul poste :",
+  "- conditions à 11 h (heure de Paris) au point de zone E (43,40 / 4,30), règle de l'appli pour la houle au poste",
+  "  (exposition 0,35 + 0,65·cos(écart à seaward = 186°), pas de facteur « grau ») ;",
+  "- mémoire du débit du Rhône (Tarascon) : max sur 15 j du rapport (débit de la veille / médiane du mois depuis 1990) × e^(−j/8) ;",
+  "- coefficients communs FIXÉS (js/model.js, M.TURB) : hsmax48 0,3653 ; hs 0,1732 ; ws24 0,1049 (par 10 km/h) ; pluie 0,0431·ln(1+indice) ;"
+ ],
+ "zone": {
+  "nom": "E",
+  "meteo_point": [
+   43.479786,
+   4.324324
+  ],
+  "houle_point": [
+   43.5,
+   4.0
+  ],
+  "houle_modele": "era5_ocean"
+ },
+ "valeurs_par_point": {
+  "17_1000": 434,
+  "17_300": 360,
+  "17_5000": 431,
+  "faraman_1000": 374,
+  "rhone_PSL": 401
+ },
+ "periode_mesures": [
+  "2020-01-05",
+  "2026-11-21"
+ ],
+ "periode_conditions": [
+  "2020-01-02",
+  "2026-11-13"
+ ],
+ "point_utilise": "17_1000",
+ "calage": {
+  "n_cal_2020_2024": 271,
+  "n_test_2025_2026": 163,
+  "base": 0.1657,
+  "base_FNU": 1.46,
+  "k_rhone": 0.6915,
+  "k_brut": 0.6915,
+  "k_erreur_type": 0.1455,
+  "base_erreur_type": 0.0209,
+  "rhone_2x": 1.61,
+  "rhone_4x": 2.61
+ },
+ "test": [
+  {
+   "modele": "poste 17 calé (base + k)",
+   "n": 163,
+   "R2": 0.534,
+   "rang": 0.705,
+   "bonne_classe_4": 0.699,
+   "a_une_classe_pres": 0.988,
+   "biais_x": 1.08,
+   "erreur_x": 1.7,
+   "tableau_mesure_puis_prevu": {
+    "claire": {
+     "claire": 88,
+     "piquée": 17,
+     "teintée": 0
+    },
+    "piquée": {
+     "claire": 13,
+     "piquée": 21,
+     "teintée": 2
+    },
+    "teintée": {
+     "claire": 0,
+     "piquée": 13,
+     "teintée": 5
+    },
+    "très chargée": {
+     "claire": 0,
+     "piquée": 2,
+     "teintée": 2
+    }
+   }
+  },
+  {
+   "modele": "poste 17 calé, sur la période de calage",
+   "n": 271,
+   "R2": 0.384,
+   "rang": 0.63,
+   "bonne_classe_4": 0.579,
+   "a_une_classe_pres": 0.956,
+   "biais_x": 1.0,
+   "erreur_x": 2.0,
+   "tableau_mesure_puis_prevu": {
+    "claire": {
+     "claire": 103,
+     "piquée": 42,
+     "teintée": 0,
+     "très chargée": 0
+    },
+    "piquée": {
+     "claire": 16,
+     "piquée": 43,
+     "teintée": 6,
+     "très chargée": 0
+    },
+    "teintée": {
+     "claire": 6,
+     "piquée": 29,
+     "teintée": 10,
+     "très chargée": 4
+    },
+    "très chargée": {
+     "claire": 0,
+     "piquée": 6,
+     "teintée": 5,
+     "très chargée": 1
+    }
+   }
+  },
+  {
+   "modele": "copie du poste 1 (base 0.3588, k 1.9528)",
+   "n": 163,
+   "R2": -0.047,
+   "rang": 0.702,
+   "bonne_classe_4": 0.325,
+   "a_une_classe_pres": 0.975,
+   "biais_x": 1.82,
+   "erreur_x": 2.22,
+   "tableau_mesure_puis_prevu": {
+    "claire": {
+     "claire": 18,
+     "piquée": 85,
+     "teintée": 2,
+     "très chargée": 0
+    },
+    "piquée": {
+     "claire": 0,
+     "piquée": 22,
+     "teintée": 13,
+     "très chargée": 1
+    },
+    "teintée": {
+     "claire": 0,
+     "piquée": 5,
+     "teintée": 11,
+     "très chargée": 2
+    },
+    "très chargée": {
+     "claire": 0,
+     "piquée": 1,
+     "teintée": 1,
+     "très chargée": 2
+    }
+   }
+  },
+  {
+   "modele": "copie du poste 2 (base 0.3324, k 0.8459)",
+   "n": 163,
+   "R2": 0.19,
+   "rang": 0.704,
+   "bonne_classe_4": 0.429,
+   "a_une_classe_pres": 0.988,
+   "biais_x": 1.6,
+   "erreur_x": 2.01,
+   "tableau_mesure_puis_prevu": {
+    "claire": {
+     "claire": 29,
+     "piquée": 76,
+     "teintée": 0,
+     "très chargée": 0
+    },
+    "piquée": {
+     "claire": 1,
+     "piquée": 28,
+     "teintée": 7,
+     "très chargée": 0
+    },
+    "teintée": {
+     "claire": 0,
+     "piquée": 5,
+     "teintée": 12,
+     "très chargée": 1
+    },
+    "très chargée": {
+     "claire": 0,
+     "piquée": 2,
+     "teintée": 1,
+     "très chargée": 1
+    }
+   }
+  },
+  {
+   "modele": "copie du poste 3 (base 0.2607, k 0.6727)",
+   "n": 163,
+   "R2": 0.402,
+   "rang": 0.705,
+   "bonne_classe_4": 0.528,
+   "a_une_classe_pres": 0.988,
+   "biais_x": 1.34,
+   "erreur_x": 1.82,
+   "tableau_mesure_puis_prevu": {
+    "claire": {
+     "claire": 55,
+     "piquée": 50,
+     "teintée": 0,
+     "très chargée": 0
+    },
+    "piquée": {
+     "claire": 4,
+     "piquée": 25,
+     "teintée": 7,
+     "très chargée": 0
+    },
+    "teintée": {
+     "claire": 0,
+     "piquée": 11,
+     "teintée": 6,
+     "très chargée": 1
+    },
+    "très chargée": {
+     "claire": 0,
+     "piquée": 2,
+     "teintée": 2,
+     "très chargée": 0
+    }
+   }
+  }
+ ],
+ "comparaison_3_classes_test": {
+  "ancienne_regle": {
+   "bonne_classe": 0.706,
+   "rang": 0.517,
+   "teintee_ou_plus_annoncee_claire": 7
+  },
+  "indice_poste17": {
+   "bonne_classe": 0.712,
+   "rang": 0.705,
+   "teintee_ou_plus_annoncee_claire": 0
+  },
+  "teintee_ou_plus_mesuree": 22
+ },
+ "panache_mediane_FNU_et_jours": {
+  "17_1000": {
+   "tous": {
+    "< 1,5": [
+     3.03,
+     383
+    ],
+    "1,5-2,5": [
+     8.46,
+     40
+    ],
+    "2,5-4": [
+     13.14,
+     10
+    ],
+    "> 4": [
+     29.15,
+     1
+    ]
+   },
+   "mer_calme_hsmax48<0,5": {
+    "< 1,5": [
+     2.72,
+     296
+    ],
+    "1,5-2,5": [
+     7.87,
+     26
+    ],
+    "2,5-4": [
+     6.94,
+     3
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   }
+  },
+  "17_300": {
+   "tous": {
+    "< 1,5": [
+     8.13,
+     327
+    ],
+    "1,5-2,5": [
+     15.93,
+     27
+    ],
+    "2,5-4": [
+     22.82,
+     6
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   },
+   "mer_calme_hsmax48<0,5": {
+    "< 1,5": [
+     7.51,
+     266
+    ],
+    "1,5-2,5": [
+     14.36,
+     20
+    ],
+    "2,5-4": [
+     19.83,
+     3
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   }
+  },
+  "17_5000": {
+   "tous": {
+    "< 1,5": [
+     1.65,
+     380
+    ],
+    "1,5-2,5": [
+     3.45,
+     39
+    ],
+    "2,5-4": [
+     4.13,
+     10
+    ],
+    "> 4": [
+     5.3,
+     1
+    ]
+   },
+   "mer_calme_hsmax48<0,5": {
+    "< 1,5": [
+     1.42,
+     297
+    ],
+    "1,5-2,5": [
+     2.91,
+     28
+    ],
+    "2,5-4": [
+     5.4,
+     3
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   }
+  },
+  "faraman_1000": {
+   "tous": {
+    "< 1,5": [
+     7.14,
+     332
+    ],
+    "1,5-2,5": [
+     26.51,
+     32
+    ],
+    "2,5-4": [
+     25.06,
+     9
+    ],
+    "> 4": [
+     87.28,
+     1
+    ]
+   },
+   "mer_calme_hsmax48<0,5": {
+    "< 1,5": [
+     6.65,
+     267
+    ],
+    "1,5-2,5": [
+     16.09,
+     23
+    ],
+    "2,5-4": [
+     15.68,
+     3
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   }
+  },
+  "rhone_PSL": {
+   "tous": {
+    "< 1,5": [
+     4.01,
+     353
+    ],
+    "1,5-2,5": [
+     45.78,
+     37
+    ],
+    "2,5-4": [
+     99.04,
+     9
+    ],
+    "> 4": [
+     172.35,
+     1
+    ]
+   },
+   "mer_calme_hsmax48<0,5": {
+    "< 1,5": [
+     3.46,
+     278
+    ],
+    "1,5-2,5": [
+     43.58,
+     26
+    ],
+    "2,5-4": [
+     68.79,
+     3
+    ],
+    "> 4": [
+     null,
+     0
+    ]
+   }
+  }
+ },
+ "jours_par_classe_rhone_2020_2026": {
+  "< 1,5": 409,
+  "1,5-2,5": 44,
+  "2,5-4": 11,
+  "> 4": 1
+ },
+ "jours_par_classe_rhone_tous_jours": {
+  "< 1,5": 2171,
+  "1,5-2,5": 298,
+  "2,5-4": 41,
+  "> 4": 3
+ },
+ "apres_pic_1_6": {
+  "point": "17_1000",
+  "colonnes": "médiane FNU, jours, fois la médiane sans pic",
+  "tous": {
+   "sans pic depuis 21 j": [
+    2.77,
+    306,
+    1.0
+   ],
+   "0-2 j": [
+    10.01,
+    55,
+    3.62
+   ],
+   "3-5 j": [
+    5.37,
+    14,
+    1.94
+   ],
+   "6-8 j": [
+    3.52,
+    6,
+    1.27
+   ],
+   "9-12 j": [
+    5.1,
+    20,
+    1.84
+   ],
+   "13-20 j": [
+    4.47,
+    33,
+    1.62
+   ]
+  },
+  "mer_calme_hsmax48<0,5": {
+   "sans pic depuis 21 j": [
+    2.59,
+    244,
+    1.0
+   ],
+   "0-2 j": [
+    7.72,
+    32,
+    2.98
+   ],
+   "3-5 j": [
+    5.2,
+    10,
+    2.01
+   ],
+   "6-8 j": [
+    3.64,
+    5,
+    1.41
+   ],
+   "9-12 j": [
+    3.1,
+    11,
+    1.2
+   ],
+   "13-20 j": [
+    3.52,
+    23,
+    1.36
+   ]
+  }
+ },
+ "pics_1_6_jours_2020_2026": 291,
+ "meme_jours_que_postes_1_2": {
+  "n": 323,
+  "mediane_p1_300": 4.9,
+  "mediane_p2_300": 4.63,
+  "mediane_p17": 2.97,
+  "rhone_>=1,5": {
+   "n": 34,
+   "p1": 39.91,
+   "p2": 13.33,
+   "p17": 8.56
+  },
+  "rang_p1_p17": 0.781
+ }
+}
