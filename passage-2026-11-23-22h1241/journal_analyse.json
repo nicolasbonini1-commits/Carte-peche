@@ -1,0 +1,127 @@
+[
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "models",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.5-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.5-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-2.5-flash",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 404
+ },
+ {
+  "gemini": "gemini-flash-latest",
+  "video": "7QcD9Jp7y4s",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-flash-latest",
+  "video": "7QcD9Jp7y4s",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 2,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "code": 200,
+  "jetons": 7316
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ }
+]
