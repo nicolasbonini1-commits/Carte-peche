@@ -2,7 +2,7 @@
 
 À lire au début d'une nouvelle conversation, avec `LECONS.md` de ce dépôt (leçons pêche), `LECONS.md` du dépôt maison3d, le skill coach-peche et `git log -5`.
 **Résumé.** Tout le détail (calculs, essais, chiffres, commits) est dans `HISTORIQUE.md`, copie intégrale de l'ancien REPRISE.md au 20 nov. 16 h 30 : y chercher par le titre de section indiqué « (H : … ») avant de refaire un travail ou de répondre sur un point précis.
-État au 23 nov. 2026, 7 h 45 : `main` = cache **`carte-peche-v21`** (poste 17 Beauduc « point à explorer », accord de Nico le 23 nov. au matin, commit eab5f54, publié par Pages 7 h 29, site en ligne contrôlé 7 h 35 : v21 servie, 17 postes, fiche du 17, hors ligne 0,3 s, retour 3,5 s) ; v20 = vent au poste (22 nov. 15 h 11) ; v19 = fiabilité réseau (9 h 16) ; v18 = chantier 1 étape 1 (positions des 16 postes + « autour », 21 nov. 22 h 32).
+État au 23 nov. 2026, 7 h 40 : `main` = cache **`carte-peche-v21`** (poste 17 Beauduc « point à explorer », accord de Nico le 23 nov. au matin, commit eab5f54, publié par Pages 7 h 29, site en ligne contrôlé 7 h 35 : v21 servie, 17 postes, fiche du 17, hors ligne 0,3 s, retour 3,5 s) ; v20 = vent au poste (22 nov. 15 h 11) ; v19 = fiabilité réseau (9 h 16) ; v18 = chantier 1 étape 1 (positions des 16 postes + « autour », 21 nov. 22 h 32).
 
 ## Le projet
 - Appli web (PWA) pour choisir son poste du bord, loup au leurre et dorade à la calée, des Saintes-Maries à Frontignan ; 1 h de route depuis Poulx ; remplace le carnet papier. Usage perso uniquement (API non commerciales OK, Play Store mis de côté).
