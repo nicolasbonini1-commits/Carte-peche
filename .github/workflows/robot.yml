@@ -1,35 +1,58 @@
-# Robot vidéos pêche, version « texte seulement » (essai du 23 nov. 2026).
-# Ne tourne que sur la branche essai-robot ; écrit dans « essais-robot », un dossier par passage. N'écrit jamais dans « donnees » ni dans Notion.
-# Pas de planning automatique tant que Nico n'a pas validé (lancement à la main ou par un commit sur outils/robot/).
+# Robot vidéos pêche (v3, 23 nov. 2026 au soir) : trie les vidéos selon outils/robot/regles.json.
+# Trois déclenchements :
+#   - chaque dimanche vers 18 h (heure de Paris) : passage de la semaine sur les chaînes de chaines.json.
+#     Attention : GitHub ne lance le planning que depuis main, et le saute parfois (c'est pour ça que Home Assistant
+#     lance déjà alertes.yml lui-même) ; il coupe aussi les plannings d'un dépôt public sans activité pendant 60 jours.
+#   - à la demande : bouton « Run workflow » avec le lien d'une vidéo (champ « video »), ou appel de l'API GitHub
+#     (même principe que Home Assistant pour alertes.yml) ;
+#   - essai : un commit sur outils/robot/ dans la branche essai-robot.
+# Résultats : branche « robot » quand ça tourne depuis main (vues.json = vidéos déjà proposées, jamais reproposées),
+# branche « essais-robot » pour un essai. Un dossier par passage, avec CANDIDATES.md lisible sur téléphone.
+# Aucune page YouTube lue, aucune vidéo téléchargée, rien écrit dans Notion à ce stade.
 name: robot
 on:
+  schedule:
+    - cron: "17 17 * * 0"
+  workflow_dispatch:
+    inputs:
+      video:
+        description: "Lien YouTube à analyser (vide = passage de la semaine)"
+        required: false
+        default: ""
   push:
     branches: [essai-robot]
     paths: ["outils/robot/**", ".github/workflows/robot.yml"]
-  workflow_dispatch:
 permissions:
   contents: write
 concurrency:
   group: robot
   cancel-in-progress: false
 jobs:
-  rss:
-    if: github.ref_name == 'essai-robot'
+  tri:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      DEST: ${{ github.ref_name == 'main' && 'robot' || 'essais-robot' }}
+      VIDEO: ${{ github.event.inputs.video }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - run: node outils/robot/rss.js
-      - name: Enregistrer dans essais-robot/passage-JJ-HHhMM
+      - name: Vidéos déjà proposées (seulement depuis main)
+        run: |
+          if [ "$DEST" = robot ] && git fetch -q --depth=1 origin robot; then git show origin/robot:vues.json > /tmp/vues.json || true; fi
+          ls -la /tmp/vues.json 2>/dev/null || echo "aucune liste précédente"
+      - run: node outils/robot/robot.js
+      - name: Enregistrer le passage
         if: always()
         run: |
-          D=passage-$(TZ=Europe/Paris date '+%d-%Hh%M')
+          D=passage-$(TZ=Europe/Paris date '+%Y-%m-%d-%Hh%M')
           mkdir /tmp/d && cd /tmp/d && git init -q
-          if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" essais-robot; then git checkout -q -b essais-robot FETCH_HEAD; else git checkout -q --orphan essais-robot; fi
-          mkdir -p $D && cp -r /tmp/sortie/. $D/ || echo "rien" > $D/vide.txt
+          if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" "$DEST"; then git checkout -q -b "$DEST" FETCH_HEAD; else git checkout -q --orphan "$DEST"; fi
+          mkdir -p "$D" && (cp -r /tmp/sortie/. "$D"/ || echo "rien" > "$D"/vide.txt)
+          [ "$DEST" = robot ] && cp /tmp/sortie/vues.json vues.json && cp /tmp/sortie/CANDIDATES.md DERNIER.md || true
           git config user.name "robot-bot"; git config user.email "robot@users.noreply.github.com"
-          git add -A && git commit -qm "robot $D (commit ${GITHUB_SHA::7})"
-          git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" essais-robot
+          git add -A && git commit -qm "robot $D (${VIDEO:+à la demande, }commit ${GITHUB_SHA::7})"
+          git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$DEST"
