@@ -1,0 +1,100 @@
+[
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UChyC-c4Gwi0PLz6SAzImPnQ",
+  "essai": 1,
+  "code": 200,
+  "s": 0.29,
+  "octets": 20890
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC2VBUUtlx8Lck9gnpKcXTLw",
+  "essai": 1,
+  "code": 200,
+  "s": 0.149,
+  "octets": 27573
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCeYdIvGzhHLuugmRPpDmn1A",
+  "essai": 1,
+  "code": 200,
+  "s": 0.142,
+  "octets": 20383
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3GOTqH-eJ37FIVEjRUG5JQ",
+  "essai": 1,
+  "code": 200,
+  "s": 0.132,
+  "octets": 19768
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC5WY-f6s7TqO-oaXJHGTM5Q",
+  "essai": 1,
+  "code": 200,
+  "s": 0.141,
+  "octets": 36921
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7vjqvTcYK9H2OUOnYmEkWA",
+  "essai": 1,
+  "code": 200,
+  "s": 0.116,
+  "octets": 16438
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCpYxsEasnYAXtvDqBoabdrA",
+  "essai": 1,
+  "code": 200,
+  "s": 0.132,
+  "octets": 16356
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCsqHHPr1Cl60a9o8NlUUx2w",
+  "essai": 1,
+  "code": 200,
+  "s": 0.153,
+  "octets": 23854
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCFYYk0phQ4lNlLzTecllrjw",
+  "essai": 1,
+  "code": 200,
+  "s": 0.131,
+  "octets": 29204
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC45n2Gsg__AZvL8vyJXrDWg",
+  "essai": 1,
+  "code": 200,
+  "s": 0.176,
+  "octets": 18512
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCpqMJaIwBsXf5osXxsTsBTw",
+  "essai": 1,
+  "code": 200,
+  "s": 0.202,
+  "octets": 6999
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCubfLc4tgjjGpp81nJYGofg",
+  "essai": 1,
+  "code": 200,
+  "s": 0.116,
+  "octets": 18585
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCMLn-Fuo2tb4qOik6fwMdKg",
+  "essai": 1,
+  "code": 200,
+  "s": 0.126,
+  "octets": 19665
+ },
+ {
+  "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4iJXmbu2qLWsW6H9zaXikg",
+  "essai": 1,
+  "code": 200,
+  "s": 0.126,
+  "octets": 17828
+ }
+]
