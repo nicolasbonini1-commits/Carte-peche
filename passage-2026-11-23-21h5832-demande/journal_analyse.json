@@ -1,0 +1,45 @@
+[
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "models",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "30SFOErKOM8",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "30SFOErKOM8",
+  "essai": 1,
+  "code": 503
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "30SFOErKOM8",
+  "essai": 1,
+  "code": 200,
+  "jetons": 24596
+ },
+ {
+  "notion": "pages",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "le": "2026-11-23T20:56:50.042Z",
+ "modele": [
+  "gemini-3.8-flash",
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash"
+ ],
+ "analysees": [
+  {
+   "id": "30SFOErKOM8",
+   "titre": "Loup/Bar à la mouche sur la plage de l’Espiguette | Camargue sauvage 🎣",
+   "page": "https://www.notion.so/421a0be6c307817a8759fa3bf8e3de8e",
+   "modele": "gemini-3.6-flash",
+   "jetons": 24596,
+   "lieu": "Plage de l'Espiguette",
+   "filme_depuis": "bord",
+   "demandee": true
+  }
+ ],
+ "ecartees": [],
+ "erreurs": []
+}
