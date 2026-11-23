@@ -1,6 +1,8 @@
 # Robot vidéos pêche (v3, 23 nov. 2026 au soir) : trie les vidéos selon outils/robot/regles.json.
 # Trois déclenchements :
-#   - chaque dimanche vers 18 h (heure de Paris) : passage de la semaine sur les chaînes de chaines.json.
+#   - chaque dimanche : passage de la semaine sur les chaînes de chaines.json. Home Assistant le lance à 18 h 20
+#     (package peche_robot.yaml du dépôt maison3d) ; le planning GitHub ci-dessous (18 h 17 UTC) n'est qu'un secours :
+#     la « garde » le transforme en simple mode « file » si un passage de la semaine a eu lieu depuis moins de 3 jours.
 #     Attention : GitHub ne lance le planning que depuis main, et le saute parfois (c'est pour ça que Home Assistant
 #     lance déjà alertes.yml lui-même) ; il coupe aussi les plannings d'un dépôt public sans activité pendant 60 jours.
 #   - à la demande : bouton « Run workflow » avec le lien d'une vidéo (champ « video »), ou appel de l'API GitHub
@@ -54,6 +56,12 @@ jobs:
         run: |
           if [ "$DEST" = robot ] && git fetch -q --depth=1 origin robot; then git show origin/robot:vues.json > /tmp/vues.json || true; fi
           ls -la /tmp/vues.json 2>/dev/null || echo "aucune liste précédente"
+      - name: Garde - un seul passage de la semaine tous les 3 jours (HA le dimanche 18 h 20, GitHub en secours)
+        run: |
+          if [ "$DEST" = robot ] && [ -z "$VIDEO" ] && [ "$MODE" = semaine ]; then
+            d=$(git show origin/robot:derniere_semaine.txt 2>/dev/null || echo 0)
+            if [ $(( $(date +%s) - d )) -lt 259200 ]; then echo "MODE=file" >> "$GITHUB_ENV"; echo "passage de la semaine déjà fait il y a moins de 3 jours : mode file"; fi
+          fi
       - name: Tri des vidéos
         run: node outils/robot/robot.js
       - name: Analyse Gemini et fiches Notion (sautée tant que les clés manquent)
@@ -68,6 +76,7 @@ jobs:
           mkdir -p "$D" && (cp -r /tmp/sortie/. "$D"/ || echo "rien" > "$D"/vide.txt)
           [ "$DEST" = robot ] && cp /tmp/sortie/vues.json vues.json && cp /tmp/sortie/CANDIDATES.md DERNIER.md || true
           cp /tmp/sortie/etat.json etat.json 2>/dev/null || true   # lu par Home Assistant (nombre de fiches à valider)
+          if [ "$DEST" = robot ] && [ -z "$VIDEO" ] && [ "$MODE" = semaine ]; then date +%s > derniere_semaine.txt; fi
           git config user.name "robot-bot"; git config user.email "robot@users.noreply.github.com"
           git add -A && git commit -qm "robot $D (${VIDEO:+à la demande, }commit ${GITHUB_SHA::7})"
           git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$DEST"
