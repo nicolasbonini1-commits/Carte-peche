@@ -118,28 +118,48 @@ function controler(r) {
 }
 
 async function gemini(v, liste) {
-  const corps = { contents: [{ parts: [{ file_data: { file_uri: v.lien } }, { text: consigne(v) }] }],
-    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: "application/json", responseSchema: SCHEMA } };
-  let derniere = "";
+  // fps = images par seconde de vidéo envoyées à Gemini (1 par défaut). Secours pour les vidéos qui échouent partout
+  // (BARLOUP 7QcD9Jp7y4s, 23 nov. : 503 sur tous les modèles alors que les vidéos courtes passent) : 0,25 image/s = 4 fois moins de jetons d'image.
+  const corps = fps => ({ contents: [{ parts: [{ file_data: { file_uri: v.lien }, ...(fps ? { video_metadata: { fps } } : {}) }, { text: consigne(v) }] }],
+    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: "application/json", responseSchema: SCHEMA } });
+  let derniere = "", que5xx = true;
+  const essayer = async (m, fps, essai) => {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${GK}`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps(fps)), signal: AbortSignal.timeout(300000) });
+    const j = await r.json().catch(() => ({}));
+    journal.push({ gemini: m, video: v.id, essai, fps: fps || 1, code: r.status, jetons: j.usageMetadata?.totalTokenCount, message: coupe(j.error?.message || "", 160) || undefined });
+    if (r.ok) {
+      const t = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
+      return { ok: true, res: { modele: m + (fps ? ` (fps ${fps})` : ""), jetons: j.usageMetadata?.totalTokenCount, r: controler(JSON.parse(t)) } };
+    }
+    derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
+    if (r.status < 500) que5xx = false;
+    return { ok: false, code: r.status };
+  };
   for (const m of liste) {
     for (let essai = 1; essai <= 2; essai++) {
       try {
-        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${GK}`, {
-          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps), signal: AbortSignal.timeout(300000) });
-        const j = await r.json().catch(() => ({}));
-        journal.push({ gemini: m, video: v.id, essai, code: r.status, jetons: j.usageMetadata?.totalTokenCount });
-        if (r.ok) {
-          const t = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
-          return { modele: m, jetons: j.usageMetadata?.totalTokenCount, r: controler(JSON.parse(t)) };
-        }
-        derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
-        if (r.status === 429) { await pause(65000); continue; } // limite par minute du gratuit
-        if (r.status >= 500) { await pause(20000); continue; }   // 503 « surchargé » : on attend puis on réessaie une fois
+        const x = await essayer(m, 0, essai);
+        if (x.ok) return x.res;
+        if (x.code === 429) { await pause(65000); continue; } // limite par minute du gratuit
+        if (x.code >= 500) { await pause(20000); continue; }   // 503 « surchargé » : on attend puis on réessaie une fois
         break; // 400/403/404 : modèle suivant
       } catch (e) { derniere = `${m} ${e.message}`; }
     }
   }
-  throw new Error("Gemini : " + derniere);
+  // Diagnostic : taille de la vidéo vue par Gemini (countTokens est gratuit) — dit si la vidéo est longue.
+  try {
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${liste[0]}:countTokens?key=${GK}`, {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents: corps(0).contents }), signal: AbortSignal.timeout(120000) });
+    const j = await r.json().catch(() => ({}));
+    journal.push({ diagnostic: "countTokens", video: v.id, code: r.status, jetons: j.totalTokens, message: coupe(j.error?.message || "", 160) || undefined });
+  } catch (e) { journal.push({ diagnostic: "countTokens", video: v.id, erreur: e.message }); }
+  // Secours : même vidéo, 4 fois moins d'images, sur les deux premiers modèles de la liste.
+  for (const m of liste.slice(0, 2)) {
+    try { const x = await essayer(m, 0.25, "secours"); if (x.ok) return x.res; } catch (e) { derniere = `${m} ${e.message}`; }
+    await pause(20000);
+  }
+  throw new Error("Gemini : " + derniere + (que5xx ? " (que des erreurs 5xx)" : ""));
 }
 
 // ---------- Fiche Notion ----------
