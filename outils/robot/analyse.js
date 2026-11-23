@@ -66,7 +66,7 @@ async function modeles() {
   const noms = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
     .map(m => m.name.replace("models/", "")).filter(n => /flash/.test(n) && !/image|tts|audio|live|embed|thinking|exp/.test(n));
   const version = n => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0);
-  return noms.sort((a, b) => (/lite/.test(a) - /lite/.test(b)) || (/preview/.test(a) - /preview/.test(b)) || version(b) - version(a)).slice(0, 4);
+  return noms.sort((a, b) => (/lite/.test(a) - /lite/.test(b)) || (/preview/.test(a) - /preview/.test(b)) || version(b) - version(a)).slice(0, 6);
 }
 const SCHEMA = { type: "OBJECT", properties: {
   filme_depuis: { type: "STRING", enum: ["bord", "bateau", "kayak ou paddle", "mélange", "incertain"] },
@@ -134,6 +134,7 @@ async function gemini(v, liste) {
         }
         derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
         if (r.status === 429) { await pause(65000); continue; } // limite par minute du gratuit
+        if (r.status >= 500) { await pause(20000); continue; }   // 503 « surchargé » : on attend puis on réessaie une fois
         break; // 400/403/404 : modèle suivant
       } catch (e) { derniere = `${m} ${e.message}`; }
     }
@@ -184,6 +185,7 @@ function fiche(v, a) {
   console.log("file d'attente", attente.length, "| tri", tri.videos.length);
   let liste = [];
   try { liste = await modeles(); sortie.modele = liste; } catch (e) { sortie.erreurs.push("liste des modèles : " + e.message); }
+  const rater = []; // vidéos en échec : retirées de vues.json pour être retentées au passage suivant
   for (const v of aFaire) {
     try {
       if (!v.page && await dejaFiche(v.lien, v.id)) { sortie.ecartees.push({ id: v.id, raison: "fiche déjà dans Notion" }); continue; }
@@ -205,7 +207,7 @@ function fiche(v, a) {
       } else page = (await notion("pages", { parent: { database_id: BASE }, properties: f.proprietes, children: f.blocs })).id;
       sortie.analysees.push({ id: v.id, titre: v.titre, page: `https://www.notion.so/${page.replace(/-/g, "")}`, modele: a.modele, jetons: a.jetons,
         lieu: a.r.lieux_possibles?.[0]?.nom, confiance: a.r.lieux_possibles?.[0]?.confiance, filme_depuis: a.r.filme_depuis, demandee: !!v.demandee });
-    } catch (e) { sortie.erreurs.push(`${v.id} : ${e.message}`); }
+    } catch (e) { sortie.erreurs.push(`${v.id} : ${e.message}`); rater.push(v.id); }
     ecrire();
   }
   // État pour Home Assistant : fiches que Nico doit regarder (prévalidées, pas encore validées) et fiches à prévalider.
@@ -218,6 +220,11 @@ function fiche(v, a) {
       nouvelles_fiches: sortie.analysees.length, erreurs: sortie.erreurs.length };
     fs.writeFileSync(`${OUT}/etat.json`, JSON.stringify(etat, null, 1));
   } catch (e) { sortie.erreurs.push("état : " + e.message); }
+  if (rater.length && fs.existsSync(`${OUT}/vues.json`)) {
+    const vues = JSON.parse(fs.readFileSync(`${OUT}/vues.json`, "utf8"));
+    for (const id of rater) delete vues[id];
+    fs.writeFileSync(`${OUT}/vues.json`, JSON.stringify(vues, null, 1));
+  }
   ecrire();
   fs.writeFileSync(`${OUT}/journal_analyse.json`, JSON.stringify(journal, null, 1));
   console.log("analysées", sortie.analysees.length, "| écartées", sortie.ecartees.length, "| erreurs", sortie.erreurs.length);
