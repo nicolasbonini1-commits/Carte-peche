@@ -39,6 +39,7 @@ async function get(url) {
         hits[k] = R[k].filter(m => t.includes(" " === m.slice(-1) ? sans(m).slice(0, -1) : sans(m).trim()));
         score += Math.min(hits[k].length, k === "exclure" ? 3 : 3) * R.poids[k];
       }
+      if (!hits.espece.length) score = Math.min(score, 0); // pas de pêche visible dans le texte → écartée
       v.score = score; v.mots = hits;
       v.lien = `https://www.youtube.com/watch?v=${v.id}`;
       v.court = /#shorts?\b/i.test(v.titre + v.desc);
@@ -49,7 +50,7 @@ async function get(url) {
   const videos = toutes.filter(v => v.id).sort((a, b) => b.score - a.score || b.date.localeCompare(a.date));
   fs.writeFileSync(`${OUT}/candidates.json`, JSON.stringify({ lu_le: new Date().toISOString(), erreurs: toutes.filter(v => v.erreur), videos }, null, 1));
   const L = [`# Candidates du robot (texte seulement) — ${new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}`, "",
-    `Chaînes lues : ${chaines.length - toutes.filter(v => v.erreur).length}/${chaines.length}. Vidéos : ${videos.length}. Score = 3 × lieux de la zone + 1 × lieux proches + 1 × espèce/technique + 1 × type de poste − 3 × exclusions (plafond 3 mots par famille). Poids à discuter.`, "",
+    `Chaînes lues : ${chaines.length - toutes.filter(v => v.erreur).length}/${chaines.length}. Vidéos : ${videos.length}. Score = 3 × lieux de la zone + 1 × lieux proches + 1 × espèce/technique + 1 × type de poste − 5 × exclusions (plafond 3 mots par famille) ; 0 si aucun mot d'espèce ou de technique. Poids à discuter.`, "",
     "| score | date | chaîne | titre | lieux trouvés | exclusions |", "| --- | --- | --- | --- | --- | --- |"];
   for (const v of videos.filter(v => v.score >= 3)) L.push(`| ${v.score} | ${v.date} | ${v.chaine} | [${v.titre.replace(/\|/g, "/")}](${v.lien}) | ${[...v.mots.zone, ...v.mots.hors_zone_proche].join(", ")} | ${v.mots.exclure.join(", ")} |`);
   fs.writeFileSync(`${OUT}/CANDIDATES.md`, L.join("\n") + "\n");
