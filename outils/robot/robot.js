@@ -9,8 +9,8 @@ const fs = require("fs");
 const D = __dirname;
 const R = JSON.parse(fs.readFileSync(`${D}/regles.json`, "utf8"));
 
-// Texte comparable : minuscules, sans accents, ponctuation → espaces (mot entier).
-const norme = s => " " + (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9#]+/g, " ").trim() + " ";
+// Texte comparable : minuscules, sans accents, ponctuation et # → espaces (mot entier ; #camargue compte comme camargue).
+const norme = s => " " + (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim() + " ";
 const trouve = (t, liste) => liste.filter(m => {
   const prefixe = m.endsWith("*");
   const n = norme(prefixe ? m.slice(0, -1) : m).trim();
@@ -30,7 +30,7 @@ function trier(v) {
   const duBord = trouve(tt, ["du bord", "bord de mer", "depuis le bord", "entre les bateaux"]).length > 0;
   const doutes = [];
   let ecartee = null;
-  if (trouve(t, ["#shorts", "#short"]).length) ecartee = "format court (#shorts)";
+  if (/#shorts?\b/i.test(v.titre + " " + v.desc)) ecartee = "format court (#shorts)";
   else if (auTitre("bateau_kayak").length && !duBord) ecartee = "bateau ou kayak : " + auTitre("bateau_kayak").join(", ");
   else if (auTitre("autres_exclusions").length) ecartee = "exclu : " + auTitre("autres_exclusions").join(", ");
   else if (auTitre("hors_zone").length && !trouve(tt, R.coeur).length && !trouve(tt, R.elargi).length) ecartee = "hors zone : " + auTitre("hors_zone").join(", ");

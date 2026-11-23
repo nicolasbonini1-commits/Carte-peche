@@ -24,7 +24,7 @@
   "semi rigide", "zodiac", "pneumatique", "au large", "traine", "palangrotte", "jigging"
  ],
  "autres_exclusions": [
-  "#shorts", "#short", "thon*", "bonite*", "black bass", "blackbass", "carpe*", "brochet*", "truite*", "silure*", "sandre*",
+  "thon*", "bonite*", "black bass", "blackbass", "carpe*", "brochet*", "truite*", "silure*", "sandre*",
   "chasse", "hunting", "sanglier*", "palombe*", "dauphin*", "moto", "rs300", "vente", "chasse sous marine", "chassesousmarine", "apnee", "harpon*"
  ],
  "espece": ["loup*", "bar", "bars", "dorade*", "daurade*", "marbre*", "sar", "sars", "leurre*", "calee", "surfcasting", "mouche", "popper*", "stickbait*"],
