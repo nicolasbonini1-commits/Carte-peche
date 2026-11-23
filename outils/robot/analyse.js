@@ -193,6 +193,11 @@ function fiche(v, a) {
         const o = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(v.lien)}`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
         v.titre = v.titre || o.title || ""; v.chaine = v.chaine || o.author_name || "";
       }
+      // Miniature officielle (image publique, pas la vidéo) : seule image que la prévalidation Claude peut regarder elle-même.
+      try {
+        const im = await fetch(`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`, { signal: AbortSignal.timeout(20000) });
+        if (im.ok) { fs.mkdirSync(`${OUT}/miniatures`, { recursive: true }); fs.writeFileSync(`${OUT}/miniatures/${v.id}.jpg`, Buffer.from(await im.arrayBuffer())); }
+      } catch (e) { journal.push({ miniature: v.id, erreur: e.message }); }
       const a = await gemini(v, liste);
       const hors = a.r.filme_depuis === "bateau" || a.r.filme_depuis === "kayak ou paddle" || a.r.mer === "autre" || a.r.dans_la_zone === "non";
       if (hors && !v.demandee) { // passage de la semaine : pas de fiche pour un bateau ou un lieu hors zone (la vidéo demandée par Nico garde la sienne)
