@@ -104,7 +104,9 @@ async function main() {
   videos.sort((a, b) => (!!a.ecartee - !!b.ecartee) || rang[a.secteur] - rang[b.secteur] || b.score - a.score || b.date.localeCompare(a.date));
   // Retenues : à la demande, toujours (c'est Nico qui choisit, on signale seulement un doute) ; sinon les meilleures nouvelles au-dessus du seuil.
   const retenues = demandees.length ? videos
-    : videos.filter(v => !v.ecartee && v.score >= R.seuil && !vues[v.id]).slice(0, R.max_par_passage);
+    : (() => { const parChaine = {}; // au plus max_par_chaine vidéos d'une même chaîne par passage, pour varier les sources
+        return videos.filter(v => !v.ecartee && v.score >= R.seuil && !vues[v.id] && (parChaine[v.chaine] = (parChaine[v.chaine] || 0) + 1) <= R.max_par_chaine)
+          .slice(0, R.max_par_passage); })();
   for (const v of retenues) vues[v.id] = new Date().toISOString().slice(0, 10);
 
   const quand = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });

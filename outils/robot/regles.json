@@ -25,7 +25,7 @@
  ],
  "autres_exclusions": [
   "#shorts", "#short", "thon*", "bonite*", "black bass", "blackbass", "carpe*", "brochet*", "truite*", "silure*", "sandre*",
-  "chasse", "hunting", "sanglier*", "palombe*", "dauphin*", "moto", "rs300", "vente"
+  "chasse", "hunting", "sanglier*", "palombe*", "dauphin*", "moto", "rs300", "vente", "chasse sous marine", "chassesousmarine", "apnee", "harpon*"
  ],
  "espece": ["loup*", "bar", "bars", "dorade*", "daurade*", "marbre*", "sar", "sars", "leurre*", "calee", "surfcasting", "mouche", "popper*", "stickbait*"],
  "poste": ["digue*", "jetee*", "epi", "epis", "enrochement*", "brise lames", "phare", "grau", "chenal", "canal", "canaux", "embouchure", "plage*", "quai*", "pointe", "musoir", "etang*", "du bord", "bord de mer"],
@@ -34,5 +34,6 @@
  "plafond_par_famille": 3,
  "seuil": 4,
  "max_par_passage": 3,
+ "max_par_chaine": 1,
  "_regles_dures": "Écartée d'office : un mot bateau/kayak ; une autre exclusion ; un lieu hors zone sans aucun lieu du cœur ou élargi ; ni lieu ni espèce dans le texte. Sans lieu écrit mais avec espèce : gardée, classée « lieu non écrit » (c'est l'image qui dira où). Le texte ne suffit pas toujours (titres vides de Pêche Frontignan) : l'étape image (Gemini) refera le contrôle bord / zone."
 }
