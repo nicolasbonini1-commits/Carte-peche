@@ -1,0 +1,133 @@
+[      0 s] ===== turbidité poste 17
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs_oc_med_bgc_tur-spm-chl_nrt_l3-hr-mosaic_P1D-m_202107/CHL {'time': ['2020-01-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs_oc_med_bgc_tur-spm-chl_nrt_l3-hr-mosaic_P1D-m_202107/SPM {'time': ['2020-01-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs_oc_med_bgc_tur-spm-chl_nrt_l3-hr-mosaic_P1D-m_202107/TUR {'time': ['2020-01-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP443 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP492 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP560 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP665 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP704 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP740 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP783 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/BBP865 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS443 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS443_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS492 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS492_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS560 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS560_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS665 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS665_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS704 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS704_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS740 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS740_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS783 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS783_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS865 {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] couche OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs-oc_med_bgc-optics_nrt_l3-hr-mosaic_P1D-m_202511/RRS865_UNC {'time': ['2025-11-01T00:00:00Z/2026-11-21T00:00:00Z/P1D']} ['EPSG:3857', 'EPSG:3857@2x', 'EPSG:3857@3x', 'EPSG:4326', 'EPSG:4326@2x', 'EPSG:4326@3x'] ['application/json', 'text/html', 'text/xml', 'application/vnd.ogc.gml/3.1.1']
+[      1 s] écrit wmts_couches.json 11033 octets
+[      1 s] couche choisie : OCEANCOLOUR_MED_BGC_HR_L3_NRT_009_205/cmems_obs_oc_med_bgc_tur-spm-chl_nrt_l3-hr-mosaic_P1D-m_202107/TUR
+[      1 s] 2517 dates, de ['2020-01-01T00:00:00Z'] à ['2026-11-21T00:00:00Z']
+[      2 s] GFI 2026-10-13T00:00:00Z {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35231481481482,
+          4.591931216931246
+        ]
+      },
+      "properties": {
+        "lat": 43.35231481481482,
+        "lon": 4.5
+[      2 s] GFI 2026-10-26T00:00:00Z {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35231481481482,
+          4.591931216931246
+        ]
+      },
+      "properties": {
+        "lat": 43.35231481481482,
+        "lon": 4.5
+[      3 s] GFI 2026-11-08T00:00:00Z {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35231481481482,
+          4.591931216931246
+        ]
+      },
+      "properties": {
+        "lat": 43.35231481481482,
+        "lon": 4.5
+[      4 s] GFI 2026-11-21T00:00:00Z {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35231481481482,
+          4.591931216931246
+        ]
+      },
+      "properties": {
+        "lat": 43.35231481481482,
+        "lon": 4.5
+[      4 s] GFI 2023-06-12T00:00:00Z {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.35231481481482,
+          4.591931216931246
+        ]
+      },
+      "properties": {
+        "lat": 43.35231481481482,
+        "lon": 4.5
+[      4 s] écrit wmts_essais_gfi.json 3120 octets
+[      4 s] écrit turbidite_points.json 247 octets
+[   1207 s] 466 dates avec une valeur à P 1 km ou au témoin sur 2517 | requêtes {'requetes': 4606, 'echecs': 0}
+[   1209 s] 0 / 466 2020-01-05 {'17_1000': 53.17851257324219, '17_300': 62.75740051269531, '17_5000': 10.682517051696777, 'rhone_PSL': 48.43947219848633}
+[   1209 s] écrit turbidite.json 270 octets
+[   1286 s] 50 / 466 2020-11-05 {'17_1000': 2.80159068107605, '17_300': 9.931915283203125, '17_5000': 0.686752438545227, 'faraman_1000': 5.889581203460693, 'rhone_PSL': 6.084019660949707}
+[   1286 s] écrit turbidite.json 7125 octets
+[   1342 s] 100 / 466 2021-09-06 {'17_1000': 1.899532675743103, '17_300': 6.822747230529785, '17_5000': 0.6795885562896729, 'faraman_1000': 5.3297576904296875, 'rhone_PSL': 0.27763649821281433}
+[   1342 s] écrit turbidite.json 13498 octets
+[   1397 s] 150 / 466 2022-07-13 {'17_1000': 2.867213726043701, '17_300': 7.225062370300293, '17_5000': 0.8255654573440552, 'faraman_1000': 7.306960105895996, 'rhone_PSL': 0.3286164700984955}
+[   1397 s] écrit turbidite.json 20254 octets
+[   1450 s] 200 / 466 2023-07-08 {'17_1000': 2.126655340194702, '17_5000': 1.2476181983947754, 'faraman_1000': 8.109514236450195, 'rhone_PSL': 3.731471538543701}
+[   1450 s] écrit turbidite.json 27164 octets
+[   1503 s] 250 / 466 2024-04-18 {'17_1000': 6.266645431518555, '17_300': 22.032142639160156, '17_5000': 0.5419153571128845, 'faraman_1000': 23.097917556762695, 'rhone_PSL': 11.527246475219727}
+[   1503 s] écrit turbidite.json 34398 octets
+[   1562 s] 300 / 466 2025-02-15 {'17_1000': 5.668042182922363, '17_300': 13.653428077697754, '17_5000': 4.795317649841309, 'faraman_1000': 19.055089950561523, 'rhone_PSL': 22.4374942779541}
+[   1562 s] écrit turbidite.json 41435 octets
+[   1623 s] 350 / 466 2025-09-07 {'17_1000': 5.5042572021484375, '17_300': 6.989403247833252, '17_5000': 1.5507047176361084, 'faraman_1000': 8.425196647644043, 'rhone_PSL': 9.93217945098877}
+[   1623 s] écrit turbidite.json 49297 octets
+[   1681 s] 400 / 466 2026-05-15 {'17_5000': 3.2712368965148926, 'rhone_PSL': 12.905241012573242}
+[   1681 s] écrit turbidite.json 56416 octets
+[   1737 s] 450 / 466 2026-09-12 {'17_1000': 4.28802490234375, '17_300': 10.992809295654297, '17_5000': 1.3467618227005005, 'faraman_1000': 9.326295852661133, 'rhone_PSL': 3.6748030185699463}
+[   1737 s] écrit turbidite.json 63924 octets
+[   1755 s] écrit turbidite_points.json 492 octets
+[   1755 s] écrit journal.json 184 octets
+[   1755 s] écrit turbidite.json 66248 octets
+[   1755 s] fini {'requetes': 6470, 'echecs': 0}
