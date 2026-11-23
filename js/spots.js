@@ -236,8 +236,49 @@ window.SPOTS = [
     structure: "Port de part et d'autre d'un chenal qui relie l'étang d'Ingril à la mer (FAO ArtFiMed) [S]. Filières de moules au large entre Frontignan et Agde. [S]",
     attention: "Rester à l'extérieur du port.",
     zone: "W"
+  },
+  // ---------- Point à explorer (ajouté le 23 nov. 2026, accord de Nico pour main ; essai : branche essai-poste17-appli) ----------
+  // explore: true = trouvé sur une vidéo, jamais pêché par Nico, hors du secteur de l'appli (Saintes-Maries → Frontignan).
+  //   Effets dans js/app.js : marqueur violet « ? », bandeau dans la fiche, classé avec les autres tant que
+  //   EXPLORE_DANS_CLASSEMENT = true (plus bas), jamais dans les alertes (notif/alertes.js ne lit pas les postes).
+  // Détail, sources et validation : chantiers/4-poste17.md (branche essai-poste17).
+  {
+    id: 17, explore: true, name: "Pointe de Beauduc – grau de l'étang (vidéo)", commune: "Arles (Salin-de-Giraud)",
+    pos: "rive ouest du grau de l'étang de Beauduc : repéré dans une vidéo Fada2pêche du 14 févr. 2025 [V], lu sur la photo aérienne Esri du 25 mars 2025 [C], validé par Nico sur Géoportail le 22 nov. 2026",
+    // P : pointe de sable à l'embouchure du grau, ligne de blocs de l'ancienne digue frontale (1972, Suanez & Bruzzi 1999 [S]) à ≈ 230 m au large [C].
+    // Sources : photo Esri World Imagery du 25 mars 2025, vue 600 m ≈ 0,9 m/pixel (branche essais-poste17, passage-22-17h19 et controle-22-17h30) ;
+    // validation de Nico sur Géoportail le 22 nov. 2026, 22 h 54-23 h 08. Profondeur EMODnet (maille ≈ 115 m) : −0,9 m au pied, −2,5 m à 300 m, −3,7 m à 500 m [M].
+    // seaward 186 : trait de côte a → P orienté ≈ 96°, mer au sud [C] (le profil EMODnet de l'étape 3 utilisait 215°).
+    // type "plage_barres" (choix du 23 nov., confirmé par Nico le 23 nov.) — effets des types dans js/model.js :
+    //   - grau : Poste loup 0,90 / dorade 0,95, houle au poste × 0,8 (abri des jetées), bonus dorade d'oct.-nov. (sorties d'étang),
+    //     leurre lourd (L2 18 g) et « dérive dans la veine de courant » ;
+    //   - digue : 0,80 / 0,70, houle longue comptée une classe au-dessus, « Prudence » sur les enrochements dès 1,5 m ;
+    //   - plage_barres : 0,65 / 0,40, pas d'abri, mer formée idéale, leurres pour petit fond (6 g).
+    //   Ce qui est mesuré à P : sable, petit fond (−0,9 m au pied, −2,5 m à 300 m) [M], aucune jetée (pas d'abri) [C], on pêche depuis le sable,
+    //   pas sur les blocs. Le grau sort d'un étang des salins : ouverture et courant inconnus [P]. → plage_barres = le seul type qui ne suppose
+    //   rien de non vérifié ; la ligne de blocs et le grau ne sont pas comptés, donc la note est probablement sous-estimée [P].
+    lat: 43.36147, lon: 4.59261, type: "plage_barres", seaward: 186, river: "rhone", lit: false,
+    // Pour le temps de trajet (js/app.js) : route jusqu'au parking, puis marche_min minutes (fin de piste ≈ 15 min [P] + 9,1 km à pied ≈ 2 h [P]).
+    parking: { lat: 43.40731, lon: 4.59691, src: "OSM way 240666081 (amenity=parking, access=yes, fee=no, sable), au bout de la piste de Beauduc ; validé par Nico le 22 nov. 2026" },
+    marche_min: 135,
+    autour: [
+      { name: "Racine de l'ancienne digue, sous le phare", lat: 43.36206, lon: 4.58453,
+        src: "photo Esri du 25 mars 2025 [C] ; phare de Beauduc OSM way 677380045 ; validé par Nico sur Géoportail le 22 nov. 2026 (digue entièrement immergée)",
+        note: "≈ 656 m par la plage ; ancienne digue immergée" },
+      { name: "Plage face à la ligne de blocs", lat: 43.36179, lon: 4.58875,
+        src: "photo Esri du 25 mars 2025 [C] ; ligne de blocs ≈ 43,3601 / 4,5885 → 43,3572 / 4,6015 validée par Nico le 22 nov. 2026 (Géoportail : immergée)",
+        note: "≈ 314 m par la plage ; blocs immergés à ≈ 200 m du bord" }
+    ],
+    structure: "Pointe de sable à la sortie du grau de l'étang de Beauduc [C] ; ligne de blocs de l'ancienne digue frontale (construite en 1972, ≈ 200 m du rivage, Suanez & Bruzzi 1999) [S], à ≈ 230 m au large, immergée sur Géoportail [C]. Loup de 3,61 kg au leurre de surface dans la vidéo Fada2pêche du 14 févr. 2025 [V]. Les blocs peuvent être visibles ou couverts selon le niveau de la mer (vent, pression) [P].",
+    attention: "Aucun secours proche, jamais seul de nuit. Rive est du grau (jonction blocs / rivage) écartée : il faudrait traverser le grau (≈ 70 m, profondeur et courant inconnus).",
+    acces: "Parking OSM 240666081 au bout de la piste de Beauduc (≈ 10 km de piste depuis Salin-de-Giraud, gabarit ≈ 2,1 m) [C], puis 9,1 km à pied (≈ 2 h, plus sur sable mou) par la plage du golfe, le sentier sableux interdit aux véhicules et la plage sud [C]. Pas de raccourci : la digue des Pétroliers est privée et coupée par une brèche d'≈ 50 m d'eau (vue par Nico sur Géoportail) [C]. Route Poulx → parking ≈ 1 h 38 (OSRM, arrêt à 3,9 km du parking) [M] : ≈ 3 h 50 de trajet aller en tout [P].",
+    reglement: "Zone de protection de biotope de la pointe de Beauduc (arrêté du 15/07/2015, JO du 09/12/2015 ; partie terrestre : arrêté préfectoral n° 2013273-0017 du 30/09/2013) [S] : véhicules à moteur interdits sur la pointe, chiens tenus du 1er avril au 30 septembre, ni camping ni bivouac ; la pêche du bord à la ligne n'est pas visée [S]. Cantonnement de pêche du golfe de Beauduc (toute pêche interdite, fiche réglementation du Parc naturel régional de Camargue) [S] : à plus de 7 km, hors zone.",
+    zone: "E"
   }
 ];
+// Point à explorer dans le classement ? true = classé comme les autres (décision de Nico le 23 nov. 2026), marqueur violet gardé.
+// false = hors du classement : il reste sur la carte et en bas de la liste, avec sa note.
+window.EXPLORE_DANS_CLASSEMENT = true;
 
 // Points météo / mer. W = Frontignan-Palavas, C = golfe d'Aigues-Mortes, E = Petite Camargue.
 // Les points « mer » sont un peu au large pour tomber dans une maille marine du modèle de houle.

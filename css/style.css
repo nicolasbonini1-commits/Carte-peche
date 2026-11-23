@@ -114,3 +114,7 @@ nav.bottom button.on { color: var(--text); font-weight: 700; }
 .help ul { padding-left: 18px; margin: 6px 0; } .help li { margin: 4px 0; line-height: 1.4; }
 .btn[disabled] { opacity: .5; }
 .houle-effet { margin: 8px 0; font-size: 13px; } .houle-effet summary { cursor: pointer; min-height: 32px; } .houle-effet table { width: 100%; font-size: 12px; }
+/* Point à explorer (23 nov. 2026, essai poste 17) : marqueur violet « ? », bandeau dans la fiche, titre dans la liste. */
+.dot.explore span { border: 2px dashed #ffffff; color: #ffffff; font-size: 12px; box-shadow: 0 0 0 2px #8e44ad, 0 1px 3px rgba(0,0,0,.4); }
+.explore-banner { border-left: 4px solid #8e44ad; background: rgba(142, 68, 173, .12); padding: 8px 10px; border-radius: 8px; font-size: 13px; margin: 8px 0; }
+.explore-titre { color: #8e44ad; margin: 10px 0 0; }

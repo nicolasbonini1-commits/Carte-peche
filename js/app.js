@@ -18,6 +18,10 @@
   // ---------- État ----------
   const overrides = LS.get("cp_pos", {});
   const SPOTS = window.SPOTS.map(s => overrides[s.id] ? { ...s, lat: overrides[s.id][0], lon: overrides[s.id][1], moved: true } : s);
+  // Points à explorer (champ explore de js/spots.js, 23 nov. 2026) : hors du classement des postes vérifiés sauf si
+  // window.EXPLORE_DANS_CLASSEMENT = true. classe(s) = ce poste compte dans le classement.
+  const EXPLORE_COULEUR = "#8e44ad";
+  const classe = s => !s.explore || window.EXPLORE_DANS_CLASSEMENT === true;
   const state = {
     data: null, // {times:[Date], F:{W,C,E,R}, S:{W,C,E}, sun:{'YYYY-MM-DD':{rise,set}}, fetchedAt}
     drive: LS.get("cp_drive", null),
@@ -105,7 +109,7 @@
     const pal = PAL[theme()];
     state.results.forEach(r => {
       const s = r.spot;
-      const c = r.feasible ? pal[M.classOf(r.score)] : "#8a8f96";
+      const c = s.explore ? EXPLORE_COULEUR : r.feasible ? pal[M.classOf(r.score)] : "#8a8f96";
       if (!markers[s.id]) {
         const halo = L.circle([s.lat, s.lon], { radius: 600, stroke: false, fillOpacity: 0.28 }).addTo(map);
         const dot = L.marker([s.lat, s.lon], { icon: dotIcon(c, ""), draggable: false }).addTo(map);
@@ -120,14 +124,14 @@
         markers[s.id] = { halo, dot };
       }
       markers[s.id].halo.setStyle({ fillColor: c });
-      markers[s.id].dot.setIcon(dotIcon(c, r.rank <= 3 && r.feasible ? r.rank : ""));
+      markers[s.id].dot.setIcon(s.explore ? dotIcon(c, "?", "explore") : dotIcon(c, r.rank <= 3 && r.feasible ? r.rank : ""));
     });
   }
-  function dotIcon(c, label) {
+  function dotIcon(c, label, extra) {
     const big = label !== "";
-    const sz = big ? 28 : 18;
+    const sz = extra === "explore" ? 22 : big ? 28 : 18;
     return L.divIcon({
-      className: "dot", iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2],
+      className: extra ? `dot ${extra}` : "dot", iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2],
       html: `<span style="background:${c};width:${sz}px;height:${sz}px">${label}</span>`
     });
   }
@@ -311,7 +315,7 @@
     // Effet sur la pêche, poste par poste, avec la houle de maintenant (même facteur « Mer » que la note du poste)
     const iNow = state.data ? state.data.times.findIndex(t => t.getTime() > Date.now() - 1800000) : -1;
     const effet = iNow < 0 ? "" : H.bouees.map(b => {
-      const list = SPOTS.filter(s => M.buoyFor(s) === b.camp).map(s => ({ s, n: seaNow(s, iNow) })).filter(x => x.n);
+      const list = SPOTS.filter(s => M.buoyFor(s) === b.camp && classe(s)).map(s => ({ s, n: seaNow(s, iNow) })).filter(x => x.n);
       if (!list.length) return "";
       const lo = Math.min(...list.map(x => Math.min(x.n.loup, x.n.dorade))), hi = Math.max(...list.map(x => Math.max(x.n.loup, x.n.dorade)));
       const src = list[0].n.src === "mesure" ? "mesurée" : list[0].n.src === "prévision corrigée" ? "prévue, corrigée par la bouée" : "prévue (pas de mesure récente)";
@@ -546,14 +550,16 @@
     // Temps OSRM déjà calculés pour ces positions : gardés. Une estimation (OSRM injoignable) est recalculée à la prochaine ouverture
     // (22 nov. 2026 : avant, elle restait gardée tant que les postes et le départ ne changeaient pas).
     if (state.drive && state.drive.sig === sig && state.drive.src === "OSRM") return;
-    const coords = [`${o.lon},${o.lat}`].concat(SPOTS.map(s => `${s.lon},${s.lat}`)).join(";");
+    // Poste avec parking (point à explorer) : route jusqu'au parking, puis marche_min minutes de piste et de marche (au lieu de + 10 min).
+    const dest = s => s.parking || s, apres = s => s.marche_min ?? 10;
+    const coords = [`${o.lon},${o.lat}`].concat(SPOTS.map(s => `${dest(s).lon},${dest(s).lat}`)).join(";");
     let mins = {}, src = "OSRM";
     try {
       const { j } = await fetchT(`https://router.project-osrm.org/table/v1/driving/${coords}?sources=0&annotations=duration`, DELAI.routes);
-      SPOTS.forEach((s, k) => { mins[s.id] = Math.round(j.durations[0][k + 1] / 60) + 10; }); // +10 min : se garer et marcher
+      SPOTS.forEach((s, k) => { mins[s.id] = Math.round(j.durations[0][k + 1] / 60) + apres(s); }); // +10 min : se garer et marcher
     } catch (e) {
       src = "estimation";
-      SPOTS.forEach(s => { const km = haversine(o.lat, o.lon, s.lat, s.lon) * 1.35; mins[s.id] = Math.round(km / 65 * 60) + 10; });
+      SPOTS.forEach(s => { const km = haversine(o.lat, o.lon, dest(s).lat, dest(s).lon) * 1.35; mins[s.id] = Math.round(km / 65 * 60) + apres(s); });
     }
     state.drive = { sig, mins, src };
     LS.set("cp_drive", state.drive);
@@ -675,7 +681,7 @@
     const D = state.data;
     const total = state.plan.hours * 60;
     const res = SPOTS.map(spot => {
-      const drive = state.drive ? state.drive.mins[spot.id] : 60;
+      const drive = state.drive && state.drive.mins[spot.id] != null ? state.drive.mins[spot.id] : 60;
       const start = new Date(dep.getTime() + drive * 60000);
       const end = new Date(dep.getTime() + (total - drive) * 60000);
       const fishMin = (end - start) / 60000;
@@ -690,14 +696,17 @@
       return { spot, drive, start, end, fishMin, feasible: fishMin >= 45 && hours.length > 0, hours, best, score: Math.round(0.6 * max + 0.4 * mean) };
     });
     res.sort((a, b) => (b.feasible - a.feasible) || (b.score - a.score));
-    res.forEach((r, k) => r.rank = k + 1);
-    return res;
+    // Points à explorer hors classement : mis à la fin, sans rang (le rang et l'ordre des postes classés ne changent pas).
+    const out = res.filter(r => classe(r.spot)).concat(res.filter(r => !classe(r.spot)));
+    let k = 0; out.forEach(r => r.rank = classe(r.spot) ? ++k : null);
+    return out;
   }
 
   // Quand partir ? Compare les sessions aube et soir des 3 prochains jours avec ton temps disponible.
   function renderWhen() {
     const D = state.data, now = new Date();
-    const drives = state.drive ? Object.values(state.drive.mins).sort((a, b) => a - b) : [60];
+    const drives = state.drive ? SPOTS.filter(classe).map(s => state.drive.mins[s.id]).filter(v => v != null).sort((a, b) => a - b) : [60];
+    if (!drives.length) drives.push(60);
     const typical = drives[Math.floor(drives.length / 2)];
     const cands = [];
     for (let d = 0; d < 3; d++) {
@@ -708,7 +717,7 @@
       cands.push(mk(sun.set - state.plan.hours * 60 + typical + 90, "soir"));
     }
     const rows = cands.filter(c => c.dep > now && c.dep < D.times[D.times.length - 1])
-      .map(c => ({ ...c, top: planFor(c.dep)[0] })).filter(c => c.top && c.top.feasible)
+      .map(c => ({ ...c, top: planFor(c.dep)[0] })).filter(c => c.top && c.top.feasible && classe(c.top.spot))
       .sort((a, b) => b.top.score - a.top.score).slice(0, 4);
     if (!rows.length) { $("#when").innerHTML = ""; return; }
     $("#when").innerHTML = `<h3>Quand partir ? (${state.plan.hours} h dispo)</h3>` + rows.map((c, k) => `
@@ -769,10 +778,10 @@
 
   function renderReco() {
     const r = state.results[0];
-    if (!r || !r.feasible) { $("#reco").innerHTML = `<p>Aucun poste faisable avec ce temps disponible : la route prend trop de temps. Allonge la durée.</p>`; return; }
+    if (!r || !r.feasible || !classe(r.spot)) { $("#reco").innerHTML = `<p>Aucun poste faisable avec ce temps disponible : la route prend trop de temps. Allonge la durée.</p>`; return; }
     const b = r.best, sc = M.SCENARIOS[b.scenario];
     const past = departDate() < Date.now() - 30 * 60000;
-    const second = state.results.slice(1, 3).filter(x => x.feasible).map(x => `${esc(x.spot.name)} (${x.score})`).join(" · ");
+    const second = state.results.slice(1, 3).filter(x => x.feasible && classe(x.spot)).map(x => `${esc(x.spot.name)} (${x.score})`).join(" · ");
     $("#reco").innerHTML = `
       ${past ? `<p class="warn-soft">Ton heure de départ (${state.plan.depart}) est déjà passée aujourd'hui : touche « Je pars maintenant » ou choisis un autre jour.</p>` : ""}
       <div class="reco-top"><span class="tag">Meilleur choix</span>${pill(r.score, true)}</div>
@@ -787,18 +796,23 @@
   }
 
   function goButtons(s) {
-    return `<a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=driving" target="_blank" rel="noopener">Y aller (Maps)</a>
-      <a class="btn" href="https://waze.com/ul?ll=${s.lat},${s.lon}&navigate=yes" target="_blank" rel="noopener">Waze</a>`;
+    // Poste loin de la route (champ parking de js/spots.js) : le GPS mène au parking, pas au poste.
+    const g = s.parking || s;
+    return `<a class="btn primary" href="https://www.google.com/maps/dir/?api=1&destination=${g.lat},${g.lon}&travelmode=driving" target="_blank" rel="noopener">Y aller (Maps)${s.parking ? " · parking" : ""}</a>
+      <a class="btn" href="https://waze.com/ul?ll=${g.lat},${g.lon}&navigate=yes" target="_blank" rel="noopener">Waze</a>`;
   }
 
   function renderList() {
-    $("#list").innerHTML = state.results.map(r => `
+    const item = r => `
       <button class="spot" data-id="${r.spot.id}">
         ${pill(r.score, r.feasible)}
         <span class="spot-main"><b>${esc(r.spot.name)}</b>
         <small>${esc(r.spot.commune)} · ${r.drive} min · ${r.feasible ? `${Math.round(r.fishMin / 60 * 10) / 10} h de pêche · meilleure heure ${hm(r.best.t)}` : "pas assez de temps sur place"}</small>
         ${strip(r.spot)}</span>
-      </button>`).join("");
+      </button>`;
+    const hors = state.results.filter(r => !classe(r.spot));
+    $("#list").innerHTML = state.results.filter(r => classe(r.spot)).map(item).join("") + (hors.length ? `
+      <h3 class="explore-titre">Point à explorer (hors classement, note indicative)</h3>` + hors.map(item).join("") : "");
     document.querySelectorAll("#list .spot").forEach(b => b.onclick = () => openSpot(+b.dataset.id));
   }
 
@@ -847,6 +861,7 @@
     $("#sheetBody").innerHTML = `
       <h2>${esc(s.name)} ${pill(r.score, r.feasible)}</h2>
       <p class="sub">${esc(s.commune)} · ${r.drive} min de route · ${M.HABITAT[s.type].label}${s.moved ? " · position corrigée" : ""}</p>
+      ${s.explore ? exploreBanner(s) : ""}
       <button type="button" class="btn here" id="hereBtn">📍 Je suis sur place</button>
       <div id="releveBox" class="releve" hidden></div>
       ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
@@ -863,6 +878,7 @@
       <div id="dayBox"></div>
       <h3>48 prochaines heures</h3>${strip(s)}
       <h3>Le poste</h3><p>${esc(s.structure)}</p><p class="warn-soft">${esc(s.attention)}</p>
+      ${s.acces ? `<p><b>Accès :</b> ${esc(s.acces)}</p>` : ""}${s.reglement ? `<p><b>Règles :</b> ${esc(s.reglement)}</p>` : ""}
       <p class="sub">Position : ${s.moved ? "corrigée par toi sur ce téléphone" : esc(s.pos || "")}</p>
       ${s.autour && s.autour.length ? `<p><b>Autour (pêche de zone, points gris) :</b> ${s.autour.map(a => `${esc(a.name)} <span class="sub">(${esc(a.note)})</span>`).join(" · ")}</p>` : ""}
       <p class="sub">${s.webcams && s.webcams.length ? `Webcam (de jour, vue à vérifier) : ${s.webcams.map(w => `<a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.label)}</a>`).join(" · ")}` : "Pas de webcam trouvée près de ce poste."}</p>
@@ -888,11 +904,19 @@
     };
     map.panTo([s.lat, s.lon]);
   }
+  // Bandeau des points à explorer (23 nov. 2026)
+  function exploreBanner(s) {
+    const turb = M.TURB.base[s.id] == null;
+    return `<div class="explore-banner"><b>Point à explorer :</b> trouvé sur une vidéo, jamais pêché par Nico ; hors secteur, note indicative (bouée et météo de zone éloignées).`
+      + (turb ? " Couleur de l'eau : pas encore calée ici, l'appli utilise l'ancienne règle (houle, Rhône, pluie)."
+        : " Couleur de l'eau : calée sur les photos satellite à 300 m du bord, à vérifier sur place.")
+      + `${classe(s) ? "" : " Hors du classement des postes."}${s.marche_min ? ` Temps de route compté jusqu'au parking + ${Math.floor(s.marche_min / 60)} h ${pad(s.marche_min % 60)} de piste et de marche.` : ""}</div>`;
+  }
   // Créneaux d'une journée pour un poste, avec l'ordre des leurres
   function renderDay(spot, dayOff) {
     const D = state.data, day = new Date(); day.setDate(day.getDate() + dayOff);
     const key = localKey(day), now = Date.now();
-    const drive = state.drive ? state.drive.mins[spot.id] : 60;
+    const drive = state.drive && state.drive.mins[spot.id] != null ? state.drive.mins[spot.id] : 60;
     const hrs = [];
     D.times.forEach((t, i) => {
       if (localKey(t) !== key || t.getHours() < 4 || t.getHours() > 22 || t.getTime() < now - 3600000) return;

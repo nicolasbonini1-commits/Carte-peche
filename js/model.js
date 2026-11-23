@@ -193,10 +193,14 @@
   // Postes 3, 8 et 14 : pas assez de mesures, valeurs reprises des postes voisins (3 = moyenne de 2 et 4, 8 = 6, 14 = moyenne de 13 et 15) [P].
   M.TURB = {
     base: { 1: 0.3588, 2: 0.3324, 3: 0.2607, 4: 0.1889, 5: 0.356, 6: 0.4044, 7: 0.2353, 8: 0.4044, 9: 0.2145, 10: 0.1212,
-            11: 0.0812, 12: 0.0499, 13: 0.2002, 14: 0.1787, 15: 0.1571, 16: 0.095 },
+            11: 0.0812, 12: 0.0499, 13: 0.2002, 14: 0.1787, 15: 0.1571, 16: 0.095,
+            // Poste 17 (Beauduc, point à explorer) : point satellite à 300 m de P, calage 2020-2024, test 2025-2026 : R² 0,41, rang 0,68,
+            // bonne classe 73 % (ancienne règle 9 %) [M] (branche essai-poste17, outils/poste17/turbidite/RESULTATS.md). Choix de Nico le 23 nov. 2026.
+            // Attention : à 300 m, P est plus trouble que ses voisins (médiane 8,4 FNU contre 4,4 aux postes 1 et 2) : à caler avec le carnet.
+            17: 0.596 },
     hsmax48: 0.3653, hs: 0.1732, ws24: 0.1049, api: 0.0431,
     rivers: {
-      rhone: { tau: 8, k: { 1: 1.9528, 2: 0.8459, 3: 0.6727, 4: 0.4994 } },
+      rhone: { tau: 8, k: { 1: 1.9528, 2: 0.8459, 3: 0.6727, 4: 0.4994, 17: 0.3776 } }, // 17 : Beauduc, voir base
       vidourle: { tau: 1, k: { 5: 0.0827, 6: 0.3506, 7: 0.2038, 8: 0.3506, 9: 0.1642 } },
       lez: { tau: 5, k: { 11: 0.0073 } }
     },
