@@ -1,0 +1,207 @@
+// Robot vidéos pêche — étape 2 : regarder les vidéos retenues (Gemini) et écrire les fiches (Notion). v1 du 23 nov. 2026.
+// Entrée : /tmp/sortie/a_analyser.json (écrit par robot.js) + la file d'attente Notion (vidéos que Nico a partagées dans la base).
+// Sorties : fiches Notion « À vérifier » dans « Points à explorer (vidéos) », /tmp/sortie/analyses.json, /tmp/sortie/etat.json (lu par Home Assistant).
+// Sans clé GEMINI_API_KEY ou NOTION_TOKEN : ne fait rien (le dit dans analyses.json) — le tri de robot.js reste valable.
+// Règles : la vidéo n'est jamais téléchargée (Gemini la lit depuis son lien public) ; aucun nom de commentateur ;
+// Gemini ne donne PAS de coordonnées (elles seraient inventées) : elles viennent ensuite de la prévalidation (OSM, IGN).
+// Ni le robot ni Claude ne cochent jamais « Validé par Nico ».
+const fs = require("fs");
+const OUT = "/tmp/sortie";
+const BASE = "420a0be6c3078152a5d7ce910e4ef866"; // base Notion « Points à explorer (vidéos) »
+const { GEMINI_API_KEY: GK, NOTION_TOKEN: NT, GEMINI_MODEL } = process.env;
+const journal = [];
+const sortie = { le: new Date().toISOString(), modele: null, analysees: [], ecartees: [], erreurs: [] };
+const ecrire = () => fs.writeFileSync(`${OUT}/analyses.json`, JSON.stringify(sortie, null, 1));
+const pause = ms => new Promise(r => setTimeout(r, ms));
+const coupe = (s, n = 1900) => (s || "").length > n ? s.slice(0, n - 1) + "…" : (s || "");
+
+// ---------- Notion (API publique, version 2022-06-28) ----------
+async function notion(chemin, corps, methode = "POST") {
+  const r = await fetch(`https://api.notion.com/v1/${chemin}`, { method: methode, signal: AbortSignal.timeout(60000),
+    headers: { Authorization: `Bearer ${NT}`, "Notion-Version": "2022-06-28", "Content-Type": "application/json" },
+    body: corps ? JSON.stringify(corps) : undefined });
+  const j = await r.json().catch(() => ({}));
+  journal.push({ notion: chemin.split("/")[0], code: r.status });
+  if (!r.ok) throw new Error(`Notion ${r.status} : ${j.message || ""}`);
+  return j;
+}
+const txt = s => [{ type: "text", text: { content: coupe(s) } }];
+const para = s => ({ object: "block", type: "paragraph", paragraph: { rich_text: txt(s) } });
+const puce = s => ({ object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: txt(s) } });
+const titre = s => ({ object: "block", type: "heading_3", heading_3: { rich_text: txt(s) } });
+const idDe = s => ((s || "").match(/(?:v=|youtu\.be\/|shorts\/|live\/)([\w-]{11})/) || [])[1];
+
+async function fileAttente() {
+  // Lignes de la base sans « Lieu le plus probable » et avec un lien YouTube (dans « Lien », le titre ou le contenu) :
+  // ce sont les vidéos que Nico a ajoutées lui-même (Partager → Notion). Elles passent avant le tri de la semaine.
+  const q = await notion(`databases/${BASE}/query`, { filter: { and: [
+    { property: "Lieu le plus probable", rich_text: { is_empty: true } },
+    { property: "Statut", status: { equals: "À vérifier" } }] }, page_size: 20 });
+  const liste = [];
+  for (const p of q.results) {
+    const pr = p.properties;
+    let id = idDe(pr["Lien"]?.url) || idDe((pr["Vidéo"]?.title || []).map(t => t.plain_text).join(" "));
+    if (!id) {
+      const b = await notion(`blocks/${p.id}/children?page_size=50`, null, "GET");
+      id = idDe(JSON.stringify(b.results));
+    }
+    if (id) liste.push({ id, lien: `https://www.youtube.com/watch?v=${id}`, page: p.id, demandee: true,
+      titre: (pr["Vidéo"]?.title || []).map(t => t.plain_text).join(" "), chaine: "", desc: "", date: "" });
+  }
+  return liste;
+}
+async function dejaFiche(lien, id) {
+  const q = await notion(`databases/${BASE}/query`, { filter: { or: [
+    { property: "Lien", url: { equals: lien } }, { property: "Lien", url: { contains: id } }] }, page_size: 5 });
+  return q.results.filter(p => (p.properties["Lieu le plus probable"]?.rich_text || []).length).length > 0;
+}
+
+// ---------- Gemini ----------
+async function modeles() {
+  if (GEMINI_MODEL) return [GEMINI_MODEL];
+  // Les noms changent souvent : on prend la liste officielle du moment. Flash d'abord (meilleure vue), Flash-Lite en secours.
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=${GK}`, { signal: AbortSignal.timeout(30000) });
+  const j = await r.json();
+  journal.push({ gemini: "models", code: r.status });
+  const noms = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
+    .map(m => m.name.replace("models/", "")).filter(n => /flash/.test(n) && !/image|tts|audio|live|embed|thinking|exp/.test(n));
+  const version = n => parseFloat((n.match(/gemini-(\d+(?:\.\d+)?)/) || [])[1] || 0);
+  return noms.sort((a, b) => (/lite/.test(a) - /lite/.test(b)) || (/preview/.test(a) - /preview/.test(b)) || version(b) - version(a)).slice(0, 4);
+}
+const SCHEMA = { type: "OBJECT", properties: {
+  filme_depuis: { type: "STRING", enum: ["bord", "bateau", "kayak ou paddle", "mélange", "incertain"] },
+  mer: { type: "STRING", enum: ["Méditerranée", "autre", "incertain"] },
+  resume: { type: "STRING" },
+  lieux_nommes: { type: "ARRAY", items: { type: "OBJECT", properties: { timecode: { type: "STRING" }, ou: { type: "STRING" }, texte: { type: "STRING" } } } },
+  sequences: { type: "ARRAY", items: { type: "OBJECT", properties: { debut: { type: "STRING" }, fin: { type: "STRING" }, description: { type: "STRING" } } } },
+  reperes: { type: "ARRAY", items: { type: "OBJECT", properties: {
+    timecode: { type: "STRING" }, categorie: { type: "STRING", enum: ["ouvrage dans l'eau", "fond et rive", "arrière-plan", "lumière", "texte à l'écran"] },
+    description: { type: "STRING" }, rare: { type: "BOOLEAN" }, pourrait_etre_mal_lu: { type: "STRING" } } } },
+  ordre_rive_en_face: { type: "STRING" },
+  lieux_possibles: { type: "ARRAY", items: { type: "OBJECT", properties: {
+    nom: { type: "STRING" }, commune: { type: "STRING" }, confiance: { type: "STRING", enum: ["Élevée", "Moyenne", "Faible"] },
+    pour: { type: "STRING" }, contre: { type: "STRING" }, a_regarder_sur_geoportail: { type: "STRING" } } } },
+  dans_la_zone: { type: "STRING", enum: ["oui", "non", "incertain"] },
+  especes: { type: "STRING" }, technique_leurres: { type: "STRING" }, saison_conditions: { type: "STRING" }, acces_marche: { type: "STRING" }
+}, required: ["filme_depuis", "mer", "resume", "reperes", "lieux_possibles", "dans_la_zone"] };
+
+const consigne = v => `Tu aides un pêcheur du bord (loup au leurre, dorade à la calée) à retrouver où cette vidéo YouTube a été tournée, pour aller prospecter.
+Zone qui l'intéresse : côte méditerranéenne française de Valras-Plage (ouest) à Fos-sur-Mer (est) ; cœur : de Frontignan aux Saintes-Maries-de-la-Mer et Port-Saint-Louis-du-Rhône.
+Texte connu de la vidéo — titre : « ${v.titre} » ; chaîne : « ${v.chaine} » ; description : « ${coupe(v.desc, 1500)} ».
+
+Règles strictes :
+- Réponds en français simple. Donne le timecode (mm:ss) de chaque observation. Ne décris que ce qui se voit ou s'entend vraiment ; « incertain » est une bonne réponse.
+- Ne donne AUCUNE coordonnée GPS. Ne nomme aucune personne.
+- Dis d'abord d'où c'est filmé : du bord, d'un bateau, d'un kayak ou d'un paddle.
+- Une vidéo peut mélanger plusieurs moments ou lieux : sépare-les en séquences (ciel, lumière, vêtements) et ne mélange pas leurs indices.
+- Repères à relever pour chaque séquence : ouvrages dans l'eau (digue, épi, brise-lames, enrochement, digue effondrée, phare, balise, pieux), fond et rive (sable, galets, rochers posés ou naturels), arrière-plan (étang, ville, immeubles, phare, éoliennes, relief), lumière (indice faible : grand-angle), texte à l'écran, et ce qui est dit à l'oral sur le lieu.
+- Pour chaque repère, dis ce qui pourrait être mal lu (exemple : une « plage de rochers » peut être une digue effondrée).
+- Si on voit une rive en face (canal, chenal, grau), décris l'ordre des repères de gauche à droite.
+- Un sponsor ou un magasin affiché donne la région du pêcheur, pas le lieu de pêche.
+- Propose 1 à 3 lieux possibles, classés, avec la confiance : Élevée seulement si un ouvrage unique est reconnu ; Moyenne si plusieurs indices cohérents mais un autre lieu reste possible ; Faible si seulement un type de côte. Pour chacun : raisons pour, raisons contre, et quoi regarder précisément sur une photo aérienne.`;
+
+async function gemini(v, liste) {
+  const corps = { contents: [{ parts: [{ file_data: { file_uri: v.lien } }, { text: consigne(v) }] }],
+    generationConfig: { temperature: 0.2, responseMimeType: "application/json", responseSchema: SCHEMA } };
+  let derniere = "";
+  for (const m of liste) {
+    for (let essai = 1; essai <= 2; essai++) {
+      try {
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${GK}`, {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps), signal: AbortSignal.timeout(300000) });
+        const j = await r.json().catch(() => ({}));
+        journal.push({ gemini: m, video: v.id, essai, code: r.status, jetons: j.usageMetadata?.totalTokenCount });
+        if (r.ok) {
+          const t = (j.candidates?.[0]?.content?.parts || []).map(p => p.text || "").join("");
+          return { modele: m, jetons: j.usageMetadata?.totalTokenCount, r: JSON.parse(t) };
+        }
+        derniere = `${m} ${r.status} ${coupe(j.error?.message || "", 200)}`;
+        if (r.status === 429) { await pause(65000); continue; } // limite par minute du gratuit
+        break; // 400/403/404 : modèle suivant
+      } catch (e) { derniere = `${m} ${e.message}`; }
+    }
+  }
+  throw new Error("Gemini : " + derniere);
+}
+
+// ---------- Fiche Notion ----------
+function fiche(v, a) {
+  const r = a.r, l = r.lieux_possibles || [], p = l[0];
+  const geste = r.filme_depuis !== "bord" ? `Filmé depuis : ${r.filme_depuis}. ` : "";
+  const proprietes = {
+    "Vidéo": { title: txt(v.titre || v.id) },
+    "Lien": { url: v.lien },
+    "Chaîne": { rich_text: txt(v.chaine || "") },
+    "Lieu le plus probable": { rich_text: txt(p ? `[V][Gemini] ${p.nom}${p.commune ? " (" + p.commune + ")" : ""}` : "[V][Gemini] aucun lieu proposé") },
+    "Autres lieux possibles": { rich_text: txt(l.slice(1).map(x => `${x.nom} (${x.confiance})`).join(" ; ")) },
+    "À vérifier": { rich_text: txt(`${geste}Analyse automatique, rien de vérifié. Coordonnées et prévalidation sur imagerie à faire. ${p?.a_regarder_sur_geoportail || ""}`) }
+  };
+  if (p?.confiance) proprietes["Confiance"] = { select: { name: p.confiance } };
+  if (v.date) proprietes["Date vidéo"] = { date: { start: v.date } };
+  const blocs = [
+    para(`Fiche écrite par le robot le ${new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })} — Gemini (${a.modele}) a regardé la vidéo depuis son lien public, sans téléchargement. Tout est [V] : rien n'est vérifié. Pas de coordonnées : elles viendront de la prévalidation (OSM, IGN, Sentinel-2), puis du contrôle Géoportail de Nico.`),
+    titre("Résumé"), para(r.resume || ""),
+    para(`Filmé depuis : ${r.filme_depuis} — Mer : ${r.mer} — Dans la zone Valras → Fos : ${r.dans_la_zone}`),
+    titre("Lieux possibles (Gemini)"),
+    ...l.map(x => puce(`${x.nom}${x.commune ? " (" + x.commune + ")" : ""} — confiance ${x.confiance}. Pour : ${x.pour || "—"}. Contre : ${x.contre || "—"}. À regarder : ${x.a_regarder_sur_geoportail || "—"}`)),
+    titre("Lieux nommés dans la vidéo"),
+    ...((r.lieux_nommes || []).length ? r.lieux_nommes.map(x => puce(`${x.timecode || "?"} (${x.ou || "?"}) : ${x.texte}`)) : [para("Aucun.")]),
+    titre("Séquences"),
+    ...(r.sequences || []).map(x => puce(`${x.debut || "?"}–${x.fin || "?"} : ${x.description}`)),
+    titre("Grille des repères"),
+    ...(r.reperes || []).slice(0, 40).map(x => puce(`${x.timecode || "?"} · ${x.categorie}${x.rare ? " · RARE" : ""} : ${x.description}${x.pourrait_etre_mal_lu ? " — pourrait être mal lu : " + x.pourrait_etre_mal_lu : ""}`)),
+    titre("Rive d'en face (gauche → droite)"), para(r.ordre_rive_en_face || "—"),
+    titre("Pêche"), puce(`Espèces : ${r.especes || "—"}`), puce(`Technique, leurres : ${r.technique_leurres || "—"}`),
+    puce(`Saison, conditions : ${r.saison_conditions || "—"}`), puce(`Accès, marche : ${r.acces_marche || "—"}`)
+  ];
+  return { proprietes, blocs: blocs.slice(0, 95) };
+}
+
+(async () => {
+  if (!GK || !NT) { sortie.erreurs.push(`clé absente : ${!GK ? "GEMINI_API_KEY " : ""}${!NT ? "NOTION_TOKEN" : ""} — analyse sautée`); ecrire(); return console.log(sortie.erreurs[0]); }
+  const tri = fs.existsSync(`${OUT}/a_analyser.json`) ? JSON.parse(fs.readFileSync(`${OUT}/a_analyser.json`, "utf8")) : { videos: [] };
+  let attente = [];
+  try { attente = await fileAttente(); } catch (e) { sortie.erreurs.push("file d'attente : " + e.message); }
+  const aFaire = [...attente, ...tri.videos.filter(v => !attente.some(x => x.id === v.id))];
+  console.log("file d'attente", attente.length, "| tri", tri.videos.length);
+  let liste = [];
+  try { liste = await modeles(); sortie.modele = liste; } catch (e) { sortie.erreurs.push("liste des modèles : " + e.message); }
+  for (const v of aFaire) {
+    try {
+      if (!v.page && await dejaFiche(v.lien, v.id)) { sortie.ecartees.push({ id: v.id, raison: "fiche déjà dans Notion" }); continue; }
+      if (!v.titre || !v.chaine) { // titre et chaîne par l'oEmbed officiel si absents (vidéo partagée par Nico)
+        const o = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(v.lien)}`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+        v.titre = v.titre || o.title || ""; v.chaine = v.chaine || o.author_name || "";
+      }
+      const a = await gemini(v, liste);
+      const hors = a.r.filme_depuis === "bateau" || a.r.filme_depuis === "kayak ou paddle" || a.r.mer === "autre" || a.r.dans_la_zone === "non";
+      if (hors && !v.demandee) { // passage de la semaine : pas de fiche pour un bateau ou un lieu hors zone (la vidéo demandée par Nico garde la sienne)
+        sortie.ecartees.push({ id: v.id, titre: v.titre, raison: `Gemini : filmé depuis ${a.r.filme_depuis}, mer ${a.r.mer}, zone ${a.r.dans_la_zone}` });
+        continue;
+      }
+      const f = fiche(v, a);
+      let page = v.page;
+      if (page) {
+        await notion(`pages/${page}`, { properties: f.proprietes }, "PATCH");
+        await notion(`blocks/${page}/children`, { children: f.blocs }, "PATCH");
+      } else page = (await notion("pages", { parent: { database_id: BASE }, properties: f.proprietes, children: f.blocs })).id;
+      sortie.analysees.push({ id: v.id, titre: v.titre, page: `https://www.notion.so/${page.replace(/-/g, "")}`, modele: a.modele, jetons: a.jetons,
+        lieu: a.r.lieux_possibles?.[0]?.nom, confiance: a.r.lieux_possibles?.[0]?.confiance, filme_depuis: a.r.filme_depuis, demandee: !!v.demandee });
+    } catch (e) { sortie.erreurs.push(`${v.id} : ${e.message}`); }
+    ecrire();
+  }
+  // État pour Home Assistant : fiches que Nico doit regarder (prévalidées, pas encore validées) et fiches à prévalider.
+  try {
+    const cpt = async f => (await notion(`databases/${BASE}/query`, { filter: { and: f }, page_size: 100 })).results.length;
+    const aVerifier = { property: "Statut", status: { equals: "À vérifier" } }, pasValide = { property: "Validé par Nico", checkbox: { equals: false } };
+    const etat = { le: new Date().toISOString(),
+      a_valider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { equals: "Prévalidé" } }]),
+      a_prevalider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { is_empty: true } }]),
+      nouvelles_fiches: sortie.analysees.length, erreurs: sortie.erreurs.length };
+    fs.writeFileSync(`${OUT}/etat.json`, JSON.stringify(etat, null, 1));
+  } catch (e) { sortie.erreurs.push("état : " + e.message); }
+  ecrire();
+  fs.writeFileSync(`${OUT}/journal_analyse.json`, JSON.stringify(journal, null, 1));
+  console.log("analysées", sortie.analysees.length, "| écartées", sortie.ecartees.length, "| erreurs", sortie.erreurs.length);
+  if (sortie.erreurs.length) console.log(sortie.erreurs.join("\n"));
+})();

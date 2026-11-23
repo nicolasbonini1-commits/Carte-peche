@@ -69,6 +69,12 @@ async function main() {
   // Vidéos déjà proposées les semaines précédentes (fichier gardé dans la branche de sortie) : jamais reproposées.
   const vues = fs.existsSync("/tmp/vues.json") ? JSON.parse(fs.readFileSync("/tmp/vues.json", "utf8")) : {};
   const demandees = (process.env.VIDEO || "").split(/\s+/).map(idDe).filter(Boolean);
+  if (!demandees.length && process.env.MODE === "file") { // seulement la file d'attente Notion (traitée par analyse.js) : pas de tri RSS
+    fs.writeFileSync(`${OUT}/a_analyser.json`, JSON.stringify({ mode: "file", le: new Date().toISOString(), videos: [] }));
+    fs.writeFileSync(`${OUT}/vues.json`, JSON.stringify(vues, null, 1));
+    fs.writeFileSync(`${OUT}/CANDIDATES.md`, "# Robot pêche — file d'attente Notion seulement (pas de tri de la semaine)\n");
+    return console.log("mode file : tri sauté");
+  }
   const mode = demandees.length ? "à la demande" : "passage de la semaine";
   let videos = [];
 

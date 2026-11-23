@@ -8,7 +8,10 @@
 #   - essai : un commit sur outils/robot/ dans la branche essai-robot.
 # Résultats : branche « robot » quand ça tourne depuis main (vues.json = vidéos déjà proposées, jamais reproposées),
 # branche « essais-robot » pour un essai. Un dossier par passage, avec CANDIDATES.md lisible sur téléphone.
-# Aucune page YouTube lue, aucune vidéo téléchargée, rien écrit dans Notion à ce stade.
+# Étape 2 (analyse.js) : Gemini regarde les vidéos retenues depuis leur lien public (jamais téléchargées) et écrit
+# les fiches « À vérifier » dans Notion ; elle est sautée tant que GEMINI_API_KEY et NOTION_TOKEN ne sont pas rangées
+# dans les secrets du dépôt. etat.json (racine de la branche) donne à Home Assistant le nombre de fiches à valider.
+# Aucune page YouTube lue, aucune vidéo téléchargée, « Validé par Nico » jamais coché par le robot.
 name: robot
 on:
   schedule:
@@ -19,6 +22,10 @@ on:
         description: "Lien YouTube à analyser (vide = passage de la semaine)"
         required: false
         default: ""
+      mode:
+        description: "semaine = tri des chaînes + file Notion ; file = seulement les vidéos partagées dans Notion"
+        required: false
+        default: "semaine"
   push:
     branches: [essai-robot]
     paths: ["outils/robot/**", ".github/workflows/robot.yml"]
@@ -30,11 +37,14 @@ concurrency:
 jobs:
   tri:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
       DEST: ${{ github.ref_name == 'main' && 'robot' || 'essais-robot' }}
       VIDEO: ${{ github.event.inputs.video }}
+      MODE: ${{ github.event.inputs.mode || 'semaine' }}
       YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -44,7 +54,11 @@ jobs:
         run: |
           if [ "$DEST" = robot ] && git fetch -q --depth=1 origin robot; then git show origin/robot:vues.json > /tmp/vues.json || true; fi
           ls -la /tmp/vues.json 2>/dev/null || echo "aucune liste précédente"
-      - run: node outils/robot/robot.js
+      - name: Tri des vidéos
+        run: node outils/robot/robot.js
+      - name: Analyse Gemini et fiches Notion (sautée tant que les clés manquent)
+        timeout-minutes: 30
+        run: node outils/robot/analyse.js
       - name: Enregistrer le passage
         if: always()
         run: |
@@ -53,6 +67,7 @@ jobs:
           if git fetch -q --depth=1 "https://github.com/${{ github.repository }}.git" "$DEST"; then git checkout -q -b "$DEST" FETCH_HEAD; else git checkout -q --orphan "$DEST"; fi
           mkdir -p "$D" && (cp -r /tmp/sortie/. "$D"/ || echo "rien" > "$D"/vide.txt)
           [ "$DEST" = robot ] && cp /tmp/sortie/vues.json vues.json && cp /tmp/sortie/CANDIDATES.md DERNIER.md || true
+          cp /tmp/sortie/etat.json etat.json 2>/dev/null || true   # lu par Home Assistant (nombre de fiches à valider)
           git config user.name "robot-bot"; git config user.email "robot@users.noreply.github.com"
           git add -A && git commit -qm "robot $D (${VIDEO:+à la demande, }commit ${GITHUB_SHA::7})"
           git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" "$DEST"
