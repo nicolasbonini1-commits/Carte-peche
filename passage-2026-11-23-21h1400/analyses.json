@@ -1,0 +1,9 @@
+{
+ "le": "2026-11-23T20:14:00.430Z",
+ "modele": null,
+ "analysees": [],
+ "ecartees": [],
+ "erreurs": [
+  "clé absente : GEMINI_API_KEY NOTION_TOKEN — analyse sautée"
+ ]
+}
