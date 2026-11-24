@@ -1,0 +1,6 @@
+comparaisons loup/dorade main vs essai : 979200 différences : 0
+mois 2, eau 12.5 °C {"sar":"2:81 5:81 7:81  (max 81)","tassergal":"1:1 2:1 3:1  (max 1)","liche":"1:1 2:1 3:1  (max 1)","loup":"1:61 2:57 5:57  (max 61)","dorade":"11:15 12:15 15:15  (max 15)"}
+mois 5, eau 17 °C {"sar":"2:76 5:76 7:76  (max 76)","tassergal":"1:24 6:20 8:20  (max 24)","liche":"1:8 3:8 4:8  (max 8)","loup":"1:40 2:38 5:38  (max 40)","dorade":"11:63 12:63 15:63  (max 63)"}
+mois 8, eau 24 °C {"sar":"2:66 5:66 7:66  (max 66)","tassergal":"1:95 6:81 8:81  (max 95)","liche":"1:58 11:57 12:57  (max 58)","loup":"1:31 6:30 8:30  (max 31)","dorade":"11:81 12:81 15:81  (max 81)"}
+mois 10, eau 20 °C {"sar":"2:95 5:95 7:95  (max 95)","tassergal":"1:85 6:72 8:72  (max 85)","liche":"1:77 11:77 12:77  (max 77)","loup":"1:76 6:72 8:72  (max 76)","dorade":"11:90 12:90 15:90  (max 90)"}
+mois 11, eau 16 °C {"sar":"2:95 5:95 7:95  (max 95)","tassergal":"1:24 6:20 8:20  (max 24)","liche":"1:27 11:27 12:27  (max 27)","loup":"1:90 6:85 8:85  (max 90)","dorade":"11:87 12:87 16:87  (max 87)"}
