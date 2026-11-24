@@ -344,10 +344,86 @@
   };
   const SEA_DORADE = { "calme": 1.0, "peu agitée": 0.95, "formée": 0.70, "forte": 0.30 }; // [P]
 
+  // ---------- 4 bis. Autres espèces : sar, tassergal, liche (PROTOTYPE de l'audit du 25 nov. 2026, branche essai-especes) ----------
+  // Pas sur main sans l'accord de Nico. Loup et dorade ne passent jamais par ici (leur calcul est inchangé).
+  // Niveaux de preuve : [S] étude, [G] guide ou magazine (peche.com, Figaro Nautisme), [M] modèle publié, [P] valeur posée, à caler
+  // avec le carnet. TOUTES les valeurs chiffrées ci-dessous sont [P] : les sources disent « où » et « quand », jamais « combien ».
+  // Sources (lues le 24-25 nov. 2026, détail dans AUDIT-2026-11.md, branche audit) :
+  //  - sar : vit sur les fonds rocheux, très fidèle à un petit territoire (< 1 km²), s'abrite pendant les tempêtes [S] (Aspillaga et al. 2016,
+  //    PLoS ONE ; revue Di Lorenzo et al. 2022, Env. Biol. Fish.) ; mer agitée, écume, lever/coucher du soleil, hiver = bonne saison [G] ;
+  //  - tassergal : arrive près des côtes quand l'eau passe de 15 à 18 °C, ponte de juin à septembre à 21-27 °C (Sabatés et al., côte catalane) [S] ;
+  //    quitte la côte à l'automne quand l'eau refroidit (Arechavala-Lopez et al. 2015) [S] ; mai à octobre, embouchures, chasses, aube et crépuscule [G] ;
+  //  - liche amie : espèce d'eau chaude, température préférée 16-29 °C (FishBase / AquaMaps) [M] ; petites liches près du bord à l'automne,
+  //    peu d'eau, récupération rapide, lancers longs [G].
+  M.ESPECES = {
+    sar: {
+      nom: "sar", art: "le", label: "Sar",
+      habitat: { embouchure: 0.50, grau: 0.75, digue: 0.95, roche: 1.00, plage_barres: 0.20, plage_lisse: 0.10 },
+      saison: [0.90, 0.85, 0.80, 0.80, 0.80, 0.75, 0.70, 0.70, 0.85, 1.00, 1.00, 0.95],
+      saisonTxt: "le sar vit toute l'année sur les enrochements [S] ; automne et hiver conseillés [G]",
+      mer: { "calme": 0.55, "peu agitée": 1.00, "formée": 0.80, "forte": 0.25 },
+      lumiere: { aube: 1.0, "crépuscule": 1.0, jour: 0.70, nuit: 0.70 },
+      eau: { "claire": 0.85, "piquée": 1.0, "teintée": 0.85, "très chargée": 0.50 },
+      sst: [[11, 0.85], [99, 1]],
+      technique: "Sur les enrochements : petit poisson nageur à bavette (M1) ou leurre souple léger dans l'écume, mer à peine formée [G] ; ou calée / flotteur aux appâts (crevette, moule, pâte de sardine) [G]. Taille minimale : sar commun 23 cm, sars à museau pointu et à tête noire 18 cm [G]."
+    },
+    tassergal: {
+      nom: "tassergal", art: "le", label: "Tassergal",
+      habitat: { embouchure: 1.00, grau: 0.85, digue: 0.80, roche: 0.60, plage_barres: 0.75, plage_lisse: 0.55 },
+      saison: [0.05, 0.05, 0.05, 0.15, 0.40, 0.70, 0.85, 0.95, 1.00, 0.85, 0.40, 0.10],
+      saisonTxt: "le tassergal est près des côtes de mai à octobre [G], il part quand l'eau refroidit [S]",
+      mer: { "calme": 0.75, "peu agitée": 1.00, "formée": 0.75, "forte": 0.30 },
+      lumiere: { aube: 1.0, "crépuscule": 0.95, jour: 0.55, nuit: 0.35 },
+      eau: { "claire": 1.0, "piquée": 1.0, "teintée": 0.75, "très chargée": 0.40 },
+      sst: [[15, 0.2], [18, 0.6], [99, 1]],
+      technique: "Surface rapide (S1 ou S2 en zigzag rapide) ou jig (J1/J2) lancé loin vers les chasses et les oiseaux, à l'aube ou au crépuscule [G] ; bas de ligne épais, ses dents coupent [G]. Aucune taille minimale nationale trouvée pour la pêche de loisir en Méditerranée : à vérifier."
+    },
+    liche: {
+      nom: "liche", art: "la", label: "Liche",
+      habitat: { embouchure: 0.90, grau: 0.85, digue: 0.65, roche: 0.55, plage_barres: 0.85, plage_lisse: 0.75 },
+      saison: [0.05, 0.05, 0.05, 0.05, 0.15, 0.35, 0.55, 0.75, 1.00, 1.00, 0.50, 0.10],
+      saisonTxt: "petites liches près du bord surtout à l'automne [G], poisson d'eau chaude [M]",
+      mer: { "calme": 1.00, "peu agitée": 0.90, "formée": 0.50, "forte": 0.20 },
+      lumiere: { aube: 1.0, "crépuscule": 0.90, jour: 0.75, nuit: 0.30 },
+      eau: { "claire": 1.0, "piquée": 0.95, "teintée": 0.60, "très chargée": 0.30 },
+      sst: [[16, 0.3], [19, 0.7], [99, 1]],
+      technique: "Surface ou poisson nageur ramené vite (une récupération lente provoque des refus) [G], lancers longs sur les plages peu profondes et aux embouchures [G]. Pas de taille minimale nationale trouvée ; 50 cm dans le Parc naturel marin du golfe du Lion (hors de ton secteur) [G]."
+    }
+  };
+  M.SPECIES_ALL = ["loup", "dorade", "sar", "tassergal", "liche"];
+  M.art = sp => (M.ESPECES[sp] ? M.ESPECES[sp].art : sp === "dorade" ? "la" : "le") + " " + sp;
+  // Note d'une autre espèce : même structure que le loup (poste × saison × mer × lumière × vent × couleur de l'eau × eau × carnet).
+  M.scoreAutre = (spot, species, c, learn) => {
+    const E = M.ESPECES[species], f = [];
+    f.push({ k: "Poste", v: E.habitat[spot.type], why: M.HABITAT[spot.type].label + " [P]" });
+    f.push({ k: "Saison", v: E.saison[c.month - 1], why: E.saisonTxt + " · valeur [P]" });
+    const sc = M.seaClass(c.hsLocal, c.period, spot.type), f1 = v => v.toFixed(1).replace(".", ",");
+    let sea = 1, seaWhy = `mer ${M.seaState(c.hsLocal)}` + (c.hsLocal != null ? ` (~${f1(c.hsLocal)} m au poste)` : "");
+    if (sc.long) seaWhy += `, houle longue (${Math.round(c.period)} s) : comptée comme mer ${sc.st}`;
+    if (sc.st !== "inconnue") sea = E.mer[sc.st];
+    const note = sc.st === "inconnue" ? null : M.seaNote(sea);
+    if (note != null) seaWhy += ` → ${note}/5 pour ${M.art(species)} [P]`;
+    f.push({ k: "Mer", v: sea, why: seaWhy, note });
+    f.push({ k: "Lumière", v: E.lumiere[c.light] ?? 1, why: `${c.light} [P]` });
+    let wind = 1, wWhy = `${M.windName(c.windDir)} ${Math.round(c.wind)} km/h`;
+    if (c.onshore >= 35) { wind *= 0.8; wWhy += ", de face : lancer difficile"; }
+    if (c.gust >= 60) { wind *= 0.6; wWhy += `, rafales ${Math.round(c.gust)} km/h : prudence`; }
+    f.push({ k: "Vent", v: wind, why: wWhy });
+    if (c.turb) f.push({ k: "Couleur de l'eau", v: E.eau[c.turb.cls], why: `eau ${c.turb.cls} ${c.turb.why} [P]` });
+    let temp = 1, tWhy = "température de l'eau inconnue";
+    if (c.sst != null) { temp = E.sst.find(([t]) => c.sst < t)[1]; tWhy = `eau à ${c.sst.toFixed(1)} °C` + (temp < 1 ? " : trop froide pour " + M.art(species) : ""); }
+    f.push({ k: "Eau", v: temp, why: tWhy });
+    let total = f.reduce((p, x) => p * x.v, 1);
+    if (learn && learn.n > 0) { f.push({ k: "Carnet", v: learn.factor, why: `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici` }); total *= learn.factor; }
+    const safety = (c.hsLocal != null && c.hsLocal >= 1.5 && (spot.type === "digue" || spot.type === "roche")) || c.gust >= 70;
+    return { score: Math.round(M.clamp(total, 0, 1) * 100), factors: f, scenario: M.scenario(c), safety };
+  };
+
   // ---------- 5. Note d'un poste à une heure ----------
   // c = conditions au poste : month, light, darkNight, cloud, wind, windDir, gust, onshore,
   //     hsLocal, falling, rising, rain72, sst, spot
   M.score = (spot, species, c, learn) => {
+    if (M.ESPECES[species]) return M.scoreAutre(spot, species, c, learn); // prototype autres espèces (section 4 bis)
     const f = []; // facteurs {k, v, why}
     const H = M.HABITAT[spot.type];
     f.push({ k: "Poste", v: H[species], why: H.label });

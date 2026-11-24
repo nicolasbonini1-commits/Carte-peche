@@ -34,7 +34,7 @@
           <input type="time" id="pDepart" value="06:00">
         </label>
         <label>Espèce
-          <select id="pSpecies"><option value="loup">Loup (leurre)</option><option value="dorade">Dorade (calée)</option><option value="les deux">Les deux</option></select>
+          <select id="pSpecies"><option value="loup">Loup (leurre)</option><option value="dorade">Dorade (calée)</option><option value="les deux">Loup ou dorade</option><option value="sar">Sar (essai)</option><option value="tassergal">Tassergal (essai)</option><option value="liche">Liche (essai)</option><option value="toutes">Toutes (essai)</option></select>
         </label>
         <label>Temps total (route comprise) <output id="pHoursOut">4 h</output>
           <input type="range" id="pHours" min="2" max="10" step="0.5" value="4">
@@ -88,9 +88,10 @@
         <label>Date <input type="date" id="fDate" required></label>
         <label>Début <input type="time" id="fStart" required></label>
         <label>Durée (h) <input type="number" id="fDur" min="0.5" max="12" step="0.5" value="2"></label>
-        <label>Espèce visée <select id="fSpecies"><option value="loup">Loup</option><option value="dorade">Dorade</option><option value="les deux">Les deux</option></select></label>
+        <label>Espèce visée <select id="fSpecies"><option value="loup">Loup</option><option value="dorade">Dorade</option><option value="les deux">Les deux</option><option value="sar">Sar</option><option value="tassergal">Tassergal</option><option value="liche">Liche</option></select></label>
         <label>Loups pris <input type="number" id="fLoup" min="0" value="0"></label>
         <label>Dorades prises <input type="number" id="fDorade" min="0" value="0"></label>
+        <label>Autres prises (sar, tassergal ou liche visé) <input type="number" id="fAutre" min="0" value="0"></label>
         <label>Plus grand (cm) <input type="number" id="fSize" min="0"></label>
         <label>Leurre / appât <input type="text" id="fLure" placeholder="ex. Black Minnow Kaki"></label>
         <label>Touches (même ratées) <input type="number" id="fBites" min="0" placeholder="non compté"></label>

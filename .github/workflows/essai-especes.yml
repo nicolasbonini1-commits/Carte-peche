@@ -1,0 +1,44 @@
+# Essai espèces (audit du 25 nov. 2026) : sar, tassergal, liche dans l'appli, sur la branche essai-especes seulement.
+# 1) loup et dorade doivent donner exactement les mêmes notes que main ; 2) l'appli dans Chrome sans écran, vraies API.
+# Écrit seulement dans la branche essais-especes (un dossier par passage). Jamais dans donnees, releves ou robot.
+name: essai-especes
+on:
+  push:
+    branches: [essai-especes]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: essai-especes
+jobs:
+  essai:
+    if: github.ref_name != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: echo "P=passage-$(date '+%Y-%m-%d-%Hh%M')" >> "$GITHUB_ENV"; mkdir -p /tmp/out /tmp/main
+      - name: Loup et dorade identiques à main
+        run: |
+          git fetch -q --depth=1 origin main
+          git show origin/main:js/spots.js > /tmp/main/spots.js; git show origin/main:js/model.js > /tmp/main/model.js
+          node outils/especes/regression.js /tmp/main | tee /tmp/out/regression.txt
+          grep -q "différences : 0" /tmp/out/regression.txt
+      - name: Appli dans Chrome sans écran
+        run: |
+          npm i --no-save --silent puppeteer@23 > /dev/null 2>&1
+          python3 -m http.server 8080 > /dev/null 2>&1 &
+          sleep 2
+          node outils/especes/essai.js
+      - name: Enregistrer dans essais-especes
+        if: always()
+        run: |
+          cd /tmp
+          if git clone -q --depth 1 -b essais-especes "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d; then cd d; else mkdir d && cd d && git init -q && git checkout -q -b essais-especes && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"; fi
+          mkdir -p "$P" && cp -r /tmp/out/* "$P"/
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "essai espèces $P" && git push -q origin essais-especes

@@ -651,7 +651,8 @@
 
   function learnFor(spot, species, p) {
     const mine = state.carnet.filter(e => e.spotId === spot.id && (e.species === species || e.species === "les deux"));
-    const k = mine.filter(e => (species === "loup" ? e.nLoup : e.nDorade) > 0).length;
+    // Autres espèces (prototype du 25 nov. 2026) : prises notées dans « nAutre » pour l'espèce visée.
+    const k = mine.filter(e => (species === "loup" ? e.nLoup : species === "dorade" ? e.nDorade : e.nAutre) > 0).length;
     return M.learnFactor(k, mine.length, p);
   }
 
@@ -663,6 +664,9 @@
   }
   function bestSpecies(spot, i) {
     const sp = state.plan.species;
+    if (sp === "toutes") { // prototype du 25 nov. 2026 : la meilleure des 5 espèces à cette heure
+      return M.SPECIES_ALL.map(x => ({ ...scoreAt(spot, i, x), species: x })).reduce((a, b) => b.score > a.score ? b : a);
+    }
     if (sp !== "les deux") return { ...scoreAt(spot, i, sp), species: sp };
     const a = scoreAt(spot, i, "loup"), b = scoreAt(spot, i, "dorade");
     return a.score >= b.score ? { ...a, species: "loup" } : { ...b, species: "dorade" };
@@ -788,7 +792,7 @@
       <h2>${esc(r.spot.name)}</h2>
       <p class="sub">${esc(r.spot.commune)} · ${r.drive} min de route · en pêche de ${hm(r.start)} à ${hm(r.end)}</p>
       <p><b>Meilleure heure :</b> ${hm(b.t)} (${b.score}/100, ${b.species}) · <b>${sc.name}</b></p>
-      ${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(r.spot, b.i))}</p>` : `<p><b>Dorade :</b> calée 40-60 g près des enrochements ou en sortie de grau ; appâts durs (crabe, couteau, moule) [P].</p>`}
+      ${M.ESPECES[b.species] ? `<p><b>${M.ESPECES[b.species].label} :</b> ${M.ESPECES[b.species].technique}</p>` : b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(r.spot, b.i))}</p>` : `<p><b>Dorade :</b> calée 40-60 g près des enrochements ou en sortie de grau ; appâts durs (crabe, couteau, moule) [P].</p>`}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements à ce moment.</p>` : ""}
       <p class="sub">Ensuite : ${second || "—"}</p>
       <div class="row">${goButtons(r.spot)}<button class="btn" data-open="${r.spot.id}">Détails</button></div>`;
@@ -865,9 +869,9 @@
       <button type="button" class="btn here" id="hereBtn">📍 Je suis sur place</button>
       <div id="releveBox" class="releve" hidden></div>
       ${pechableHtml(s, b ? b.t : new Date())}${waterHelp()}
-      ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour ${b.species === "dorade" ? "la" : "le"} ${b.species}</p>
-      <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(s, b.i))}</p>` : ""}
-      ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour ${b.species === "dorade" ? "la" : "le"} ${b.species})</p>` : ""}
+      ${b ? `<p><b>Meilleure heure de ta fenêtre :</b> ${hm(b.t)} · ${b.score}/100 pour ${M.art(b.species)}</p>
+      <p><b>Situation :</b> ${sc.name}.</p>${b.species === "loup" ? `<p><b>Leurre :</b> ${sc.lure}${M.coldNote(conditions(s, b.i))}</p>` : M.ESPECES[b.species] ? `<p><b>${M.ESPECES[b.species].label} :</b> ${M.ESPECES[b.species].technique}</p>` : ""}
+      ${seaF && seaF.note != null ? `<p><b>Mer pour la pêche à ${hm(b.t)} :</b> ${seaF.note}/5 (${M.SEA_NOTE_TXT[seaF.note]} pour ${M.art(b.species)})</p>` : ""}
       ${now ? `<p class="sub">Mer maintenant : ${now.txt}</p>` : ""}
       ${b.safety ? `<p class="warn">Prudence : mer ou rafales dangereuses sur les enrochements.</p>` : ""}
       <h3>Pourquoi cette note</h3>
@@ -943,6 +947,8 @@
         body = `<p class="sub">Eau ${seq.water} · coloris ${seq.color.fam} (${seq.color.why})</p><ol class="seq">` +
           seq.steps.map(st => `<li><b>${st.zone} :</b> ${st.lure}<br><small>Coloris : ${st.color} · ${st.anim}</small></li>`).join("") +
           `</ol><p class="sub">Environ 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.</p>`;
+      } else if (M.ESPECES[p.species]) {
+        body = `<p class="sub">${M.ESPECES[p.species].label} : ${M.ESPECES[p.species].technique}</p>`;
       } else {
         body = `<p class="sub">Dorade : calée 40-60 g, près des enrochements ou dans la veine de courant du grau ; appâts durs (crabe, couteau, moule) [P].</p>`;
       }
@@ -996,7 +1002,7 @@
       const entry = {
         id: Date.now(), spotId: +$("#fSpot").value, date: $("#fDate").value, start: $("#fStart").value,
         dur: +$("#fDur").value, species: $("#fSpecies").value,
-        nLoup: +$("#fLoup").value || 0, nDorade: +$("#fDorade").value || 0, maxSize: +$("#fSize").value || null,
+        nLoup: +$("#fLoup").value || 0, nDorade: +$("#fDorade").value || 0, nAutre: +$("#fAutre").value || 0, maxSize: +$("#fSize").value || null,
         lure: $("#fLure").value.trim(), notes: $("#fNotes").value.trim(),
         // Ajout du 18 nov. 2026 : pour vérifier si filets et chalutiers font baisser les touches.
         // Vide = pas regardé / pas compté (différent de « aucun »), pour ne pas fausser les comparaisons.
@@ -1045,7 +1051,8 @@
       // Houle au large utilisée (mesure de bouée ou prévision), période, et note houle sur 5 : pour caler la grille avec les prises.
       waveSrc: c.waveSrc, waveBuoy: c.waveBuoy || null, hsOff: c.hsOff != null ? +c.hsOff.toFixed(2) : null, period: c.period != null ? +(+c.period).toFixed(1) : null,
       seaNoteLoup: M.score(spot, "loup", c).factors.find(f => f.k === "Mer").note, seaNoteDorade: M.score(spot, "dorade", c).factors.find(f => f.k === "Mer").note,
-      scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score, scenario: M.scenario(c),
+      scoreLoup: M.score(spot, "loup", c).score, scoreDorade: M.score(spot, "dorade", c).score,
+      scoresAutres: Object.fromEntries(Object.keys(M.ESPECES).map(x => [x, M.score(spot, x, c).score])), scenario: M.scenario(c),
       turb: c.turb ? +c.turb.fnu.toFixed(1) : null, waterPred: c.turb ? c.turb.cls : null };
   }
   function renderCarnet() {
@@ -1053,7 +1060,7 @@
     if (!list.length) { $("#carnetList").innerHTML = `<p class="sub">Aucune sortie notée. Chaque sortie, même bredouille, affine les notes du poste.</p>`; return; }
     $("#carnetList").innerHTML = list.map(e => {
       const s = SPOTS.find(x => x.id === e.spotId) || { name: "?" };
-      const res = e.nLoup || e.nDorade ? `${e.nLoup ? e.nLoup + " loup(s) " : ""}${e.nDorade ? e.nDorade + " dorade(s)" : ""}${e.maxSize ? " · max " + e.maxSize + " cm" : ""}` : "bredouille";
+      const res = e.nLoup || e.nDorade || e.nAutre ? `${e.nLoup ? e.nLoup + " loup(s) " : ""}${e.nDorade ? e.nDorade + " dorade(s)" : ""}${e.nAutre ? ` ${+e.nAutre} ${esc(e.species)}(s)` : ""}${e.maxSize ? " · max " + e.maxSize + " cm" : ""}` : "bredouille";
       const sn = e.snapshot;
       return `<div class="entry"><b>${esc(e.date)} ${esc(e.start)} · ${esc(s.name)}</b>
         <small>${res}${e.bites != null ? ` · ${e.bites} touche(s)` : ""} · ${esc(e.lure || "")}</small>
