@@ -1,0 +1,138 @@
+{
+ "numero": 2,
+ "id": "o3griasr7t8",
+ "lien": "https://www.youtube.com/watch?v=o3griasr7t8",
+ "analyse_le": "2026-11-24T11:29:25.241Z",
+ "modele": "gemini-3.6-flash (1 image / 5 s)",
+ "jetons": 69629,
+ "lire_dans_cet_ordre": "1) vue (ce que Gemini voit, sans nom de lieu) ; 2) Claude fait sa propre analyse (captures ou vue) ; 3) seulement ensuite : cache.",
+ "vue": {
+  "filme_depuis": "bord",
+  "potentiel": "Fort",
+  "potentiel_pourquoi": "La présence d'une structure métallique rouillée très caractéristique à côté d'une pointe de galets et d'enrochements, combinée à une skyline très plate bordée d'un mât/phare au loin, permet d'identifier précisément la flèche sableuse ou le secteur lagunaire/estuarien.",
+  "sequences": [
+   {
+    "debut": "00:00",
+    "fin": "00:41",
+    "description": "Marche nocturne à la lampe frontale sur un chemin en pleine nature."
+   },
+   {
+    "debut": "00:42",
+    "fin": "06:47",
+    "description": "Arrivée sur la zone et premiers lancers en wading au lever du jour dans de l'eau peu profonde."
+   },
+   {
+    "debut": "06:48",
+    "fin": "10:04",
+    "description": "Combat et mise au sec d'un grand loup attrapé au leurre de surface près de rochers et de piliers métalliques immergés."
+   },
+   {
+    "debut": "10:05",
+    "fin": "17:04",
+    "description": "Préparation du poisson sur une pointe de graviers et de galets avec vue sur le soleil levant et l'arrière-plan marin."
+   },
+   {
+    "debut": "17:05",
+    "fin": "22:39",
+    "description": "Poursuite de la pêche en wading autour d'une structure métallique/épave rouillée affleurant à la surface."
+   },
+   {
+    "debut": "22:40",
+    "fin": "25:14",
+    "description": "Capture d'un second loup par le coéquipier dans une zone très plate et peu profonde."
+   },
+   {
+    "debut": "25:15",
+    "fin": "28:45",
+    "description": "Retour à pied en pleine journée le long d'une immense plage de sable plate."
+   }
+  ],
+  "reperes": [
+   {
+    "categorie": "ouvrage dans l'eau",
+    "description": "Ancienne structure métallique rouillée ou vestige d'épave/pieu immergé émergeant de l'eau près des enrochements.",
+    "pourrait_etre_mal_lu": "Peut être confondu avec du bois flotté ou un vestige d'ancien ponton.",
+    "rare": true,
+    "timecode": "10:05"
+   },
+   {
+    "categorie": "fond et rive",
+    "description": "Pointe rocheuse et flèche de graviers/galets s'avançant dans l'eau avec blocs de pierre éparpillés.",
+    "pourrait_etre_mal_lu": "Peut ressembler à un épi artificiel mais s'apparente à un cordon de galets naturel bordant une passe.",
+    "rare": false,
+    "timecode": "12:00"
+   },
+   {
+    "categorie": "arrière-plan",
+    "description": "Horizon plat avec une tour/phare mince et blanche au loin du côté droit sous le ciel du matin.",
+    "pourrait_etre_mal_lu": "Peut être une balise de chenal ou un mât industriel.",
+    "rare": false,
+    "timecode": "17:30"
+   },
+   {
+    "categorie": "texte à l'écran",
+    "description": "Incrustation du nom du leurre et mention du magasin Préda'pêche St Victoret.",
+    "pourrait_etre_mal_lu": "Indique l'origine géographique du magasin partenaire, pas obligatoirement le lieu de pêche exact.",
+    "rare": false,
+    "timecode": "01:30"
+   }
+  ],
+  "ordre_rive_en_face": "aucune",
+  "captures": [
+   {
+    "timecode": "10:05",
+    "viser": "Structure métallique rouillée dans l'eau et enrochements sous la lumière du soleil levant.",
+    "t": 605
+   },
+   {
+    "timecode": "13:05",
+    "viser": "Vue panoramique de la pointe de galets, de la flèche de sable et de l'horizon.",
+    "t": 785
+   },
+   {
+    "timecode": "17:30",
+    "viser": "Poteau/épave rouillée dans l'eau avec la tour ou balise visible à l'horizon droit.",
+    "t": 1050
+   },
+   {
+    "timecode": "25:20",
+    "viser": "Immense plage de sable plate parcourue lors du retour à pied.",
+    "t": 1520
+   }
+  ],
+  "especes": "Loup (Bar)",
+  "technique_leurres": "Pêche du loup au leurre de surface (Chihuahua, Patchinko / SP) animé très lentement en walking the dog.",
+  "saison_conditions": "13 février (mentionné à l'oral à 01:50), temps couvert au lever du jour puis ensoleillé, eau froide."
+ },
+ "cache": {
+  "titre": "PECHE DU LOUP/BAR EN BORD DE MER AU LEURRE",
+  "chaine": "Fada2pêche ",
+  "description": "PECHE DU LOUP/BAR EN BORD DE MER AU LEURRE \n\n   Encore une merveilleuse session inoubliable ! On commence bien l'année 2025 avec ce magnifique poisson prit au leurre de surface qui accusera 3.610 kg tout de même sur la balance !!!\n\n   Merci au binôme, à très vite !!\n\nBise ;)\n\n#daiwafrance #teamdaiwa #okumaeurope #sakura.peche #sakurafishing_official #tailwalk_france #pennfishing #penn_europe #decathlon #aliexpress #cabesto #shimano_france_fishing #shimanofrance #vercelli #surfcasting #pêche #comptoirnautique #minnkota #temu #peche #katx #pêche #camargue #pêcheleurre #dorade #loup #bar #flashmer #majorcraft",
+  "date": "2025-02-14",
+  "resume_gemini": "Un pêcheur et son coéquipier marchent de nuit pour atteindre un secteur côtier peu profond. Ils pêchent en wading au leurre de surface (Chihuahua) au lever du jour à proximité d'ouvrages rocheux et d'une structure métallique rouillée immergée. Ils capturent un très gros loup (bar) de plus de 3 kg qu'ils mesurent et préparent sur une pointe de graviers/galets.",
+  "lieux_nommes": [
+   {
+    "ou": "Écran",
+    "texte": "Préda'pêche St Victoret",
+    "timecode": "01:30"
+   }
+  ],
+  "lieux_possibles_gemini": [
+   {
+    "nom": "They de Roustan / Pointe de Beauduc",
+    "commune": "Arles / Salin-de-Giraud",
+    "confiance": "Faible",
+    "base": "vu à l'image",
+    "pour": "Immenses plages de sable et cordons de galets, présence de vestiges métalliques/bouchots/épaves côtières en Camargue, loins phares de Faraman/Beauduc visibles sur l'horizon plat, grande marche d'accès.",
+    "contre": "Nécessite de confirmer la position exacte du vestige métallique sur l'imagerie aérienne.",
+    "a_regarder_sur_geoportail": "Inspecter les bancs de sable, cordons de galets et épaves/structures immergées autour du They de Roustan et de la Pointe de Beauduc."
+   }
+  ],
+  "dans_la_zone": "oui",
+  "acces_marche": "Environ 45 minutes à 1 heure de marche annoncée dans la vidéo."
+ },
+ "alertes_vue": [],
+ "alertes_lieux": [
+  "deux lieux dans le nom = une zone : confiance ramenée à Faible"
+ ]
+}

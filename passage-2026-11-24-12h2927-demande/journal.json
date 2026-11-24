@@ -1,0 +1,26 @@
+[
+ {
+  "url": "https://www.youtube.com/oembed?format=json&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Do3griasr7t8",
+  "essai": 1,
+  "code": 200,
+  "octets": 819
+ },
+ {
+  "url": "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=o3griasr7t8&key=***",
+  "essai": 1,
+  "code": 200,
+  "octets": 2873
+ },
+ {
+  "url": "https://www.youtube.com/oembed?format=json&url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D_MEf-7iw86M",
+  "essai": 1,
+  "code": 200,
+  "octets": 872
+ },
+ {
+  "url": "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=_MEf-7iw86M&key=***",
+  "essai": 1,
+  "code": 200,
+  "octets": 2008
+ }
+]

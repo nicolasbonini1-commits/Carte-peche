@@ -1,0 +1,39 @@
+{
+ "le": "2026-11-24T11:20:44.344Z",
+ "modele": [
+  "gemini-3.8-flash",
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-2.5-flash",
+  "gemini-flash-latest"
+ ],
+ "analysees": [
+  {
+   "numero": 1,
+   "id": "_MEf-7iw86M",
+   "page": "https://www.notion.so/422a0be6c30781e6a486c63ae9fee93b",
+   "modele": "gemini-3.6-flash",
+   "jetons": 11871,
+   "interet": "Moyen",
+   "captures_demandees": true,
+   "filme_depuis": "bord",
+   "demandee": true
+  },
+  {
+   "numero": 2,
+   "id": "o3griasr7t8",
+   "page": "https://www.notion.so/422a0be6c30781298f4fccfb55533524",
+   "modele": "gemini-3.6-flash (1 image / 5 s)",
+   "jetons": 69629,
+   "interet": "Fort",
+   "captures_demandees": false,
+   "filme_depuis": "bord",
+   "demandee": true
+  }
+ ],
+ "ecartees": [],
+ "erreurs": [
+  "état : Notion 400 : body failed validation. Fix one:\nbody.filter.and[3].or[2].title should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].rich_text should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].number should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].checkbox should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].select should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].multi_select should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].status should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].date should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].people should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].files should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].url should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].email should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].phone_number should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].relation should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].created_by should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].created_time should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].last_edited_by should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].last_edited_time should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].formula should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].unique_id should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].rollup should be defined, instead was `undefined`.\nbody.filter.and[3].or[2].verification should be defined, instead was `undefined`."
+ ]
+}

@@ -1,0 +1,99 @@
+{
+ "numero": 1,
+ "id": "_MEf-7iw86M",
+ "lien": "https://www.youtube.com/watch?v=_MEf-7iw86M",
+ "analyse_le": "2026-11-24T11:26:13.853Z",
+ "modele": "gemini-3.6-flash",
+ "jetons": 11871,
+ "lire_dans_cet_ordre": "1) vue (ce que Gemini voit, sans nom de lieu) ; 2) Claude fait sa propre analyse (captures ou vue) ; 3) seulement ensuite : cache.",
+ "vue": {
+  "filme_depuis": "bord",
+  "potentiel": "Moyen",
+  "potentiel_pourquoi": "La forme de la lagune avec la bande de terre en arrière-plan et surtout la présence d'une route avec un lampadaire directement accolée à la berge de salicornes constituent une combinaison d'indices identifiable sur carte satellite.",
+  "sequences": [
+   {
+    "debut": "00:00",
+    "fin": "01:33",
+    "description": "Pêche aux leurres depuis le bord d'une lagune/étang par temps couvert. Capture d'un loup ramené sur le bord gravillonné."
+   }
+  ],
+  "reperes": [
+   {
+    "categorie": "fond et rive",
+    "description": "Rive basse en graviers/galets bordée de touffes de végétation halophile de type salicorne.",
+    "pourrait_etre_mal_lu": "Peut être confondu avec une plage de mer calme ou le bord d'un chenal.",
+    "rare": false,
+    "timecode": "00:43"
+   },
+   {
+    "categorie": "arrière-plan",
+    "description": "Bande de terre plate en arrière-plan séparant le plan d'eau de l'horizon, avec quelques constructions basses au loin.",
+    "pourrait_etre_mal_lu": "Ligne de côte opposée d'un étang ou lido maritime.",
+    "rare": false,
+    "timecode": "00:03"
+   },
+   {
+    "categorie": "ouvrage dans l'eau",
+    "description": "Lampadaire de voie publique situé directement en bordure de la végétation de berge, avec une route et des bâtiments immédiatement derrière.",
+    "pourrait_etre_mal_lu": "Signalisation maritime ou balise de chenal.",
+    "rare": false,
+    "timecode": "01:24"
+   }
+  ],
+  "ordre_rive_en_face": "De gauche à droite : rive basse du lido avec constructions basses dispersées à l'horizon.",
+  "captures": [
+   {
+    "timecode": "00:03",
+    "viser": "Panoramas de la rive opposée et alignement des bâtis au loin",
+    "t": 3
+   },
+   {
+    "timecode": "00:43",
+    "viser": "Structures et bâtiments visibles sur la droite en bordure d'étang",
+    "t": 43
+   },
+   {
+    "timecode": "01:24",
+    "viser": "Lampadaire, route bordant l'étang et bâtiment en arrière-plan à gauche",
+    "t": 84
+   }
+  ],
+  "especes": "Loup (Bar)",
+  "technique_leurres": "Pêche du loup au leurre de surface ou poisson nageur depuis le bord.",
+  "saison_conditions": "Temps très couvert, ciel gris, vent faible, eau très calme."
+ },
+ "cache": {
+  "titre": "peche du loup aux leurres de surface - palavas les flots - hérault 34",
+  "chaine": "seb 34",
+  "description": "peche du loup aux leurres de surface - palavas les flots - prise 1,3 kilo , 55 cm",
+  "date": "2015-09-16",
+  "resume_gemini": "Session de pêche au leurre du bord le long d'une berge d'étang ou lagune bordée de salicornes. Le pêcheur touche et sort un loup (bar) dans une eau très calme par temps couvert. Une route avec un lampadaire borde directement la berge.",
+  "lieux_nommes": [],
+  "lieux_possibles_gemini": [
+   {
+    "nom": "Zone : Étang d'Ingril / Frontignan",
+    "commune": "Frontignan",
+    "confiance": "Faible",
+    "base": "vu à l'image",
+    "pour": "Présence de la route bordant étroitement la berge de l'étang avec éclairage public et vue sur les habitations de la bande littorale.",
+    "contre": "D'autres étangs littoraux du Languedoc possèdent des routes longeant la berge de très près.",
+    "a_regarder_sur_geoportail": "Chercher les portions où la D612 borde directement l'étang d'Ingril avec des étalages de salicornes et des lampadaires."
+   },
+   {
+    "nom": "Zone : Étang du Prévost / Palavas-les-Flots",
+    "commune": "Palavas-les-Flots",
+    "confiance": "Faible",
+    "base": "vu à l'image",
+    "pour": "Route départementale longeant la berge de l'étang avec végétation de salicornes et vis-à-vis sur le lido.",
+    "contre": "Configuration du relief en arrière-plan légèrement différente.",
+    "a_regarder_sur_geoportail": "Observer la berge le long de la D59 longeant l'étang du Prévost."
+   }
+  ],
+  "dans_la_zone": "oui",
+  "acces_marche": "Accès très facile directement depuis le bord de route à pied."
+ },
+ "alertes_vue": [],
+ "alertes_lieux": [
+  "aucun repère rare vu à l'image (seulement un type de côte) : confiance ramenée à Faible"
+ ]
+}

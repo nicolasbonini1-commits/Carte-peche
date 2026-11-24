@@ -1,0 +1,146 @@
+[
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "models",
+  "code": 200
+ },
+ {
+  "mesure": "countTokens",
+  "video": "o3griasr7t8",
+  "code": 200,
+  "jetons": 177676
+ },
+ {
+  "mesure": "countTokens",
+  "video": "_MEf-7iw86M",
+  "code": 200,
+  "jetons": 9676
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 2,
+  "fps": 1,
+  "code": 200,
+  "jetons": 11871
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "pages",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "o3griasr7t8",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "o3griasr7t8",
+  "essai": 2,
+  "fps": 0.2,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "o3griasr7t8",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "o3griasr7t8",
+  "essai": 2,
+  "fps": 0.2,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "o3griasr7t8",
+  "essai": 1,
+  "fps": 0.2,
+  "code": 200,
+  "jetons": 69629
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "pages",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 400
+ }
+]
