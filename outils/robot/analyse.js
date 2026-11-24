@@ -8,7 +8,7 @@
 const fs = require("fs");
 const OUT = "/tmp/sortie";
 const BASE = "420a0be6c3078152a5d7ce910e4ef866"; // base Notion « Points à explorer (vidéos) »
-const { GEMINI_API_KEY: GK, NOTION_TOKEN: NT, GEMINI_MODEL } = process.env;
+const { GEMINI_API_KEY: GK, NOTION_TOKEN: NT, GEMINI_MODEL, YOUTUBE_API_KEY: YK } = process.env;
 const journal = [];
 const sortie = { le: new Date().toISOString(), modele: null, analysees: [], ecartees: [], erreurs: [] };
 const ecrire = () => fs.writeFileSync(`${OUT}/analyses.json`, JSON.stringify(sortie, null, 1));
@@ -31,6 +31,19 @@ const puce = s => ({ object: "block", type: "bulleted_list_item", bulleted_list_
 const titre = s => ({ object: "block", type: "heading_3", heading_3: { rich_text: txt(s) } });
 const idDe = s => ((s || "").match(/(?:v=|youtu\.be\/|shorts\/|live\/)([\w-]{11})/) || [])[1];
 
+// Titre, chaîne, date et description par l'API YouTube Data (officielle, 1 unité). Réponse notée dans le journal :
+// un code 400/403 = clé refusée. Le texte n'est qu'un indice, possiblement faux (voir la consigne).
+async function texteYoutube(v) {
+  if (!YK) { journal.push({ youtube: v.id, note: "pas de YOUTUBE_API_KEY : description inconnue" }); return v; }
+  try {
+    const r = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${v.id}&key=${YK}`, { signal: AbortSignal.timeout(30000) });
+    const j = await r.json().catch(() => ({}));
+    const sn = j.items?.[0]?.snippet;
+    journal.push({ youtube: v.id, code: r.status, trouvee: !!sn, message: coupe(j.error?.message || "", 160) || undefined });
+    if (sn) Object.assign(v, { titre: sn.title || v.titre, desc: sn.description || "", date: (sn.publishedAt || "").slice(0, 10), chaine: sn.channelTitle || "" });
+  } catch (e) { journal.push({ youtube: v.id, erreur: e.message }); }
+  return v;
+}
 async function fileAttente() {
   // Lignes de la base sans « Lieu le plus probable » et avec un lien YouTube (dans « Lien », le titre ou le contenu) :
   // ce sont les vidéos que Nico a ajoutées lui-même (Partager → Notion). Elles passent avant le tri de la semaine.
@@ -45,8 +58,8 @@ async function fileAttente() {
       const b = await notion(`blocks/${p.id}/children?page_size=50`, null, "GET");
       id = idDe(JSON.stringify(b.results));
     }
-    if (id) liste.push({ id, lien: `https://www.youtube.com/watch?v=${id}`, page: p.id, demandee: true,
-      titre: (pr["Vidéo"]?.title || []).map(t => t.plain_text).join(" "), chaine: "", desc: "", date: "" });
+    if (id) liste.push(await texteYoutube({ id, lien: `https://www.youtube.com/watch?v=${id}`, page: p.id, demandee: true,
+      titre: (pr["Vidéo"]?.title || []).map(t => t.plain_text).join(" "), chaine: "", desc: "", date: "" }));
   }
   return liste;
 }
@@ -80,11 +93,13 @@ const SCHEMA = { type: "OBJECT", properties: {
   ordre_rive_en_face: { type: "STRING" },
   lieux_possibles: { type: "ARRAY", items: { type: "OBJECT", properties: {
     nom: { type: "STRING" }, commune: { type: "STRING" }, confiance: { type: "STRING", enum: ["Élevée", "Moyenne", "Faible"] },
+    base: { type: "STRING", enum: ["vu à l'image", "déclaré seulement (titre, description, oral)", "les deux"] },
     pour: { type: "STRING" }, contre: { type: "STRING" }, a_regarder_sur_geoportail: { type: "STRING" } },
-    required: ["nom", "confiance", "pour", "contre"], propertyOrdering: ["nom", "commune", "confiance", "pour", "contre", "a_regarder_sur_geoportail"] } },
+    required: ["nom", "confiance", "base", "pour", "contre"], propertyOrdering: ["nom", "commune", "confiance", "base", "pour", "contre", "a_regarder_sur_geoportail"] } },
+  texte_contre_image: { type: "STRING" },
   dans_la_zone: { type: "STRING", enum: ["oui", "non", "incertain"] },
   especes: { type: "STRING" }, technique_leurres: { type: "STRING" }, saison_conditions: { type: "STRING" }, acces_marche: { type: "STRING" }
-}, required: ["filme_depuis", "mer", "resume", "reperes", "lieux_possibles", "dans_la_zone"] };
+}, required: ["filme_depuis", "mer", "resume", "reperes", "lieux_possibles", "dans_la_zone", "texte_contre_image"] };
 
 const consigne = v => `Tu aides un pêcheur du bord (loup au leurre, dorade à la calée) à retrouver où cette vidéo YouTube a été tournée, pour aller prospecter.
 Zone qui l'intéresse : côte méditerranéenne française de Valras-Plage (ouest) à Fos-sur-Mer (est) ; cœur : de Frontignan aux Saintes-Maries-de-la-Mer et Port-Saint-Louis-du-Rhône.
@@ -99,7 +114,9 @@ Règles strictes :
 - Pour chaque repère, dis ce qui pourrait être mal lu (exemple : une « plage de rochers » peut être une digue effondrée).
 - Si on voit une rive en face (canal, chenal, grau), décris l'ordre des repères de gauche à droite.
 - Un sponsor ou un magasin affiché donne la région du pêcheur, pas le lieu de pêche.
-- Le titre, la description et les hashtags ne sont PAS des preuves : ils donnent au mieux une zone. Juge sur ce qui se VOIT.
+- Le titre, la description, les hashtags et ce qui est dit à l'oral ne sont PAS des preuves : ils donnent au mieux une zone, et ils peuvent être FAUX exprès (beaucoup de pêcheurs cachent leurs coins). Juge sur ce qui se VOIT.
+- Compare le texte (titre, description, oral) à l'image : dans « texte_contre_image », écris « non » s'ils concordent, « rien à comparer » si le texte ne nomme aucun lieu, sinon ce qui ne colle pas (ex. « le titre dit Palavas, mais on voit une plage sans aucun ouvrage alors que Palavas est bordée d'épis »). En cas de désaccord, c'est l'image qui compte.
+- Pour chaque lieu possible, « base » dit sur quoi il repose : « vu à l'image », « déclaré seulement (titre, description, oral) » ou « les deux ».
 - S'il n'y a pas de rive en face, écris « aucune ».
 - Propose 1 à 3 lieux possibles, classés, aussi précis que possible (un poste de moins de 500 m : tel épi, telle digue, tel grau) ; si l'image ne permet qu'une zone, dis-le dans « nom » (ex. « zone : plage de l'Espiguette, poste non identifiable »).
 - Confiance : Élevée SEULEMENT si un ouvrage unique est VU à l'image et reconnu ; Moyenne si plusieurs indices VUS sont cohérents mais un autre lieu reste possible ; Faible si seulement un type de côte, ou si le lieu ne vient que du titre. Pour chacun : raisons pour, raisons contre (une ou deux phrases chacune), et quoi regarder précisément sur une photo aérienne.`;
@@ -112,8 +129,17 @@ function controler(r) {
     for (const k of ["pour", "contre", "a_regarder_sur_geoportail"]) if ((l[k] || "").length > 700) { l[k] = coupe(l[k], 700); r.alertes.push("réponse de Gemini trop longue ou répétée (coupée)"); }
     if (!["Élevée", "Moyenne", "Faible"].includes(l.confiance)) { l.confiance = "Faible"; r.alertes.push("confiance absente dans la réponse : mise à Faible"); }
     if (l.confiance === "Élevée" && !rare) { l.confiance = "Moyenne"; r.alertes.push("Élevée sans ouvrage rare vu : ramenée à Moyenne (règle du skill)"); }
+    // Lieu qui ne repose que sur ce que dit le vidéaste (titre, description, oral) : peut être faux exprès → Faible (demande de Nico, 24 nov. 2026).
+    if (/déclaré seulement/.test(l.base || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu tiré seulement du texte ou de l'oral (peut être faux) : confiance ramenée à Faible"); }
+    if (!l.base) r.alertes.push("Gemini n'a pas dit sur quoi repose le lieu");
     // Lieu = une zone (pas un poste de moins de 500 m) : confiance Faible d'office (décision de Nico, 24 nov. 2026 ; fiche BARLOUP du 23 nov. notée Moyenne pour « Zone : embouchure du Grand Rhône »).
     if (/^\s*(\[[^\]]*\]\s*)*zone\b/i.test(l.nom || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu = une zone, pas un poste : confiance ramenée à Faible"); }
+  }
+  const tci = (r.texte_contre_image || "").trim();
+  if (tci && !/^(non|rien à comparer)\.?$/i.test(tci)) {
+    r.alertes.push("le texte ne colle pas à l'image : " + coupe(tci, 300));
+    // Texte démenti par l'image : tout lieu qui s'appuie aussi sur ce texte devient suspect → Faible.
+    for (const l of r.lieux_possibles || []) if (l.base !== "vu à l'image" && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu appuyé sur un texte démenti par l'image : confiance ramenée à Faible"); }
   }
   r.alertes = [...new Set(r.alertes)];
   return r;
@@ -190,7 +216,7 @@ function fiche(v, a) {
     para(`Filmé depuis : ${r.filme_depuis} — Mer : ${r.mer} — Dans la zone Valras → Fos : ${r.dans_la_zone}`),
     ...(r.alertes || []).map(x => puce("⚠️ Contrôle du robot : " + x)),
     titre("Lieux possibles (Gemini)"),
-    ...l.map(x => puce(`${x.nom}${x.commune ? " (" + x.commune + ")" : ""} — confiance ${x.confiance}. Pour : ${x.pour || "—"}. Contre : ${x.contre || "—"}. À regarder : ${x.a_regarder_sur_geoportail || "—"}`)),
+    ...l.map(x => puce(`${x.nom}${x.commune ? " (" + x.commune + ")" : ""} — confiance ${x.confiance}${x.base ? " (repose sur : " + x.base + ")" : ""}. Pour : ${x.pour || "—"}. Contre : ${x.contre || "—"}. À regarder : ${x.a_regarder_sur_geoportail || "—"}`)),
     titre("Lieux nommés dans la vidéo"),
     ...((r.lieux_nommes || []).length ? r.lieux_nommes.map(x => puce(`${x.timecode || "?"} (${x.ou || "?"}) : ${x.texte}`)) : [para("Aucun.")]),
     titre("Séquences"),
@@ -209,6 +235,7 @@ function fiche(v, a) {
   const tri = fs.existsSync(`${OUT}/a_analyser.json`) ? JSON.parse(fs.readFileSync(`${OUT}/a_analyser.json`, "utf8")) : { videos: [] };
   let attente = [];
   try { attente = await fileAttente(); } catch (e) { sortie.erreurs.push("file d'attente : " + e.message); }
+  for (const x of attente) { const t = tri.videos.find(v => v.id === x.id); if (t && !x.desc && t.desc) Object.assign(x, { desc: t.desc, date: x.date || t.date, chaine: x.chaine || t.chaine }); }
   const aFaire = [...attente, ...tri.videos.filter(v => !attente.some(x => x.id === v.id))];
   console.log("file d'attente", attente.length, "| tri", tri.videos.length);
   let liste = [];
