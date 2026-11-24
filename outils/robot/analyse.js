@@ -335,9 +335,10 @@ async function rattraperDemandes() {
     const etat = { le: new Date().toISOString(),
       a_valider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { equals: "Prévalidé" } }]),
       // À prévalider : anciennes fiches (sans Intérêt), Fort, ou Moyen dont les captures sont faites. Faible : jamais.
-      a_prevalider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { is_empty: true } }, { or: [
-        { property: "Intérêt", select: { is_empty: true } }, { property: "Intérêt", select: { equals: "Fort" } },
-        { and: [{ property: "Intérêt", select: { equals: "Moyen" } }, { property: "Captures faites", checkbox: { equals: true } }] }] }]),
+      // Trois filtres simples additionnés : Notion refuse un « et » dans un « ou » dans un « et » (erreur 400 du 24 nov., 12 h 29).
+      a_prevalider: await (async () => { const base = [aVerifier, pasValide, { property: "Prévalidation Claude", select: { is_empty: true } }];
+        return await cpt([...base, { property: "Intérêt", select: { is_empty: true } }]) + await cpt([...base, { property: "Intérêt", select: { equals: "Fort" } }])
+          + await cpt([...base, { property: "Intérêt", select: { equals: "Moyen" } }, { property: "Captures faites", checkbox: { equals: true } }]); })(),
       a_capturer: await cpt([aVerifier, { property: "Captures demandées", date: { is_not_empty: true } }, { property: "Captures faites", checkbox: { equals: false } }]),
       nouvelles_fiches: sortie.analysees.length, erreurs: sortie.erreurs.length };
     fs.writeFileSync(`${OUT}/etat.json`, JSON.stringify(etat, null, 1));
