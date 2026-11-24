@@ -68,13 +68,6 @@
     "pourrait_etre_mal_lu": "Peut être une balise de chenal ou un mât industriel.",
     "rare": false,
     "timecode": "17:30"
-   },
-   {
-    "categorie": "texte à l'écran",
-    "description": "Incrustation du nom du leurre et mention du magasin Préda'pêche St Victoret.",
-    "pourrait_etre_mal_lu": "Indique l'origine géographique du magasin partenaire, pas obligatoirement le lieu de pêche exact.",
-    "rare": false,
-    "timecode": "01:30"
    }
   ],
   "ordre_rive_en_face": "aucune",
@@ -129,10 +122,22 @@
    }
   ],
   "dans_la_zone": "oui",
-  "acces_marche": "Environ 45 minutes à 1 heure de marche annoncée dans la vidéo."
+  "acces_marche": "Environ 45 minutes à 1 heure de marche annoncée dans la vidéo.",
+  "textes_a_l_ecran": [
+   {
+    "categorie": "texte à l'écran",
+    "description": "Incrustation du nom du leurre et mention du magasin Préda'pêche St Victoret.",
+    "pourrait_etre_mal_lu": "Indique l'origine géographique du magasin partenaire, pas obligatoirement le lieu de pêche exact.",
+    "rare": false,
+    "timecode": "01:30"
+   }
+  ]
  },
  "alertes_vue": [],
  "alertes_lieux": [
   "deux lieux dans le nom = une zone : confiance ramenée à Faible"
+ ],
+ "corrections": [
+  "24 nov. 2026 : repère(s) « texte à l'écran » déplacé(s) de « vue » vers « cache » (règle du commit fa9868b), sans être lus par Claude."
  ]
 }
