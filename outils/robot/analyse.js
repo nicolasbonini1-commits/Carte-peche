@@ -151,7 +151,9 @@ function controler(r) {
   }
   // Potentiel de localisation, contrôlé par le code (Gemini surestime) : Fort exige un repère rare avec timecode ;
   // Moyen exige deux repères avec timecode hors « lumière » (indice faible) ; sinon Faible.
-  const avecTc = (r.reperes || []).filter(x => secondes(x.timecode) !== null);
+  // « texte à l'écran » (incrustation du vidéaste ou panneau) : ce qui est écrit peut être faux exprès, comme le titre →
+  // ne compte ni pour Fort ni pour Moyen, et reste caché à Claude jusqu'à son analyse (bloc « cache », 24 nov. 2026).
+  const avecTc = (r.reperes || []).filter(x => secondes(x.timecode) !== null && !/texte/.test(x.categorie || ""));
   const nbRares = avecTc.filter(x => x.rare).length, nbSolides = avecTc.filter(x => !/lumi/.test(x.categorie || "")).length;
   const pot0 = ["Fort", "Moyen", "Faible"].includes(r.potentiel) ? r.potentiel : "Faible";
   r.potentiel = pot0 === "Fort" && nbRares ? "Fort" : pot0 !== "Faible" && nbSolides >= 2 ? "Moyen" : "Faible";
@@ -234,9 +236,9 @@ function fichierAveugle(n, v, a) {
   const r = a.r;
   return { numero: n, id: v.id, lien: v.lien, analyse_le: new Date().toISOString(), modele: a.modele, jetons: a.jetons,
     lire_dans_cet_ordre: "1) vue (ce que Gemini voit, sans nom de lieu) ; 2) Claude fait sa propre analyse (captures ou vue) ; 3) seulement ensuite : cache.",
-    vue: { filme_depuis: r.filme_depuis, potentiel: r.potentiel, potentiel_pourquoi: r.potentiel_pourquoi, sequences: r.sequences, reperes: r.reperes,
+    vue: { filme_depuis: r.filme_depuis, potentiel: r.potentiel, potentiel_pourquoi: r.potentiel_pourquoi, sequences: r.sequences, reperes: (r.reperes || []).filter(x => !/texte/.test(x.categorie || "")),
       ordre_rive_en_face: r.ordre_rive_en_face, captures: r.captures, especes: r.especes, technique_leurres: r.technique_leurres, saison_conditions: r.saison_conditions },
-    cache: { titre: v.titre, chaine: v.chaine, description: v.desc, date: v.date, resume_gemini: r.resume, lieux_nommes: r.lieux_nommes,
+    cache: { titre: v.titre, chaine: v.chaine, description: v.desc, date: v.date, resume_gemini: r.resume, lieux_nommes: r.lieux_nommes, textes_a_l_ecran: (r.reperes || []).filter(x => /texte/.test(x.categorie || "")),
       lieux_possibles_gemini: r.lieux_possibles, dans_la_zone: r.dans_la_zone, acces_marche: r.acces_marche },
     alertes_vue: r.alertes_vue, alertes_lieux: r.alertes };
 }
