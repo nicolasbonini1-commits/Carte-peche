@@ -1,0 +1,74 @@
+# Audit du 24-25 nov. 2026 (demande de Nico : utilisation, sécurité, optimisation, limites).
+# Lancée par un commit sur la branche essai-audit (ou à la main). N'écrit QUE dans la branche essais-audit,
+# un dossier par passage (jamais dans donnees, releves ou robot ; aucun secret utilisé).
+name: audit
+on:
+  push:
+    branches: [essai-audit]
+    paths: ["outils/audit/**", ".github/workflows/audit.yml", "js/**", "index.html", "sw.js"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: audit
+jobs:
+  audit:
+    if: github.ref_name != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Dossier du passage
+        run: echo "P=passage-$(date '+%Y-%m-%d-%Hh%M')" >> "$GITHUB_ENV"; mkdir -p /tmp/out
+      - name: Disponibilité des services (5 essais chacun, heure de chaque essai)
+        run: |
+          node outils/audit/urls.js > /tmp/urls.tsv
+          echo "service	essai	heure	code	secondes	octets" > /tmp/out/services.tsv
+          while IFS=$'\t' read -r n u; do
+            for k in 1 2 3 4 5; do
+              r=$(curl -s -o /dev/null -m 60 -A "Carte-peche-audit/1.0 (github.com/nicolasbonini1-commits/Carte-peche)" -w '%{http_code}\t%{time_total}\t%{size_download}' "$u" || true)
+              echo "$n	$k	$(date '+%H:%M:%S')	$r" >> /tmp/out/services.tsv
+              sleep 2
+            done
+          done < /tmp/urls.tsv
+          column -t -s $'\t' /tmp/out/services.tsv | head -80
+      - name: En-têtes du site en ligne et version servie
+        run: |
+          curl -sSI -m 30 https://nicolasbonini1-commits.github.io/Carte-peche/ > /tmp/out/entetes.txt || true
+          curl -sS -m 30 https://nicolasbonini1-commits.github.io/Carte-peche/sw.js | grep -m1 'const CACHE' > /tmp/out/cache_en_ligne.txt || true
+          grep -m1 'const CACHE' sw.js > /tmp/out/cache_branche.txt
+          cat /tmp/out/entetes.txt /tmp/out/cache_en_ligne.txt /tmp/out/cache_branche.txt
+      - name: Installer Chrome (puppeteer) et Lighthouse
+        run: npm i --no-save --silent puppeteer@23 lighthouse@12 > /dev/null 2>&1 && echo ok
+      - name: Appli dans Chrome sans écran (vraies API, 3 démarrages, hors réseau, processeur ralenti)
+        run: |
+          python3 -m http.server 8080 > /dev/null 2>&1 &
+          sleep 2
+          node outils/audit/audit.js
+      - name: Lighthouse (téléphone) sur l'appli en ligne
+        continue-on-error: true
+        run: |
+          CH=$(node -e "console.log(require('puppeteer').executablePath())")
+          for k in 1 2; do
+            npx lighthouse https://nicolasbonini1-commits.github.io/Carte-peche/ --chrome-path="$CH" --chrome-flags="--headless=new --no-sandbox" \
+              --only-categories=performance,accessibility,best-practices,seo --output=json --output-path=/tmp/lh$k.json --quiet --max-wait-for-load=90000 || true
+            node -e '
+              const j = require("/tmp/lh'$k'.json"); const c = j.categories, a = j.audits;
+              const o = { scores: Object.fromEntries(Object.entries(c).map(([k, v]) => [k, Math.round(v.score * 100)])),
+                fcp: a["first-contentful-paint"]?.displayValue, lcp: a["largest-contentful-paint"]?.displayValue, tbt: a["total-blocking-time"]?.displayValue,
+                poids: a["total-byte-weight"]?.displayValue,
+                problemes: Object.values(a).filter(x => x.score !== null && x.score < 0.9 && x.scoreDisplayMode !== "informative" && x.scoreDisplayMode !== "notApplicable").map(x => `${x.id} (${x.score}) ${x.displayValue || ""}`).slice(0, 40) };
+              require("fs").writeFileSync("/tmp/out/lighthouse'$k'.json", JSON.stringify(o, null, 1)); console.log(JSON.stringify(o, null, 1));' || true
+          done
+      - name: Enregistrer dans la branche essais-audit (un dossier par passage, jamais réécrite)
+        if: always()
+        run: |
+          cd /tmp
+          if git clone -q --depth 1 -b essais-audit "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d; then cd d; else mkdir d && cd d && git init -q && git checkout -q -b essais-audit && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"; fi
+          mkdir -p "$P" && cp -r /tmp/out/* "$P"/
+          git config user.name "audit-bot"; git config user.email "audit@users.noreply.github.com"
+          git add . && git commit -qm "audit $P" && git push -q origin essais-audit
