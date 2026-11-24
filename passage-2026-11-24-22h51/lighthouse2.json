@@ -1,0 +1,42 @@
+{
+ "scores": {
+  "performance": 67,
+  "accessibility": 92,
+  "best-practices": 100,
+  "seo": 91
+ },
+ "fcp": "2.2 s",
+ "lcp": "4.1 s",
+ "tbt": "330 ms",
+ "poids": "Total size was 850 KiB",
+ "problemes": [
+  "first-contentful-paint (0.77) 2.2 s",
+  "largest-contentful-paint (0.47) 4.1 s",
+  "total-blocking-time (0.76) 330 ms",
+  "max-potential-fid (0.21) 380 ms",
+  "cumulative-layout-shift (0.58) 0.213",
+  "interactive (0.86) 4.1 s",
+  "uses-rel-preconnect (0) Est savings of 190 ms",
+  "third-party-summary (0) Third-party code blocked the main thread for 320 ms",
+  "largest-contentful-paint-element (0) 4,100 ms",
+  "layout-shifts (0) 3 layout shifts found",
+  "prioritize-lcp-image (0) Est savings of 1,210 ms",
+  "aria-command-name (0) ",
+  "heading-order (0) ",
+  "label-content-name-mismatch (0) ",
+  "target-size (0) ",
+  "uses-long-cache-ttl (0.5) 14 resources found",
+  "render-blocking-resources (0) Est savings of 1,330 ms",
+  "unminified-javascript (0.5) Est savings of 20 KiB",
+  "unused-javascript (0) Est savings of 24 KiB",
+  "modern-image-formats (0.5) Est savings of 471 KiB",
+  "dom-size (0.5) 1,532 elements",
+  "meta-description (0) ",
+  "cache-insight (0) Est savings of 74 KiB",
+  "cls-culprits-insight (0) ",
+  "image-delivery-insight (0.5) Est savings of 442 KiB",
+  "lcp-discovery-insight (0) ",
+  "network-dependency-tree-insight (0) ",
+  "render-blocking-insight (0) Est savings of 1,300 ms"
+ ]
+}

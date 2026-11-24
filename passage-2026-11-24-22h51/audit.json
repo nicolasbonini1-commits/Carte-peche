@@ -1,0 +1,2846 @@
+{
+ "genere": "2026-11-24T21:59:46.842Z",
+ "base": "http://localhost:8080/",
+ "passages": [
+  {
+   "nom": "hors-reseau",
+   "liste_ms": 200,
+   "banner": "Pas de réseau. J'affiche les prévisions reçues le mar. 24 nov. à 22 h 59. Nouvel essai automatique dès qu'il revient.",
+   "retour_ms": 3406,
+   "banner_apres": ""
+  },
+  {
+   "nom": "froid-1",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 6,
+     "duree": 57,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 57,
+     "duree": 63,
+     "code": 200,
+     "octets": 4024,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 57,
+     "duree": 54,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 58,
+     "duree": 5,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 58,
+     "duree": 158,
+     "code": 200,
+     "octets": 42953,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 58,
+     "duree": 7,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 58,
+     "duree": 9,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 58,
+     "duree": 7,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 58,
+     "duree": 8,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 214,
+     "duree": 85,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 215,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 294,
+     "duree": 23,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 294,
+     "duree": 98,
+     "code": 200,
+     "octets": 18432,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 297,
+     "duree": 879,
+     "code": 200,
+     "octets": 3981,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 297,
+     "duree": 830,
+     "code": 200,
+     "octets": 2292,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 297,
+     "duree": 19994,
+     "code": null,
+     "octets": null,
+     "echec": "net::ERR_ABORTED",
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 297,
+     "duree": 156,
+     "code": 200,
+     "octets": 3916,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 297,
+     "duree": 825,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 297,
+     "duree": 756,
+     "code": 200,
+     "octets": 5805,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 297,
+     "duree": 88,
+     "code": 200,
+     "octets": 37983,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 297,
+     "duree": 642,
+     "code": 200,
+     "octets": 11330,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 297,
+     "duree": 820,
+     "code": 200,
+     "octets": 45929,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 297,
+     "duree": 821,
+     "code": 200,
+     "octets": 27498,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 297,
+     "duree": 671,
+     "code": 200,
+     "octets": 19338,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 297,
+     "duree": 671,
+     "code": 200,
+     "octets": 1437,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 297,
+     "duree": 816,
+     "code": 200,
+     "octets": 38047,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 297,
+     "duree": 789,
+     "code": 200,
+     "octets": 36499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 297,
+     "duree": 789,
+     "code": 200,
+     "octets": 4885,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 297,
+     "duree": 821,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1512,
+     "code": 200,
+     "octets": 79086,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1367,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1512,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1512,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1223,
+     "code": 200,
+     "octets": 82697,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1512,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1366,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1513,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 297,
+     "duree": 1655,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1953,
+     "duree": 3,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 20290,
+     "duree": 7561,
+     "code": 200,
+     "octets": 3260,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 20290,
+     "duree": 7590,
+     "code": 200,
+     "octets": 3348,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 20290,
+     "duree": null,
+     "code": null,
+     "octets": null,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557586906,
+   "liste_ms": 8276,
+   "longues": [
+    94,
+    68,
+    102,
+    183
+   ],
+   "stockage": {
+    "cp_data2": 195565,
+    "cp_drive": 393,
+    "cp_vent": 160205,
+    "cp_qref": 762,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 562.919967,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 12,
+    "RecalcStyleCount": 76,
+    "LayoutDuration": 0.314738,
+    "RecalcStyleDuration": 0.014021,
+    "ScriptDuration": 0.039326,
+    "TaskDuration": 0.562076,
+    "JSHeapUsedSize": 5638468,
+    "JSHeapTotalSize": 10248192
+   },
+   "fresh": "Météo du mar. 24 nov. à 22 h 59 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 0/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": "",
+   "reco": "Ton heure de départ (06:00) est déjà passée aujourd'hui : touche « Je pars maintenant » ou choisis un autre jour.\n\nMEILLEUR CHOIX\n95\nEmbouchure du Petit Rhône\n\nSaintes-Maries-de-la-Mer · 85 min de route · en pêche de 07 h 25 à 08 h 35\n\nMeilleure heure : 08 h 00 (95/100, loup) · Mer qui retombe après un coup de mer\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nEnsuite : Jetées du chenal du Grau-du-Roi (88) · Digues du port de Carnon (80)\n\nY aller (Maps)\nWaze\nDétails",
+   "liste": "95\nEmbouchure du Petit Rhône\nSaintes-Maries-de-la-Mer · 85 min · 1.2 h de pêche · meilleure heure 08 h 00\n88\nJetées du chenal du Grau-du-Roi\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n80\nDigues du port de Carnon\nMauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n80\nEmbouchure du Lez et plage des Épis\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nGrau du Prévost\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nDigues et grau de Frontignan\nFrontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00\n77\nPasse du Ponant (grau des Abîmes)\nLa Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00\n74\nÉpis et brise-lames du village\nSaintes-Maries-de-la-Mer · 82 min · 1.3 h de pêche · meilleure heure 07 h 00\n74\nDigue de l'Espiguette (extérieur Port Camargue)\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n74\nDigue et épis du Boucanet\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n67\nLes Aresquiers (fonds rocheux)\nVic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00\n64\nBrise-lames à l'est du port et « digue cassée »\nLa Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n41\nÉpis de l'Espiguette est\nLe Grau-du-Roi · 86 min · 1.1 h de pêche · meilleure heure 07 h 00\n41\nPointe et plage de l'Espiguette\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n36\nPlage de Maguelone (Pilou)\nVilleneuve-lès-Maguelone · 74 min · 1.5 h de pêche · meilleure heure 07 h 00\n25\nPlages du Grand et du Petit Travers\nLa Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n—\nPointe de Beauduc – grau de l'étang (vidéo)\nArles (Salin-de-Giraud) · 233 min · pas assez de temps sur place",
+   "alertes": "Les 3 prochains jours\n🌊 Coup de mer\nHoule jusqu'à 1,8 m (golfe d'Aigues-Mortes) du mardi 24 à 23 h au mercredi 25 à 3 h, pic à 23 h. Digues et roches exposées dangereuses.\n🎣 Mer qui retombe : créneau à viser\nLa houle redescend mercredi 25 vers 6 h. Après un coup de mer, eau teintée qui s'éclaircit : souvent le meilleur moment pour le loup (scénario H).\nFleuves maintenant",
+   "fiche_mots": 537,
+   "fiche": "Jetées du chenal du Grau-du-Roi\n88\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\noui\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle sous 4 fois la normale (1,6× sur les 24 dernières heures, 1,8× hier, 2,1× avant-hier). Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 07 h 00 · 88/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 07 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~1,7 m au poste (prévue, corrigée par la bouée Espiguette) → loup 4/5, dorade 3/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t98 %\n5/5\tmer calme (~0,1 m au poste), d'après la bouée Espiguette (0,2 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tmistral (N) 11 km/h (au poste)\nCouleur de l'eau\t100 %\teau teintée ≈ 21 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×5,0, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 4/5 · pluie : 7 mm en 7 j, dont 3 mm en 72 h\nEau\t100 %\teau à 16.0 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\njeu. 26\nven. 27\nsam. 28\ndim. 29\n\nPas de prévision pour ce jour.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienne le 21 nov.\n\nAutour (pêche de zone, points gris) : 1er épi de la plage rive gauche (≈ 230 m par la plage) · 2e épi de la plage rive gauche (≈ 630 m par la plage ; relié à la plage à son autre bout : accès à vérifier sur place) · 3e épi de la plage rive gauche (≈ 1 km par la plage)\n\nPas de webcam trouvée près de ce poste.\n\nTon carnet ici : 0 sortie(s).\n\nY aller (Maps)\nWaze\nNoter une sortie ici\nCorriger la position"
+  },
+  {
+   "nom": "froid-2",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 4,
+     "duree": 13,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 12,
+     "duree": 69,
+     "code": 200,
+     "octets": 3981,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 12,
+     "duree": 50,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 12,
+     "duree": 11,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 12,
+     "duree": 80,
+     "code": 200,
+     "octets": 43033,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 12,
+     "duree": 11,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 12,
+     "duree": 12,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 12,
+     "duree": 11,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 12,
+     "duree": 11,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 91,
+     "duree": 57,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 91,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 141,
+     "duree": 19,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 145,
+     "duree": 334,
+     "code": 200,
+     "octets": 18395,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 146,
+     "duree": 2833,
+     "code": 200,
+     "octets": 3940,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 146,
+     "duree": 2848,
+     "code": 200,
+     "octets": 2327,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 146,
+     "duree": 2799,
+     "code": 200,
+     "octets": 2457,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 146,
+     "duree": 28,
+     "code": 200,
+     "octets": 3915,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 146,
+     "duree": 709,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 146,
+     "duree": 754,
+     "code": 200,
+     "octets": 5795,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 146,
+     "duree": 393,
+     "code": 200,
+     "octets": 37969,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 146,
+     "duree": 732,
+     "code": 200,
+     "octets": 11329,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 146,
+     "duree": 732,
+     "code": 200,
+     "octets": 45928,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 146,
+     "duree": 585,
+     "code": 200,
+     "octets": 27499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 146,
+     "duree": 589,
+     "code": 200,
+     "octets": 19338,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 146,
+     "duree": 737,
+     "code": 200,
+     "octets": 1437,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 146,
+     "duree": 736,
+     "code": 200,
+     "octets": 38047,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 146,
+     "duree": 730,
+     "code": 200,
+     "octets": 36499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 146,
+     "duree": 440,
+     "code": 200,
+     "octets": 4886,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 146,
+     "duree": 585,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1010,
+     "code": 200,
+     "octets": 79086,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1154,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1155,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1154,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 721,
+     "code": 200,
+     "octets": 82697,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1155,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 867,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1155,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 146,
+     "duree": 1010,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1302,
+     "duree": 4,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2995,
+     "duree": 3632,
+     "code": 200,
+     "octets": 3258,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2996,
+     "duree": 3630,
+     "code": 200,
+     "octets": 3348,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2996,
+     "duree": 3127,
+     "code": 200,
+     "octets": 3275,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557622619,
+   "liste_ms": 6621,
+   "longues": [],
+   "stockage": {
+    "cp_data2": 195571,
+    "cp_flow": 25045,
+    "cp_drive": 393,
+    "cp_vent": 160209,
+    "cp_qref": 1109,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 596.833176,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 12,
+    "RecalcStyleCount": 68,
+    "LayoutDuration": 0.026585,
+    "RecalcStyleDuration": 0.012486,
+    "ScriptDuration": 0.04762,
+    "TaskDuration": 0.278359,
+    "JSHeapUsedSize": 5501064,
+    "JSHeapTotalSize": 10510336
+   },
+   "fresh": "Météo du mar. 24 nov. à 23 h 00 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": ""
+  },
+  {
+   "nom": "froid-3",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 6,
+     "duree": 16,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 14,
+     "duree": 46,
+     "code": 200,
+     "octets": 3959,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 19,
+     "duree": 54,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 19,
+     "duree": 3,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 20,
+     "duree": 42,
+     "code": 200,
+     "octets": 42963,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 20,
+     "duree": 8,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 20,
+     "duree": 9,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 20,
+     "duree": 8,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 20,
+     "duree": 8,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 91,
+     "duree": 61,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 91,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 132,
+     "duree": 32,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 132,
+     "duree": 80,
+     "code": 200,
+     "octets": 18410,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 132,
+     "duree": 2005,
+     "code": 200,
+     "octets": 3940,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 132,
+     "duree": 1964,
+     "code": 200,
+     "octets": 2327,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 133,
+     "duree": 1957,
+     "code": 200,
+     "octets": 2457,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 133,
+     "duree": 43,
+     "code": 200,
+     "octets": 3915,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 133,
+     "duree": 695,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 133,
+     "duree": 733,
+     "code": 200,
+     "octets": 5811,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 136,
+     "duree": 78,
+     "code": 200,
+     "octets": 37972,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 136,
+     "duree": 617,
+     "code": 200,
+     "octets": 11330,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 136,
+     "duree": 760,
+     "code": 200,
+     "octets": 45929,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 136,
+     "duree": 760,
+     "code": 200,
+     "octets": 27498,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 137,
+     "duree": 618,
+     "code": 200,
+     "octets": 19338,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 137,
+     "duree": 619,
+     "code": 200,
+     "octets": 1437,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 137,
+     "duree": 764,
+     "code": 200,
+     "octets": 38047,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 137,
+     "duree": 761,
+     "code": 200,
+     "octets": 36499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 137,
+     "duree": 762,
+     "code": 200,
+     "octets": 4885,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 137,
+     "duree": 760,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 739,
+     "code": 200,
+     "octets": 79087,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 924,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1212,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1067,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1067,
+     "code": 200,
+     "octets": 82696,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1212,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 924,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1213,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 137,
+     "duree": 1211,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1351,
+     "duree": 4,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2139,
+     "duree": 3558,
+     "code": 200,
+     "octets": 3251,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2139,
+     "duree": 3733,
+     "code": 200,
+     "octets": 3343,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2139,
+     "duree": 4198,
+     "code": 200,
+     "octets": 3254,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557649482,
+   "liste_ms": 6311,
+   "longues": [],
+   "stockage": {
+    "cp_data2": 195571,
+    "cp_flow": 25045,
+    "cp_drive": 393,
+    "cp_vent": 160208,
+    "cp_qref": 1109,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 623.389625,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 13,
+    "RecalcStyleCount": 62,
+    "LayoutDuration": 0.025761,
+    "RecalcStyleDuration": 0.012685,
+    "ScriptDuration": 0.04683,
+    "TaskDuration": 0.281069,
+    "JSHeapUsedSize": 5176352,
+    "JSHeapTotalSize": 9986048
+   },
+   "fresh": "Météo du mar. 24 nov. à 23 h 00 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": ""
+  },
+  {
+   "nom": "loup",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 4,
+     "duree": 20,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 13,
+     "duree": 101,
+     "code": 200,
+     "octets": 4031,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 14,
+     "duree": 42,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 14,
+     "duree": 9,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 14,
+     "duree": 121,
+     "code": 200,
+     "octets": 42959,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 14,
+     "duree": 11,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 14,
+     "duree": 12,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 14,
+     "duree": 12,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 14,
+     "duree": 12,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 125,
+     "duree": 59,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 126,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 176,
+     "duree": 22,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 177,
+     "duree": 70,
+     "code": 200,
+     "octets": 18419,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 177,
+     "duree": 1777,
+     "code": 200,
+     "octets": 3940,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 177,
+     "duree": 1752,
+     "code": 200,
+     "octets": 2327,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 177,
+     "duree": 1761,
+     "code": 200,
+     "octets": 2457,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 177,
+     "duree": 32,
+     "code": 200,
+     "octets": 3915,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 177,
+     "duree": 718,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 177,
+     "duree": 725,
+     "code": 200,
+     "octets": 5809,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 177,
+     "duree": 66,
+     "code": 200,
+     "octets": 37967,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 177,
+     "duree": 593,
+     "code": 200,
+     "octets": 11330,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 177,
+     "duree": 739,
+     "code": 200,
+     "octets": 45929,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 177,
+     "duree": 740,
+     "code": 200,
+     "octets": 27498,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 177,
+     "duree": 736,
+     "code": 200,
+     "octets": 19337,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 177,
+     "duree": 737,
+     "code": 200,
+     "octets": 1437,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 177,
+     "duree": 736,
+     "code": 200,
+     "octets": 38048,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 177,
+     "duree": 738,
+     "code": 200,
+     "octets": 36499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 177,
+     "duree": 738,
+     "code": 200,
+     "octets": 4885,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 177,
+     "duree": 740,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1014,
+     "code": 200,
+     "octets": 79086,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1016,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1016,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1016,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1015,
+     "code": 200,
+     "octets": 82696,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 441,
+     "code": 200,
+     "octets": 2186,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 730,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 729,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 177,
+     "duree": 1158,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1336,
+     "duree": 3,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 1955,
+     "duree": 3513,
+     "code": 200,
+     "octets": 3250,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 1955,
+     "duree": 3677,
+     "code": 200,
+     "octets": 3348,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 1955,
+     "duree": 3719,
+     "code": 200,
+     "octets": 3281,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557676037,
+   "liste_ms": 5620,
+   "longues": [],
+   "stockage": {
+    "cp_data2": 195568,
+    "cp_flow": 25045,
+    "cp_drive": 393,
+    "cp_plan": 69,
+    "cp_vent": 160209,
+    "cp_qref": 1109,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 644.285287,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 12,
+    "RecalcStyleCount": 67,
+    "LayoutDuration": 0.029284,
+    "RecalcStyleDuration": 0.012005,
+    "ScriptDuration": 0.038201,
+    "TaskDuration": 0.273459,
+    "JSHeapUsedSize": 5258552,
+    "JSHeapTotalSize": 10510336
+   },
+   "fresh": "Météo du mar. 24 nov. à 23 h 01 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": "",
+   "liste": "88\nJetées du chenal du Grau-du-Roi\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n81\nEmbouchure du Petit Rhône\nSaintes-Maries-de-la-Mer · 85 min · 1.2 h de pêche · meilleure heure 08 h 00\n80\nDigues du port de Carnon\nMauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n80\nEmbouchure du Lez et plage des Épis\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nGrau du Prévost\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nDigues et grau de Frontignan\nFrontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00\n77\nPasse du Ponant (grau des Abîmes)\nLa Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00\n74\nDigue de l'Espiguette (extérieur Port Camargue)\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n74\nDigue et épis du Boucanet\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n67\nLes Aresquiers (fonds rocheux)\nVic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00\n64\nBrise-lames à l'est du port et « digue cassée »\nLa Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n63\nÉpis et brise-lames du village\nSaintes-Maries-de-la-Mer · 82 min · 1.3 h de pêche · meilleure heure 07 h 00\n41\nÉpis de l'Espiguette est\nLe Grau-du-Roi · 86 min · 1.1 h de pêche · meilleure heure 07 h 00\n41\nPointe et plage de l'Espiguette\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n36\nPlage de Maguelone (Pilou)\nVilleneuve-lès-Maguelone · 74 min · 1.5 h de pêche · meilleure heure 07 h 00\n25\nPlages du Grand et du Petit Travers\nLa Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n—\nPointe de Beauduc – grau de l'étang (vidéo)\nArles (Salin-de-Giraud) · 233 min · pas assez de temps sur place"
+  },
+  {
+   "nom": "dorade",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 3,
+     "duree": 23,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 14,
+     "duree": 43,
+     "code": 200,
+     "octets": 4059,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 14,
+     "duree": 43,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 14,
+     "duree": 11,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 14,
+     "duree": 60,
+     "code": 200,
+     "octets": 42929,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 14,
+     "duree": 12,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 14,
+     "duree": 13,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 14,
+     "duree": 13,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 15,
+     "duree": 12,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 73,
+     "duree": 60,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 73,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 126,
+     "duree": 21,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 127,
+     "duree": 95,
+     "code": 200,
+     "octets": 18396,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 127,
+     "duree": 2159,
+     "code": 200,
+     "octets": 3940,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 127,
+     "duree": 2123,
+     "code": 200,
+     "octets": 2327,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 127,
+     "duree": 2170,
+     "code": 200,
+     "octets": 2457,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 127,
+     "duree": 28,
+     "code": 200,
+     "octets": 3917,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 127,
+     "duree": 531,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 127,
+     "duree": 744,
+     "code": 200,
+     "octets": 5809,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 127,
+     "duree": 91,
+     "code": 200,
+     "octets": 37944,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 127,
+     "duree": 590,
+     "code": 200,
+     "octets": 11330,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 127,
+     "duree": 736,
+     "code": 200,
+     "octets": 45929,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 127,
+     "duree": 739,
+     "code": 200,
+     "octets": 27498,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 127,
+     "duree": 595,
+     "code": 200,
+     "octets": 19338,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 127,
+     "duree": 596,
+     "code": 200,
+     "octets": 1437,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 127,
+     "duree": 742,
+     "code": 200,
+     "octets": 38047,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 127,
+     "duree": 734,
+     "code": 200,
+     "octets": 36499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 127,
+     "duree": 736,
+     "code": 200,
+     "octets": 4885,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 127,
+     "duree": 739,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1160,
+     "code": 200,
+     "octets": 79086,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1161,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 874,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1161,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1016,
+     "code": 200,
+     "octets": 82696,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 444,
+     "code": 200,
+     "octets": 2186,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1016,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 731,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 127,
+     "duree": 1160,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1289,
+     "duree": 4,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2298,
+     "duree": 3163,
+     "code": 200,
+     "octets": 3265,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2298,
+     "duree": 2349,
+     "code": 200,
+     "octets": 3336,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2298,
+     "duree": 3340,
+     "code": 200,
+     "octets": 3264,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557696939,
+   "liste_ms": 5618,
+   "longues": [],
+   "stockage": {
+    "cp_data2": 195572,
+    "cp_flow": 25045,
+    "cp_drive": 393,
+    "cp_plan": 71,
+    "cp_vent": 160207,
+    "cp_qref": 1109,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 665.137047,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 12,
+    "RecalcStyleCount": 69,
+    "LayoutDuration": 0.027597,
+    "RecalcStyleDuration": 0.018083,
+    "ScriptDuration": 0.046882,
+    "TaskDuration": 0.286639,
+    "JSHeapUsedSize": 5592052,
+    "JSHeapTotalSize": 10248192
+   },
+   "fresh": "Météo du mar. 24 nov. à 23 h 01 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": "",
+   "liste": "82\nDigues du port de Carnon\nMauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n82\nEmbouchure du Lez et plage des Épis\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n82\nGrau du Prévost\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n82\nDigues et grau de Frontignan\nFrontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00\n68\nLes Aresquiers (fonds rocheux)\nVic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00\n64\nJetées du chenal du Grau-du-Roi\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n64\nPasse du Ponant (grau des Abîmes)\nLa Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00\n39\nDigue de l'Espiguette (extérieur Port Camargue)\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n39\nDigue et épis du Boucanet\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n39\nBrise-lames à l'est du port et « digue cassée »\nLa Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n35\nEmbouchure du Petit Rhône\nSaintes-Maries-de-la-Mer · 85 min · 1.2 h de pêche · meilleure heure 07 h 00\n25\nÉpis et brise-lames du village\nSaintes-Maries-de-la-Mer · 82 min · 1.3 h de pêche · meilleure heure 07 h 00\n22\nÉpis de l'Espiguette est\nLe Grau-du-Roi · 86 min · 1.1 h de pêche · meilleure heure 07 h 00\n22\nPointe et plage de l'Espiguette\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n22\nPlage de Maguelone (Pilou)\nVilleneuve-lès-Maguelone · 74 min · 1.5 h de pêche · meilleure heure 07 h 00\n20\nPlages du Grand et du Petit Travers\nLa Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n—\nPointe de Beauduc – grau de l'étang (vidéo)\nArles (Salin-de-Giraud) · 233 min · pas assez de temps sur place"
+  },
+  {
+   "nom": "cpu-x4",
+   "erreurs": [],
+   "console": [],
+   "requetes": [
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/",
+     "debut": 8,
+     "duree": 46,
+     "code": 200,
+     "octets": 13665,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
+     "debut": 30,
+     "duree": 77,
+     "code": 200,
+     "octets": 3968,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.googleapis.com",
+     "chemin": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Space+Grotesk:wght@400;600;700&display=swap",
+     "debut": 30,
+     "duree": 46,
+     "code": 200,
+     "octets": 1308,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/css/style.css",
+     "debut": 32,
+     "duree": 1,
+     "code": 200,
+     "octets": 10189,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "unpkg.com",
+     "chemin": "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
+     "debut": 32,
+     "duree": 67,
+     "code": 200,
+     "octets": 43000,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/spots.js",
+     "debut": 32,
+     "duree": 23,
+     "code": 200,
+     "octets": 33020,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/model.js",
+     "debut": 32,
+     "duree": 23,
+     "code": 200,
+     "octets": 43828,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/data.js",
+     "debut": 32,
+     "duree": 18,
+     "code": 200,
+     "octets": 6914,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/js/app.js",
+     "debut": 32,
+     "duree": 23,
+     "code": 200,
+     "octets": 82201,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2",
+     "debut": 195,
+     "duree": 131,
+     "code": 200,
+     "octets": 45744,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "",
+     "chemin": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cG",
+     "debut": 195,
+     "duree": 0,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "fonts.gstatic.com",
+     "chemin": "https://fonts.gstatic.com/s/spacegrotesk/v22/V8mDoQDjQSkFtoMM3T6r8E7mPbF4Cw.woff2",
+     "debut": 321,
+     "duree": 21,
+     "code": 200,
+     "octets": 22317,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.4500,43.4481,43.4725,43.4824,43.5108,43.5347,43.5442,43.5529,43.5553,43.5534,43.5399,43.5",
+     "debut": 321,
+     "duree": 65,
+     "code": 200,
+     "octets": 18394,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=V720001002&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 321,
+     "duree": 1744,
+     "code": 200,
+     "octets": 3940,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y346400501&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 321,
+     "duree": 1680,
+     "code": 200,
+     "octets": 2327,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=Y321002001&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1",
+     "debut": 322,
+     "duree": 1675,
+     "code": 200,
+     "octets": 2457,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "raw.githubusercontent.com",
+     "chemin": "https://raw.githubusercontent.com/nicolasbonini1-commits/Carte-peche/donnees/houle.json",
+     "debut": 322,
+     "duree": 48,
+     "code": 200,
+     "octets": 3916,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "router.project-osrm.org",
+     "chemin": "https://router.project-osrm.org/table/v1/driving/4.418,43.909;4.39771,43.44995;4.4156,43.44815;4.165,43.47247;4.13854,43.48239;4.11645,43.51",
+     "debut": 322,
+     "duree": 529,
+     "code": 200,
+     "octets": 2035,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "marine-api.open-meteo.com",
+     "chemin": "https://marine-api.open-meteo.com/v1/marine?latitude=43.44,43.48,43.4&longitude=3.9,4.06,4.3&hourly=wave_height,wave_direction,wave_period,s",
+     "debut": 322,
+     "duree": 716,
+     "code": 200,
+     "octets": 5812,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "api.open-meteo.com",
+     "chemin": "https://api.open-meteo.com/v1/forecast?latitude=43.5,43.54,43.46,43.9,43.7&longitude=3.88,4.08,4.3,3.92,3.86&hourly=wind_speed_10m,wind_dire",
+     "debut": 322,
+     "duree": 97,
+     "code": 200,
+     "octets": 37982,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/523/374.png",
+     "debut": 322,
+     "duree": 747,
+     "code": 200,
+     "octets": 11329,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/523/373.png",
+     "debut": 322,
+     "duree": 746,
+     "code": 200,
+     "octets": 45928,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/522/374.png",
+     "debut": 322,
+     "duree": 601,
+     "code": 200,
+     "octets": 27499,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/524/374.png",
+     "debut": 322,
+     "duree": 751,
+     "code": 200,
+     "octets": 19337,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/523/375.png",
+     "debut": 322,
+     "duree": 458,
+     "code": 200,
+     "octets": 1438,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "b.tile.openstreetmap.fr",
+     "chemin": "https://b.tile.openstreetmap.fr/osmfr/10/522/373.png",
+     "debut": 322,
+     "duree": 750,
+     "code": 200,
+     "octets": 38047,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/524/373.png",
+     "debut": 322,
+     "duree": 640,
+     "code": 200,
+     "octets": 36500,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "a.tile.openstreetmap.fr",
+     "chemin": "https://a.tile.openstreetmap.fr/osmfr/10/522/375.png",
+     "debut": 322,
+     "duree": 748,
+     "code": 200,
+     "octets": 4885,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "c.tile.openstreetmap.fr",
+     "chemin": "https://c.tile.openstreetmap.fr/osmfr/10/524/375.png",
+     "debut": 322,
+     "duree": 602,
+     "code": 200,
+     "octets": 1450,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 1172,
+     "code": 200,
+     "octets": 79086,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 456,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 885,
+     "code": 200,
+     "octets": 36384,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 739,
+     "code": 200,
+     "octets": 57011,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 1173,
+     "code": 200,
+     "octets": 82696,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 741,
+     "code": 200,
+     "octets": 2185,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 454,
+     "code": 200,
+     "octets": 2186,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 1027,
+     "code": 200,
+     "octets": 77054,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "ows.emodnet-bathymetry.eu",
+     "chemin": "https://ows.emodnet-bathymetry.eu/wms?service=WMS&request=GetMap&layers=emodnet%3Amean_multicolour&styles=&format=image%2Fpng&transparent=tr",
+     "debut": 322,
+     "duree": 1171,
+     "code": 200,
+     "octets": 78517,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "localhost",
+     "chemin": "http://localhost:8080/icon.svg",
+     "debut": 1502,
+     "duree": 8,
+     "code": 200,
+     "octets": 0,
+     "echec": null,
+     "sw": true
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=V720001002&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2070,
+     "duree": 3548,
+     "code": 200,
+     "octets": 3259,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y346400501&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2070,
+     "duree": 3621,
+     "code": 200,
+     "octets": 3350,
+     "echec": null,
+     "sw": false
+    },
+    {
+     "host": "hubeau.eaufrance.fr",
+     "chemin": "https://hubeau.eaufrance.fr/api/v2/hydrometrie/observations_tr?code_entite=Y321002001&grandeur_hydro=Q&timestep=60&date_debut_obs=2026-11-08",
+     "debut": 2070,
+     "duree": 5312,
+     "code": 200,
+     "octets": 3263,
+     "echec": null,
+     "sw": false
+    }
+   ],
+   "t0": 1795557717784,
+   "liste_ms": 7550,
+   "longues": [
+    124,
+    73
+   ],
+   "stockage": {
+    "cp_data2": 195567,
+    "cp_flow": 25045,
+    "cp_drive": 393,
+    "cp_vent": 160203,
+    "cp_qref": 1109,
+    "cp_houle": 24011
+   },
+   "metrics": {
+    "Timestamp": 688.140879,
+    "Documents": 8,
+    "Frames": 3,
+    "JSEventListeners": 183,
+    "Nodes": 2725,
+    "LayoutCount": 12,
+    "RecalcStyleCount": 68,
+    "LayoutDuration": 0.111435,
+    "RecalcStyleDuration": 0.047467,
+    "ScriptDuration": 0.146246,
+    "TaskDuration": 1.029865,
+    "JSHeapUsedSize": 5082432,
+    "JSHeapTotalSize": 10510336
+   },
+   "fresh": "Météo du mar. 24 nov. à 23 h 01 · Météo-France jusqu'au sam. 28 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "banner": "",
+   "liste": "88\nJetées du chenal du Grau-du-Roi\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n81\nEmbouchure du Petit Rhône\nSaintes-Maries-de-la-Mer · 85 min · 1.2 h de pêche · meilleure heure 08 h 00\n80\nDigues du port de Carnon\nMauguio-Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n80\nEmbouchure du Lez et plage des Épis\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nGrau du Prévost\nPalavas-les-Flots · 70 min · 1.7 h de pêche · meilleure heure 07 h 00\n80\nDigues et grau de Frontignan\nFrontignan · 83 min · 1.2 h de pêche · meilleure heure 07 h 00\n77\nPasse du Ponant (grau des Abîmes)\nLa Grande-Motte · 63 min · 1.9 h de pêche · meilleure heure 07 h 00\n74\nDigue de l'Espiguette (extérieur Port Camargue)\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n74\nDigue et épis du Boucanet\nLe Grau-du-Roi · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n67\nLes Aresquiers (fonds rocheux)\nVic-la-Gardiole / Frontignan · 81 min · 1.3 h de pêche · meilleure heure 07 h 00\n64\nBrise-lames à l'est du port et « digue cassée »\nLa Grande-Motte · 62 min · 1.9 h de pêche · meilleure heure 07 h 00\n63\nÉpis et brise-lames du village\nSaintes-Maries-de-la-Mer · 82 min · 1.3 h de pêche · meilleure heure 07 h 00\n41\nÉpis de l'Espiguette est\nLe Grau-du-Roi · 86 min · 1.1 h de pêche · meilleure heure 07 h 00\n41\nPointe et plage de l'Espiguette\nLe Grau-du-Roi · 72 min · 1.6 h de pêche · meilleure heure 07 h 00\n36\nPlage de Maguelone (Pilou)\nVilleneuve-lès-Maguelone · 74 min · 1.5 h de pêche · meilleure heure 07 h 00\n25\nPlages du Grand et du Petit Travers\nLa Grande-Motte / Carnon · 65 min · 1.8 h de pêche · meilleure heure 07 h 00\n—\nPointe de Beauduc – grau de l'étang (vidéo)\nArles (Salin-de-Giraud) · 233 min · pas assez de temps sur place",
+   "recalcul_ms": 273
+  }
+ ],
+ "resume": [
+  {
+   "nom": "froid-1",
+   "liste_ms": 8276,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [
+    "hubeau.eaufrance.fr net::ERR_ABORTED"
+   ],
+   "lentes": [
+    "hubeau.eaufrance.fr 20 s"
+   ],
+   "ko": 968,
+   "longues_ms": 447,
+   "longues_max": 183,
+   "stockage_ko": 372
+  },
+  {
+   "nom": "froid-2",
+   "liste_ms": 6621,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [],
+   "lentes": [],
+   "ko": 973,
+   "longues_ms": 0,
+   "longues_max": 0,
+   "stockage_ko": 397
+  },
+  {
+   "nom": "froid-3",
+   "liste_ms": 6311,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [],
+   "lentes": [],
+   "ko": 973,
+   "longues_ms": 0,
+   "longues_max": 0,
+   "stockage_ko": 397
+  },
+  {
+   "nom": "loup",
+   "liste_ms": 5620,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [],
+   "lentes": [],
+   "ko": 973,
+   "longues_ms": 0,
+   "longues_max": 0,
+   "stockage_ko": 397
+  },
+  {
+   "nom": "dorade",
+   "liste_ms": 5618,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [],
+   "lentes": [],
+   "ko": 973,
+   "longues_ms": 0,
+   "longues_max": 0,
+   "stockage_ko": 397
+  },
+  {
+   "nom": "cpu-x4",
+   "liste_ms": 7550,
+   "erreurs_js": 0,
+   "requetes": 42,
+   "echecs": [],
+   "lentes": [],
+   "ko": 973,
+   "longues_ms": 197,
+   "longues_max": 124,
+   "stockage_ko": 397
+  },
+  {
+   "nom": "hors-reseau",
+   "liste_ms": 200,
+   "banner": "Pas de réseau. J'affiche les prévisions reçues le mar. 24 nov. à 22 h 59. Nouvel essai automatique dès qu'il revient.",
+   "retour_ms": 3406,
+   "banner_apres": ""
+  }
+ ]
+}
