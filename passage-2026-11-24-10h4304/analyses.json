@@ -1,0 +1,40 @@
+{
+ "le": "2026-11-24T09:38:03.929Z",
+ "modele": [
+  "gemini-3.8-flash",
+  "gemini-3.7-flash",
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-2.5-flash",
+  "gemini-flash-latest"
+ ],
+ "analysees": [
+  {
+   "id": "_MEf-7iw86M",
+   "titre": "peche du loup aux leurres de surface - palavas les flots - hérault 34",
+   "page": "https://www.notion.so/422a0be6c30781eeae8bf47315ad5bea",
+   "modele": "gemini-3.6-flash",
+   "jetons": 11532,
+   "lieu": "Bordure de l'étang du Prévost / Arnel près de Palavas-les-Flots",
+   "confiance": "Moyenne",
+   "filme_depuis": "bord",
+   "demandee": true
+  }
+ ],
+ "ecartees": [
+  {
+   "id": "CCptCFRz8Ig",
+   "titre": "petit tassergal embouchure du petit rhone #camargue #fishing",
+   "raison": "Gemini : filmé depuis bateau, mer Méditerranée, zone oui"
+  },
+  {
+   "id": "30SFOErKOM8",
+   "raison": "fiche déjà dans Notion"
+  },
+  {
+   "id": "7QcD9Jp7y4s",
+   "raison": "fiche déjà dans Notion"
+  }
+ ],
+ "erreurs": []
+}

@@ -1,0 +1,151 @@
+[
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "blocks",
+  "code": 200
+ },
+ {
+  "youtube": "_MEf-7iw86M",
+  "code": 200,
+  "trouvee": true
+ },
+ {
+  "gemini": "models",
+  "code": 200
+ },
+ {
+  "mesure": "countTokens",
+  "video": "_MEf-7iw86M",
+  "code": 200,
+  "jetons": 9676
+ },
+ {
+  "mesure": "countTokens",
+  "video": "30SFOErKOM8",
+  "code": 200,
+  "jetons": 20286
+ },
+ {
+  "mesure": "countTokens",
+  "video": "7QcD9Jp7y4s",
+  "code": 200,
+  "jetons": 184858
+ },
+ {
+  "mesure": "countTokens",
+  "video": "CCptCFRz8Ig",
+  "code": 200,
+  "jetons": 5976
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "_MEf-7iw86M",
+  "essai": 1,
+  "fps": 1,
+  "code": 200,
+  "jetons": 11532
+ },
+ {
+  "notion": "pages",
+  "code": 200
+ },
+ {
+  "notion": "blocks",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.8-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.7-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 2,
+  "fps": 1,
+  "code": 503,
+  "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later."
+ },
+ {
+  "gemini": "gemini-3.6-flash",
+  "video": "CCptCFRz8Ig",
+  "essai": 1,
+  "fps": 1,
+  "code": 200,
+  "jetons": 8042
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ },
+ {
+  "notion": "databases",
+  "code": 200
+ }
+]
