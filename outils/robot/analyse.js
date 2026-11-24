@@ -86,7 +86,7 @@ const SCHEMA = { type: "OBJECT", properties: {
   mer: { type: "STRING", enum: ["Méditerranée", "autre", "incertain"] },
   resume: { type: "STRING" },
   lieux_nommes: { type: "ARRAY", items: { type: "OBJECT", properties: { timecode: { type: "STRING" }, ou: { type: "STRING" }, texte: { type: "STRING" } } } },
-  sequences: { type: "ARRAY", items: { type: "OBJECT", properties: { debut: { type: "STRING" }, fin: { type: "STRING" }, description: { type: "STRING" } } } },
+  sequences: { type: "ARRAY", items: { type: "OBJECT", properties: { debut: { type: "STRING" }, fin: { type: "STRING" }, description: { type: "STRING" } }, required: ["debut", "fin", "description"] } },
   reperes: { type: "ARRAY", items: { type: "OBJECT", properties: {
     timecode: { type: "STRING" }, categorie: { type: "STRING", enum: ["ouvrage dans l'eau", "fond et rive", "arrière-plan", "lumière", "texte à l'écran"] },
     description: { type: "STRING" }, rare: { type: "BOOLEAN" }, pourrait_etre_mal_lu: { type: "STRING" } } } },
@@ -132,6 +132,11 @@ function controler(r) {
     // Lieu qui ne repose que sur ce que dit le vidéaste (titre, description, oral) : peut être faux exprès → Faible (demande de Nico, 24 nov. 2026).
     if (/déclaré seulement/.test(l.base || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu tiré seulement du texte ou de l'oral (peut être faux) : confiance ramenée à Faible"); }
     if (!l.base) r.alertes.push("Gemini n'a pas dit sur quoi repose le lieu");
+    // Aucun repère rare vu à l'image = seulement un type de côte (règle de la consigne) → Faible ; deux lieux dans le nom (« A / B », « A ou B ») = une zone → Faible.
+    // Cas du 24 nov. : Palavas noté Moyenne sur « étang + salicornes + route éclairée » (commun à Ingril, Vic, Prévost…), le lieu précis venant du titre.
+    const unRare = (r.reperes || []).some(x => x.rare);
+    if (!unRare && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("aucun repère rare vu à l'image (seulement un type de côte) : confiance ramenée à Faible"); }
+    if (/\s\/\s|\sou\s/i.test(l.nom || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("deux lieux dans le nom = une zone : confiance ramenée à Faible"); }
     // Lieu = une zone (pas un poste de moins de 500 m) : confiance Faible d'office (décision de Nico, 24 nov. 2026 ; fiche BARLOUP du 23 nov. notée Moyenne pour « Zone : embouchure du Grand Rhône »).
     if (/^\s*(\[[^\]]*\]\s*)*zone\b/i.test(l.nom || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu = une zone, pas un poste : confiance ramenée à Faible"); }
   }
@@ -220,7 +225,7 @@ function fiche(v, a) {
     titre("Lieux nommés dans la vidéo"),
     ...((r.lieux_nommes || []).length ? r.lieux_nommes.map(x => puce(`${x.timecode || "?"} (${x.ou || "?"}) : ${x.texte}`)) : [para("Aucun.")]),
     titre("Séquences"),
-    ...(r.sequences || []).map(x => puce(`${x.debut || "?"}–${x.fin || "?"} : ${x.description}`)),
+    ...(r.sequences || []).map(x => puce(`${x.debut || "?"}–${x.fin || "?"} : ${x.description || "(non décrite par Gemini)"}`)),
     titre("Grille des repères"),
     ...(r.reperes || []).slice(0, 40).map(x => puce(`${x.timecode || "?"} · ${x.categorie}${x.rare ? " · RARE" : ""} : ${x.description}${x.pourrait_etre_mal_lu ? " — pourrait être mal lu : " + x.pourrait_etre_mal_lu : ""}`)),
     titre("Rive d'en face (gauche → droite)"), para(r.ordre_rive_en_face || "—"),
