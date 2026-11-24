@@ -295,7 +295,8 @@ async function rattraperDemandes() {
   const rater = []; // vidéos en échec : retirées de vues.json pour être retentées au passage suivant
   for (const v of aFaire) {
     try {
-      if (!v.page && await dejaFiche(v.lien, v.id)) { sortie.ecartees.push({ id: v.id, raison: "fiche déjà dans Notion" }); continue; }
+      // Vidéo demandée par Nico (Run workflow) : analysée même si une fiche existe déjà (ex. ré-analyse à l'aveugle d'une ancienne fiche).
+      if (!v.page && !v.demandee && await dejaFiche(v.lien, v.id)) { sortie.ecartees.push({ id: v.id, raison: "fiche déjà dans Notion" }); continue; }
       if (!v.titre || !v.chaine) { // titre et chaîne par l'oEmbed officiel si absents (vidéo partagée par Nico)
         const o = await fetch(`https://www.youtube.com/oembed?format=json&url=${encodeURIComponent(v.lien)}`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
         v.titre = v.titre || o.title || ""; v.chaine = v.chaine || o.author_name || "";
