@@ -76,6 +76,8 @@ jobs:
           mkdir -p "$D" && (cp -r /tmp/sortie/. "$D"/ || echo "rien" > "$D"/vide.txt)
           [ "$DEST" = robot ] && cp /tmp/sortie/vues.json vues.json && cp /tmp/sortie/CANDIDATES.md DERNIER.md || true
           cp /tmp/sortie/etat.json etat.json 2>/dev/null || true   # lu par Home Assistant (nombre de fiches à valider)
+          # Méthode captures : texte caché à Claude jusqu'à son analyse à l'aveugle, un fichier par « Vidéo n° X », gardé d'un passage à l'autre.
+          if [ -d /tmp/sortie/aveugle ]; then mkdir -p aveugle && cp /tmp/sortie/aveugle/*.json aveugle/ 2>/dev/null || true; fi
           if [ "$DEST" = robot ] && [ -z "$VIDEO" ] && [ "$MODE" = semaine ]; then date +%s > derniere_semaine.txt; fi
           git config user.name "robot-bot"; git config user.email "robot@users.noreply.github.com"
           git add -A && git commit -qm "robot $D (${VIDEO:+à la demande, }commit ${GITHUB_SHA::7})"

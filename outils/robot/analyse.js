@@ -1,4 +1,9 @@
-// Robot vidéos pêche — étape 2 : regarder les vidéos retenues (Gemini) et écrire les fiches (Notion). v1 du 23 nov. 2026.
+// Robot vidéos pêche — étape 2 : regarder les vidéos retenues (Gemini) et écrire les fiches (Notion). v2 « captures » du 24 nov. 2026 (essai).
+// Méthode captures (décision de Nico, 24 nov. 11 h 40 → 12 h) : Gemini regarde À L'AVEUGLE (ni titre, ni chaîne, ni description) et note le
+// potentiel de localisation : Fort (≥ 1 repère rare vu) / Moyen (≥ 2 repères, aucun rare) / Faible (type de côte banal).
+// Fiche Notion neutre « Vidéo n° X » : Intérêt + liens de captures (watch?v=…&t=…s). Le texte (titre, chaîne, description, oral, lieux proposés
+// par Gemini) est rangé dans aveugle/<n>.json (branche de sortie) et n'arrive dans la fiche qu'après l'analyse à l'aveugle de Claude.
+// Moyen → captures demandées à Nico (au plus 3 demandes par 7 jours) ; Fort → pas de captures, sauf si la prévalidation dit « Doute » ; Faible → rien.
 // Entrée : /tmp/sortie/a_analyser.json (écrit par robot.js) + la file d'attente Notion (vidéos que Nico a partagées dans la base).
 // Sorties : fiches Notion « À vérifier » dans « Points à explorer (vidéos) », /tmp/sortie/analyses.json, /tmp/sortie/etat.json (lu par Home Assistant).
 // Sans clé GEMINI_API_KEY ou NOTION_TOKEN : ne fait rien (le dit dans analyses.json) — le tri de robot.js reste valable.
@@ -49,6 +54,7 @@ async function fileAttente() {
   // ce sont les vidéos que Nico a ajoutées lui-même (Partager → Notion). Elles passent avant le tri de la semaine.
   const q = await notion(`databases/${BASE}/query`, { filter: { and: [
     { property: "Lieu le plus probable", rich_text: { is_empty: true } },
+    { property: "Intérêt", select: { is_empty: true } },
     { property: "Statut", status: { equals: "À vérifier" } }] }, page_size: 20 });
   const liste = [];
   for (const p of q.results) {
@@ -66,7 +72,7 @@ async function fileAttente() {
 async function dejaFiche(lien, id) {
   const q = await notion(`databases/${BASE}/query`, { filter: { or: [
     { property: "Lien", url: { equals: lien } }, { property: "Lien", url: { contains: id } }] }, page_size: 5 });
-  return q.results.filter(p => (p.properties["Lieu le plus probable"]?.rich_text || []).length).length > 0;
+  return q.results.filter(p => (p.properties["Lieu le plus probable"]?.rich_text || []).length || p.properties["Intérêt"]?.select).length > 0;
 }
 
 // ---------- Gemini ----------
@@ -93,34 +99,37 @@ const SCHEMA = { type: "OBJECT", properties: {
   ordre_rive_en_face: { type: "STRING" },
   lieux_possibles: { type: "ARRAY", items: { type: "OBJECT", properties: {
     nom: { type: "STRING" }, commune: { type: "STRING" }, confiance: { type: "STRING", enum: ["Élevée", "Moyenne", "Faible"] },
-    base: { type: "STRING", enum: ["vu à l'image", "déclaré seulement (titre, description, oral)", "les deux"] },
+    base: { type: "STRING", enum: ["vu à l'image", "entendu ou écrit dans la vidéo", "les deux"] },
     pour: { type: "STRING" }, contre: { type: "STRING" }, a_regarder_sur_geoportail: { type: "STRING" } },
     required: ["nom", "confiance", "base", "pour", "contre"], propertyOrdering: ["nom", "commune", "confiance", "base", "pour", "contre", "a_regarder_sur_geoportail"] } },
-  texte_contre_image: { type: "STRING" },
+  potentiel: { type: "STRING", enum: ["Fort", "Moyen", "Faible"] },
+  potentiel_pourquoi: { type: "STRING" },
+  captures: { type: "ARRAY", items: { type: "OBJECT", properties: { timecode: { type: "STRING" }, viser: { type: "STRING" } }, required: ["timecode", "viser"] } },
   dans_la_zone: { type: "STRING", enum: ["oui", "non", "incertain"] },
   especes: { type: "STRING" }, technique_leurres: { type: "STRING" }, saison_conditions: { type: "STRING" }, acces_marche: { type: "STRING" }
-}, required: ["filme_depuis", "mer", "resume", "reperes", "lieux_possibles", "dans_la_zone", "texte_contre_image"] };
+}, required: ["filme_depuis", "mer", "resume", "sequences", "reperes", "potentiel", "potentiel_pourquoi", "captures", "lieux_possibles", "dans_la_zone"] };
 
-const consigne = v => `Tu aides un pêcheur du bord (loup au leurre, dorade à la calée) à retrouver où cette vidéo YouTube a été tournée, pour aller prospecter.
-Zone qui l'intéresse : côte méditerranéenne française de Valras-Plage (ouest) à Fos-sur-Mer (est) ; cœur : de Frontignan aux Saintes-Maries-de-la-Mer et Port-Saint-Louis-du-Rhône.
-Texte connu de la vidéo — titre : « ${v.titre} » ; chaîne : « ${v.chaine} » ; description : « ${coupe(v.desc, 1500)} ».
+const consigne = () => `Tu aides un pêcheur du bord (loup au leurre, dorade à la calée) à retrouver où cette vidéo YouTube a été tournée, pour aller prospecter.
+Zone qui l'intéresse : côte méditerranéenne française de Valras-Plage (ouest) à Fos-sur-Mer (est).
+Tu regardes la vidéo À L'AVEUGLE : on ne te donne ni son titre, ni sa chaîne, ni sa description. Juge sur ce qui se VOIT.
 
 Règles strictes :
 - Réponds en français simple. Donne le timecode (mm:ss) de chaque observation. Ne décris que ce qui se voit ou s'entend vraiment ; « incertain » est une bonne réponse.
 - Ne donne AUCUNE coordonnée GPS. Ne nomme aucune personne.
 - Dis d'abord d'où c'est filmé : du bord, d'un bateau, d'un kayak ou d'un paddle.
 - Une vidéo peut mélanger plusieurs moments ou lieux : sépare-les en séquences (ciel, lumière, vêtements) et ne mélange pas leurs indices.
-- Repères à relever pour chaque séquence : ouvrages dans l'eau (digue, épi, brise-lames, enrochement, digue effondrée, phare, balise, pieux), fond et rive (sable, galets, rochers posés ou naturels), arrière-plan (étang, ville, immeubles, phare, éoliennes, relief), lumière (indice faible : grand-angle), texte à l'écran, et ce qui est dit à l'oral sur le lieu.
+- Repères à relever pour chaque séquence : ouvrages dans l'eau (digue, épi, brise-lames, enrochement, digue effondrée, phare, balise, pieux), fond et rive (sable, galets, rochers posés ou naturels), arrière-plan (étang, ville, immeubles, phare, éoliennes, relief), lumière (indice faible : grand-angle), texte à l'écran.
+- IMPORTANT : dans « sequences », « reperes », « ordre_rive_en_face », « potentiel_pourquoi » et « captures », DÉCRIS sans nommer de lieu (ex. « phare blanc à bande noire sur une jetée en blocs », pas « phare de … »). Les noms de lieux vont SEULEMENT dans « lieux_nommes » (ce qui est dit à l'oral ou écrit à l'écran) et « lieux_possibles ».
+- « rare » = vrai seulement pour un repère qu'on ne trouve qu'à un ou deux endroits de la côte (phare particulier, ouvrage de forme inhabituelle, bâtiment reconnaissable) ; un épi, une plage, un étang, des salicornes ne sont PAS rares.
 - Pour chaque repère, dis ce qui pourrait être mal lu (exemple : une « plage de rochers » peut être une digue effondrée).
-- Si on voit une rive en face (canal, chenal, grau), décris l'ordre des repères de gauche à droite.
-- Un sponsor ou un magasin affiché donne la région du pêcheur, pas le lieu de pêche.
-- Le titre, la description, les hashtags et ce qui est dit à l'oral ne sont PAS des preuves : ils donnent au mieux une zone, et ils peuvent être FAUX exprès (beaucoup de pêcheurs cachent leurs coins). Juge sur ce qui se VOIT.
-- Compare le texte (titre, description, oral) à l'image : dans « texte_contre_image », écris « non » s'ils concordent, « rien à comparer » si le texte ne nomme aucun lieu, sinon ce qui ne colle pas (ex. « le titre dit Palavas, mais on voit une plage sans aucun ouvrage alors que Palavas est bordée d'épis »). En cas de désaccord, c'est l'image qui compte.
-- Pour chaque lieu possible, « base » dit sur quoi il repose : « vu à l'image », « déclaré seulement (titre, description, oral) » ou « les deux ».
-- S'il n'y a pas de rive en face, écris « aucune ».
-- Propose 1 à 3 lieux possibles, classés, aussi précis que possible (un poste de moins de 500 m : tel épi, telle digue, tel grau) ; si l'image ne permet qu'une zone, dis-le dans « nom » (ex. « zone : plage de l'Espiguette, poste non identifiable »).
-- Confiance : Élevée SEULEMENT si un ouvrage unique est VU à l'image et reconnu ; Moyenne si plusieurs indices VUS sont cohérents mais un autre lieu reste possible ; Faible si seulement un type de côte, ou si le lieu ne vient que du titre. Pour chacun : raisons pour, raisons contre (une ou deux phrases chacune), et quoi regarder précisément sur une photo aérienne.`;
+- Si on voit une rive en face (canal, chenal, grau), décris l'ordre des repères de gauche à droite ; sinon écris « aucune ».
+- Un sponsor ou un magasin affiché donne la région du pêcheur, pas le lieu de pêche. Ce qui est dit à l'oral peut être FAUX exprès (beaucoup de pêcheurs cachent leurs coins).
+- Potentiel de localisation : « Fort » si au moins un repère rare est vu ; « Moyen » si au moins deux repères cohérents sont vus mais aucun n'est rare ; « Faible » si on ne voit qu'un type de côte banal. Explique en une ou deux phrases dans « potentiel_pourquoi ».
+- Captures : choisis 3 à 5 moments (timecode mm:ss) où une capture d'écran nette aiderait le plus à retrouver le lieu (ouvrage, arrière-plan, rive d'en face, panneau), et pour chacun dis quoi viser dans l'image.
+- Propose 1 à 3 lieux possibles d'après l'IMAGE (« base » dit sur quoi chacun repose : « vu à l'image », « entendu ou écrit dans la vidéo », « les deux »), aussi précis que possible (un poste de moins de 500 m) ; si l'image ne permet qu'une zone, dis-le dans « nom » (ex. « zone : … »). Confiance : Élevée SEULEMENT si un ouvrage unique est vu et reconnu ; Moyenne si plusieurs indices vus sont cohérents mais un autre lieu reste possible ; Faible sinon. Pour chacun : raisons pour, raisons contre, et quoi regarder sur une photo aérienne.`;
 
+// « mm:ss » ou « h:mm:ss » → secondes (null si illisible).
+const secondes = tc => { const m = String(tc || "").trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{2})$/); return m ? (+(m[1] || 0)) * 3600 + (+m[2]) * 60 + (+m[3]) : null; };
 // Contrôle de la réponse : Gemini peut se tromper de case, se répéter ou surestimer sa confiance.
 function controler(r) {
   r.alertes = [];
@@ -130,7 +139,7 @@ function controler(r) {
     if (!["Élevée", "Moyenne", "Faible"].includes(l.confiance)) { l.confiance = "Faible"; r.alertes.push("confiance absente dans la réponse : mise à Faible"); }
     if (l.confiance === "Élevée" && !rare) { l.confiance = "Moyenne"; r.alertes.push("Élevée sans ouvrage rare vu : ramenée à Moyenne (règle du skill)"); }
     // Lieu qui ne repose que sur ce que dit le vidéaste (titre, description, oral) : peut être faux exprès → Faible (demande de Nico, 24 nov. 2026).
-    if (/déclaré seulement/.test(l.base || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu tiré seulement du texte ou de l'oral (peut être faux) : confiance ramenée à Faible"); }
+    if (/^entendu|déclaré seulement/.test(l.base || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu tiré seulement de l'oral ou d'un texte à l'écran (peut être faux) : confiance ramenée à Faible"); }
     if (!l.base) r.alertes.push("Gemini n'a pas dit sur quoi repose le lieu");
     // Aucun repère rare vu à l'image = seulement un type de côte (règle de la consigne) → Faible ; deux lieux dans le nom (« A / B », « A ou B ») = une zone → Faible.
     // Cas du 24 nov. : Palavas noté Moyenne sur « étang + salicornes + route éclairée » (commun à Ingril, Vic, Prévost…), le lieu précis venant du titre.
@@ -140,12 +149,18 @@ function controler(r) {
     // Lieu = une zone (pas un poste de moins de 500 m) : confiance Faible d'office (décision de Nico, 24 nov. 2026 ; fiche BARLOUP du 23 nov. notée Moyenne pour « Zone : embouchure du Grand Rhône »).
     if (/^\s*(\[[^\]]*\]\s*)*zone\b/i.test(l.nom || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu = une zone, pas un poste : confiance ramenée à Faible"); }
   }
-  const tci = (r.texte_contre_image || "").trim();
-  if (tci && !/^(non|rien à comparer)\.?$/i.test(tci)) {
-    r.alertes.push("le texte ne colle pas à l'image : " + coupe(tci, 300));
-    // Texte démenti par l'image : tout lieu qui s'appuie aussi sur ce texte devient suspect → Faible.
-    for (const l of r.lieux_possibles || []) if (l.base !== "vu à l'image" && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu appuyé sur un texte démenti par l'image : confiance ramenée à Faible"); }
-  }
+  // Potentiel de localisation, contrôlé par le code (Gemini surestime) : Fort exige un repère rare avec timecode ;
+  // Moyen exige deux repères avec timecode hors « lumière » (indice faible) ; sinon Faible.
+  const avecTc = (r.reperes || []).filter(x => secondes(x.timecode) !== null);
+  const nbRares = avecTc.filter(x => x.rare).length, nbSolides = avecTc.filter(x => !/lumi/.test(x.categorie || "")).length;
+  const pot0 = ["Fort", "Moyen", "Faible"].includes(r.potentiel) ? r.potentiel : "Faible";
+  r.potentiel = pot0 === "Fort" && nbRares ? "Fort" : pot0 !== "Faible" && nbSolides >= 2 ? "Moyen" : "Faible";
+  r.alertes_vue = []; // seules alertes montrées dans la fiche (celles sur les lieux de Gemini restent cachées avec eux)
+  if (r.potentiel !== pot0) r.alertes_vue.push(`potentiel ${pot0} ramené à ${r.potentiel} (${nbRares} repère(s) rare(s), ${nbSolides} repère(s) solide(s) avec timecode)`);
+  // Captures : timecodes lisibles seulement, sans doublon, 5 au plus.
+  const vus = new Set();
+  r.captures = (r.captures || []).filter(c => { const t = secondes(c.timecode); if (t === null || vus.has(t)) return false; vus.add(t); c.t = t; return true; }).slice(0, 5);
+  if (r.potentiel !== "Faible" && r.captures.length < 3) r.alertes_vue.push(`seulement ${r.captures.length} capture(s) proposée(s) avec un timecode lisible (3 attendues)`);
   r.alertes = [...new Set(r.alertes)];
   return r;
 }
@@ -170,7 +185,7 @@ async function gemini(v, liste) {
   liste0 = liste0 || liste[0];
   const taille = v.jetons ?? await compter(v);
   const fpsDepart = taille > LOURD ? FPS_LEGER : 0;
-  const corps = fps => ({ contents: [{ parts: [{ file_data: { file_uri: v.lien }, ...(fps ? { video_metadata: { fps } } : {}) }, { text: consigne(v) }] }],
+  const corps = fps => ({ contents: [{ parts: [{ file_data: { file_uri: v.lien }, ...(fps ? { video_metadata: { fps } } : {}) }, { text: consigne() }] }],
     generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: "application/json", responseSchema: SCHEMA } });
   let derniere = "";
   const essayer = async (m, fps, essai) => {
@@ -201,38 +216,67 @@ async function gemini(v, liste) {
   throw new Error(`Gemini : ${derniere} (vidéo de ${taille || "?"} jetons à 1 image/s${fpsDepart ? `, envoyée à 1 image / ${Math.round(1 / fpsDepart)} s` : ""})`);
 }
 
-// ---------- Fiche Notion ----------
-function fiche(v, a) {
-  const r = a.r, l = r.lieux_possibles || [], p = l[0];
-  const geste = r.filme_depuis !== "bord" ? `Filmé depuis : ${r.filme_depuis}. ` : "";
+// ---------- Fiche Notion (à l'aveugle) ----------
+// Numéro neutre : le plus grand « Vidéo n° X » de la base + 1 (même suite pour les essais et main).
+async function prochainNumero() {
+  const q = await notion(`databases/${BASE}/query`, { filter: { property: "Vidéo", title: { starts_with: "Vidéo n°" } }, page_size: 100 });
+  return 1 + Math.max(0, ...q.results.map(p => +(((p.properties["Vidéo"]?.title || []).map(t => t.plain_text).join("")).match(/n°\s*(\d+)/) || [])[1] || 0));
+}
+// Demandes de captures des 7 derniers jours (Fort + Doute compris, posées par la tâche du soir) : au plus MAX_CAPTURES.
+const MAX_CAPTURES = 3;
+async function demandesRecentes() {
+  const depuis = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+  return (await notion(`databases/${BASE}/query`, { filter: { property: "Captures demandées", date: { on_or_after: depuis } }, page_size: 100 })).results.length;
+}
+const lienT = (v, t) => `https://www.youtube.com/watch?v=${v.id}&t=${t}s`;
+// Ce qui est caché à Claude jusqu'à son analyse à l'aveugle : rangé dans GitHub (dossier aveugle/ de la branche de sortie).
+function fichierAveugle(n, v, a) {
+  const r = a.r;
+  return { numero: n, id: v.id, lien: v.lien, analyse_le: new Date().toISOString(), modele: a.modele, jetons: a.jetons,
+    lire_dans_cet_ordre: "1) vue (ce que Gemini voit, sans nom de lieu) ; 2) Claude fait sa propre analyse (captures ou vue) ; 3) seulement ensuite : cache.",
+    vue: { filme_depuis: r.filme_depuis, potentiel: r.potentiel, potentiel_pourquoi: r.potentiel_pourquoi, sequences: r.sequences, reperes: r.reperes,
+      ordre_rive_en_face: r.ordre_rive_en_face, captures: r.captures, especes: r.especes, technique_leurres: r.technique_leurres, saison_conditions: r.saison_conditions },
+    cache: { titre: v.titre, chaine: v.chaine, description: v.desc, date: v.date, resume_gemini: r.resume, lieux_nommes: r.lieux_nommes,
+      lieux_possibles_gemini: r.lieux_possibles, dans_la_zone: r.dans_la_zone, acces_marche: r.acces_marche },
+    alertes_vue: r.alertes_vue, alertes_lieux: r.alertes };
+}
+function fiche(n, v, a, demander) {
+  const r = a.r, pot = r.potentiel;
+  const quoi = pot === "Faible" ? "Sans intérêt pour la localisation (type de côte banal) : rien à faire."
+    : pot === "Moyen" ? (demander ? "Captures demandées à Nico (liens ci-dessous)." : `Captures à demander : déjà ${MAX_CAPTURES} demandes ces 7 derniers jours, ce sera au prochain passage.`)
+    : "Repère rare vu : pas de captures pour l'instant ; Claude cherche à l'aveugle sur la description de Gemini, captures seulement si la prévalidation dit « Doute ».";
   const proprietes = {
-    "Vidéo": { title: txt(v.titre || v.id) },
+    "Vidéo": { title: txt(`Vidéo n° ${n}`) },
     "Lien": { url: v.lien },
-    "Chaîne": { rich_text: txt(v.chaine || "") },
-    "Lieu le plus probable": { rich_text: txt(p ? `[V][Gemini] ${p.nom}${p.commune ? " (" + p.commune + ")" : ""}` : "[V][Gemini] aucun lieu proposé") },
-    "Autres lieux possibles": { rich_text: txt(l.slice(1).map(x => `${x.nom} (${x.confiance})`).join(" ; ")) },
-    "À vérifier": { rich_text: txt(`${geste}${(r.alertes || []).length ? "⚠️ " + r.alertes.join(" ; ") + ". " : ""}Analyse automatique, rien de vérifié. Coordonnées et prévalidation sur imagerie à faire. ${p?.a_regarder_sur_geoportail || ""}`) }
+    "Intérêt": { select: { name: pot } },
+    "À vérifier": { rich_text: txt(`${quoi}${r.alertes_vue.length ? " ⚠️ " + r.alertes_vue.join(" ; ") + "." : ""} Analyse à l'aveugle : titre, chaîne, description et lieux de Gemini rangés dans GitHub (aveugle/${n}.json), ajoutés ici seulement après l'analyse de Claude.`) }
   };
-  if (p?.confiance) proprietes["Confiance"] = { select: { name: p.confiance } };
+  if (demander) proprietes["Captures demandées"] = { date: { start: new Date().toISOString().slice(0, 10) } };
   if (v.date) proprietes["Date vidéo"] = { date: { start: v.date } };
   const blocs = [
-    para(`Fiche écrite par le robot le ${new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })} — Gemini (${a.modele}) a regardé la vidéo depuis son lien public, sans téléchargement. Tout est [V] : rien n'est vérifié. Pas de coordonnées : elles viendront de la prévalidation (OSM, IGN, Sentinel-2), puis du contrôle Géoportail de Nico.`),
-    titre("Résumé"), para(r.resume || ""),
-    para(`Filmé depuis : ${r.filme_depuis} — Mer : ${r.mer} — Dans la zone Valras → Fos : ${r.dans_la_zone}`),
-    ...(r.alertes || []).map(x => puce("⚠️ Contrôle du robot : " + x)),
-    titre("Lieux possibles (Gemini)"),
-    ...l.map(x => puce(`${x.nom}${x.commune ? " (" + x.commune + ")" : ""} — confiance ${x.confiance}${x.base ? " (repose sur : " + x.base + ")" : ""}. Pour : ${x.pour || "—"}. Contre : ${x.contre || "—"}. À regarder : ${x.a_regarder_sur_geoportail || "—"}`)),
-    titre("Lieux nommés dans la vidéo"),
-    ...((r.lieux_nommes || []).length ? r.lieux_nommes.map(x => puce(`${x.timecode || "?"} (${x.ou || "?"}) : ${x.texte}`)) : [para("Aucun.")]),
-    titre("Séquences"),
-    ...(r.sequences || []).map(x => puce(`${x.debut || "?"}–${x.fin || "?"} : ${x.description || "(non décrite par Gemini)"}`)),
-    titre("Grille des repères"),
-    ...(r.reperes || []).slice(0, 40).map(x => puce(`${x.timecode || "?"} · ${x.categorie}${x.rare ? " · RARE" : ""} : ${x.description}${x.pourrait_etre_mal_lu ? " — pourrait être mal lu : " + x.pourrait_etre_mal_lu : ""}`)),
-    titre("Rive d'en face (gauche → droite)"), para(r.ordre_rive_en_face || "—"),
-    titre("Pêche"), puce(`Espèces : ${r.especes || "—"}`), puce(`Technique, leurres : ${r.technique_leurres || "—"}`),
-    puce(`Saison, conditions : ${r.saison_conditions || "—"}`), puce(`Accès, marche : ${r.acces_marche || "—"}`)
+    para(`Fiche écrite par le robot le ${new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" })} — Gemini (${a.modele}) a regardé la vidéo à l'aveugle (sans titre ni description), depuis son lien public, sans téléchargement. Tout est [V].`),
+    titre(`Potentiel de localisation : ${pot}`), para(r.potentiel_pourquoi || "—"),
+    ...r.alertes_vue.map(x => puce("⚠️ Contrôle du robot : " + x))
   ];
-  return { proprietes, blocs: blocs.slice(0, 95) };
+  if (pot !== "Faible" && (r.captures || []).length) {
+    blocs.push(titre(pot === "Fort" ? "Captures (seulement si la prévalidation dit « Doute »)" : "Captures à faire"),
+      para("Ouvre chaque lien (la vidéo démarre au bon moment), mets en pause quand l'image est nette, fais une capture d'écran, puis ajoute les images sous ce titre et coche « Captures faites »."),
+      ...r.captures.map(c => ({ object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: [
+        { type: "text", text: { content: c.timecode, link: { url: lienT(v, c.t) } } }, { type: "text", text: { content: " — viser : " + coupe(c.viser, 400) } }] } })),
+      titre("Images de Nico"), para("(ajoute les captures ici)"));
+  }
+  return { proprietes, blocs };
+}
+// Moyen en attente (limite de la semaine atteinte au passage précédent) : demandées dès qu'il y a de la place, les plus anciennes d'abord.
+async function rattraperDemandes() {
+  let place = MAX_CAPTURES - await demandesRecentes();
+  if (place <= 0) return 0;
+  const q = await notion(`databases/${BASE}/query`, { filter: { and: [{ property: "Intérêt", select: { equals: "Moyen" } },
+    { property: "Captures demandées", date: { is_empty: true } }, { property: "Captures faites", checkbox: { equals: false } },
+    { property: "Statut", status: { equals: "À vérifier" } }] }, sorts: [{ timestamp: "created_time", direction: "ascending" }], page_size: place });
+  for (const p of q.results) await notion(`pages/${p.id}`, { properties: { "Captures demandées": { date: { start: new Date().toISOString().slice(0, 10) } },
+    "À vérifier": { rich_text: txt("Captures demandées à Nico (liens dans la fiche). Analyse à l'aveugle : texte rangé dans GitHub, ajouté après l'analyse de Claude.") } } }, "PATCH");
+  return q.results.length;
 }
 
 (async () => {
@@ -267,24 +311,33 @@ function fiche(v, a) {
         sortie.ecartees.push({ id: v.id, titre: v.titre, raison: `Gemini : filmé depuis ${a.r.filme_depuis}, mer ${a.r.mer}, zone ${a.r.dans_la_zone}` });
         continue;
       }
-      const f = fiche(v, a);
+      const n = await prochainNumero();
+      const demander = a.r.potentiel === "Moyen" && await demandesRecentes() < MAX_CAPTURES;
+      fs.mkdirSync(`${OUT}/aveugle`, { recursive: true });
+      fs.writeFileSync(`${OUT}/aveugle/${n}.json`, JSON.stringify(fichierAveugle(n, v, a), null, 1));
+      const f = fiche(n, v, a, demander);
       let page = v.page;
-      if (page) {
+      if (page) { // page partagée par Nico : titre remplacé par « Vidéo n° X » (le titre d'origine est dans aveugle/X.json)
         await notion(`pages/${page}`, { properties: f.proprietes }, "PATCH");
         await notion(`blocks/${page}/children`, { children: f.blocs }, "PATCH");
       } else page = (await notion("pages", { parent: { database_id: BASE }, properties: f.proprietes, children: f.blocs })).id;
-      sortie.analysees.push({ id: v.id, titre: v.titre, page: `https://www.notion.so/${page.replace(/-/g, "")}`, modele: a.modele, jetons: a.jetons,
-        lieu: a.r.lieux_possibles?.[0]?.nom, confiance: a.r.lieux_possibles?.[0]?.confiance, filme_depuis: a.r.filme_depuis, demandee: !!v.demandee });
+      sortie.analysees.push({ numero: n, id: v.id, page: `https://www.notion.so/${page.replace(/-/g, "")}`, modele: a.modele, jetons: a.jetons,
+        interet: a.r.potentiel, captures_demandees: demander, filme_depuis: a.r.filme_depuis, demandee: !!v.demandee });
     } catch (e) { sortie.erreurs.push(`${v.id} : ${e.message}`); rater.push(v.id); }
     ecrire();
   }
+  try { const k = await rattraperDemandes(); if (k) sortie.demandes_rattrapees = k; } catch (e) { sortie.erreurs.push("rattrapage des demandes : " + e.message); }
   // État pour Home Assistant : fiches que Nico doit regarder (prévalidées, pas encore validées) et fiches à prévalider.
   try {
     const cpt = async f => (await notion(`databases/${BASE}/query`, { filter: { and: f }, page_size: 100 })).results.length;
     const aVerifier = { property: "Statut", status: { equals: "À vérifier" } }, pasValide = { property: "Validé par Nico", checkbox: { equals: false } };
     const etat = { le: new Date().toISOString(),
       a_valider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { equals: "Prévalidé" } }]),
-      a_prevalider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { is_empty: true } }]),
+      // À prévalider : anciennes fiches (sans Intérêt), Fort, ou Moyen dont les captures sont faites. Faible : jamais.
+      a_prevalider: await cpt([aVerifier, pasValide, { property: "Prévalidation Claude", select: { is_empty: true } }, { or: [
+        { property: "Intérêt", select: { is_empty: true } }, { property: "Intérêt", select: { equals: "Fort" } },
+        { and: [{ property: "Intérêt", select: { equals: "Moyen" } }, { property: "Captures faites", checkbox: { equals: true } }] }] }]),
+      a_capturer: await cpt([aVerifier, { property: "Captures demandées", date: { is_not_empty: true } }, { property: "Captures faites", checkbox: { equals: false } }]),
       nouvelles_fiches: sortie.analysees.length, erreurs: sortie.erreurs.length };
     fs.writeFileSync(`${OUT}/etat.json`, JSON.stringify(etat, null, 1));
   } catch (e) { sortie.erreurs.push("état : " + e.message); }
