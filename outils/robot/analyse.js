@@ -112,6 +112,8 @@ function controler(r) {
     for (const k of ["pour", "contre", "a_regarder_sur_geoportail"]) if ((l[k] || "").length > 700) { l[k] = coupe(l[k], 700); r.alertes.push("réponse de Gemini trop longue ou répétée (coupée)"); }
     if (!["Élevée", "Moyenne", "Faible"].includes(l.confiance)) { l.confiance = "Faible"; r.alertes.push("confiance absente dans la réponse : mise à Faible"); }
     if (l.confiance === "Élevée" && !rare) { l.confiance = "Moyenne"; r.alertes.push("Élevée sans ouvrage rare vu : ramenée à Moyenne (règle du skill)"); }
+    // Lieu = une zone (pas un poste de moins de 500 m) : confiance Faible d'office (décision de Nico, 24 nov. 2026 ; fiche BARLOUP du 23 nov. notée Moyenne pour « Zone : embouchure du Grand Rhône »).
+    if (/^\s*(\[[^\]]*\]\s*)*zone\b/i.test(l.nom || "") && l.confiance !== "Faible") { l.confiance = "Faible"; r.alertes.push("lieu = une zone, pas un poste : confiance ramenée à Faible"); }
   }
   r.alertes = [...new Set(r.alertes)];
   return r;
