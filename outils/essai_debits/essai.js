@@ -26,10 +26,11 @@ async function ouvrir(browser, nom, opts = {}) {
   const cas = { nom, controles: [], erreurs: [], hubeau: [], t0: Date.now() };
   page.on("pageerror", e => cas.erreurs.push(e.message.slice(0, 300)));
   const muets = new Set(opts.muets || []);
-  await page.setRequestInterception(true);
+  if (!opts.libre) await page.setRequestInterception(true);
   page.on("request", r => {
     const u = r.url();
     if (u.includes("hubeau")) cas.hubeau.push({ t: ((Date.now() - cas.t0) / 1000).toFixed(1), heure: new Date().toISOString().slice(11, 19), type: u.includes("obs_elab") ? "habituel" : "jour", station: (u.match(/code_entite=(\w+)/) || [])[1], bloque: u.includes("obs_elab") && [...muets].some(s => u.includes(s)) });
+    if (opts.libre) return;
     if (u.includes("obs_elab") && [...muets].some(s => u.includes(s))) return r.abort("timedout");
     r.continue();
   });
@@ -144,9 +145,8 @@ const classement = async page => (await page.$$eval("#list .spot", els => els.ma
 
   // F. Hors réseau puis retour du réseau (appli déjà ouverte une fois).
   {
-    const { ctx, page, cas } = await ouvrir(browser, "F-hors-reseau");
+    const { ctx, page, cas } = await ouvrir(browser, "F-hors-reseau", { libre: true });
     await page.goto(BR, { waitUntil: "domcontentloaded" }); await liste(page); await sleep(20000);
-    await page.setRequestInterception(false);
     await page.setOfflineMode(true);
     let t = Date.now();
     await page.reload({ waitUntil: "domcontentloaded" }).catch(e => cas.erreurs.push("reload : " + e.message));
@@ -167,6 +167,10 @@ const classement = async page => (await page.$$eval("#list .spot", els => els.ma
   // Bilan : classement branche = main quand les réponses sont les mêmes (même passage, ordre alterné).
   const A = res.cas.filter(c => c.nom.startsWith("A-"));
   res.classements = A.map(c => `${c.nom} : ${c.classement}`);
+  // Chaque passage de la branche comparé au passage de main juste à côté (mêmes minutes, mêmes réponses en principe).
+  const cmp = { nom: "A-comparaison", controles: [], erreurs: [], hubeau: [] };
+  for (let k = 0; k < A.length; k += 2) ok(cmp, `${A[k].nom} / ${A[k + 1].nom} : même classement`, A[k].classement === A[k + 1].classement, [A[k].classement, A[k + 1].classement]);
+  res.cas.push(cmp);
   res.total = { controles: res.cas.reduce((a, c) => a + c.controles.length, 0), rates: res.cas.flatMap(c => c.controles.filter(k => !k.ok).map(k => `${c.nom} — ${k.nom}`)) };
   fs.writeFileSync(`${OUT}/resultats.json`, JSON.stringify(res, null, 1));
   const md = [`# Essai débits habituels — ${res.genere}`, "", `Contrôles : ${res.total.controles}, ratés : ${res.total.rates.length}`, ...res.total.rates.map(x => `- RATÉ ${x}`), "", "## Classements (cas A)", ...res.classements.map(x => `- ${x}`), "",
