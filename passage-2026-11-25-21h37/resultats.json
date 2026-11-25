@@ -1,0 +1,277 @@
+{
+ "genere": "2026-11-25T20:38:02.129Z",
+ "cas": [
+  {
+   "nom": "G1-branche-1",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-main-1",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-main-2",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-branche-2",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-branche-3",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-main-3",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G1-comparaison",
+   "controles": [
+    {
+     "nom": "G1-branche-1 / G1-main-1 : même classement (carnet vide)",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    },
+    {
+     "nom": "G1-main-2 / G1-branche-2 : même classement (carnet vide)",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    },
+    {
+     "nom": "G1-branche-3 / G1-main-3 : même classement (carnet vide)",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    }
+   ],
+   "erreurs": []
+  },
+  {
+   "nom": "G2-branche",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "Grau-du-Roi : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "Lez : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t89 %\t0 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "poste jamais pêché (1) : pas de ligne Carnet",
+     "ok": true,
+     "detail": " "
+    },
+    {
+     "nom": "explication nouvelle (« attendue(s) d'après ta moyenne »)",
+     "ok": true,
+     "detail": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "carnet6": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) ",
+   "carnet11": "Carnet\t89 %\t0 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) ",
+   "carnet1": " ",
+   "classement": "12,16,6,13,1,5,11,8,15,7,2,9,3,4,14,10,17"
+  },
+  {
+   "nom": "G3-hors-reseau",
+   "controles": [
+    {
+     "nom": "hors réseau : liste affichée",
+     "ok": true,
+     "detail": "0.3 s"
+    },
+    {
+     "nom": "retour du réseau : bandeau parti",
+     "ok": true,
+     "detail": "3.2 s"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": []
+  },
+  {
+   "nom": "G2-main",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "Grau-du-Roi : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t59 %\t1 sortie(s) réussie(s) sur 5 ici "
+    },
+    {
+     "nom": "Lez : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t50 %\t0 sortie(s) réussie(s) sur 5 ici "
+    },
+    {
+     "nom": "poste jamais pêché (1) : pas de ligne Carnet",
+     "ok": true,
+     "detail": " "
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "carnet6": "Carnet\t59 %\t1 sortie(s) réussie(s) sur 5 ici ",
+   "carnet11": "Carnet\t50 %\t0 sortie(s) réussie(s) sur 5 ici ",
+   "carnet1": " ",
+   "classement": "12,16,13,1,5,8,15,7,2,9,3,4,14,6,11,10,17"
+  },
+  {
+   "nom": "G2-branche",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "Grau-du-Roi : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "Lez : ligne Carnet",
+     "ok": true,
+     "detail": "Carnet\t89 %\t0 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "poste jamais pêché (1) : pas de ligne Carnet",
+     "ok": true,
+     "detail": " "
+    },
+    {
+     "nom": "explication nouvelle (« attendue(s) d'après ta moyenne »)",
+     "ok": true,
+     "detail": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) "
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "carnet6": "Carnet\t111 %\t1 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) ",
+   "carnet11": "Carnet\t89 %\t0 sortie(s) réussie(s) sur 5 ici, 0,5 attendue(s) d'après ta moyenne (1 réussie(s) sur 10 sorties, tous postes) ",
+   "carnet1": " ",
+   "classement": "12,16,6,13,1,5,11,8,15,7,2,9,3,4,14,10,17"
+  }
+ ],
+ "total": {
+  "controles": 35,
+  "rates": []
+ }
+}
