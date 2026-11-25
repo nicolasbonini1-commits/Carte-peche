@@ -672,17 +672,35 @@
     };
   }
 
+  // Facteur « Carnet » (nouvelle formule du 25 nov. 2026, voir M.learnCarnet) : calculé une fois par carnet et par espèce.
+  // Note du modèle à chaque sortie : celle gardée dans la sortie (snapshot), sinon la moyenne des sorties qui en ont une,
+  // sinon 0,5 (aucune note connue : une valeur commune à toutes les sorties ne change rien au calcul « observé / attendu »).
+  const learnCache = {};
   function learnFor(spot, species, p) {
-    const mine = state.carnet.filter(e => e.spotId === spot.id && (e.species === species || e.species === "les deux"));
-    const k = mine.filter(e => (species === "loup" ? e.nLoup : e.nDorade) > 0).length;
-    return M.learnFactor(k, mine.length, p);
+    const sorties = state.carnet.filter(e => e.species === species || e.species === "les deux");
+    if (!sorties.some(e => e.spotId === spot.id)) return { n: 0, k: 0, factor: 1 };
+    // Les relevés comptent dans la clé : « pêchable : non » sur place écarte la sortie liée (réglage du 25 nov., voir M.learnCarnet).
+    const key = `${species}|${state.carnet.map(e => e.id).join(",")}|${state.releves.map(r => r.id + (r.vu && r.vu.pechable || "")).join(",")}`;
+    if (!learnCache[key]) {
+      const note = e => { const s = e.snapshot; const v = s && (species === "loup" ? s.scoreLoup : s.scoreDorade); return v != null ? M.clamp(v / 100, 0.05, 1) : null; };
+      const connues = sorties.map(note).filter(v => v != null);
+      const moy = connues.length ? connues.reduce((a, b) => a + b, 0) / connues.length : null;
+      // Sortie écartée : relevé lié « pêchable : non », ou moins d'1 h de pêche (durée absente ou 0 = inconnue → comptée).
+      const ecart = e => { const r = e.releveId && state.releves.find(x => x.id === e.releveId);
+        return r && r.vu && r.vu.pechable === "non" ? "eau" : (e.dur > 0 && e.dur < M.CARNET_DUR_MIN ? "duree" : null); };
+      learnCache[key] = M.learnCarnet(sorties.map(e => ({ spotId: e.spotId, ok: (species === "loup" ? e.nLoup : e.nDorade) > 0,
+        p: note(e) ?? moy ?? 0.5, ecart: ecart(e) })));
+    }
+    const L = learnCache[key], x = L.per[spot.id];
+    return { n: x.n, k: x.k, factor: x.factor, attendu: x.attendu, nTot: L.n, kTot: L.k, compte: x.compte, min: L.min,
+      ecart: x.ecart, ecartEau: x.ecartEau, ecartDuree: x.ecartDuree };
   }
 
   function scoreAt(spot, i, species) {
     const c = conditions(spot, i);
     const base = M.score(spot, species, c, null);
     const learn = learnFor(spot, species, base.score / 100);
-    return learn.n ? M.score(spot, species, c, learn) : base;
+    return learn.n || learn.ecart ? M.score(spot, species, c, learn) : base;
   }
   function bestSpecies(spot, i) {
     const sp = state.plan.species;
