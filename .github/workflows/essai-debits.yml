@@ -1,0 +1,47 @@
+# Essai du correctif « débits habituels » (bogue 1 de l'audit, 25 nov. 2026).
+# Lancée par un envoi sur la branche essai-debits (ou à la main). N'écrit QUE dans la branche essais-debits,
+# un dossier par passage (jamais dans donnees, releves ou robot ; aucun secret utilisé).
+name: essai-debits
+on:
+  push:
+    branches: [essai-debits]
+    paths: ["outils/essai_debits/**", ".github/workflows/essai-debits.yml", "js/**", "sw.js"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: essai-debits
+jobs:
+  essai:
+    if: github.ref_name != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Dossier du passage
+        run: echo "P=passage-$(date '+%Y-%m-%d-%Hh%M')" >> "$GITHUB_ENV"; mkdir -p /tmp/out
+      - name: Version main à côté (pour comparer)
+        run: |
+          git fetch -q --depth 1 origin main
+          git worktree add -q /tmp/main origin/main
+          grep -m1 'const CACHE' sw.js /tmp/main/sw.js | tee /tmp/out/versions.txt
+      - name: Installer Chrome (puppeteer)
+        run: npm i --no-save --silent puppeteer@23 > /dev/null 2>&1 && echo ok
+      - name: Appli dans Chrome sans écran (vraies API, un fleuve rendu muet à la fois)
+        run: |
+          python3 -m http.server 8080 > /dev/null 2>&1 &
+          (cd /tmp/main && python3 -m http.server 8081 > /dev/null 2>&1 &)
+          sleep 2
+          node outils/essai_debits/essai.js
+      - name: Enregistrer dans la branche essais-debits (un dossier par passage, jamais réécrite)
+        if: always()
+        run: |
+          cd /tmp
+          if git clone -q --depth 1 -b essais-debits "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d; then cd d; else mkdir d && cd d && git init -q && git checkout -q -b essais-debits && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"; fi
+          mkdir -p "$P" && cp -r /tmp/out/* "$P"/
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "essai débits $P" && git push -q origin essais-debits
