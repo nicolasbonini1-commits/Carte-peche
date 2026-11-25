@@ -434,10 +434,14 @@
     f.push({ k: "Eau", v: temp, why: tWhy });
 
     let total = f.reduce((p, x) => p * x.v, 1);
-    if (learn && learn.n > 0) {
+    if (learn && (learn.n > 0 || learn.ecart > 0)) {
       const f2 = v => v.toFixed(1).replace(".", ",");
-      f.push({ k: "Carnet", v: learn.factor, why: learn.attendu == null ? `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici`
-        : `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici, ${f2(learn.attendu)} attendue(s) d'après ta moyenne (${learn.kTot} réussie(s) sur ${learn.nTot} sorties, tous postes)` });
+      const ec = learn.ecart ? ` ; ${learn.ecart} écartée(s) (${[learn.ecartEau ? `${learn.ecartEau} eau non pêchable sur place` : "",
+        learn.ecartDuree ? `${learn.ecartDuree} de moins d'1 h` : ""].filter(Boolean).join(", ")})` : "";
+      const why = learn.attendu == null ? `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici`
+        : !learn.compte ? `${learn.k} sortie(s) réussie(s) sur ${learn.n} comptée(s) ici : pas encore compté dans la note (il en faut ${learn.min} ici)${ec}`
+        : `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici, ${f2(learn.attendu)} attendue(s) d'après ta moyenne (${learn.kTot} réussie(s) sur ${learn.nTot} sorties comptées, tous postes)${ec}`;
+      f.push({ k: "Carnet", v: learn.factor, why });
       total *= learn.factor;
     }
     const safety = (c.hsLocal != null && c.hsLocal >= 1.5 && (spot.type === "digue" || spot.type === "roche")) || c.gust >= 70;
@@ -465,13 +469,30 @@
   // Conséquences : si tu réussis partout pareil, tous les facteurs restent à 1 (plus de punition des postes où tu vas) ;
   // bredouille partout → 1 partout (rien ne distingue les postes) ; seul l'écart d'un poste à TA moyenne compte.
   // sorties = [{ spotId, ok (vrai si au moins 1 prise de l'espèce), p (note du modèle ÷ 100 à cette sortie) }]
-  M.learnCarnet = (sorties, a = 4) => {
-    const K = sorties.filter(s => s.ok).length, P = sorties.reduce((t, s) => t + s.p, 0);
+  // Réglages du 25 nov. 2026 à 22 h 21 (choix de Nico : « les relevés les plus fiables possibles ») :
+  // 3) Sortie écartée du calcul (elle reste dans le carnet et dans les relevés) si, sur place, le relevé lié dit
+  //    « pêchable : non » (le poste n'a pas vraiment été testé), ou si elle a duré moins d'1 h (≈ 15-20 min par leurre
+  //    × 3 leurres, voir section 7 « Ordre des leurres » : en moins d'1 h, le tour du poste n'est pas fait). Écartée avec ou sans prise,
+  //    pour ne pas gonfler les postes (ne retirer que les bredouilles fausserait vers le haut). [P]
+  // 4) Un poste ne bouge qu'à partir de 5 sorties comptées ici (« en dessous de 5 sorties, pas assez pour conclure ») [P] ;
+  //    avant, facteur 1 et simple ligne d'info. Ses sorties comptent quand même dans ta moyenne (tous postes).
+  // sorties = [{ spotId, ok, p, ecart: null | "eau" | "duree" }]
+  M.CARNET_MIN = 5; M.CARNET_DUR_MIN = 1;
+  M.learnCarnet = (sorties, a = 4, min = M.CARNET_MIN) => {
+    const val = sorties.filter(s => !s.ecart);
+    const K = val.filter(s => s.ok).length, P = val.reduce((t, s) => t + s.p, 0);
     const c = P > 0 ? K / P : 0;
     const per = {};
-    sorties.forEach(s => { const x = per[s.spotId] = per[s.spotId] || { n: 0, k: 0, sumP: 0 }; x.n++; if (s.ok) x.k++; x.sumP += s.p; });
-    Object.values(per).forEach(x => { x.attendu = c * x.sumP; x.factor = M.clamp((x.k + a) / (x.attendu + a), 0.5, 1.5); });
-    return { n: sorties.length, k: K, taux: sorties.length ? K / sorties.length : 0, c, per };
+    sorties.forEach(s => {
+      const x = per[s.spotId] = per[s.spotId] || { n: 0, k: 0, sumP: 0, ecartEau: 0, ecartDuree: 0 };
+      if (s.ecart === "eau") x.ecartEau++; else if (s.ecart === "duree") x.ecartDuree++;
+      else { x.n++; if (s.ok) x.k++; x.sumP += s.p; }
+    });
+    Object.values(per).forEach(x => {
+      x.attendu = c * x.sumP; x.brut = M.clamp((x.k + a) / (x.attendu + a), 0.5, 1.5);
+      x.compte = x.n >= min; x.factor = x.compte ? x.brut : 1; x.ecart = x.ecartEau + x.ecartDuree;
+    });
+    return { n: val.length, k: K, taux: val.length ? K / val.length : 0, c, per, min, ecart: sorties.length - val.length };
   };
 
   // ---------- 7. Ordre des leurres pour un créneau ----------
