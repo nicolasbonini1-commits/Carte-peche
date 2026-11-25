@@ -435,7 +435,9 @@
 
     let total = f.reduce((p, x) => p * x.v, 1);
     if (learn && learn.n > 0) {
-      f.push({ k: "Carnet", v: learn.factor, why: `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici` });
+      const f2 = v => v.toFixed(1).replace(".", ",");
+      f.push({ k: "Carnet", v: learn.factor, why: learn.attendu == null ? `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici`
+        : `${learn.k} sortie(s) réussie(s) sur ${learn.n} ici, ${f2(learn.attendu)} attendue(s) d'après ta moyenne (${learn.kTot} réussie(s) sur ${learn.nTot} sorties, tous postes)` });
       total *= learn.factor;
     }
     const safety = (c.hsLocal != null && c.hsLocal >= 1.5 && (spot.type === "digue" || spot.type === "roche")) || c.gust >= 70;
@@ -446,10 +448,29 @@
   // Pour un poste et une espèce : prior = note du modèle (p). On ajoute tes sorties :
   // facteur = ((réussites + a*p) / (sorties + a)) / p, borné entre 0,5 et 1,5. a = 4 :
   // il faut ~4 sorties pour que ton expérience pèse autant que le modèle.
+  // Ancienne formule (jusqu'au 25 nov. 2026) : gardée pour comparer dans les essais, plus utilisée par l'appli.
+  // Défaut vu par l'audit du 25 nov. : la note du modèle n'est pas une probabilité de prise ; avec 25 % de sorties réussies,
+  // un poste noté 80 tombait à ×0,58 après 5 sorties, sous un poste jamais essayé.
   M.learnFactor = (k, n, p, a = 4) => {
     if (!n) return { n: 0, k: 0, factor: 1 };
     p = M.clamp(p, 0.05, 0.95);
     return { n, k, factor: M.clamp(((k + a * p) / (n + a)) / p, 0.5, 1.5) };
+  };
+  // Nouvelle formule (audit du 25 nov. 2026, point 4) : « observé / attendu », comme on compare un poste à la moyenne.
+  // 1) Ton taux moyen, toutes sorties confondues pour l'espèce : c = sorties réussies ÷ somme des notes du modèle (÷ 100)
+  //    au moment de chaque sortie. c traduit la note du modèle en chances réelles POUR TOI (débutant ou non).
+  // 2) Pour chaque poste : attendu = c × somme des notes de tes sorties à ce poste ; facteur = (réussies + a) / (attendu + a),
+  //    borné entre 0,5 et 1,5. a = 2 [P] : il faut quelques sorties pour qu'un poste s'écarte de 1.
+  // Conséquences : si tu réussis partout pareil, tous les facteurs restent à 1 (plus de punition des postes où tu vas) ;
+  // bredouille partout → 1 partout (rien ne distingue les postes) ; seul l'écart d'un poste à TA moyenne compte.
+  // sorties = [{ spotId, ok (vrai si au moins 1 prise de l'espèce), p (note du modèle ÷ 100 à cette sortie) }]
+  M.learnCarnet = (sorties, a = 2) => {
+    const K = sorties.filter(s => s.ok).length, P = sorties.reduce((t, s) => t + s.p, 0);
+    const c = P > 0 ? K / P : 0;
+    const per = {};
+    sorties.forEach(s => { const x = per[s.spotId] = per[s.spotId] || { n: 0, k: 0, sumP: 0 }; x.n++; if (s.ok) x.k++; x.sumP += s.p; });
+    Object.values(per).forEach(x => { x.attendu = c * x.sumP; x.factor = M.clamp((x.k + a) / (x.attendu + a), 0.5, 1.5); });
+    return { n: sorties.length, k: K, taux: sorties.length ? K / sorties.length : 0, c, per };
   };
 
   // ---------- 7. Ordre des leurres pour un créneau ----------

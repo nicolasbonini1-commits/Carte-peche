@@ -672,10 +672,23 @@
     };
   }
 
+  // Facteur « Carnet » (nouvelle formule du 25 nov. 2026, voir M.learnCarnet) : calculé une fois par carnet et par espèce.
+  // Note du modèle à chaque sortie : celle gardée dans la sortie (snapshot), sinon la moyenne des sorties qui en ont une,
+  // sinon 0,5 (aucune note connue : une valeur commune à toutes les sorties ne change rien au calcul « observé / attendu »).
+  const learnCache = {};
   function learnFor(spot, species, p) {
-    const mine = state.carnet.filter(e => e.spotId === spot.id && (e.species === species || e.species === "les deux"));
-    const k = mine.filter(e => (species === "loup" ? e.nLoup : e.nDorade) > 0).length;
-    return M.learnFactor(k, mine.length, p);
+    const sorties = state.carnet.filter(e => e.species === species || e.species === "les deux");
+    if (!sorties.some(e => e.spotId === spot.id)) return { n: 0, k: 0, factor: 1 };
+    const key = `${species}|${state.carnet.map(e => e.id).join(",")}`;
+    if (!learnCache[key]) {
+      const note = e => { const s = e.snapshot; const v = s && (species === "loup" ? s.scoreLoup : s.scoreDorade); return v != null ? M.clamp(v / 100, 0.05, 1) : null; };
+      const connues = sorties.map(note).filter(v => v != null);
+      const moy = connues.length ? connues.reduce((a, b) => a + b, 0) / connues.length : null;
+      learnCache[key] = M.learnCarnet(sorties.map(e => ({ spotId: e.spotId, ok: (species === "loup" ? e.nLoup : e.nDorade) > 0,
+        p: note(e) ?? moy ?? 0.5 })));
+    }
+    const L = learnCache[key], x = L.per[spot.id];
+    return { n: x.n, k: x.k, factor: x.factor, attendu: x.attendu, nTot: L.n, kTot: L.k };
   }
 
   function scoreAt(spot, i, species) {
