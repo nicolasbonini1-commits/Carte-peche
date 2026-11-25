@@ -1,0 +1,266 @@
+{
+ "genere": "2026-11-25T20:06:45.919Z",
+ "cas": [
+  {
+   "nom": "enligne-1",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": "4.3 s"
+    },
+    {
+     "nom": "cache v22 installé",
+     "ok": true,
+     "detail": [
+      "carte-peche-v22",
+      "carte-peche-tuiles"
+     ]
+    },
+    {
+     "nom": "3 débits habituels, pas de « manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 21 h 06 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.6",
+     "heure": "20:06:48",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.6",
+     "heure": "20:06:48",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.6",
+     "heure": "20:06:48",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.3",
+     "heure": "20:06:51",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.3",
+     "heure": "20:06:51",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.3",
+     "heure": "20:06:51",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795637207899,
+   "liste_s": "4.3",
+   "fresh": "Météo du mer. 25 nov. à 21 h 06 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "version": [
+    "carte-peche-v22",
+    "carte-peche-tuiles"
+   ]
+  },
+  {
+   "nom": "enligne-2",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": "3.9 s"
+    },
+    {
+     "nom": "cache v22 installé",
+     "ok": true,
+     "detail": [
+      "carte-peche-v22",
+      "carte-peche-tuiles"
+     ]
+    },
+    {
+     "nom": "3 débits habituels, pas de « manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 21 h 07 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "20:07:18",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "20:07:18",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "20:07:18",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.7",
+     "heure": "20:07:18",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.7",
+     "heure": "20:07:18",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.7",
+     "heure": "20:07:18",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795637237873,
+   "liste_s": "3.9",
+   "fresh": "Météo du mer. 25 nov. à 21 h 07 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "version": [
+    "carte-peche-v22",
+    "carte-peche-tuiles"
+   ]
+  },
+  {
+   "nom": "enligne-3",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": "4.9 s"
+    },
+    {
+     "nom": "cache v22 installé",
+     "ok": true,
+     "detail": [
+      "carte-peche-v22",
+      "carte-peche-tuiles"
+     ]
+    },
+    {
+     "nom": "Lez muet → « débit habituel manquant : Lez »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 21 h 07 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves (débit habituel manquant : Lez) · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.3",
+     "heure": "20:07:47",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.3",
+     "heure": "20:07:47",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.3",
+     "heure": "20:07:47",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": true
+    },
+    {
+     "t": "2.2",
+     "heure": "20:07:49",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.2",
+     "heure": "20:07:49",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.2",
+     "heure": "20:07:49",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795637267063,
+   "liste_s": "4.9",
+   "fresh": "Météo du mer. 25 nov. à 21 h 07 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves (débit habituel manquant : Lez) · routes : OSRM depuis Poulx",
+   "version": [
+    "carte-peche-v22",
+    "carte-peche-tuiles"
+   ]
+  }
+ ],
+ "total": {
+  "controles": 12,
+  "rates": []
+ }
+}
