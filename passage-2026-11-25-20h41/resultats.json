@@ -1,0 +1,1210 @@
+{
+ "genere": "2026-11-25T19:41:19.129Z",
+ "cas": [
+  {
+   "nom": "A-branche-1",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "vidourle",
+      "lez",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "pas de « débit habituel manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 41 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:41:19",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:41:19",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:41:19",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.3",
+     "heure": "19:41:21",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.3",
+     "heure": "19:41:21",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.3",
+     "heure": "19:41:21",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635679618,
+   "fresh": "Météo du mer. 25 nov. à 20 h 41 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "A-main-1",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "lez",
+      "vidourle",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:41:53",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:41:53",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:41:53",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:41:54",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:41:54",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:41:54",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635713448,
+   "fresh": "Météo du mer. 25 nov. à 20 h 41 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "A-main-2",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "vidourle",
+      "lez",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:42:25",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:42:25",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:42:25",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:42:26",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:42:26",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.0",
+     "heure": "19:42:26",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:43:05",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:43:05",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:43:05",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:44:05",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:44:05",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:44:05",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635745156,
+   "fresh": "Météo du mer. 25 nov. à 20 h 44 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "A-branche-2",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "vidourle",
+      "lez",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "pas de « débit habituel manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 44 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:44:36",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:44:36",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:44:36",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.2",
+     "heure": "19:44:37",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.2",
+     "heure": "19:44:37",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.2",
+     "heure": "19:44:37",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635876168,
+   "fresh": "Météo du mer. 25 nov. à 20 h 44 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "A-branche-3",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "vidourle",
+      "lez",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "pas de « débit habituel manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 45 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.1",
+     "heure": "19:45:07",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.1",
+     "heure": "19:45:07",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.1",
+     "heure": "19:45:07",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "5.6",
+     "heure": "19:45:12",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "5.6",
+     "heure": "19:45:12",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "5.6",
+     "heure": "19:45:12",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:45:47",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:45:47",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:45:47",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635907119,
+   "fresh": "Météo du mer. 25 nov. à 20 h 45 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "A-main-3",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 débits habituels gardés",
+     "ok": true,
+     "detail": [
+      "lez",
+      "rhone",
+      "vidourle"
+     ]
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:46:21",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:46:21",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:46:21",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.5",
+     "heure": "19:46:23",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.5",
+     "heure": "19:46:23",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.5",
+     "heure": "19:46:23",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795635981123,
+   "fresh": "Météo du mer. 25 nov. à 20 h 46 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "classement": "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\nnon\n(chenal du Grau-du-Roi, aujourd'hui)\n\nVidourle en crue (5,2× depuis minuit, 1,6× hier, 1,8× avant-hier) : chenal probablement marron. Normale = débit habituel du mois.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 44 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, Vidourle ×1,2, pluie des jours d'avant ×1,4) · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n73\n1. 20 h 00 – 23 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 18 h 58\n\nEau très chargée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienn"
+  },
+  {
+   "nom": "B-lez-muet",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "liste gardée sans le Lez",
+     "ok": true,
+     "detail": [
+      "rhone",
+      "vidourle"
+     ]
+    },
+    {
+     "nom": "ligne du bas : « débit habituel manquant : Lez »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 48 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves (débit habituel manquant : Lez) · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "Fleuves maintenant : Lez « débit habituel pas encore reçu »",
+     "ok": true,
+     "detail": "Rhône à Tarascon : 4180 m³/s, 2,4 × son débit habituel de novembre (1708 m³/s), stable · eau qui se charge\nVidourle à Gallargues : 46 m³/s, 4,8 × son débit habituel de novembre (9,6 m³/s), en baisse · en crue, décrue\nLez à Lattes : 7 m³/s, débit habituel pas encore reçu (nouvel essai à la prochaine mise à jour) : la pluie sert d'estimation"
+    },
+    {
+     "nom": "après « Mettre à jour » : 3 fleuves",
+     "ok": true,
+     "detail": [
+      "rhone",
+      "vidourle",
+      "lez"
+     ]
+    },
+    {
+     "nom": "seul le Lez est redemandé",
+     "ok": true,
+     "detail": [
+      "Y321002001"
+     ]
+    },
+    {
+     "nom": "date de la liste inchangée (complétée, pas refaite)",
+     "ok": true,
+     "detail": [
+      1795636020089,
+      1795636020089
+     ]
+    },
+    {
+     "nom": "plus de « manquant »",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 49 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.1",
+     "heure": "19:46:57",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.1",
+     "heure": "19:46:57",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.1",
+     "heure": "19:46:57",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": true,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:47:00",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:47:00",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:47:00",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:47:37",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": true
+    },
+    {
+     "t": "40.3",
+     "heure": "19:47:37",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:47:37",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:47:37",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:48:37",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": true
+    },
+    {
+     "t": "100.4",
+     "heure": "19:48:37",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:48:37",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:48:37",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "134.3",
+     "heure": "19:49:11",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false
+    },
+    {
+     "t": "136.7",
+     "heure": "19:49:13",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "136.7",
+     "heure": "19:49:13",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "136.7",
+     "heure": "19:49:13",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795636017041,
+   "fresh1": "Météo du mer. 25 nov. à 20 h 48 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves (débit habituel manquant : Lez) · routes : OSRM depuis Poulx",
+   "fleuves1": "Rhône à Tarascon : 4180 m³/s, 2,4 × son débit habituel de novembre (1708 m³/s), stable · eau qui se charge\nVidourle à Gallargues : 46 m³/s, 4,8 × son débit habituel de novembre (9,6 m³/s), en baisse · en crue, décrue\nLez à Lattes : 7 m³/s, débit habituel pas encore reçu (nouvel essai à la prochaine mise à jour) : la pluie sert d'estimation",
+   "fresh2": "Météo du mer. 25 nov. à 20 h 49 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "redemandes": [
+    "Y321002001"
+   ]
+  },
+  {
+   "nom": "C-vidourle-muet",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "« Pêchable ? » : débit habituel du Vidourle pas encore reçu",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "plus de « pas de réseau depuis plus d'un jour »",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "couleur de l'eau : « sa crue n'est pas comptée »",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:49:41",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:49:41",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": true
+    },
+    {
+     "t": "0.2",
+     "heure": "19:49:41",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:49:44",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:49:44",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "3.0",
+     "heure": "19:49:44",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795636181452,
+   "fiche6": "Jetées du chenal du Grau-du-Roi\n77\n\nLe Grau-du-Roi · 62 min de route · grau / sortie d'étang\n\n📍 Je suis sur place\n\nPêchable ?\n?\n(chenal du Grau-du-Roi, aujourd'hui)\n\ndébit habituel du Vidourle pas encore reçu : nouvel essai à la prochaine mise à jour des débits.\n\nQue veut dire chaque couleur d'eau ?\n\nMeilleure heure de ta fenêtre : 08 h 00 · 77/100 pour le loup\n\nSituation : Mer qui retombe après un coup de mer.\n\nLeurre : M2 Tide Minnow (Neo Pearl, Real Anchovy) ; L1 Kaki pailleté. Linéaire lent coupé d'à-coups et de pauses.\n\nMer pour la pêche à 08 h 00 : 5/5 (idéale pour le loup)\n\nMer maintenant : houle ~0,3 m au poste (mesurée à la bouée Espiguette) → loup 5/5, dorade 5/5\n\nPourquoi cette note\nPoste\t90 %\tgrau / sortie d'étang\nSaison\t100 %\tle loup est près du bord de septembre à février\nMer\t100 %\n5/5\tmer peu agitée (~0,6 m au poste), d'après la bouée Espiguette (1,0 m mesurés au large), mer qui retombe : souvent le meilleur créneau → 5/5, idéale pour le loup\nLumière\t100 %\taube\nVent\t100 %\tnord-est 12 km/h (au poste)\nCouleur de l'eau\t85 %\teau très chargée ≈ 37 FNU estimés (sans houle ni vent 2,5, houle des 48 h et vent ×10,5, pluie des jours d'avant ×1,4) ; débit habituel du Vidourle pas encore reçu : sa crue n'est pas comptée · pour le loup 3/5 (surtout la houle, déjà comptée dans « Mer ») · pluie : 30 mm en 7 j, dont 26 mm en 72 h\nEau\t100 %\teau à 16.1 °C\n\nLa note est le produit de ces facteurs. 100 % = idéal, 50 % = divise la note par deux.\n\nTa journée ici\nAuj.\nDemain\nven. 27\nsam. 28\ndim. 29\nlun. 30\n86\n1. 21 h 00 – 22 h 00\n\nnuit · Mer qui retombe après un coup de mer · mistral (N) 12 km/h · mer peu agitée qui retombe · départ de Poulx vers 19 h 58\n\nEau teintée · coloris clair (nuit sombre : un coloris clair se voit mieux)\n\nSurface : S2 Asturie 110 (stickbait)\nColoris : Bone, Mat White, Ghost Minnow · linéaire lent en surface, sillage régulier\nSous la surface (0-20 cm) : M1 Hagre Minnow 96 F\nColoris : Bone, Mat White, Ghost Minnow · linéaire très lent, jusque dans les pieds\nPrès du fond : L2 Black Minnow 120, tête Search 18 g\nColoris : Ghost Minnow · dérive dans la veine de courant, puis linéaire lent\n\nEnviron 15-20 min par leurre. Commence par les premiers mètres devant toi, puis lance plus loin.\n\n48 prochaines heures\nLe poste\n\nDébouché commun du Vidourle et du chenal maritime : courant, éclairage. [S]\n\nRèglement du port (art. 24, plan de mai 2026) : dans le périmètre du port (chenal, entre les môles), une seule canne à coup (9 m max., flotteur ≤ 6 g), pas de pêche au plomb sauf sur les épis côté mer (interdite de 9 h à 20 h du 15 juin au 15 septembre). Le leurre au moulinet et la tresse ne semblent pas prévus [S, texte complet non lu] ; leurre interdit dans le port, confirmé par Nico [N]. Loup vu dans le chenal à l'été 2026 [N] ; un témoignage rapporté par Nico parle d'une forte concentration de loups avant les crues [N, conditions météo à retrouver].\n\nPosition : feu vert de la jetée rive gauche du chenal (OpenStreetMap, balisage) [S] ; contrôlé sur photo aérienne le 21 nov.\n\nAutour (pêche de zone, points gris) : 1er épi de la plage rive gauche (≈ 230 m par la plage) · 2e épi de la plage rive gauche (≈ 630 m par la plage ; relié à la plage à son autre bout : accès à vérifier sur place) · 3e épi de la plage rive gauche (≈ 1 km par la plage)\n\nPas de webcam trouvée près de ce poste.\n\nTon carnet ici : 0 sortie(s).\n\nY aller (Maps)\nWaze\nNoter une sortie ici\nCorriger la position"
+  },
+  {
+   "nom": "D-telephone-v21-abime",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "Lez rattrapé au démarrage",
+     "ok": true,
+     "detail": [
+      "rhone",
+      "vidourle",
+      "lez"
+     ]
+    },
+    {
+     "nom": "date gardée (liste récente complétée)",
+     "ok": true,
+     "detail": [
+      1795463549850,
+      1795463549850
+     ]
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:52:30",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.3",
+     "heure": "19:52:31",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.3",
+     "heure": "19:52:31",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.3",
+     "heure": "19:52:31",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false
+    }
+   ],
+   "t0": 1795636349963,
+   "fresh": "Météo du mer. 25 nov. à 20 h 52 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 2/3 fleuves · routes : OSRM depuis Poulx"
+  },
+  {
+   "nom": "E-liste-vieille-rhone-muet",
+   "controles": [
+    {
+     "nom": "liste affichée",
+     "ok": true,
+     "detail": null
+    },
+    {
+     "nom": "3 fleuves (Rhône gardé)",
+     "ok": true,
+     "detail": [
+      "vidourle",
+      "lez",
+      "rhone"
+     ]
+    },
+    {
+     "nom": "date remise à maintenant",
+     "ok": true,
+     "detail": 1795636386279
+    },
+    {
+     "nom": "les 3 fleuves redemandés",
+     "ok": true,
+     "detail": [
+      "V720001002",
+      "Y346400501",
+      "Y321002001"
+     ]
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:53:03",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": true
+    },
+    {
+     "t": "0.2",
+     "heure": "19:53:03",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:53:03",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.9",
+     "heure": "19:53:06",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.9",
+     "heure": "19:53:06",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "2.9",
+     "heure": "19:53:06",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:53:43",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:53:43",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "40.3",
+     "heure": "19:53:43",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:54:43",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "100.4",
+     "heure": "19:54:43",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false
+    },
+    {
+     "t": "100.4",
+     "heure": "19:54:43",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    }
+   ],
+   "t0": 1795636383363
+  },
+  {
+   "nom": "F-hors-reseau",
+   "controles": [
+    {
+     "nom": "hors réseau : liste affichée",
+     "ok": true,
+     "detail": "0.2 s"
+    },
+    {
+     "nom": "hors réseau : pas de « manquant » (débits habituels gardés)",
+     "ok": true,
+     "detail": "Météo du mer. 25 nov. à 20 h 55 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx"
+    },
+    {
+     "nom": "retour du réseau : bandeau parti",
+     "ok": true,
+     "detail": "3.1 s"
+    },
+    {
+     "nom": "0 erreur JS",
+     "ok": true,
+     "detail": []
+    }
+   ],
+   "erreurs": [],
+   "hubeau": [
+    {
+     "t": "0.2",
+     "heure": "19:55:17",
+     "type": "habituel",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:55:17",
+     "type": "habituel",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "0.2",
+     "heure": "19:55:17",
+     "type": "habituel",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.5",
+     "heure": "19:55:18",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.5",
+     "heure": "19:55:18",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "1.5",
+     "heure": "19:55:18",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false,
+     "code": 200
+    },
+    {
+     "t": "28.6",
+     "heure": "19:55:45",
+     "type": "jour",
+     "station": "V720001002",
+     "bloque": false
+    },
+    {
+     "t": "28.6",
+     "heure": "19:55:45",
+     "type": "jour",
+     "station": "Y346400501",
+     "bloque": false
+    },
+    {
+     "t": "28.6",
+     "heure": "19:55:45",
+     "type": "jour",
+     "station": "Y321002001",
+     "bloque": false
+    }
+   ],
+   "t0": 1795636516958,
+   "hors_reseau_s": "0.2",
+   "banner": "Pas de réseau. J'affiche les prévisions reçues le mer. 25 nov. à 20 h 55. Nouvel essai automatique dès qu'il revient.",
+   "fresh": "Météo du mer. 25 nov. à 20 h 55 · Météo-France jusqu'au dim. 29 nov. 19 h, puis ECMWF · débits : 3/3 fleuves · routes : OSRM depuis Poulx",
+   "retour_s": "3.1"
+  },
+  {
+   "nom": "A-comparaison",
+   "controles": [
+    {
+     "nom": "A-branche-1 / A-main-1 : même classement",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    },
+    {
+     "nom": "A-main-2 / A-branche-2 : même classement",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    },
+    {
+     "nom": "A-branche-3 / A-main-3 : même classement",
+     "ok": true,
+     "detail": [
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+      "11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+     ]
+    }
+   ],
+   "erreurs": [],
+   "hubeau": []
+  }
+ ],
+ "classements": [
+  "A-branche-1 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+  "A-main-1 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+  "A-main-2 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+  "A-branche-2 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+  "A-branche-3 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17",
+  "A-main-3 : 11,12,16,13,1,5,6,8,15,7,2,9,3,4,14,10,17"
+ ],
+ "total": {
+  "controles": 51,
+  "rates": []
+ }
+}
