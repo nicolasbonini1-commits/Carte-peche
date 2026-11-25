@@ -248,7 +248,7 @@
   // Une station par fleuve (window.RIVERS). Débit horaire des 7 derniers jours. Gardé 30 min sur le téléphone.
   async function fetchFlows(force) {
     const cached = LS.get("cp_flow", null);
-    if (!force && cached && Date.now() - cached.at < 30 * 60 * 1000) return cached.rivers;
+    if (!force && cached && Date.now() - cached.at < 30 * 60 * 1000) return withRefs(cached.rivers);
     const since = new Date(Date.now() - 16 * 86400000).toISOString().slice(0, 19); // 16 j : mémoire des crues (couleur de l'eau)
     const refs = await fetchFlowRefs();
     const rivers = {};
@@ -261,7 +261,7 @@
       } catch (e) { /* station muette : on se rabat sur la pluie */ }
     }));
     // Sans réseau (aucune station n'a répondu) : on garde les derniers débits reçus au lieu de les effacer.
-    if (!Object.keys(rivers).length && cached) return cached.rivers;
+    if (!Object.keys(rivers).length && cached) return withRefs(cached.rivers);
     LS.set("cp_flow", { at: Date.now(), rivers });
     return rivers;
   }
@@ -332,11 +332,22 @@
 
   // Débit habituel de chaque mois : médiane des débits moyens mensuels mesurés depuis 1990 (Hub'Eau, obs_elab QmM).
   // Gardé 30 jours sur le téléphone (ça ne change presque pas).
+  // Correctif du 25 nov. 2026 (audit, bogue 1) : avant, la liste était gardée 30 jours dès qu'UN fleuve avait répondu ;
+  // un fleuve muet au mauvais moment restait sans débit habituel pendant 30 jours (crue non comptée, « Pêchable ? » indisponible).
+  // Maintenant : un fleuve manquant est redemandé à chaque mise à jour des débits (toutes les 30 min au plus), les autres
+  // sont gardés ; une liste de plus de 30 jours est redemandée en entier, en gardant l'ancienne valeur d'un fleuve qui ne répond pas.
   async function fetchFlowRefs() {
+    const keys = Object.keys(window.RIVERS);
     const cached = LS.get("cp_qref", null);
-    if (cached && Date.now() - cached.at < 30 * 86400000 && Object.keys(cached.refs).length) return cached.refs;
-    const refs = {};
-    await Promise.all(Object.entries(window.RIVERS).map(async ([key, rv]) => {
+    const old = (cached && cached.refs) || {};
+    const fresh = !!cached && Date.now() - cached.at < 30 * 86400000;
+    const missing = keys.filter(k => !old[k]);
+    if (fresh && !missing.length) return old;
+    const ask = fresh ? missing : keys;
+    const refs = Object.assign({}, old);
+    let got = 0;
+    await Promise.all(ask.map(async key => {
+      const rv = window.RIVERS[key];
       try {
         const url = `https://hubeau.eaufrance.fr/api/v2/hydrometrie/obs_elab?code_entite=${rv.station}&grandeur_hydro_elab=QmM&date_debut_obs_elab=1990-01-01&size=1000&fields=date_obs_elab,resultat_obs_elab`;
         const { j } = await fetchT(url, DELAI.debitsRef);
@@ -344,12 +355,20 @@
         (j.data || []).forEach(o => { if (o.resultat_obs_elab == null) return; const m = +o.date_obs_elab.slice(5, 7); (byM[m] = byM[m] || []).push(o.resultat_obs_elab / rv.div); });
         const med = v => { const s = v.slice().sort((a, b) => a - b), n = s.length; return n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2; };
         const r = {}; Object.entries(byM).forEach(([m, v]) => { if (v.length >= 5) r[m] = { q: med(v), years: v.length }; });
-        if (Object.keys(r).length) refs[key] = r;
+        if (Object.keys(r).length) { refs[key] = r; got++; }
       } catch (e) { }
     }));
-    if (Object.keys(refs).length) LS.set("cp_qref", { at: Date.now(), refs });
+    // Date de la liste : inchangée si on n'a fait que compléter une liste récente ; remise à maintenant si une liste
+    // ancienne a été rafraîchie (au moins un fleuve a répondu).
+    if (got) LS.set("cp_qref", { at: fresh ? cached.at : Date.now(), refs });
     return refs;
   }
+  // Débits habituels déjà rangés dans le téléphone (sans réseau) : pour les rattacher aux débits gardés en mémoire.
+  const storedRefs = () => { const c = LS.get("cp_qref", null); return (c && c.refs) || {}; };
+  // Débits gardés : on leur rattache les débits habituels du moment (avant le 25 nov., ceux du jour de la sauvegarde restaient figés).
+  function withRefs(rivers) { const R = storedRefs(); Object.keys(rivers || {}).forEach(k => { rivers[k].ref = R[k] || null; }); return rivers || {}; }
+  // Fleuves dont on a le débit du jour mais pas le débit habituel (affiché dans la ligne du bas, les fleuves et « Pêchable ? »).
+  const refMissing = () => Object.keys(state.flows || {}).filter(k => !state.flows[k].ref);
   // État du fleuve à l'heure t : débit à ce moment (ou le dernier mesuré si t est dans les 36 h à venir).
   function flowAt(key, t) {
     const r = state.flows && state.flows[key]; if (!r) return null;
@@ -394,6 +413,8 @@
     const r = state.flows && state.flows[M.PECHABLE.river];
     const days = r ? M.riverDays(r.pts, r.ref, t, new Date()) : null;
     const p = M.pechable(spot, days);
+    // Débit du jour reçu mais débit habituel manquant : ce n'est pas un manque de réseau (correctif du 25 nov. 2026).
+    if (p && p.v == null && r && !r.ref) p.why = "débit habituel du Vidourle pas encore reçu : nouvel essai à la prochaine mise à jour des débits.";
     if (p && days) p.days = days.map(x => x ? +x.ratio.toFixed(2) : null); // Vidourle ÷ normale : jour visé, veille, avant-veille
     if (p && localKey(t) > localKey(new Date()) && state.data) {
       const i = state.data.times.findIndex(x => Math.abs(x - t) < 1800001);
@@ -623,7 +644,9 @@
     const rain72 = R.s72[i], rain7 = R.s168[i], apiCoast = R.apiCoast[i], apiBasin = R.api[i];
     const mem = {}; for (const r of Object.keys(M.TURB.rivers)) mem[r] = riverMem(r, D.times[i]);
     // + pluie des jours d'avant sur la côte (indice de pluie antérieure, ajout du 20 nov. 2026, accord de Nico à 12 h 33)
-    const turb = M.turbidity(spot, { hs: hsLocal, hsmax48, ws24: nw ? ws / nw : 0, mem, api: apiCoast });
+    // Fleuves qui comptent pour ce poste mais dont le débit habituel manque : leur crue n'est pas comptée, on le dit (25 nov. 2026).
+    const noRef = Object.keys(M.TURB.rivers).filter(r => M.TURB.rivers[r].k[spot.id] && state.flows && state.flows[r] && !state.flows[r].ref);
+    const turb = M.turbidity(spot, { hs: hsLocal, hsmax48, ws24: nw ? ws / nw : 0, mem, api: apiCoast, noRef });
     const prev = hsAt(i - 6);
     const rising = hsLocal != null && prev != null && hsLocal > prev + 0.2;
     const flow = spot.river ? flowAt(spot.river, D.times[i]) : null;
@@ -746,7 +769,7 @@
     $("#legend").innerHTML = PAL[theme()].map((c, k) => `<i style="background:${c}" title="${M.CLASS_LABELS[k]}"></i>`).join("") + `<small class="sub">&nbsp;faible → forte</small>`;
     const D = state.data;
     const mfUntil = D.multi && D.mfEnd > 0 ? ` · Météo-France jusqu'au ${dayName(D.times[D.mfEnd])} ${D.times[D.mfEnd].getHours()} h, puis ECMWF` : D.multi ? "" : " · modèle par défaut d'Open-Meteo (Météo-France indisponible)";
-    $("#fresh").textContent = `Météo du ${dayName(D.fetchedAt)} à ${hm(D.fetchedAt)}${mfUntil} · débits : ${Object.keys(state.flows || {}).length}/${Object.keys(window.RIVERS).length} fleuves · routes : ${state.drive ? state.drive.src : "—"} depuis ${esc(state.origin.name)}`;
+    $("#fresh").textContent = `Météo du ${dayName(D.fetchedAt)} à ${hm(D.fetchedAt)}${mfUntil} · débits : ${Object.keys(state.flows || {}).length}/${Object.keys(window.RIVERS).length} fleuves${refMissing().length ? ` (débit habituel manquant : ${refMissing().map(k => window.RIVERS[k].name.split(" ")[0]).join(", ")})` : ""} · routes : ${state.drive ? state.drive.src : "—"} depuis ${esc(state.origin.name)}`;
   }
 
   // ---------- Alertes des 3 prochains jours ----------
@@ -757,6 +780,7 @@
     const rivers = Object.entries(window.RIVERS).map(([k, rv]) => {
       const f = flowAt(k, now);
       if (!f) return `<li><b>${esc(rv.name)}</b> : débit indisponible (la pluie sert d'estimation)</li>`;
+      if (f.ref == null) return `<li><b>${esc(rv.name)}</b> : ${String(Math.round(f.q))} m³/s, débit habituel pas encore reçu (nouvel essai à la prochaine mise à jour) : la pluie sert d'estimation</li>`;
       const lv = M.riverLevel({ spot: { river: k }, flow: f });
       return `<li><b>${esc(rv.name)}</b> : ${lv.why.split(" : ")[1] || lv.why} · ${["normal", "eau qui se charge", "en crue", "forte crue"][lv.level]}${lv.falling ? ", décrue" : ""}</li>`;
     }).join("");
@@ -1127,7 +1151,7 @@
       try {
         state.data = parseData(garde);
         const fl = LS.get("cp_flow", null), ho = LS.get("cp_houle", null);
-        state.flows = fl ? fl.rivers : {}; state.houle = ho ? ho.d : null;
+        state.flows = fl ? withRefs(fl.rivers) : {}; state.houle = ho ? ho.d : null;
         applyTheme(); render();
         banner(`Prévisions du ${dayName(new Date(garde.at))} à ${hm(new Date(garde.at))} : mise à jour en cours…`);
       } catch (e) { state.data = null; }
@@ -1142,7 +1166,7 @@
     if (vite) { state.flows = vite[0]; state.houle = vite[1]; }
     else {
       const fl = LS.get("cp_flow", null), ho = LS.get("cp_houle", null);
-      state.flows = fl ? fl.rivers : {}; state.houle = ho ? ho.d : null;
+      state.flows = fl ? withRefs(fl.rivers) : {}; state.houle = ho ? ho.d : null;
       autres.then(([f, h]) => { state.flows = f; if (h) state.houle = h; if (state.data) render(); });
     }
     setInterval(() => { applyTheme(); }, 5 * 60 * 1000);

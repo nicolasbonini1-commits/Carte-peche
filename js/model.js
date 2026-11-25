@@ -224,8 +224,10 @@
     const fnu = 10 ** (b + lSea + lRiv + lRain);
     const c = T.classes, i = fnu < c[0] ? 0 : fnu < c[1] ? 1 : fnu < c[2] ? 2 : 3;
     const fmt = v => v >= 10 ? String(Math.round(v)) : v.toFixed(1).replace(".", ",");
+    const noRef = (x.noRef || []).map(r => window.RIVERS ? window.RIVERS[r].name.split(" ")[0] : r);
     const why = `≈ ${fmt(fnu)} FNU estimés (sans houle ni vent ${fmt(10 ** b)}, houle des 48 h et vent ×${(10 ** lSea).toFixed(1).replace(".", ",")}`
-      + (rParts.length ? `, ${rParts.join(", ")}` : "") + ")";
+      + (rParts.length ? `, ${rParts.join(", ")}` : "") + ")"
+      + (noRef.length ? ` ; débit habituel du ${noRef.join(" et du ")} pas encore reçu : sa crue n'est pas comptée` : "");
     return { fnu, cls: T.names[i], idx: i, sea: 10 ** lSea, river: 10 ** lRiv, rain: 10 ** lRain, land: 10 ** (lRiv + lRain), why }; // land = fleuves + pluie (eau venue de la terre)
   };
   // Couleur de l'eau → note pour le loup sur 5 et facteur de la note du poste (guide Notion, § 2 et 4) [S]/[P] :
