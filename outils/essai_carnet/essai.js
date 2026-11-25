@@ -56,6 +56,8 @@ const ligneCarnet = t => (t.split("\n").find(l => /^Carnet/.test(l.trim())) || "
   fs.mkdirSync(OUT, { recursive: true });
   const browser = await puppeteer.launch({ args: ["--no-sandbox"], headless: true });
   const A = [];
+  // Contrôle du site en ligne (SEUL=enligne, BR = adresse GitHub Pages) : G4 et G5 seulement.
+  if (process.env.SEUL !== "enligne") {
   for (let n = 1; n <= 3; n++) for (const [v, base] of (n % 2 ? [["branche", BR], ["main", MAIN]] : [["main", MAIN], ["branche", BR]])) {
     const { ctx, page, cas } = await ouvrir(browser, `G1-${v}-${n}`);
     await page.goto(base, { waitUntil: "domcontentloaded" }); ok(cas, "liste affichée", await liste(page)); await sleep(20000);
@@ -93,6 +95,7 @@ const ligneCarnet = t => (t.split("\n").find(l => /^Carnet/.test(l.trim())) || "
     }
     await ctx.close();
   }
+  } // fin des cas G1-G3
   // G4 : sous le seuil de 5 sorties → rien ne bouge (comparé au carnet vide, ouvert juste avant ou après)
   for (let n = 1; n <= 3; n++) {
     const paire = {};

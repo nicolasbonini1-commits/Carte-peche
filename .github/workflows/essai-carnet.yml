@@ -7,6 +7,10 @@ on:
     branches: [essai-carnet]
     paths: ["outils/essai_carnet/**", ".github/workflows/essai-carnet.yml", "js/**", "sw.js"]
   workflow_dispatch:
+    inputs:
+      en_ligne:
+        description: "Contrôle du site en ligne seulement (oui/non)"
+        default: "non"
 permissions:
   contents: write
 concurrency: essai-carnet
@@ -36,7 +40,12 @@ jobs:
           python3 -m http.server 8080 > /dev/null 2>&1 &
           (cd /tmp/main && python3 -m http.server 8081 > /dev/null 2>&1 &)
           sleep 2
-          node outils/essai_carnet/essai.js
+          if [ "${{ github.event.inputs.en_ligne }}" = "oui" ]; then
+            curl -sS -m 30 https://nicolasbonini1-commits.github.io/Carte-peche/sw.js | grep -m1 'const CACHE' | tee /tmp/out/cache_en_ligne.txt
+            BR=https://nicolasbonini1-commits.github.io/Carte-peche/ SEUL=enligne node outils/essai_carnet/essai.js
+          else
+            node outils/essai_carnet/essai.js
+          fi
       - name: Enregistrer dans la branche essais-carnet (un dossier par passage, jamais réécrite)
         if: always()
         run: |
