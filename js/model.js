@@ -460,11 +460,12 @@
   // 1) Ton taux moyen, toutes sorties confondues pour l'espèce : c = sorties réussies ÷ somme des notes du modèle (÷ 100)
   //    au moment de chaque sortie. c traduit la note du modèle en chances réelles POUR TOI (débutant ou non).
   // 2) Pour chaque poste : attendu = c × somme des notes de tes sorties à ce poste ; facteur = (réussies + a) / (attendu + a),
-  //    borné entre 0,5 et 1,5. a = 2 [P] : il faut quelques sorties pour qu'un poste s'écarte de 1.
+  //    borné entre 0,5 et 1,5. a = 4 [P] (choix de Nico le 25 nov. 2026 à 21 h 37 ; avec a = 2, une seule prise faisait passer
+  //    un poste de 7e à 1er) : il faut une vraie série de sorties pour qu'un poste s'écarte de 1.
   // Conséquences : si tu réussis partout pareil, tous les facteurs restent à 1 (plus de punition des postes où tu vas) ;
   // bredouille partout → 1 partout (rien ne distingue les postes) ; seul l'écart d'un poste à TA moyenne compte.
   // sorties = [{ spotId, ok (vrai si au moins 1 prise de l'espèce), p (note du modèle ÷ 100 à cette sortie) }]
-  M.learnCarnet = (sorties, a = 2) => {
+  M.learnCarnet = (sorties, a = 4) => {
     const K = sorties.filter(s => s.ok).length, P = sorties.reduce((t, s) => t + s.p, 0);
     const c = P > 0 ? K / P : 0;
     const per = {};
