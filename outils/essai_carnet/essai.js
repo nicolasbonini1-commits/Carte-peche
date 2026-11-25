@@ -55,7 +55,7 @@ const ligneCarnet = t => (t.split("\n").find(l => /^Carnet/.test(l.trim())) || "
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
   const browser = await puppeteer.launch({ args: ["--no-sandbox"], headless: true });
-  const A = [];
+  const A = [], lignes = {};
   // Contrôle du site en ligne (SEUL=enligne, BR = adresse GitHub Pages) : G4 et G5 seulement.
   if (process.env.SEUL !== "enligne") {
   for (let n = 1; n <= 3; n++) for (const [v, base] of (n % 2 ? [["branche", BR], ["main", MAIN]] : [["main", MAIN], ["branche", BR]])) {
@@ -66,7 +66,6 @@ const ligneCarnet = t => (t.split("\n").find(l => /^Carnet/.test(l.trim())) || "
   const cmp = { nom: "G1-comparaison", controles: [], erreurs: [] };
   for (let k = 0; k < A.length; k += 2) ok(cmp, `${A[k].nom} / ${A[k + 1].nom} : même classement (carnet vide)`, A[k].classement === A[k + 1].classement, [A[k].classement, A[k + 1].classement]);
   res.cas.push(cmp);
-  const lignes = {};
   for (const [v, base] of [["branche", BR], ["main", MAIN], ["branche", BR]]) {
     const { ctx, page, cas } = await ouvrir(browser, `G2-${v}`, CARNET);
     await page.goto(base, { waitUntil: "domcontentloaded" }); ok(cas, "liste affichée", await liste(page)); await sleep(20000);
