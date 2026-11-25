@@ -1,0 +1,2 @@
+sw.js:const CACHE = "carte-peche-v23";
+/tmp/main/sw.js:const CACHE = "carte-peche-v23";
