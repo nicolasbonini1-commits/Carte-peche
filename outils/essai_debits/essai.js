@@ -54,6 +54,28 @@ const classement = async page => (await page.$$eval("#list .spot", els => els.ma
   fs.mkdirSync(OUT, { recursive: true });
   const browser = await puppeteer.launch({ args: ["--no-sandbox"], headless: true });
 
+  // Contrôle du site en ligne (après la fusion) : 3 démarrages + Lez muet, sur la vraie adresse.
+  if (process.env.SEUL === "enligne") {
+    for (let n = 1; n <= 3; n++) {
+      const { ctx, page, cas } = await ouvrir(browser, `enligne-${n}`, { muets: n === 3 ? [ST.lez] : [] });
+      await page.goto(BR, { waitUntil: "domcontentloaded" });
+      const t = Date.now(); const l = await liste(page); cas.liste_s = ((Date.now() - t) / 1000).toFixed(1); await sleep(25000);
+      const q = await qref(page); cas.fresh = await texte(page, "#fresh");
+      cas.version = await page.evaluate(() => caches.keys()).catch(() => []);
+      ok(cas, "liste affichée", l, cas.liste_s + " s");
+      ok(cas, "cache v22 installé", cas.version.includes("carte-peche-v22"), cas.version);
+      if (n < 3) ok(cas, "3 débits habituels, pas de « manquant »", q && Object.keys(q.refs).length === 3 && !/manquant/.test(cas.fresh), cas.fresh);
+      else ok(cas, "Lez muet → « débit habituel manquant : Lez »", /débit habituel manquant : Lez/.test(cas.fresh), cas.fresh);
+      ok(cas, "0 erreur JS", !cas.erreurs.length, cas.erreurs);
+      res.cas.push(cas); await ctx.close();
+    }
+    await browser.close();
+    res.total = { controles: res.cas.reduce((a, c) => a + c.controles.length, 0), rates: res.cas.flatMap(c => c.controles.filter(k => !k.ok).map(k => `${c.nom} — ${k.nom}`)) };
+    fs.writeFileSync(`${OUT}/resultats.json`, JSON.stringify(res, null, 1));
+    console.log(`Contrôles : ${res.total.controles}, ratés : ${res.total.rates.length}`);
+    return;
+  }
+
   // A. Démarrage normal, alterné branche / main, 3 fois chacun.
   for (let n = 1; n <= 3; n++) for (const [v, base] of (n % 2 ? [["branche", BR], ["main", MAIN]] : [["main", MAIN], ["branche", BR]])) {
     const { ctx, page, cas } = await ouvrir(browser, `A-${v}-${n}`);
