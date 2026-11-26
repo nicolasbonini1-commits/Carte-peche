@@ -34,8 +34,10 @@ async function overpass(q) {
   }
   return { serveur: null, elements: [] };
 }
-const inside = (p, ring) => { let c = false; for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) { const a = ring[i], b = ring[j]; if ((a.lat > p.lat) !== (b.lat > p.lat) && p.lon < (b.lon - a.lon) * (p.lat - a.lat) / (b.lat - a.lat) + a.lon) c = !c; } return c; };
-const ringsOf = e => e.type === "way" ? [e.geometry] : e.type === "relation" ? (e.members || []).filter(m => m.role === "outer" && m.geometry).map(m => m.geometry) : [];
+// 26 nov. : l'étang est une relation dont les membres n'ont pas tous le rôle « outer » (1er passage : rive vide) → tout membre sauf « inner ».
+const ringsOf = e => e.type === "way" ? [e.geometry || []] : e.type === "relation" ? (e.members || []).filter(m => m.role !== "inner" && m.geometry).map(m => m.geometry) : [];
+// Point dans un polygone dont le contour est découpé en plusieurs chemins : on compte les croisements sur tous les segments.
+const insideE = (p, e) => { let c = false; for (const g of ringsOf(e)) for (let i = 1; i < g.length; i++) { const a = g[i - 1], b = g[i]; if ((a.lat > p.lat) !== (b.lat > p.lat) && p.lon < (b.lon - a.lon) * (p.lat - a.lat) / (b.lat - a.lat) + a.lon) c = !c; } return c; };
 const centre = e => e.type === "node" ? { lat: e.lat, lon: e.lon } : e.center ? e.center : e.geometry ? e.geometry[Math.floor(e.geometry.length / 2)] : e.bounds ? { lat: (e.bounds.minlat + e.bounds.maxlat) / 2, lon: (e.bounds.minlon + e.bounds.maxlon) / 2 } : null;
 (async () => {
   fs.mkdirSync(OUT, { recursive: true });
@@ -71,7 +73,7 @@ const centre = e => e.type === "node" ? { lat: e.lat, lon: e.lon } : e.center ? 
   for (const p of touches) { const g = groupes.find(g => dist(g.rep, p) < 200); if (g) { g.pts.push(p); } else groupes.push({ rep: p, pts: [p] }); }
   const cand = groupes.map((g, i) => {
     const p = g.rep; const pk = parkings.map(k => ({ ...k, d: Math.round(dist(k, p)) })).sort((a, c) => a.d - c.d)[0] || null;
-    const pr = proteges.filter(e => ringsOf(e).some(ring => ring && inside(p, ring))).map(e => e.tags.name || e.tags.protect_title || `${e.type}/${e.id}`);
+    const pr = proteges.filter(e => insideE(p, e)).map(e => e.tags.name || e.tags.protect_title || `${e.type}/${e.id}`);
     const chem = [...new Set(g.pts.map(x => `${x.hw}${x.nom ? " « " + x.nom + " »" : ""}${x.acces ? " [" + x.acces + "]" : ""}`))];
     return { n: i + 1, lat: +p.lat.toFixed(5), lon: +p.lon.toFixed(5), a_eau_m: Math.round(p.d), interdit: g.pts.every(x => x.interdit), chemins: chem, longueur_rive_m: Math.round(Math.max(0, ...g.pts.map(x => dist(x, p)))) * 2,
       parking: pk ? { id: pk.id, nom: pk.nom, d_m: pk.d, acces: pk.acces, payant: pk.frais } : null, protege: pr, ways: [...new Set(g.pts.map(x => x.way))] };
@@ -80,7 +82,7 @@ const centre = e => e.type === "node" ? { lat: e.lat, lon: e.lon } : e.center ? 
     .map(e => { const c = centre(e); return c && { id: `${e.type}/${e.id}`, lat: +c.lat.toFixed(5), lon: +c.lon.toFixed(5), d_eau_m: rive.length ? Math.round(dRive(c)) : null, tags: Object.fromEntries(Object.entries(e.tags).filter(([k]) => /name|bridge|waterway|man_made|leisure|fishing|place|natural|sport|access|highway|foot/.test(k))) }; })
     .filter(o => o && (o.d_eau_m == null || o.d_eau_m < 400));
   const res = { genere: new Date().toISOString(), serveur: r.serveur, journal, bbox: BBOX, nb_elements: E.length,
-    etang: etang ? { id: `${etang.type}/${etang.id}`, nom: etang.tags.name, tags: etang.tags, points_rive: rive.flat().length } : null,
+    membres_etang: etang && etang.members ? [...new Set(etang.members.map(m => m.role || "(vide)"))] : null, etang: etang ? { id: `${etang.type}/${etang.id}`, nom: etang.tags.name, tags: etang.tags, points_rive: rive.flat().length } : null,
     eaux: eaux.map(e => ({ id: `${e.type}/${e.id}`, nom: e.tags.name || "", water: e.tags.water || "" })),
     candidats: cand, parkings, proteges: proteges.map(e => ({ id: `${e.type}/${e.id}`, nom: e.tags.name || "", tags: e.tags })), objets,
     rive_geo: rive.map(g => g.map(p => [+p.lat.toFixed(5), +p.lon.toFixed(5)])),
