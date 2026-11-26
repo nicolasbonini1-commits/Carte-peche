@@ -21,7 +21,7 @@
   // Points à explorer (champ explore de js/spots.js, 23 nov. 2026) : hors du classement des postes vérifiés sauf si
   // window.EXPLORE_DANS_CLASSEMENT = true. classe(s) = ce poste compte dans le classement.
   const EXPLORE_COULEUR = "#8e44ad";
-  const classe = s => !s.explore || window.EXPLORE_DANS_CLASSEMENT === true;
+  const classe = s => !s.explore || (window.EXPLORE_DANS_CLASSEMENT === true && !s.horsClassement); // horsClassement : points du Ponant (26 nov.)
   const state = {
     data: null, // {times:[Date], F:{W,C,E,R}, S:{W,C,E}, sun:{'YYYY-MM-DD':{rise,set}}, fetchedAt}
     drive: LS.get("cp_drive", null),
@@ -124,7 +124,7 @@
         markers[s.id] = { halo, dot };
       }
       markers[s.id].halo.setStyle({ fillColor: c });
-      markers[s.id].dot.setIcon(s.explore ? dotIcon(c, "?", "explore") : dotIcon(c, r.rank <= 3 && r.feasible ? r.rank : ""));
+      markers[s.id].dot.setIcon(s.explore ? dotIcon(c, s.lettre || "?", "explore") : dotIcon(c, r.rank <= 3 && r.feasible ? r.rank : ""));
     });
   }
   function dotIcon(c, label, extra) {
@@ -854,7 +854,7 @@
       </button>`;
     const hors = state.results.filter(r => !classe(r.spot));
     $("#list").innerHTML = state.results.filter(r => classe(r.spot)).map(item).join("") + (hors.length ? `
-      <h3 class="explore-titre">Point à explorer (hors classement, note indicative)</h3>` + hors.map(item).join("") : "");
+      <h3 class="explore-titre">${hors.length > 1 ? "Points à explorer" : "Point à explorer"} (hors classement, note indicative)</h3>` + hors.map(item).join("") : "");
     document.querySelectorAll("#list .spot").forEach(b => b.onclick = () => openSpot(+b.dataset.id));
   }
 
@@ -949,6 +949,8 @@
   // Bandeau des points à explorer (23 nov. 2026)
   function exploreBanner(s) {
     const turb = M.TURB.base[s.id] == null;
+    // 26 nov. 2026 : points du Ponant (origine « prospection ») : pas une vidéo, dans le secteur, mais dans l'étang.
+    if (s.origine === "prospection") return `<div class="explore-banner"><b>Point à explorer ${esc(s.lettre || "")} :</b> repéré sur OpenStreetMap et photo aérienne, jamais pêché, position à recaler sur place. Dans l'étang : la note vient du modèle de la mer (houle, couleur de l'eau côté mer), elle n'a pas de sens ici. Hors du classement et des alertes.</div>`;
     return `<div class="explore-banner"><b>Point à explorer :</b> trouvé sur une vidéo, jamais pêché par Nico ; hors secteur, note indicative (bouée et météo de zone éloignées).`
       + (turb ? " Couleur de l'eau : pas encore calée ici, l'appli utilise l'ancienne règle (houle, Rhône, pluie)."
         : " Couleur de l'eau : calée sur les photos satellite à 300 m du bord, à vérifier sur place.")

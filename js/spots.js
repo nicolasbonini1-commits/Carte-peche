@@ -274,6 +274,46 @@ window.SPOTS = [
     acces: "Parking OSM 240666081 au bout de la piste de Beauduc (≈ 10 km de piste depuis Salin-de-Giraud, gabarit ≈ 2,1 m) [C], puis 9,1 km à pied (≈ 2 h, plus sur sable mou) par la plage du golfe, le sentier sableux interdit aux véhicules et la plage sud [C]. Pas de raccourci : la digue des Pétroliers est privée et coupée par une brèche d'≈ 50 m d'eau (vue par Nico sur Géoportail) [C]. Route Poulx → parking ≈ 1 h 38 (OSRM, arrêt à 3,9 km du parking) [M] : ≈ 3 h 50 de trajet aller en tout [P].",
     reglement: "Zone de protection de biotope de la pointe de Beauduc (arrêté du 15/07/2015, JO du 09/12/2015 ; partie terrestre : arrêté préfectoral n° 2013273-0017 du 30/09/2013) [S] : véhicules à moteur interdits sur la pointe, chiens tenus du 1er avril au 30 septembre, ni camping ni bivouac ; la pêche du bord à la ligne n'est pas visée [S]. Cantonnement de pêche du golfe de Beauduc (toute pêche interdite, fiche réglementation du Parc naturel régional de Camargue) [S] : à plus de 7 km, hors zone.",
     zone: "E"
+  },
+  // ---------- Étang du Ponant : 3 points à explorer A, B, C (26 nov. 2026, validés par Nico à 17 h 19) ----------
+  // Aucun poste précis publié (revue du 26 nov.) ; la fédération du Gard dit seulement que l'étang se pêche surtout aux leurres
+  // pour le loup (stickbait, buzzbait) [S]. Points choisis par prospection : relevé OpenStreetMap des chemins à moins de 25 m
+  // de l'eau (outils/ponant/, branche essai-ponant, passage du 26 nov. 16 h 47) + photos aériennes Esri [C] ; raisons [P].
+  // origine "prospection" : bandeau propre (pas une vidéo, dans le secteur) ; horsClassement : la note vient du modèle de la mer
+  // (houle à la bouée, couleur de l'eau côté mer) et ne vaut rien dans l'étang → en bas de la liste, jamais dans le classement
+  // ni dans les alertes. lettre : affichée dans le marqueur violet (au lieu de « ? »). type : seulement pour faire tourner le modèle.
+  {
+    id: 18, explore: true, origine: "prospection", horsClassement: true, lettre: "A",
+    name: "Ponant A – chenal, rive de la pinède", commune: "Le Grau-du-Roi",
+    pos: "sur la piste OSM 35104952 qui longe la rive est du chenal du Ponant, entre les nœuds 43,55654 / 4,10276 et 43,55886 / 4,10605 (point pris au plus près de l'eau : ≈ 9 m de la rive OSM de l'étang, relation 5291094) [C] ; à recaler sur place",
+    lat: 43.55772, lon: 4.10443, type: "grau", seaward: 316, river: "vidourle", lit: false,
+    structure: "Chenal du Ponant : seul passage entre l'étang et la mer (passe des Abîmes) [S] ; eau sombre, donc profonde, le long de cette rive et haut-fond de sable côté Grande-Motte sur la photo aérienne [C] ; courant étang ↔ mer [P].",
+    attention: "Point à explorer : jamais pêché. Courant fort par crue du Vidourle. Base de voile en face (l'été).",
+    acces: "Piste le long du chenal, depuis le pont des Abîmes (≈ 200 m) : même zone que le poste 8, à pied par le pont [C]. Parking public le plus proche à vérifier.",
+    reglement: "Étang en pêche maritime de loisir (fédération du Gard, déduit) ; aucune interdiction de pêche trouvée [S].",
+    zone: "C"
+  },
+  {
+    id: 19, explore: true, origine: "prospection", horsClassement: true, lettre: "B",
+    name: "Ponant B – pointe de la pinède", commune: "Le Grau-du-Roi",
+    pos: "nœud OSM du sentier de la pointe de la pinède du Boucanet, ≈ 10 m de la rive OSM de l'étang (relation 5291094) [C] ; à recaler sur place",
+    lat: 43.56246, lon: 4.11236, type: "grau", seaward: 63, river: "vidourle", lit: false,
+    structure: "Pointe de la pinède du Boucanet, à l'entrée du chenal : eau profonde tout près du bord sur la photo aérienne [C] ; étang de 280 ha, 4 m au plus (2,7 m en moyenne) [S].",
+    attention: "Point à explorer : jamais pêché. Zone sud de l'étang réservée au ski nautique (arrêté du préfet maritime 27/89, cité par OpenStreetMap) : ne pas lancer vers les bateaux.",
+    acces: "Sentiers de la pinède du Boucanet (Conservatoire du littoral) [S] ; parking public le plus proche à vérifier (≈ 1 km).",
+    reglement: "Étang en pêche maritime de loisir (fédération du Gard, déduit) ; aucune interdiction de pêche trouvée [S].",
+    zone: "C"
+  },
+  {
+    id: 20, explore: true, origine: "prospection", horsClassement: true, lettre: "C",
+    name: "Ponant C – arrivée du Vidourle", commune: "Le Grau-du-Roi",
+    pos: "nœud OSM du sentier au bout est de l'étang, ≈ 4 m de la rive OSM (relation 5291094), à la jonction avec le Vidourle [C] ; à recaler sur place",
+    lat: 43.56035, lon: 4.14274, type: "embouchure", seaward: 324, river: "vidourle", lit: false,
+    structure: "Bout est de l'étang, là où arrive l'eau du Vidourle [S] ; eau douce et nourriture apportées par le fleuve [P].",
+    attention: "Point à explorer : jamais pêché. Eau marron en crue du Vidourle (regarder « Pêchable ? » du Grau-du-Roi et du Ponant). Limite eau douce / mer à vérifier.",
+    acces: "Parking du Vidourle (OSM way 204019682) à ≈ 95 m [C].",
+    reglement: "Côté étang : pêche maritime de loisir (déduit). Côté Vidourle : limite de salure des eaux à vérifier (en amont, carte de pêche) [S].",
+    zone: "C"
   }
 ];
 // Point à explorer dans le classement ? true = classé comme les autres (décision de Nico le 23 nov. 2026), marqueur violet gardé.
