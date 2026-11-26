@@ -166,7 +166,7 @@ window.SPOTS = [
       { name: "Épi suivant (vers Palavas)", lat: 43.53934, lon: 3.96732, src: "OSM way 698165181 (BD Ortho 2019) [C]", note: "≈ 960 m" }
     ],
     structure: "Sortie de port reliée aux étangs (courant étang-mer). [S]",
-    attention: "Rester à l'extérieur du port.",
+    attention: "Pêche interdite depuis les ouvrages du port et de l'avant-port, digue comprise très probablement (règlement de police du port de Carnon, art. 33, avis du conseil portuaire de février 2026) [S] ; en vigueur après publication, limites sur un plan non publié : à confirmer auprès de la capitainerie (capitainerie@mauguio-carnon.com). En attendant, pêcher depuis les épis de la plage ouest (points « Autour »).",
     zone: "W"
   },
   {
@@ -234,7 +234,7 @@ window.SPOTS = [
       { name: "2e épi à l'ouest", lat: 43.43097, lon: 3.77474, src: "OSM way 391636700 [C]", note: "≈ 350 m" }
     ],
     structure: "Port de part et d'autre d'un chenal qui relie l'étang d'Ingril à la mer (FAO ArtFiMed) [S]. Filières de moules au large entre Frontignan et Agde. [S]",
-    attention: "Rester à l'extérieur du port.",
+    attention: "Zone du port de Frontignan interdite au public, pêche à la ligne interdite (règlement de la zone d'activités portuaires, port de Sète-Frontignan, 2023) [S] ; limites sur un plan non vu : on ne sait pas si la digue ouest est dedans, à confirmer auprès du port. En attendant, pêcher depuis les épis de la plage ouest (points « Autour »).",
     zone: "W"
   },
   // ---------- Point à explorer (ajouté le 23 nov. 2026, accord de Nico pour main ; essai : branche essai-poste17-appli) ----------
