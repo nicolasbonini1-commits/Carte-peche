@@ -50,7 +50,7 @@ const centre = e => e.type === "node" ? { lat: e.lat, lon: e.lon } : e.center ? 
     nwr["leisure"~"fishing|slipway|marina|park|beach_resort|nature_reserve"](${b}); nwr["fishing"](${b});
     nwr["boundary"="protected_area"](${b}); nwr["place"](${b}); nwr["natural"="beach"](${b});
     nwr["sport"~"water_ski|wakeboard|windsurfing|swimming"](${b}); nwr["landuse"~"military|industrial"](${b});
-  );out geom tags;`;
+  );out geom;`; // 26 nov. : « out geom tags » ne rend pas les membres des relations (rive vide aux 2 premiers passages)
   const r = await overpass(q);
   const E = r.elements;
   const eaux = E.filter(e => e.tags && e.tags.natural === "water");
