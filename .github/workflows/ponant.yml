@@ -1,0 +1,43 @@
+# Prospection de l'étang du Ponant (26 nov. 2026). Ne tourne que sur la branche essai-ponant ; écrit dans « essais-ponant »
+# (un dossier par passage, jamais réécrite ; jamais dans donnees). Aucun secret.
+name: ponant
+on:
+  push:
+    branches: [essai-ponant]
+    paths: ["outils/ponant/**", ".github/workflows/ponant.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: ponant
+jobs:
+  releve:
+    if: github.ref_name == 'essai-ponant'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Europe/Paris
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: echo "P=passage-$(date '+%Y-%m-%d-%Hh%M')" >> "$GITHUB_ENV"; mkdir -p /tmp/sortie
+      - name: Relevé OpenStreetMap
+        run: node outils/ponant/releve.js | tee /tmp/sortie/releve.txt
+      - name: Cartes (Chrome sans écran) — vue d'ensemble + vues rapprochées des candidats et de outils/ponant/vues.txt
+        run: |
+          mkdir -p /tmp/web/sortie && cp outils/ponant/carte.html /tmp/web/ && cp /tmp/sortie/ponant.json /tmp/web/sortie/
+          cd /tmp/web && (python3 -m http.server 8777 >/dev/null 2>&1 &) && sleep 1
+          shot() { google-chrome --headless=new --no-sandbox --disable-gpu --hide-scrollbars --window-size=1000,1000 --virtual-time-budget=25000 --screenshot="/tmp/sortie/$1.png" "http://localhost:8777/carte.html?$2" > /dev/null 2>&1 || true; }
+          shot ensemble_sat "fond=sat"; shot ensemble_osm "fond=osm"
+          jq -r '.candidats[] | select(.interdit|not) | "\(.n) \(.lat) \(.lon)"' /tmp/sortie/ponant.json | head -14 | while read n la lo; do shot "cand_${n}_sat" "fond=sat&c=$la,$lo&z=17"; done
+          if [ -f $GITHUB_WORKSPACE/outils/ponant/vues.txt ]; then grep -v '^#' $GITHUB_WORKSPACE/outils/ponant/vues.txt | while read nom la lo z; do [ -n "$nom" ] && shot "vue_${nom}" "fond=sat&c=$la,$lo&z=${z:-17}"; done; fi
+          ls -la /tmp/sortie
+      - name: Enregistrer dans essais-ponant (un dossier par passage)
+        if: always()
+        run: |
+          cd /tmp
+          if git clone -q --depth 1 -b essais-ponant "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" d; then cd d; else mkdir d && cd d && git init -q && git checkout -q -b essais-ponant && git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"; fi
+          mkdir -p "$P" && cp -r /tmp/sortie/* "$P"/
+          git config user.name "essai-bot"; git config user.email "essai@users.noreply.github.com"
+          git add . && git commit -qm "ponant $P" && git push -q origin essais-ponant

@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- Carte de prospection du Ponant : rive OSM (bleu), chemins (gris, rouge = accès interdit), parkings (P), candidats numérotés (jaune).
+     Usage : carte.html?fond=sat|osm[&c=lat,lon&z=17] -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>html,body,#m{margin:0;height:100%;font:14px sans-serif}.lab{background:#ffeb3b;border:1px solid #000;padding:0 4px;font-weight:bold}
+.pk{background:#1565c0;color:#fff;border:0;padding:0 3px;font-weight:bold}.leg{position:absolute;z-index:999;top:6px;left:6px;background:#fff;padding:4px 6px;border:1px solid #888}</style></head>
+<body><div id="m"></div><div class="leg" id="leg"></div><script>
+(async () => {
+  const qs = new URLSearchParams(location.search), sat = qs.get("fond") !== "osm";
+  const d = await (await fetch("sortie/ponant.json")).json();
+  const map = L.map("m", { zoomControl: false });
+  if (sat) L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19 }).addTo(map);
+  else L.tileLayer("https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png", { maxZoom: 19 }).addTo(map);
+  d.rive_geo.forEach(g => L.polyline(g, { color: "#00b0ff", weight: 2 }).addTo(map));
+  d.chemins_geo.forEach(w => L.polyline(w.g, { color: w.interdit ? "#e53935" : (sat ? "#fff" : "#555"), weight: w.interdit ? 3 : 1.5, opacity: 0.8 }).addTo(map));
+  d.parkings.forEach(p => L.marker([p.lat, p.lon], { icon: L.divIcon({ className: "pk", html: "P", iconSize: null }) }).addTo(map));
+  d.candidats.forEach(c => L.marker([c.lat, c.lon], { icon: L.divIcon({ className: "lab", html: String(c.n), iconSize: null }) }).addTo(map));
+  const all = d.rive_geo.flat(); map.fitBounds(all.length ? L.latLngBounds(all).pad(0.05) : [[d.bbox[0], d.bbox[1]], [d.bbox[2], d.bbox[3]]]);
+  if (qs.get("c")) { const [la, lo] = qs.get("c").split(",").map(Number); map.setView([la, lo], +(qs.get("z") || 17)); }
+  document.getElementById("leg").textContent = (sat ? "Photo Esri" : "Plan OSM") + (qs.get("c") ? " — " + qs.get("c") : " — étang du Ponant");
+  setTimeout(() => document.title = "pret", 6000);
+})();
+</script></body></html>
