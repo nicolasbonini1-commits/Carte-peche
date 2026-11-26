@@ -1,0 +1,70 @@
+serveur https://overpass.kumi.systems/api/interpreter, 3272 éléments, étang : relation/5291094 Étang du Ponant ; eaux : way/9427102 | way/9558062 | way/9573960 | way/9574253 | way/9575666 | way/11027857 | way/11112344 | Étang du Médard | way/11277660 | way/11406103 | Étang de l'Or | way/27959147 | way/99184096 | way/99184120 | way/156368772 | way/166375951 | way/166375952 | way/166375953 | way/166375954 | way/166375958 | way/172381050 | way/172381055 | way/172381061 | way/172381066 | way/172381266 | way/172381425 | way/172381426 | way/172381459 | way/172381460 | way/172381473 | way/172381482 | way/172381789 | way/172381882 | way/172381971 | way/172381999 | way/172382020 | way/174637420 | way/174637421 | way/231634052 | way/375073062 | way/375073065 | way/429265135 | way/578119906 | way/903740679 | way/935628042 | way/1012974946 | way/1088154132 | way/1134309568 | way/1134309569 | way/1134309572 | way/1450679394 | relation/5291093 | Étang du Ponant | Port de la Grande Motte
+31 accès au bord candidats :
+#1 43.56766,4.10211 à 0 m de l'eau — path ; footway ; steps — parking 154 m way/361046848 — way/772046470, Aire de coopération de la réserve de biosphère de Camargue
+#2 43.56224,4.13524 à 0 m de l'eau — path — parking 644 m Parking du Vidourle — Zone tampon de la réserve de biosphère de Camargue
+#3 43.56035,4.14274 à 0 m de l'eau — path ; footway — parking 95 m Parking du Vidourle — Zone tampon de la réserve de biosphère de Camargue
+#4 43.56185,4.13789 à 1 m de l'eau — path — parking 426 m Parking du Vidourle — Zone tampon de la réserve de biosphère de Camargue
+#5 43.55865,4.11065 à 2 m de l'eau — path ; track [designated] ; path [private] — parking 544 m way/1441923266 — Zone tampon de la réserve de biosphère de Camargue
+#6 43.55615,4.10201 à 3 m de l'eau — cycleway ; footway ; cycleway « Allée du Ponant » ; track [designated] ; secondary « Route de Carnon » ; secondary « Pont des Abimes » ; path [designated] ; path « Accès 1 » ; cycleway « Via Rhôna » ; secondary « Avenue Maréchal Leclerc » ; path ; service ; path « Allée du Ponant » — parking 166 m way/951677362 — Zone tampon de la réserve de biosphère de Camargue
+#7 43.56111,4.1143 à 4 m de l'eau — path — parking 770 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#8 43.55834,4.13179 à 4 m de l'eau — path — parking 626 m way/651500069 — Zone tampon de la réserve de biosphère de Camargue
+#9 43.55646,4.12179 à 6 m de l'eau — path — parking 719 m way/1074339533 — Zone tampon de la réserve de biosphère de Camargue
+#10 43.56309,4.1069 à 6 m de l'eau — footway — parking 215 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#11 43.56492,4.10424 à 6 m de l'eau — footway ; footway [customers] ; service [delivery] — parking 302 m way/279570595 — Zone tampon de la réserve de biosphère de Camargue
+#12 43.55936,4.10821 à 7 m de l'eau — path ; track [designated] — parking 393 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#13 43.5588,4.12818 à 7 m de l'eau — path — parking 753 m way/651500069 — Zone tampon de la réserve de biosphère de Camargue
+#14 43.5592,4.10295 à 7 m de l'eau — path [yes] ; track [yes] ; path « Allée du Ponant » — parking 335 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#15 43.56152,4.14059 à 7 m de l'eau — path — parking 205 m Parking du Vidourle — Zone tampon de la réserve de biosphère de Camargue
+#16 43.56357,4.12443 à 8 m de l'eau — path — parking 317 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+#17 43.56828,4.10912 à 8 m de l'eau — path ; track ; footway — parking 216 m way/909059034 — way/772046470, Aire de coopération de la réserve de biosphère de Camargue
+#18 43.5584,4.11767 à 8 m de l'eau — path — parking 730 m way/1293299179 — Zone tampon de la réserve de biosphère de Camargue
+#19 43.55489,4.09982 à 9 m de l'eau — footway « Promenade Jacques Chirac » ; cycleway « Allée du Ponant » — parking 72 m way/951677368 — way/772046470, Aire de coopération de la réserve de biosphère de Camargue
+#20 43.56246,4.11236 à 10 m de l'eau — path — parking 612 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#21 43.55997,4.11629 à 10 m de l'eau — path — parking 828 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+#22 43.55988,4.10546 à 11 m de l'eau — track [yes] ; path [yes] — parking 230 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#23 43.55704,4.12499 à 11 m de l'eau — path — parking 757 m way/977358768 — Zone tampon de la réserve de biosphère de Camargue
+#24 43.56169,4.10932 à 12 m de l'eau — path — parking 364 m way/279570598 — Zone tampon de la réserve de biosphère de Camargue
+#25 43.56887,4.11219 à 14 m de l'eau — trunk ; track — parking 467 m way/909059034 — Zone tampon de la réserve de biosphère de Camargue
+#26 43.56235,4.12961 à 16 m de l'eau — path — parking 712 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+#27 43.56539,4.10181 à 16 m de l'eau — service [delivery] — parking 186 m way/359226307 — Zone tampon de la réserve de biosphère de Camargue
+#28 43.56822,4.10652 à 16 m de l'eau — path ; path « Le Grand Chemin » — parking 11 m way/909059034 — way/772046470, Aire de coopération de la réserve de biosphère de Camargue
+#29 43.56818,4.11766 à 17 m de l'eau — trunk — parking 449 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+#30 43.56196,4.12684 à 19 m de l'eau — path — parking 576 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+#31 43.56271,4.13217 à 24 m de l'eau — path — parking 872 m Parking du Ponant — Zone tampon de la réserve de biosphère de Camargue
+objets :
+node/2837918167 43.56468,4.10269 (19 m) {"leisure":"marina","name":"Port du Ponant"}
+node/2934164216 43.56773,4.10797 (44 m) {"leisure":"pitch","name":"Stade de ski nautique","sport":"water_ski"}
+node/3010941374 43.56003,4.1212 (326 m) {"leisure":"pitch","name":"Site de ski nautique du Ponant","sport":"water_ski"}
+node/3639817066 43.56458,4.09956 (205 m) {"name":"Ponant Sud","place":"neighbourhood"}
+node/3655685340 43.56676,4.10011 (56 m) {"leisure":"sports_centre","name":"FluidW","sport":"kitesurfing;wakeboarding"}
+node/3655735661 43.56823,4.09924 (129 m) {"name":"Quartier des Villas Est","place":"neighbourhood"}
+node/3655763362 43.56627,4.10125 (17 m) {"leisure":"sports_centre","name":"WakeParkCable","sport":"wakeboarding"}
+node/13479076351 43.56763,4.09955 (82 m) {"name":"Port Ponant","place":"neighbourhood"}
+way/66035894 43.55334,4.1014 (99 m) {"man_made":"groyne"}
+way/66098050 43.553,4.1034 (195 m) {"man_made":"groyne"}
+way/66622660 43.56183,4.09799 (390 m) {"sport":"swimming"}
+way/66629268 43.55948,4.10174 (28 m) {"leisure":"sports_centre","name":"Site de Voile du Ponant","sport":"swimming"}
+way/73583208 43.56136,4.14459 (175 m) {"bridge":"yes","highway":"trunk"}
+way/73583211 43.56165,4.14332 (114 m) {"bridge":"yes","highway":"trunk"}
+way/99184647 43.56408,4.10092 (133 m) {"bridge":"yes","highway":"residential","name":"Rue Saint-Louis"}
+way/99184649 43.56723,4.10191 (50 m) {"man_made":"pier","name":"C"}
+way/99184650 43.56748,4.10093 (27 m) {"man_made":"pier","name":"A"}
+way/99184651 43.56756,4.10194 (17 m) {"access":"private","man_made":"pier"}
+way/99184653 43.56756,4.10194 (17 m) {"access":"private","man_made":"pier"}
+way/99184655 43.56744,4.10175 (38 m) {"man_made":"pier","name":"B"}
+way/120072637 43.55816,4.09956 (140 m) {"bridge":"yes","highway":"footway","name":"Passerelle des Abîmes"}
+way/231620423 43.55304,4.09923 (203 m) {"man_made":"groyne"}
+way/260626980 43.55852,4.10127 (3 m) {"man_made":"pier"}
+way/260626992 43.55889,4.10128 (18 m) {"man_made":"pier"}
+way/279329728 43.5621,4.09951 (347 m) {"leisure":"water_park","name":"Espace Grand Bleu","sport":"swimming"}
+way/297237708 43.56219,4.10519 (107 m) {"bridge":"yes","highway":"footway"}
+way/354089576 43.55648,4.1008 (14 m) {"bridge":"yes","highway":"secondary","name":"Pont des Abimes"}
+way/358846781 43.55913,4.10148 (10 m) {"man_made":"pier"}
+way/429507581 43.5647,4.1038 (0 m) {"leisure":"slipway"}
+way/429507594 43.55615,4.10201 (3 m) {"bridge":"yes","highway":"cycleway"}
+way/483660367 43.56683,4.12043 (14 m) {"natural":"beach"}
+way/651500046 43.56831,4.10933 (9 m) {"bridge":"yes","highway":"footway"}
+way/694870997 43.55602,4.10213 (13 m) {"bridge":"yes","highway":"cycleway","name":"Via Rhôna"}
+way/1083123963 43.55502,4.09557 (349 m) {"leisure":"beach_resort","name":"Azur Plage"}
+relation/5291092 43.56232,4.10399 (185 m) {"name":"Presqu'Île du Ponant","place":"island"}
+relation/5375135 43.56718,4.10138 (42 m) {"leisure":"marina","name":"Port Grégau"}
