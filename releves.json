@@ -1,0 +1,50 @@
+{
+ "version": 1,
+ "genere": "2026-11-28T12:18:03.480Z",
+ "minimum_pour_conclure": 5,
+ "releves": 0,
+ "sorties_notees": 0,
+ "ligne": "Aucun relevé reçu pour l'instant.",
+ "resultats": {
+  "pechable": {
+   "n": 0,
+   "accord": 0,
+   "taux": null,
+   "ic95": null,
+   "conclure": false,
+   "note": "accord sur les « oui » et « non » de l'appli ; les « douteux » sont comptés à part",
+   "douteux_vu": {
+    "oui": 0,
+    "non": 0
+   },
+   "tableau": {}
+  },
+  "eau": {
+   "n": 0,
+   "accord": 0,
+   "taux": null,
+   "ic95": null,
+   "conclure": false,
+   "a_une_classe_pres": null,
+   "appli_plus_sale": 0,
+   "appli_plus_claire": 0,
+   "tableau": {}
+  },
+  "mer": {
+   "n": 0,
+   "accord": 0,
+   "taux": null,
+   "ic95": null,
+   "conclure": false,
+   "appli_plus_forte": 0,
+   "appli_plus_calme": 0,
+   "note": "« peu agitée » et « formée » de l'appli comptent comme « agitée »",
+   "tableau": {}
+  },
+  "peche_selon_eau_vue": {},
+  "contredit_la_regle": []
+ },
+ "tickets_lus": [],
+ "tickets_ecartes": [],
+ "detail": []
+}
